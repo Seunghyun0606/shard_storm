@@ -1,0 +1,925 @@
+{
+  "policy": "deterministic density / HP efficiency, one direct attack every 0.20s, guided first click; all runs 60s",
+  "baseline": {
+    "durationSeconds": 60,
+    "seed": 31415,
+    "levels": {
+      "crushPower": 0,
+      "shardPower": 0,
+      "shardRange": 0,
+      "chainAmplifier": 0,
+      "extraTime": 0,
+      "crushSpeed": 0,
+      "impactPulse": 0,
+      "ricochetPlus": 0,
+      "shardBloom": 0,
+      "echoCatalyst": 0,
+      "photonBoost": 0
+    },
+    "totalDestroyed": 1011,
+    "directKills": 185,
+    "cascadeKills": 826,
+    "bestChain": 43,
+    "photonsEarned": 19348,
+    "highestTier": 5,
+    "unlockTimes": {
+      "pentagon": 1.0000000000000013,
+      "star": 2.799999999999995
+    },
+    "firstCascadeTime": 0.15612847958824486,
+    "inheritanceEnabled": true,
+    "ricochetEnabled": true,
+    "sequentialPropagationEnabled": true,
+    "visualVarietyEnabled": true,
+    "avgCascadeDurationMs": 497.98151202346287,
+    "variantCounts": {
+      "deep": 315,
+      "matte": 343,
+      "bright": 378
+    },
+    "patternCounts": {
+      "bridge": 120,
+      "scattered": 516,
+      "burst_cluster": 169,
+      "arc": 219
+    },
+    "optionChanges": [],
+    "safetyCapsHit": 9,
+    "skippedSeconds": 0,
+    "skippedEvents": 0,
+    "peakShards": 35,
+    "simulationStepP95ms": 0.176400000000001,
+    "simulationStepMaxMs": 0.49490000000000123
+  },
+  "upgraded": {
+    "durationSeconds": 60,
+    "seed": 31415,
+    "levels": {
+      "crushPower": 1,
+      "shardPower": 1,
+      "shardRange": 0,
+      "chainAmplifier": 0,
+      "extraTime": 0,
+      "crushSpeed": 0,
+      "impactPulse": 0,
+      "ricochetPlus": 0,
+      "shardBloom": 0,
+      "echoCatalyst": 0,
+      "photonBoost": 0
+    },
+    "totalDestroyed": 1167,
+    "directKills": 233,
+    "cascadeKills": 934,
+    "bestChain": 37,
+    "photonsEarned": 21950,
+    "highestTier": 5,
+    "unlockTimes": {
+      "pentagon": 0.8000000000000008,
+      "star": 2.0581413804430295
+    },
+    "firstCascadeTime": 0.15612847958824486,
+    "inheritanceEnabled": true,
+    "ricochetEnabled": true,
+    "sequentialPropagationEnabled": true,
+    "visualVarietyEnabled": true,
+    "avgCascadeDurationMs": 462.86201087768103,
+    "variantCounts": {
+      "deep": 366,
+      "matte": 404,
+      "bright": 422
+    },
+    "patternCounts": {
+      "bridge": 160,
+      "scattered": 575,
+      "burst_cluster": 225,
+      "arc": 220
+    },
+    "optionChanges": [],
+    "safetyCapsHit": 2,
+    "skippedSeconds": 0,
+    "skippedEvents": 0,
+    "peakShards": 29,
+    "simulationStepP95ms": 0.170599999999979,
+    "simulationStepMaxMs": 0.6208000000000027
+  },
+  "ab": [
+    {
+      "durationSeconds": 60,
+      "seed": 31415,
+      "levels": {
+        "crushPower": 0,
+        "shardPower": 0,
+        "shardRange": 0,
+        "chainAmplifier": 0,
+        "extraTime": 0,
+        "crushSpeed": 0,
+        "impactPulse": 0,
+        "ricochetPlus": 0,
+        "shardBloom": 0,
+        "echoCatalyst": 0,
+        "photonBoost": 0
+      },
+      "totalDestroyed": 959,
+      "directKills": 188,
+      "cascadeKills": 771,
+      "bestChain": 43,
+      "photonsEarned": 17764,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 1.0000000000000013,
+        "star": 2.799999999999995
+      },
+      "firstCascadeTime": 0.15612847958824486,
+      "inheritanceEnabled": false,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 440.7167817595639,
+      "variantCounts": {
+        "deep": 303,
+        "matte": 323,
+        "bright": 361
+      },
+      "patternCounts": {
+        "bridge": 130,
+        "scattered": 494,
+        "burst_cluster": 171,
+        "arc": 180
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 3,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 32,
+      "simulationStepP95ms": 0.1631999999999607,
+      "simulationStepMaxMs": 0.5802999999999656
+    },
+    {
+      "durationSeconds": 60,
+      "seed": 31415,
+      "levels": {
+        "crushPower": 0,
+        "shardPower": 0,
+        "shardRange": 0,
+        "chainAmplifier": 0,
+        "extraTime": 0,
+        "crushSpeed": 0,
+        "impactPulse": 0,
+        "ricochetPlus": 0,
+        "shardBloom": 0,
+        "echoCatalyst": 0,
+        "photonBoost": 0
+      },
+      "totalDestroyed": 899,
+      "directKills": 189,
+      "cascadeKills": 710,
+      "bestChain": 40,
+      "photonsEarned": 17444,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 1.0000000000000013,
+        "star": 2.5999999999999956
+      },
+      "firstCascadeTime": 0.15612847958824486,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": false,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 425.8601327381978,
+      "variantCounts": {
+        "deep": 283,
+        "matte": 299,
+        "bright": 342
+      },
+      "patternCounts": {
+        "bridge": 80,
+        "scattered": 436,
+        "burst_cluster": 202,
+        "arc": 194
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 3,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 23,
+      "simulationStepP95ms": 0.15800000000001546,
+      "simulationStepMaxMs": 0.35180000000002565
+    },
+    {
+      "durationSeconds": 60,
+      "seed": 31415,
+      "levels": {
+        "crushPower": 0,
+        "shardPower": 0,
+        "shardRange": 0,
+        "chainAmplifier": 0,
+        "extraTime": 0,
+        "crushSpeed": 0,
+        "impactPulse": 0,
+        "ricochetPlus": 0,
+        "shardBloom": 0,
+        "echoCatalyst": 0,
+        "photonBoost": 0
+      },
+      "totalDestroyed": 704,
+      "directKills": 197,
+      "cascadeKills": 507,
+      "bestChain": 27,
+      "photonsEarned": 13231,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 1.0000000000000013,
+        "star": 2.5510477203222726
+      },
+      "firstCascadeTime": 0.15612847958824486,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": false,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 219.55782560255196,
+      "variantCounts": {
+        "deep": 228,
+        "matte": 245,
+        "bright": 263
+      },
+      "patternCounts": {
+        "bridge": 104,
+        "scattered": 361,
+        "burst_cluster": 158,
+        "arc": 101
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 0,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 27,
+      "simulationStepP95ms": 0.15440000000000964,
+      "simulationStepMaxMs": 0.35559999999998126
+    },
+    {
+      "durationSeconds": 60,
+      "seed": 31415,
+      "levels": {
+        "crushPower": 0,
+        "shardPower": 0,
+        "shardRange": 0,
+        "chainAmplifier": 0,
+        "extraTime": 0,
+        "crushSpeed": 0,
+        "impactPulse": 0,
+        "ricochetPlus": 0,
+        "shardBloom": 0,
+        "echoCatalyst": 0,
+        "photonBoost": 0
+      },
+      "totalDestroyed": 1011,
+      "directKills": 185,
+      "cascadeKills": 826,
+      "bestChain": 43,
+      "photonsEarned": 19348,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 1.0000000000000013,
+        "star": 2.799999999999995
+      },
+      "firstCascadeTime": 0.15612847958824486,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": false,
+      "avgCascadeDurationMs": 497.98151202346287,
+      "variantCounts": {
+        "deep": 315,
+        "matte": 343,
+        "bright": 378
+      },
+      "patternCounts": {
+        "bridge": 120,
+        "scattered": 516,
+        "burst_cluster": 169,
+        "arc": 219
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 9,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 35,
+      "simulationStepP95ms": 0.161200000000008,
+      "simulationStepMaxMs": 0.389699999999948
+    }
+  ],
+  "repetitions": [
+    {
+      "durationSeconds": 60,
+      "seed": 1,
+      "levels": {
+        "crushPower": 0,
+        "shardPower": 0,
+        "shardRange": 0,
+        "chainAmplifier": 0,
+        "extraTime": 0,
+        "crushSpeed": 0,
+        "impactPulse": 0,
+        "ricochetPlus": 0,
+        "shardBloom": 0,
+        "echoCatalyst": 0,
+        "photonBoost": 0
+      },
+      "totalDestroyed": 954,
+      "directKills": 189,
+      "cascadeKills": 765,
+      "bestChain": 45,
+      "photonsEarned": 18255,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 0.6000000000000002,
+        "star": 1.9999999999999978
+      },
+      "firstCascadeTime": 0.15550926512639424,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 453.8215883103754,
+      "variantCounts": {
+        "matte": 325,
+        "bright": 337,
+        "deep": 323
+      },
+      "patternCounts": {
+        "scattered": 496,
+        "bridge": 133,
+        "arc": 172,
+        "burst_cluster": 172
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 3,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 27,
+      "simulationStepP95ms": 0.15800000000001546,
+      "simulationStepMaxMs": 0.37620000000003984
+    },
+    {
+      "durationSeconds": 60,
+      "seed": 2,
+      "levels": {
+        "crushPower": 5,
+        "shardPower": 5,
+        "shardRange": 3,
+        "chainAmplifier": 3,
+        "extraTime": 6,
+        "crushSpeed": 3,
+        "impactPulse": 1,
+        "ricochetPlus": 2,
+        "shardBloom": 2,
+        "echoCatalyst": 2,
+        "photonBoost": 3
+      },
+      "totalDestroyed": 1784,
+      "directKills": 385,
+      "cascadeKills": 1399,
+      "bestChain": 29,
+      "photonsEarned": 42206,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 0.47054557192109825,
+        "star": 1.0640481518799563
+      },
+      "firstCascadeTime": 0.15180479440571998,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 569.5675134657164,
+      "variantCounts": {
+        "matte": 608,
+        "deep": 548,
+        "bright": 640
+      },
+      "patternCounts": {
+        "burst_cluster": 313,
+        "scattered": 1004,
+        "bridge": 244,
+        "arc": 223
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 4,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 69,
+      "simulationStepP95ms": 0.15380000000004657,
+      "simulationStepMaxMs": 0.7737000000000762
+    },
+    {
+      "durationSeconds": 60,
+      "seed": 3,
+      "levels": {
+        "crushPower": 0,
+        "shardPower": 0,
+        "shardRange": 0,
+        "chainAmplifier": 0,
+        "extraTime": 0,
+        "crushSpeed": 0,
+        "impactPulse": 0,
+        "ricochetPlus": 0,
+        "shardBloom": 0,
+        "echoCatalyst": 0,
+        "photonBoost": 0
+      },
+      "totalDestroyed": 869,
+      "directKills": 189,
+      "cascadeKills": 680,
+      "bestChain": 25,
+      "photonsEarned": 16807,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 1.4,
+        "star": 2.754181375459086
+      },
+      "firstCascadeTime": 0.15627529397606837,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 447.4250326393958,
+      "variantCounts": {
+        "deep": 304,
+        "bright": 302,
+        "matte": 294
+      },
+      "patternCounts": {
+        "bridge": 126,
+        "scattered": 442,
+        "arc": 155,
+        "burst_cluster": 165
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 7,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 28,
+      "simulationStepP95ms": 0.17300000000000182,
+      "simulationStepMaxMs": 0.5195000000001073
+    },
+    {
+      "durationSeconds": 60,
+      "seed": 4,
+      "levels": {
+        "crushPower": 5,
+        "shardPower": 5,
+        "shardRange": 3,
+        "chainAmplifier": 3,
+        "extraTime": 6,
+        "crushSpeed": 3,
+        "impactPulse": 1,
+        "ricochetPlus": 2,
+        "shardBloom": 2,
+        "echoCatalyst": 2,
+        "photonBoost": 3
+      },
+      "totalDestroyed": 1787,
+      "directKills": 380,
+      "cascadeKills": 1407,
+      "bestChain": 31,
+      "photonsEarned": 43462,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 0.38716033522733656,
+        "star": 1.0018975304671864
+      },
+      "firstCascadeTime": 0.1352108488914235,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 557.6413371731088,
+      "variantCounts": {
+        "bright": 589,
+        "matte": 636,
+        "deep": 571
+      },
+      "patternCounts": {
+        "arc": 246,
+        "scattered": 1078,
+        "bridge": 161,
+        "burst_cluster": 299
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 4,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 73,
+      "simulationStepP95ms": 0.15699999999992542,
+      "simulationStepMaxMs": 0.9239000000000033
+    },
+    {
+      "durationSeconds": 60,
+      "seed": 5,
+      "levels": {
+        "crushPower": 0,
+        "shardPower": 0,
+        "shardRange": 0,
+        "chainAmplifier": 0,
+        "extraTime": 0,
+        "crushSpeed": 0,
+        "impactPulse": 0,
+        "ricochetPlus": 0,
+        "shardBloom": 0,
+        "echoCatalyst": 0,
+        "photonBoost": 0
+      },
+      "totalDestroyed": 900,
+      "directKills": 199,
+      "cascadeKills": 701,
+      "bestChain": 31,
+      "photonsEarned": 17079,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 1.2000000000000006,
+        "star": 3.6234491826984025
+      },
+      "firstCascadeTime": 0.15475151469664905,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 445.1851304781942,
+      "variantCounts": {
+        "matte": 289,
+        "deep": 317,
+        "bright": 318
+      },
+      "patternCounts": {
+        "arc": 201,
+        "scattered": 449,
+        "burst_cluster": 168,
+        "bridge": 94
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 7,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 30,
+      "simulationStepP95ms": 0.16719999999986612,
+      "simulationStepMaxMs": 0.4089000000001306
+    },
+    {
+      "durationSeconds": 60,
+      "seed": 6,
+      "levels": {
+        "crushPower": 5,
+        "shardPower": 5,
+        "shardRange": 3,
+        "chainAmplifier": 3,
+        "extraTime": 6,
+        "crushSpeed": 3,
+        "impactPulse": 1,
+        "ricochetPlus": 2,
+        "shardBloom": 2,
+        "echoCatalyst": 2,
+        "photonBoost": 3
+      },
+      "totalDestroyed": 1782,
+      "directKills": 392,
+      "cascadeKills": 1390,
+      "bestChain": 37,
+      "photonsEarned": 44137,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 0.4833333333333333,
+        "star": 1.2782889601467173
+      },
+      "firstCascadeTime": 0.15133630673268036,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 558.5120249258915,
+      "variantCounts": {
+        "bright": 601,
+        "deep": 593,
+        "matte": 595
+      },
+      "patternCounts": {
+        "burst_cluster": 268,
+        "arc": 244,
+        "scattered": 1066,
+        "bridge": 199
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 8,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 73,
+      "simulationStepP95ms": 0.1589000000001306,
+      "simulationStepMaxMs": 0.4593999999999596
+    },
+    {
+      "durationSeconds": 60,
+      "seed": 7,
+      "levels": {
+        "crushPower": 0,
+        "shardPower": 0,
+        "shardRange": 0,
+        "chainAmplifier": 0,
+        "extraTime": 0,
+        "crushSpeed": 0,
+        "impactPulse": 0,
+        "ricochetPlus": 0,
+        "shardBloom": 0,
+        "echoCatalyst": 0,
+        "photonBoost": 0
+      },
+      "totalDestroyed": 818,
+      "directKills": 191,
+      "cascadeKills": 627,
+      "bestChain": 43,
+      "photonsEarned": 14524,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 1.2000000000000006,
+        "star": 4.39999999999999
+      },
+      "firstCascadeTime": 0.15005334995154848,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 428.80198653433143,
+      "variantCounts": {
+        "matte": 271,
+        "bright": 287,
+        "deep": 290
+      },
+      "patternCounts": {
+        "scattered": 421,
+        "arc": 121,
+        "bridge": 109,
+        "burst_cluster": 185
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 13,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 35,
+      "simulationStepP95ms": 0.1633999999999105,
+      "simulationStepMaxMs": 0.5730000000000928
+    },
+    {
+      "durationSeconds": 60,
+      "seed": 8,
+      "levels": {
+        "crushPower": 5,
+        "shardPower": 5,
+        "shardRange": 3,
+        "chainAmplifier": 3,
+        "extraTime": 6,
+        "crushSpeed": 3,
+        "impactPulse": 1,
+        "ricochetPlus": 2,
+        "shardBloom": 2,
+        "echoCatalyst": 2,
+        "photonBoost": 3
+      },
+      "totalDestroyed": 1774,
+      "directKills": 380,
+      "cascadeKills": 1394,
+      "bestChain": 23,
+      "photonsEarned": 42988,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 0.35,
+        "star": 1.1666666666666674
+      },
+      "firstCascadeTime": 0.15148520181221609,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 540.0267884345398,
+      "variantCounts": {
+        "matte": 597,
+        "deep": 605,
+        "bright": 583
+      },
+      "patternCounts": {
+        "scattered": 1048,
+        "arc": 231,
+        "bridge": 210,
+        "burst_cluster": 284
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 1,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 69,
+      "simulationStepP95ms": 0.15930000000025757,
+      "simulationStepMaxMs": 0.43029999999998836
+    },
+    {
+      "durationSeconds": 60,
+      "seed": 9,
+      "levels": {
+        "crushPower": 0,
+        "shardPower": 0,
+        "shardRange": 0,
+        "chainAmplifier": 0,
+        "extraTime": 0,
+        "crushSpeed": 0,
+        "impactPulse": 0,
+        "ricochetPlus": 0,
+        "shardBloom": 0,
+        "echoCatalyst": 0,
+        "photonBoost": 0
+      },
+      "totalDestroyed": 876,
+      "directKills": 186,
+      "cascadeKills": 690,
+      "bestChain": 36,
+      "photonsEarned": 16813,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 1.7999999999999985,
+        "star": 5.599999999999985
+      },
+      "firstCascadeTime": 0.15186169515763034,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 471.1785121704523,
+      "variantCounts": {
+        "matte": 288,
+        "bright": 301,
+        "deep": 316
+      },
+      "patternCounts": {
+        "scattered": 475,
+        "bridge": 136,
+        "burst_cluster": 105,
+        "arc": 177
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 3,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 31,
+      "simulationStepP95ms": 0.1651000000001659,
+      "simulationStepMaxMs": 0.5167999999998756
+    },
+    {
+      "durationSeconds": 60,
+      "seed": 10,
+      "levels": {
+        "crushPower": 5,
+        "shardPower": 5,
+        "shardRange": 3,
+        "chainAmplifier": 3,
+        "extraTime": 6,
+        "crushSpeed": 3,
+        "impactPulse": 1,
+        "ricochetPlus": 2,
+        "shardBloom": 2,
+        "echoCatalyst": 2,
+        "photonBoost": 3
+      },
+      "totalDestroyed": 1792,
+      "directKills": 395,
+      "cascadeKills": 1397,
+      "bestChain": 25,
+      "photonsEarned": 42406,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 0.5261748948456799,
+        "star": 1.1262513364263271
+      },
+      "firstCascadeTime": 0.15194273009364084,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 555.496964579877,
+      "variantCounts": {
+        "bright": 598,
+        "matte": 595,
+        "deep": 603
+      },
+      "patternCounts": {
+        "scattered": 1046,
+        "burst_cluster": 304,
+        "arc": 286,
+        "bridge": 148
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 6,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 69,
+      "simulationStepP95ms": 0.1430000000000291,
+      "simulationStepMaxMs": 0.3989999999998872
+    },
+    {
+      "durationSeconds": 60,
+      "seed": 11,
+      "levels": {
+        "crushPower": 0,
+        "shardPower": 0,
+        "shardRange": 0,
+        "chainAmplifier": 0,
+        "extraTime": 0,
+        "crushSpeed": 0,
+        "impactPulse": 0,
+        "ricochetPlus": 0,
+        "shardBloom": 0,
+        "echoCatalyst": 0,
+        "photonBoost": 0
+      },
+      "totalDestroyed": 838,
+      "directKills": 191,
+      "cascadeKills": 647,
+      "bestChain": 50,
+      "photonsEarned": 15584,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 0.8000000000000008,
+        "star": 2.3999999999999964
+      },
+      "firstCascadeTime": 0.1528643129526507,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 454.8882766562875,
+      "variantCounts": {
+        "matte": 279,
+        "deep": 288,
+        "bright": 296
+      },
+      "patternCounts": {
+        "arc": 146,
+        "scattered": 435,
+        "burst_cluster": 192,
+        "bridge": 78
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 4,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 31,
+      "simulationStepP95ms": 0.165599999999813,
+      "simulationStepMaxMs": 0.46880000000010114
+    },
+    {
+      "durationSeconds": 60,
+      "seed": 12,
+      "levels": {
+        "crushPower": 5,
+        "shardPower": 5,
+        "shardRange": 3,
+        "chainAmplifier": 3,
+        "extraTime": 6,
+        "crushSpeed": 3,
+        "impactPulse": 1,
+        "ricochetPlus": 2,
+        "shardBloom": 2,
+        "echoCatalyst": 2,
+        "photonBoost": 3
+      },
+      "totalDestroyed": 1780,
+      "directKills": 388,
+      "cascadeKills": 1392,
+      "bestChain": 23,
+      "photonsEarned": 41654,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 0.4833333333333333,
+        "star": 1.1542075208821072
+      },
+      "firstCascadeTime": 0.1399249422785603,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 580.3216681016302,
+      "variantCounts": {
+        "matte": 601,
+        "deep": 603,
+        "bright": 584
+      },
+      "patternCounts": {
+        "scattered": 1080,
+        "arc": 276,
+        "bridge": 173,
+        "burst_cluster": 247
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 5,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 75,
+      "simulationStepP95ms": 0.15180000000009386,
+      "simulationStepMaxMs": 0.3346999999998843
+    }
+  ]
+}

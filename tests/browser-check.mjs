@@ -11,7 +11,7 @@ page.on('pageerror', error => errors.push(error.message)); page.on('console', ms
 page.on('requestfailed', request => errors.push({ url: request.url(), failure: request.failure() }));
 mkdirSync('artifacts', { recursive: true });
 const snapshot = () => page.evaluate(() => window.shardStorm.snapshot());
-async function screenshot(name) { await page.screenshot({ path: `artifacts/v07-${name}.png`, fullPage: true }); }
+async function screenshot(name) { await page.screenshot({ path: `artifacts/v08-regression-${name}.png`, fullPage: true }); }
 async function selectSkill(key) { await page.locator(`[data-skill="${key}"]`).click(); return page.locator('#skill-purchase'); }
 async function purchaseSkill(key) { const buy = await selectSkill(key); assert.equal(await buy.isEnabled(), true, `${key} must be purchasable`); await buy.click(); }
 async function at(x, y) { const b = await page.locator('#game').boundingBox(); return { x: b.x + x * b.width / 960, y: b.y + y * b.height / 540 }; }
@@ -40,11 +40,11 @@ async function play(name) {
   const bank = s.bank; await page.waitForTimeout(500); assert.equal((await snapshot()).bank, bank);
   await screenshot(`${name}-result`);
   const mean = values => values.reduce((a, b) => a + b, 0) / values.length;
-  const report = { name, ...s.record, ...guided, wallFPSMean: mean(fps.map(f => f.fps)), first10SecondsFPS: mean(fps.filter(f => f.elapsed < 10).map(f => f.fps)), last10SecondsFPS: mean(fps.filter(f => f.elapsed > 50).map(f => f.fps)), shapeTypesSeen: [...seen], bank };
-  runs.push(report); console.log(JSON.stringify(report)); return s;
+  const report = { name, ...s.record, inputPolicy: 'auto:browser-density-hp-pointer', ...guided, wallFPSMean: mean(fps.map(f => f.fps)), first10SecondsFPS: mean(fps.filter(f => f.elapsed < 10).map(f => f.fps)), last10SecondsFPS: mean(fps.filter(f => f.elapsed > 50).map(f => f.fps)), shapeTypesSeen: [...seen], bank };
+  runs.push(report); console.log(JSON.stringify({ name, kills: report.totalDestroyed, photons: report.photonsEarned, bestChain: report.bestChain, fps: report.wallFPSMean, caps: report.safetyCapsHit })); return s;
 }
 try {
-  await page.goto('http://127.0.0.1:4173');
+  await page.goto(process.env.QA_BASE_URL || 'http://127.0.0.1:4173');
   const legacy = { saveVersion: 1, bank: 321, levels: { crushPower: 2, shardPower: 0, shardRange: 1, chainAmplifier: 1, extraTime: 2 }, bestStats: { totalDestroyed: 120, bestChain: 14, photonsEarned: 900 }, lastRuns: [{ photonsEarned: 900, seed: 7 }], options: { inheritance: false, ricochet: true, damageVFX: true, sound: false } };
   await page.evaluate(data => localStorage.setItem('shard-storm-v1', JSON.stringify(data)), legacy); await page.reload();
   let migrated = await snapshot(); assert.equal(migrated.saveVersion, 2); assert.equal(migrated.bank, 321); assert.equal(migrated.levels.shardRange, 1); assert.equal(migrated.levels.impactPulse, 0); assert.equal(migrated.options.inheritance, false); assert.equal(migrated.derivedStats.shardRange, 230);
@@ -90,9 +90,9 @@ try {
   else checks.push('hidden tab not reproducible in headless Chromium; engine pause verified separately');
   await other.close(); await page.bringToFront();
   assert.deepEqual(errors, []); checks.push('zero console / page errors');
-  writeFileSync('artifacts/browser-results.json', JSON.stringify({ browser: await browser.version(), checks, runs, errors, finalLevels: exact.levels }, null, 2));
+  writeFileSync('artifacts/v08-browser-results.json', JSON.stringify({ browser: await browser.version(), checks, runs, errors, finalLevels: exact.levels }, null, 2));
   console.log('BROWSER CHECKS PASSED', checks);
 } catch (error) {
-  writeFileSync('artifacts/browser-results.json', JSON.stringify({ browser: await browser.version(), checks, runs, errors, failure: error.message }, null, 2));
+  writeFileSync('artifacts/v08-browser-results.json', JSON.stringify({ browser: await browser.version(), checks, runs, errors, failure: error.message }, null, 2));
   throw error;
 } finally { await browser.close(); }

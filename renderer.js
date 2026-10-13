@@ -32,8 +32,15 @@ export function draw(ctx, game, fps = 60) {
       ctx.restore();
     }
     if (s.enhanced) { polygon(ctx, s, scale * .79, game.options.visualVariety); ctx.lineWidth = 1; ctx.stroke(); ctx.fillStyle = '#e9f9ff'; ctx.fillRect(-3, -4, 6, 8); }
+    if (s.modifier === 'charged' && game.options.modifierVisuals) {
+      ctx.save(); ctx.strokeStyle = '#e4fff4'; ctx.lineWidth = 1.2; ctx.setLineDash([3, 4]);
+      const pulse = 1 + .06 * Math.sin(game.elapsed * Math.PI * 4);
+      for (const r of [s.radius + 3, s.radius + 7]) { ctx.beginPath(); ctx.arc(0, 0, r * pulse, 0, Math.PI * 2); ctx.stroke(); }
+      ctx.setLineDash([]); ctx.shadowColor = cfg.color; ctx.shadowBlur = 8; ctx.beginPath();
+      ctx.moveTo(0, -5); ctx.lineTo(5, 0); ctx.lineTo(0, 5); ctx.lineTo(-5, 0); ctx.closePath(); ctx.stroke(); ctx.restore();
+    }
     if (s.hp < s.maxHP) {
-      const stage = Math.min(3, Math.ceil((1 - s.hp / s.maxHP) * 3)); ctx.save(); polygon(ctx, s, scale, game.options.visualVariety); ctx.clip(); ctx.strokeStyle = '#eefcff'; ctx.globalAlpha = .8; ctx.lineWidth = .9;
+      const stage = Math.min(3, Math.ceil((1 - s.hp / s.maxHP) * 3)); ctx.save(); polygon(ctx, s, scale, game.options.visualVariety); ctx.clip(); ctx.strokeStyle = '#eefcff'; ctx.globalAlpha = .8; ctx.lineWidth = s.modifier === 'cracked' && game.options.modifierVisuals ? 2 : .9;
       for (const crack of s.appearance.cracks.slice(0, stage)) { const a = crack.angle + s.angle, r = s.appearance.baseRadius * crack.length; ctx.beginPath(); ctx.moveTo(Math.cos(a) * r, Math.sin(a) * r); ctx.lineTo(Math.cos(a + crack.bend) * r * .45, Math.sin(a + crack.bend) * r * .45); ctx.lineTo(-Math.sin(a) * 2, Math.cos(a) * 2); ctx.stroke(); } ctx.restore();
     }
     // Small HP ticks make multi-hit breakpoints easy to read.
@@ -63,4 +70,20 @@ export function draw(ctx, game, fps = 60) {
     const t = C.tutorial; ctx.strokeStyle = '#42efcf88'; ctx.setLineDash([3, 5]); ctx.beginPath(); ctx.arc(t.x, t.y, 37 + Math.sin(game.elapsed * 5) * 3, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = '#b8e9df'; ctx.font = '11px Arial'; ctx.textAlign = 'center'; ctx.fillText('여기서 첫 연쇄를 시작하세요 ↓', t.x, t.y - 50); ctx.textAlign = 'left';
   }
   ctx.restore();
+  const combo = game.options.comboFeedback && game.state === 'PLAYING' && game.combo.visible(game.elapsed);
+  if (combo) {
+    const t = Math.max(0, (game.elapsed - combo.at) / combo.life);
+    ctx.save(); ctx.globalAlpha = Math.min(1, (1 - t) * 4); ctx.strokeStyle = combo.color; ctx.fillStyle = combo.color;
+    // One compact banner above targets; the accent is cosmetic and bounded.
+    ctx.fillStyle = '#0c1419e8'; ctx.fillRect(285, 80, 390, 39);
+    ctx.fillStyle = combo.color; ctx.font = `bold ${combo.threshold === 20 ? 22 : 18}px Arial`; ctx.textAlign = 'center';
+    ctx.fillText(`${combo.label} ×${combo.kills}`, C.width / 2, 107);
+    if (combo.accent) {
+    ctx.lineWidth = combo.threshold === 5 ? 1 : 2;
+    ctx.beginPath(); ctx.arc(combo.x, combo.y, 24 + 46 * t, 0, Math.PI * 2); ctx.stroke();
+    for (let i = 0; i < (combo.threshold === 5 ? 6 : 10); i++) { const a = i * Math.PI / 5, r = 30 + 35 * t; ctx.beginPath(); ctx.moveTo(combo.x + Math.cos(a) * r, combo.y + Math.sin(a) * r); ctx.lineTo(combo.x + Math.cos(a) * (r + 6), combo.y + Math.sin(a) * (r + 6)); ctx.stroke(); }
+    if (combo.threshold >= 10 && t < .45) { ctx.globalAlpha *= .35; ctx.strokeRect(C.arena.left, C.arena.top, C.arena.right - C.arena.left, C.arena.bottom - C.arena.top); }
+    }
+    ctx.restore();
+  }
 }

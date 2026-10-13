@@ -1,0 +1,509 @@
+{
+  "phase": 1,
+  "inputPolicy": "auto / real browser pointer",
+  "fixtures": [
+    "artifacts/v08-combo-5.png",
+    "artifacts/v08-combo-10.png",
+    "artifacts/v08-combo-20.png"
+  ],
+  "liveComboCaptured": true,
+  "live": {
+    "state": "PLAYING",
+    "paused": false,
+    "remaining": 45.63333333333304,
+    "elapsed": 14.36666666666696,
+    "fps": 131.4373948329549,
+    "record": {
+      "comboMilestones": {
+        "5": 6,
+        "10": 3,
+        "20": 0
+      },
+      "comboEvents": [
+        {
+          "chainId": 29,
+          "threshold": 5,
+          "kills": 5,
+          "at": 6.565985360526833,
+          "x": 312.9828505717884,
+          "y": 208.38383691906492
+        },
+        {
+          "chainId": 38,
+          "threshold": 5,
+          "kills": 5,
+          "at": 8.606158127951126,
+          "x": 670.5543702193536,
+          "y": 382.4606876373291
+        },
+        {
+          "chainId": 45,
+          "threshold": 5,
+          "kills": 5,
+          "at": 9.786261911335432,
+          "x": 465.4458578757431,
+          "y": 229.84145354517443
+        },
+        {
+          "chainId": 45,
+          "threshold": 10,
+          "kills": 10,
+          "at": 10.028758973225537,
+          "x": 239.0512316161424,
+          "y": 203.2155932277535
+        },
+        {
+          "chainId": 60,
+          "threshold": 5,
+          "kills": 5,
+          "at": 13.017974029494459,
+          "x": 659.8588059570314,
+          "y": 181.71263071530134
+        },
+        {
+          "chainId": 60,
+          "threshold": 10,
+          "kills": 10,
+          "at": 13.222716995106746,
+          "x": 584.2581976987422,
+          "y": 305.8185385284014
+        },
+        {
+          "chainId": 63,
+          "threshold": 5,
+          "kills": 5,
+          "at": 13.66462892205499,
+          "x": 157.40173738527105,
+          "y": 228.49637542975037
+        },
+        {
+          "chainId": 63,
+          "threshold": 10,
+          "kills": 10,
+          "at": 13.735066098489183,
+          "x": 241.44851192188395,
+          "y": 139.6679306273135
+        },
+        {
+          "chainId": 65,
+          "threshold": 5,
+          "kills": 5,
+          "at": 14.262427985569538,
+          "x": 312.727735548043,
+          "y": 479.4452430425812
+        }
+      ],
+      "timeToFirstChain5": 6.565985360526833,
+      "maxChain": 15,
+      "comboFeedbackEnabled": true,
+      "durationSeconds": 60,
+      "seed": 31415,
+      "levels": {
+        "crushPower": 0,
+        "shardPower": 0,
+        "shardRange": 0,
+        "chainAmplifier": 0,
+        "extraTime": 0,
+        "crushSpeed": 0,
+        "impactPulse": 0,
+        "ricochetPlus": 0,
+        "shardBloom": 0,
+        "echoCatalyst": 0,
+        "photonBoost": 0
+      },
+      "totalDestroyed": 136,
+      "directKills": 46,
+      "cascadeKills": 90,
+      "bestChain": 15,
+      "photonsEarned": 2097,
+      "highestTier": 4,
+      "unlockTimes": {
+        "pentagon": 1.2333333333333338,
+        "star": 3.5833333333333255
+      },
+      "firstCascadeTime": 0.15612847958824486,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 301.10215587175446,
+      "variantCounts": {
+        "deep": 48,
+        "matte": 47,
+        "bright": 64
+      },
+      "patternCounts": {
+        "bridge": 20,
+        "scattered": 65,
+        "burst_cluster": 48,
+        "arc": 14
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 0,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 19
+    },
+    "combo": null,
+    "audioVoices": 0,
+    "shapes": [
+      {
+        "id": 43,
+        "type": "star",
+        "x": 879.2599884187803,
+        "y": 443.1769522409886,
+        "hp": 4,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 16.288180097937584,
+        "material": "matte",
+        "pattern": "none"
+      },
+      {
+        "id": 50,
+        "type": "square",
+        "x": 871.4193328768015,
+        "y": 130.2866910933517,
+        "hp": 2,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 16,
+        "material": "deep",
+        "pattern": "split-line"
+      },
+      {
+        "id": 95,
+        "type": "square",
+        "x": 642.3449692688882,
+        "y": 448.45288194250315,
+        "hp": 4,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 16,
+        "material": "bright",
+        "pattern": "inset"
+      },
+      {
+        "id": 106,
+        "type": "pentagon",
+        "x": 889.0910661545194,
+        "y": 326.25946479940035,
+        "hp": 3,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 19.423360086977482,
+        "material": "bright",
+        "pattern": "none"
+      },
+      {
+        "id": 112,
+        "type": "triangle",
+        "x": 838.1101091704433,
+        "y": 352.72036684757654,
+        "hp": 3,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 18.83295657671988,
+        "material": "deep",
+        "pattern": "split-line"
+      },
+      {
+        "id": 127,
+        "type": "square",
+        "x": 74.00094107165933,
+        "y": 363.91375622106716,
+        "hp": 1,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 16,
+        "material": "bright",
+        "pattern": "none"
+      },
+      {
+        "id": 140,
+        "type": "triangle",
+        "x": 709.3292401358485,
+        "y": 330.787088831421,
+        "hp": 3,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 16,
+        "material": "deep",
+        "pattern": "split-line"
+      },
+      {
+        "id": 141,
+        "type": "square",
+        "x": 743.0317450277507,
+        "y": 403.1545711052604,
+        "hp": 4,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 18.805346198379993,
+        "material": "deep",
+        "pattern": "none"
+      },
+      {
+        "id": 143,
+        "type": "star",
+        "x": 107.28490735217929,
+        "y": 127.07807778380811,
+        "hp": 7,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 16.665495444089174,
+        "material": "deep",
+        "pattern": "inset"
+      },
+      {
+        "id": 145,
+        "type": "triangle",
+        "x": 294.75324102278677,
+        "y": 157.47852939842696,
+        "hp": 3,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 18.388928677886724,
+        "material": "matte",
+        "pattern": "split-line"
+      },
+      {
+        "id": 146,
+        "type": "square",
+        "x": 588.740543511797,
+        "y": 434.04679002041144,
+        "hp": 2,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 19.151395665481687,
+        "material": "matte",
+        "pattern": "inset"
+      },
+      {
+        "id": 147,
+        "type": "pentagon",
+        "x": 301.1897302782163,
+        "y": 260.2724485397339,
+        "hp": 5,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 16.684985572472215,
+        "material": "bright",
+        "pattern": "split-line"
+      },
+      {
+        "id": 148,
+        "type": "pentagon",
+        "x": 595.1590034717076,
+        "y": 363.138741415891,
+        "hp": 5,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 19.8839850127697,
+        "material": "bright",
+        "pattern": "inset"
+      },
+      {
+        "id": 150,
+        "type": "pentagon",
+        "x": 455.14034388165373,
+        "y": 119.73759414259273,
+        "hp": 5,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 16,
+        "material": "deep",
+        "pattern": "center-core"
+      },
+      {
+        "id": 151,
+        "type": "pentagon",
+        "x": 565.9454777103375,
+        "y": 193.4518809377043,
+        "hp": 5,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 19.755675265565515,
+        "material": "bright",
+        "pattern": "center-core"
+      },
+      {
+        "id": 152,
+        "type": "pentagon",
+        "x": 460.14027488346085,
+        "y": 206.35508237561845,
+        "hp": 2,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 20.522072713822126,
+        "material": "bright",
+        "pattern": "split-line"
+      },
+      {
+        "id": 153,
+        "type": "triangle",
+        "x": 604.2060373541095,
+        "y": 104.34992002793251,
+        "hp": 5,
+        "grace": 0,
+        "enhanced": true,
+        "radius": 16,
+        "material": "matte",
+        "pattern": "center-core"
+      },
+      {
+        "id": 154,
+        "type": "square",
+        "x": 652.1162731418742,
+        "y": 151.97998557586118,
+        "hp": 4,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 20.499041821807623,
+        "material": "bright",
+        "pattern": "center-core"
+      },
+      {
+        "id": 155,
+        "type": "star",
+        "x": 545.6831501673,
+        "y": 265.03096849264773,
+        "hp": 6,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 18.159579506143928,
+        "material": "bright",
+        "pattern": "center-core"
+      },
+      {
+        "id": 156,
+        "type": "star",
+        "x": 604.6189615123504,
+        "y": 286.19169631121105,
+        "hp": 9,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 18.223335076123476,
+        "material": "bright",
+        "pattern": "none"
+      },
+      {
+        "id": 157,
+        "type": "square",
+        "x": 65.96919925138354,
+        "y": 184.48166121309623,
+        "hp": 4,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 17.460275353863835,
+        "material": "matte",
+        "pattern": "center-core"
+      },
+      {
+        "id": 158,
+        "type": "pentagon",
+        "x": 525.1690303033735,
+        "y": 456.78487793060657,
+        "hp": 5,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 16.606443472206593,
+        "material": "deep",
+        "pattern": "split-line"
+      },
+      {
+        "id": 159,
+        "type": "star",
+        "x": 652.6718960281166,
+        "y": 389.38915370253045,
+        "hp": 9,
+        "grace": 0,
+        "enhanced": false,
+        "radius": 17.51374171487987,
+        "material": "bright",
+        "pattern": "split-line"
+      }
+    ],
+    "waves": [
+      {
+        "radius": 145,
+        "maxRadius": 145,
+        "source": "star"
+      },
+      {
+        "radius": 90,
+        "maxRadius": 90,
+        "source": "square"
+      },
+      {
+        "radius": 91.93558804120002,
+        "maxRadius": 145,
+        "source": "star"
+      },
+      {
+        "radius": 31.29208406016687,
+        "maxRadius": 145,
+        "source": "star"
+      },
+      {
+        "radius": 20.839232344778367,
+        "maxRadius": 145,
+        "source": "star"
+      },
+      {
+        "radius": 7.839077570999464,
+        "maxRadius": 90,
+        "source": "square"
+      }
+    ],
+    "scheduled": 18,
+    "clickRings": 0,
+    "bank": 0,
+    "levels": {
+      "crushPower": 0,
+      "shardPower": 0,
+      "shardRange": 0,
+      "chainAmplifier": 0,
+      "extraTime": 0,
+      "crushSpeed": 0,
+      "impactPulse": 0,
+      "ricochetPlus": 0,
+      "shardBloom": 0,
+      "echoCatalyst": 0,
+      "photonBoost": 0
+    },
+    "derivedStats": {
+      "directDamage": 3,
+      "attackInterval": 0.2,
+      "duration": 60,
+      "triangleDamage": 3,
+      "pentagonDamage": 3,
+      "shardRange": 180,
+      "bounces": 1,
+      "triangleCount": 3,
+      "pentagonCount": 2,
+      "squareDamage": 2,
+      "starDamage": 5,
+      "squareRadius": 90,
+      "starRadius": 145,
+      "inheritanceDamage": 1,
+      "impactEnabled": false,
+      "impactRadius": 42,
+      "impactDamage": 1,
+      "bonusMultiplier": 1
+    },
+    "options": {
+      "inheritance": true,
+      "ricochet": true,
+      "sequentialPropagation": true,
+      "visualVariety": true,
+      "damageVFX": true,
+      "sound": false,
+      "comboFeedback": true
+    },
+    "saveVersion": 2,
+    "settled": false
+  },
+  "errors": [],
+  "passed": true
+}

@@ -53,7 +53,7 @@ export function describeSkill(key, levels) {
   return descriptions[key] || '';
 }
 // The same definitions drive every node, edge, prerequisite label and purchase.
-export function renderSkillTree(container, info, save, selected, onSelect, onBuy) {
+export function renderSkillTree(container, info, save, selected, onSelect, onBuy, stateFor = skillState) {
   const width = 896, rowHeight = 86, nodeWidth = 174, nodeHeight = 62;
   const position = node => ({ x: 112 + node.position.col * 224, y: 126 + (node.position.row - 1) * rowHeight });
   const height = Math.max(...skillDefinitions.map(n => position(n).y)) + 58;
@@ -77,14 +77,14 @@ export function renderSkillTree(container, info, save, selected, onSelect, onBuy
   const root = document.createElement('div'); root.className = 'skill-root'; root.textContent = '◈ CORE / ROOT'; graph.append(root);
   ['DESTROY', 'CASCADE', 'REACTION', 'UTILITY'].forEach((text, col) => { const label = document.createElement('div'); label.className = `branch-label branch-${col}`; label.style.left = `${112 + col * 224}px`; label.textContent = text; graph.append(label); });
   for (const node of skillDefinitions) {
-    const state = skillState(node.id, save.levels, save.bank), p = position(node), button = document.createElement('button');
+    const state = stateFor(node.id, save.levels, save.bank), p = position(node), button = document.createElement('button');
     button.type = 'button'; button.className = `skill-node ${state.state} ${node.id === selected ? 'selected' : ''}`; button.dataset.skill = node.id; button.dataset.state = state.state; button.setAttribute('aria-pressed', String(node.id === selected));
     button.style.left = `${p.x - nodeWidth / 2}px`; button.style.top = `${p.y - nodeHeight / 2}px`;
     button.innerHTML = `<strong>${state.state === 'locked' ? '▣ ' : ''}${node.label}</strong><span>Lv.${state.level} / ${node.maxLevel}</span><small>${state.max ? 'MAX' : state.state === 'locked' ? 'LOCKED · 선행조건' : state.state === 'coming' ? 'COMING LATER' : `${state.cost} ◈`}</small>`;
     button.onclick = () => onSelect(node.id); graph.append(button);
   }
   const scroll = { left: container.scrollLeft, top: container.scrollTop }; container.replaceChildren(graph); container.scrollLeft = scroll.left; container.scrollTop = scroll.top;
-  const node = nodes.get(selected), state = skillState(selected, save.levels, save.bank);
+  const node = nodes.get(selected), state = stateFor(selected, save.levels, save.bank);
   const prerequisites = node.prerequisites.map(p => `${nodes.get(p.id).label} Lv.${p.minLevel}${(save.levels[p.id] || 0) >= p.minLevel ? ' ✓' : ''}`).join(' · ') || '없음';
   const next = state.max ? '최대 레벨' : describeSkill(selected, { ...save.levels, [selected]: state.level + 1 });
   info.innerHTML = `<div class="skill-info-text"><strong>${node.label} <span>Lv.${state.level} / ${node.maxLevel}</span></strong><p>현재: ${describeSkill(selected, save.levels)} → 다음: ${next}</p><small>선행: ${prerequisites}</small></div>`;

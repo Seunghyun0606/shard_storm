@@ -20,4 +20,4 @@ export function loadSave(storage) {
   } catch { /* Invalid or inaccessible storage starts with a safe empty save. */ }
   return save;
 }
-export function writeSave(storage, save) { try { storage.setItem(C.storageKey, JSON.stringify(save)); return true; } catch { return false; } }
+export function writeSave(storage, save) { if (save.sandbox) return false; try { storage.setItem(C.storageKey, JSON.stringify(save)); return true; } catch { return false; } }

@@ -1,8 +1,9 @@
 import { CONFIG as C } from './config.js';
 export function seededRNG(seed) { let a = seed >>> 0; return () => { a += 0x6D2B79F5; let t = a; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
-export function createShape(id, type, x, y, angle, enhanced = false, grace = C.spawnGrace) {
+export function createShape(id, type, x, y, angle, enhanced = false, grace = C.spawnGrace, modifier = 'normal') {
   const s = C.shapes[type], hp = s.hp + (enhanced ? C.enhancedHP : 0);
-  return { id, type, x, y, angle, radius: s.radius, hp, maxHP: hp, bonus: enhanced ? Math.ceil(s.bonus * C.enhancedReward) : s.bonus, enhanced, grace, destroyed: false, flash: 0, knockX: 0, knockY: 0, knockTime: 0 };
+  if (enhanced || !['normal', 'cracked', 'charged'].includes(modifier)) modifier = 'normal';
+  return { id, type, modifier, clickedFirst: false, x, y, angle, radius: s.radius, hp: modifier === 'cracked' ? Math.max(1, Math.ceil(hp * C.modifiers.crackedHP)) : hp, maxHP: hp, bonus: enhanced ? Math.ceil(s.bonus * C.enhancedReward) : s.bonus, enhanced, grace, destroyed: false, flash: 0, knockX: 0, knockY: 0, knockTime: 0 };
 }
 export function segmentCircle(x1, y1, x2, y2, cx, cy, radius) {
   const dx = x2 - x1, dy = y2 - y1, ox = x1 - cx, oy = y1 - cy;

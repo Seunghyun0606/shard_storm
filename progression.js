@@ -13,7 +13,7 @@ export function buyUpgrade(save, key, state) {
   save.bank -= cost; save.levels[key]++; return true;
 }
 export function settle(save, run) {
-  if (run.state !== 'RESULT' || run.settled) return false;
+  if (run.state !== 'RESULT' || run.settled || (run.sandbox && !save.sandbox)) return false;
   run.settled = true;
   const record = run.record();
   save.bank += record.photonsEarned;

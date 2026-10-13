@@ -1,6 +1,6 @@
-# Shard Storm — playable prototype v0.7
+# Shard Storm — playable prototype v0.8
 
-[PRD v0.7](docs/Shard_Storm_Codex_Prototype_PRD_v0.7.md)을 기준으로 기존 v0.6 코드를 확장한 재미 검증용 게임입니다. HTML5 Canvas 2D + Vanilla JavaScript ES Modules이며 외부 게임 엔진·이미지·폰트·런타임 패키지·서버 저장은 없습니다.
+[v0.8 개선 명세](docs/Shard_Storm_v0.8_Gameplay_Improvements_P1-P4.md)와 [PRD v0.7](docs/Shard_Storm_Codex_Prototype_PRD_v0.7.md)을 기준으로 기존 게임을 확장한 재미 검증용 프로토타입입니다. HTML5 Canvas 2D + Vanilla JavaScript ES Modules이며 외부 게임 엔진·이미지·폰트·런타임 패키지·서버 저장은 없습니다. 최신 수치·경제·변경 파일·관측 한계는 [v0.8 검증 보고서](docs/Shard_Storm_v0.8_Balance_Report.md)에 있습니다.
 
 ## 실행과 조작
 
@@ -17,6 +17,86 @@ Game Over에서 한 번만 Photon을 정산합니다. 스킬 노드를 선택한
 `D` / `DEV [D]`: 개발자 패널. 수동 일시정지 버튼·탭 비활성화 일시정지·선택적 Web Audio 합성음도 있습니다. 버튼 해제, 아레나 이탈, 창 포커스 상실 시 홀드가 멈춥니다.
 
 서버 종료는 `Ctrl+C`. 포트 변경은 `$env:PORT = '4174'; npm start`. Python 대안은 `python -m http.server 4173 --bind 127.0.0.1`. ES Modules 때문에 `file://` 실행은 지원하지 않습니다. 저장은 프로토콜·호스트·포트별이므로 기존 저장을 이어가려면 같은 주소를 사용하세요.
+
+## v0.8 신규 기능과 실험
+
+**STEP 1 — 콤보:** 같은 Chain의 5/10/20 파괴에 CASCADE / OVERLOAD / SHARD STORM을 한 번씩 기록합니다. 화면에는 높은 단계의 배너 하나와 최대 6개 작은 팝업만 표시하고, 강조·합성음은 0.25초 재사용 제한을 둡니다. 사운드 동시 음 수는 최대 8입니다. 피해·Photon·타이머 배율은 없습니다. `Combo Feedback` / `Sound` 토글은 게임플레이를 바꾸지 않습니다.
+
+**STEP 2 — 변종:** Cracked는 원래 maxHP를 유지하고 `ceil(maxHP×0.5)` HP로 시작합니다. 이미 사라진 HP에는 보상을 주지 않습니다. Charged는 Triangle/Pentagon 고유 주 파편+1, Square/Star 고유 반경×1.25, 파괴 보너스×1.20(Photon Boost와 곱한 뒤 한 번 올림)입니다. 피해량·속도·계승 보조 능력은 그대로입니다. Cracked의 굵은 균열/빠진 모서리, Charged의 점선 이중 링/발광 코어, Enhanced의 갑옷 표식으로 구분합니다.
+
+| 누적 파괴 | Cracked | Charged |
+|---|---:|---:|
+| 0~11 | 0% | 0% |
+| 12~29 | 10% | 0% |
+| 30~54 | 10% | 5% |
+| 55+ | 12% | 8% |
+
+Enhanced 추첨을 먼저 하고, 비-Enhanced에만 상호 배타적으로 적용합니다. Charged 동시 최대2, 초과는 normal로 폴백합니다. 첫 안내 배치는 유지합니다. Modifier는 독립된 게임플레이 RNG 스트림에서 스폰 시도마다 한 번 추첨하며 OFF/Enhanced/배치 실패에도 같은 추첨 횟수를 소비합니다. 코스메틱 RNG와는 별개입니다. `Modifiers OFF`는 이후 생성만 일반형으로 바꾸고 기존 도형을 변환하지 않습니다. `Modifier Marks OFF`는 표식만 바꿉니다.
+
+**STEP 3 — 생성 진단:** 10초 구간별 직접/연쇄 파괴·Photon·마일스톤·밀도·종류/변종/HP·생성 실패·상한을 기록합니다. 빈 화면 누적 시간과 0.5초 이상 횟수, 상한 원인, 초별 파편 피크, 브라우저 FPS/고정 틱 P95도 수집합니다. 로그에는 시드·빌드·입력 정책·시간·실험 설정·토글 변경이 들어갑니다.
+
+| 생성 프리셋 | 보충 | 군집 확률 |
+|---|---|---:|
+| baseline (실제 기본) | .20초 ×3 | .60 |
+| spread | .20초 ×3 | .45 |
+| fast | .15초 ×3 | .60 |
+| fast_spread | .15초 ×3 | .45 |
+
+기존 스폰 시계의 epsilon+나머지 연산이 연속 틱에 중복 보충하는 오류를 수정했습니다. `.20` 기본값은 유지하며, 이제 지정한 간격대로 보충합니다. 이 수정 때문에 v0.7의 파괴 수와 단순 동일값 비교는 성립하지 않습니다. 수정 전 원본도 보존했습니다.
+
+**STEP 4 — 경제 샌드박스:** 개발자 패널에서 Crusher / Cascade / Reactor / Utility 빌드, 기존 가격 / ×3 / ×6을 비교합니다. 기존 11노드·선행조건·성장1.6·가격은 실제 저장에 그대로 적용합니다. 실험은 세이브의 깊은 복사본을 쓰고, 실험 Photon 지급·강제 생성·구매·정산·기록을 저장하지 않습니다. `동일 Seed 새 Run`도 격리 세션입니다. `실험 종료 · 기존 저장으로 복귀`를 누르거나 새로고침하면 실제 재화/강화로 돌아옵니다. 가격 프리셋은 보상을 바꾸지 않습니다.
+
+실험 방법: `D` → 생성/가격/빌드 선택 → 테스트 시간을 `60`으로 지정 → `격리 실험 Run 시작`. Extra Time의 실제 효과는 시간을 비우고 ExtraTime/PhotonBoost/UtilityMax 빌드로 실행하세요. `PLAY AGAIN`은 해당 실험 세션의 구매 결과를 이어갑니다. `동일 Seed 새 Run`은 실험에서 소유한 레벨을 유지하고 새 판을 시작합니다.
+
+세이브 키 `shard-storm-v1`, schema2, 기존 bank/11스킬/bestStats/lastRuns를 유지했습니다. v1→v2 기존 로딩도 회귀 검사합니다. 신규 Run 필드는 optional이며 과거 기록을 삭제하지 않습니다.
+
+## v0.8 자동 QA와 비교 결과
+
+```powershell
+npm test
+npm run benchmark
+npm run benchmark:balance
+node tests/balance-report.js
+```
+
+**현재 단위 테스트 70 PASS / 0 FAIL**, 기존48개 유지+신규22개. `benchmark` 18판, `benchmark:balance` 231개 실제 시뮬레이션 PASS. 시드 `[31415,1,7,42,99]`, 동일 밀도/HP 입력 정책과 스탯의 반복 간격으로 생성 설정50판·빌드·11노드·1/3/5회 성장 경로를 비교합니다. 같은 조건은 캐시해 재사용합니다. 원본 [밸런스 JSON](artifacts/v08-balance-results.json), [테스트 출력](artifacts/v08-unit-test-results.txt), [변경 전](artifacts/v08-before.json), [스폰 시계 수정 직전](artifacts/v08-before-cadence-fix.json).
+
+| 5시드 / 60초 / 기본 빌드 중앙값 | Modifier OFF | Modifier ON | ON / fast_spread |
+|---|---:|---:|---:|
+| 완전 파괴 | 663 | 695 | 768 |
+| 연쇄 비율 | 70.3% | 72.4% | 73.0% |
+| Photon | 12,426 | 13,466 | 14,288 |
+| 최고 Chain | 23 | 24 | 30 |
+| 안전 상한 | 0 | 0 | 0 |
+
+50판의 생성 비교에서 0.5초 이상 빈 화면·스폰 실패는 0회였습니다. 상한이 발생한 경우는 깊이 제한이며 상한값을 올리지 않았습니다. 기본/강화/최대 강화와 여러 시드의 범위·밀도·상한은 보고서를 참고하세요.
+
+기존 가격으로는 자동 입력 첫 판에 전체35Lv를 살 수 있습니다. ×3은 첫 판19~20Lv / 3판35Lv, ×6은 첫 판9~11Lv / 3판28~29Lv / 5판35Lv입니다. `fast_spread`와 `cost_x6`을 다음 사람 비교 후보로 제안하지만 실제 기본값으로 승격하지 않았습니다. **자동 입력 결과는 사람의 재미·구매력을 입증하지 않습니다.**
+
+브라우저 QA는 임시 폴더의 Playwright를 사용하고 사용자 브라우저와 분리된 새 프로필만 조작합니다. 서버를 실행한 상태에서:
+
+```powershell
+$env:PLAYWRIGHT_MODULE = Join-Path $env:TEMP 'shard-storm-qa/node_modules/playwright'
+$env:QA_BASE_URL = 'http://127.0.0.1:4173'
+node tests/browser-check.mjs
+$env:QA_PHASE = '2'
+node tests/v08-browser.mjs
+node tests/visual-check.mjs
+node tests/visibility-check.mjs
+node tests/balance-report.js
+```
+
+Playwright가 없으면 아래 v0.7 QA 절차의 임시 설치 명령을 사용하세요. 최종 브라우저 결과와 실제 입력60초 플레이, 스킬 구매·유지, 변종·콤보·격리 세션 검증 상태는 [v0.8 보고서](docs/Shard_Storm_v0.8_Balance_Report.md)에 기록합니다. 모의 visibility 검사는 실제 탭 전환과 구분합니다.
+
+- [실제 콤보](artifacts/v08-combo-live.png), [Chain20 표시 fixture](artifacts/v08-combo-20.png)
+- [삼각/사각 변종 fixture](artifacts/v08-modifiers-triangle.png), [오각/별 변종 fixture](artifacts/v08-modifiers-pentagon.png)
+- [개발자 패널](artifacts/v08-developer-lab.png), [격리 구매 결과](artifacts/v08-sandbox-result.png)
+
+화면 fixture는 표시 검사용 합성 상태라고 캡처에 명시했습니다. 라이브 연쇄와 실제 포인터 검증은 별도로 기록합니다. 아직 남은 사람 검증: 첫10초 연쇄 인지, 콤보 단계 가독성, Charged를 일부러 먼저 클릭하는지, 강화 전후 체감, 다시 하고 싶은 정도. 일반 브라우저의 실제 탭 전환과 합성음의 주관적 청감도 수동 확인이 필요합니다.
+
+## v0.7 구현·QA 기록 (이하 과거 기준)
+
+아래 수치와 스크린샷은 v0.7 당시 결과입니다. 현재 테스트 수·성능·변종·실험 지급 동작은 위 v0.8 내용과 보고서를 기준으로 보세요.
 
 ## v0.6 진단과 개선 순서
 
@@ -97,7 +177,7 @@ npm test
 npm run benchmark
 ```
 
-현재 자동 테스트 **48/48 통과**. PRD §13의 28항목, 기존 직접 공격/파편/분열/반사/보상/해금/정산/가격/시간 회귀, 파동 도달 순서, 정확한 0.03초 예약, VFX 무피해, 코스메틱 재현, 저장 마이그레이션, 선행조건, 모든 P1 능력치와 실제 홀드·추가 파편·추가 반사·Pulse·보너스, 동시 파동, 120개 대상 부하를 포함합니다. 실제 탭 전환은 아래 별도 제한을 참고하세요.
+v0.7 당시 자동 테스트 **48/48 통과**. PRD §13의 28항목, 기존 직접 공격/파편/분열/반사/보상/해금/정산/가격/시간 회귀, 파동 도달 순서, 정확한 0.03초 예약, VFX 무피해, 코스메틱 재현, 저장 마이그레이션, 선행조건, 모든 P1 능력치와 실제 홀드·추가 파편·추가 반사·Pulse·보너스, 동시 파동, 120개 대상 부하를 포함합니다. 실제 탭 전환은 아래 별도 제한을 참고하세요.
 
 벤치마크 **18판 완료**: 기본/강화/A-B 6판 + 시드·최대 강화 스트레스 12판. 모든 판은 비교를 위해 60초로 고정합니다. 자동 입력 정책은 밀도/HP 효율 기반이고 반복 간격은 실제 도출 스탯을 사용합니다. 사람의 재미 평가나 렌더링 FPS로 해석하지 않습니다.
 

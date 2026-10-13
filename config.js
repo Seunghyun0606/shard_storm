@@ -13,6 +13,13 @@ export const CONFIG = {
   impact: { radius: 42, damage: 1 },
   crushSpeed: { perLevel: .02, minimum: .14 },
   photonBoostPerLevel: .10,
+  combo: { cooldown: .25, popupCap: 6, stages: {
+    5: { label: 'CASCADE', color: '#6ADFEF', life: .45 },
+    10: { label: 'OVERLOAD', color: '#C7ADFF', life: .55 },
+    20: { label: 'SHARD STORM', color: '#FFD884', life: .65 }
+  } },
+  modifiers: { chargedCap: 2, chargedRadius: 1.25, chargedBonus: 1.20, crackedHP: .5,
+    chances: [{ threshold: 0, cracked: 0, charged: 0 }, { threshold: 12, cracked: .10, charged: 0 }, { threshold: 30, cracked: .10, charged: .05 }, { threshold: 55, cracked: .12, charged: .08 }, { threshold: 90, cracked: .12, charged: .08 }] },
   variety: {
     radiusMin: 13, radiusMax: 21, minHitRadius: 16,
     triangle: { aspectMin: .85, aspectMax: 1.16, radialJitter: .10 },
@@ -70,5 +77,5 @@ export const CONFIG = {
   ],
   costGrowth: 1.6, saveVersion: 2, storageKey: 'shard-storm-v1', historyLimit: 20,
   dev: { grant: 1000, minDuration: 1, maxDuration: 90 },
-  options: { inheritance: true, ricochet: true, sequentialPropagation: true, visualVariety: true, damageVFX: true, sound: false }
+  options: { inheritance: true, ricochet: true, sequentialPropagation: true, visualVariety: true, damageVFX: true, sound: false, comboFeedback: true, modifiers: true, modifierVisuals: true }
 };

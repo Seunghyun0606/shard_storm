@@ -1,0 +1,135 @@
+// Generate the reviewable report from measured artifacts, without rerunning play.
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { CONFIG as C } from '../config.js';
+import { describeSkill, skillDefinitions } from '../skill-tree.js';
+const read = path => JSON.parse(readFileSync(path, 'utf8'));
+const r = read('artifacts/v08-balance-results.json'), old = read('artifacts/v08-before.json');
+const browser = existsSync('artifacts/v08-browser-results.json') ? read('artifacts/v08-browser-results.json') : null;
+const median = values => [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];
+const fmt = (n, digits = 0) => Number.isFinite(n) ? n.toFixed(digits) : '미도달';
+const table = (headers, rows) => [`| ${headers.join(' | ')} |`, `| ${headers.map(() => '---').join(' | ')} |`, ...rows.map(row => `| ${row.join(' | ')} |`)].join('\n');
+const find = (scenario, build = 'Baseline') => r.difficulty.find(d => d.scenario === scenario && d.build === build);
+const b = name => r.builds.find(b => b.build === name);
+const vanilla = find('vanilla').runs.find(r => r.seed === 31415), current = find('modifiers_baseline').runs.find(r => r.seed === 31415);
+const beforeCadence = read('artifacts/v08-before-cadence-fix.json');
+const lines = [
+  '# Shard Storm v0.8 — 구현·밸런스 검증 보고서',
+  '',
+  '기준: 원격 `700cca1`, 작업 브랜치 `feat/v08-gameplay-depth`. 기존 Canvas/Vanilla JS 구조를 확장했습니다. 세이브 키·schema2·11개 스킬·기존 구매 가격·재화·레벨은 보존합니다. 기본 타이머 60초와 누적 해금 12/30/55/90/140도 유지합니다.',
+  '',
+  `모든 수치는 **자동 입력**입니다. 시드 [${r.seeds.join(', ')}], 입력 정책 \`auto:density-hp-v1\`, 안내 클릭 이후 도출 스탯의 공격 간격을 사용합니다. 타깃 평가는 기존의 밀도/HP 점수이며 점수 계산만 한 번씩 캐시했습니다. 사람의 재미·학습·실제 선택 의도를 입증한 데이터가 아닙니다.`.replaceAll('\`', '`'),
+  '',
+  '## STEP 1~4 상태',
+  '',
+  table(['STEP', '구현', '검증'], [
+    ['1', 'Chain별 5/10/20 중복 방지, CASCADE/OVERLOAD/SHARD STORM, 단일 배너, 최대 6개 작은 팝업, 0.25초 강조 재사용 제한, 합성 음 최대 8 voices', '점프 임계점·독립 Chain·장식 ON/OFF 동치 테스트, 실제 포인터 콤보 및 단계별 화면 fixture'],
+    ['2', 'Cracked HP ceil(원본×0.5), Charged 주 파편 +1/고유 반경×1.25/보너스×1.20, Enhanced 중복 금지, Charged 최대2', 'HP9→5 무보상 초기 파손, 4종 native/계승/스킬 합성, 확률 경계·cap·코스메틱 동치·실제 출현'],
+    ['3', '10초 bins, 종류/변종/HP/밀도/빈 화면/스폰 성공·실패/상한 종류/초별 파편 피크/FPS·틱 P95, 생성 설정 4개', '5시드×5조건×2빌드=50판, 시간 구간 합계·경계·스폰 간격 회귀'],
+    ['4', 'Crusher/Cascade/Reactor/Utility, 가격 기존·×3·×6, 격리 구매·정산, 11노드 구매 전후 분석', '3전략×3가격×5시드×5 Run의 성장 경로, 실제시간/고정60초 분리, 라이브 저장 불변·MAX·잠금·잔액 검사']
+  ]),
+  '',
+  `최종 단위 테스트 70 PASS / 0 FAIL. 기존 48개를 삭제하거나 느슨하게 바꾸지 않았습니다. \`npm run benchmark\` 18판과 \`npm run benchmark:balance\` ${r.uniqueSimulations}개 실제 시뮬레이션이 통과했습니다. 성장 경로는 중복 조건을 캐시해 재사용합니다.`.replaceAll('\`', '`'),
+  '',
+  '## 발견·수정한 오류와 변경 전후',
+  '',
+  '- 기존 스폰 시계: epsilon 조건으로 `.2` 직전에 보충한 뒤 `% .2`가 거의 `.2`를 그대로 남겨 다음 틱에도 보충했습니다. `max(0, clock - interval)`로 수정했고 10초당 `.20`은 50회, `.15`는 66회 보충 기회임을 테스트합니다. 기본 수치 .20×3을 낮춘 것이 아니라 지정 간격을 바로잡았습니다.',
+  '- 콤보 재사용 제한 중 더 높은 독립 Chain이 도달하면 텍스트까지 누락될 수 있었습니다. 배너는 즉시 높은 단계로 교체하고, 강조·사운드만 제한합니다. 같은 Chain의 실제 ×N도 갱신합니다.',
+  '- 종료까지 건너뛴 가시 프레임 지연의 skippedSeconds/Events 누락을 수정했습니다. 종료 이후 실제 피해·보상은 추가하지 않습니다.',
+  '- 개발자 실험 지급·강제 생성·테스트 Run은 모두 샌드박스로 전환합니다. 테스트 구매나 정산을 실제 세이브에 기록할 수 없도록 저장·정산 경로에도 방어를 추가했습니다.',
+  '- UTF-8 파일에 실제 `?`로 저장된 신규 개발자 패널 한글 레이블을 복구하고 화면을 다시 확인했습니다.',
+  '',
+  '동일 Seed31415 / 동일 입력 점수 / 기본 빌드 / 60초. v0.7과 v0.8의 차이에는 스폰 시계 수정이 포함됩니다. 신규 Modifier 효과만 분리하려면 마지막 두 열을 비교하세요.',
+  '',
+  table(['지표', '수정 전 v0.7', 'v0.8 Modifier OFF', 'v0.8 Modifier ON'], [
+    ['완전 파괴', old.baseline.totalDestroyed, vanilla.totalDestroyed, current.totalDestroyed],
+    ['연쇄 파괴', old.baseline.cascadeKills, vanilla.cascadeKills, current.cascadeKills],
+    ['최고 Chain', old.baseline.bestChain, vanilla.bestChain, current.bestChain],
+    ['Photon', old.baseline.photonsEarned, vanilla.photonsEarned, current.photonsEarned],
+    ['안전 상한', old.baseline.safetyCapsHit, vanilla.safetyCapsHit, current.safetyCapsHit],
+    ['시뮬레이션 스텝 P95 ms', fmt(old.baseline.simulationStepP95ms, 3), fmt(vanilla.simulationStepP95ms, 3), fmt(current.simulationStepP95ms, 3)]
+  ]),
+  '',
+  'P95에는 타깃 선택과 시뮬레이션이 포함되며 렌더링은 포함되지 않습니다. 점수 계산 캐시와 호스트 부하도 시간값에 영향을 줍니다. 이전과 현재 P95 차이를 물리 엔진 개선이나 사람의 프레임 체감으로 해석하지 않습니다.',
+  '',
+  `스폰 시계 수정 직전 Modifier ON 기본 빌드 중앙값 ${findIn(beforeCadence, 'modifiers_baseline').summary.destroyedMedian}파괴 / ${findIn(beforeCadence, 'modifiers_baseline').summary.photonMedian} Photon / cap ${findIn(beforeCadence, 'modifiers_baseline').summary.capsMedian} → 수정 후 ${find('modifiers_baseline').summary.destroyedMedian} / ${find('modifiers_baseline').summary.photonMedian} / cap ${find('modifiers_baseline').summary.capsMedian}. 수정 전 JSON도 보존했습니다.`,
+  '',
+  '## 5시드 생성 설정 비교',
+  '',
+  '중앙값(파괴 범위는 최소~최대). Upgraded는 Crush Power1 / Shard Power1. 모든 후보의 타이머는 60초이며 스킬 이외 설정을 고정했습니다.',
+  '',
+  table(['조건', '빌드', '파괴 중앙값 [범위]', '연쇄 %', 'Photon', '평균 alive', '최고 Chain', 'cap 중앙값 [범위]', '빈 화면 s / 스폰 실패'], r.difficulty.map(d => { const s = d.summary; return [d.scenario, d.build, `${s.destroyedMedian} [${s.destroyedRange.join('~')}]`, fmt(s.cascadeRatioMedian * 100, 1), s.photonMedian, fmt(s.densityMedian, 2), s.bestChainMedian, `${s.capsMedian} [${s.capRange.join('~')}]`, `${fmt(s.emptySecondsMedian, 3)} / ${s.spawnFailures}`]; })),
+  '',
+  '`baseline`=.20s×3 / 군집.60, `spread`=.20s×3 / .45, `fast`=.15s×3 / .60, `fast_spread`=.15s×3 / .45. 50판 모두 0.5초 이상 무도형 구간 0회, 스폰 실패 0회였습니다. 이 조건에서 cap 원인은 깊이 제한이며 cap을 상향하지 않았습니다. 최대 강화 스트레스는 별도 회귀 벤치마크 JSON에 있습니다.',
+  '',
+  '대표 Run(Seed31415, Modifier ON)의 10초 구간. 피해·파괴는 실제 event time으로 한쪽 구간에만 귀속되고 평균 밀도는 시뮬레이션 시간으로 가중됩니다.',
+  '',
+  table(['초', '직접', '연쇄', 'Photon', '평균 alive/target', 'Chain5/10/20', 'cap'], current.bins.map(bin => [`${bin.start}~${bin.end}`, bin.directKills, bin.cascadeKills, bin.earnedPhoton, `${fmt(bin.averageAlive, 2)}/${fmt(bin.averageTarget, 2)}`, [5, 10, 20].map(k => bin.comboMilestones[k]).join('/'), bin.safetyCapsHit])),
+  '',
+  '## 빌드·Utility 비교',
+  '',
+  '고정60초는 Extra Time을 구매해도 시간만 60초로 고정합니다. 실제시간은 60+5×Lv이며, 경제 성장 실험은 실제시간을 사용합니다. 아래는 각각 5시드 중앙값입니다.',
+  '',
+  table(['빌드', '기존 총 구매비용', '60초 파괴 / Photon', '60초 cap', '실제시간', '실제 Photon', '실제 Photon×60/시간'], r.builds.map(x => [x.build, x.cost.baseline, `${x.fixed60.destroyedMedian} / ${x.fixed60.photonMedian}`, x.fixed60.capsMedian, x.actualDuration, x.actual.photonMedian, fmt(x.actualNormalizedPhoton60, 0)])),
+  '',
+  `Extra Time Lv1의 같은 시드 추가 5초 수익 중앙값은 ${median(b('ExtraTime').actualRuns.map((run, i) => run.photonsEarned - b('ExtraTime').fixedRuns[i].photonsEarned))} Photon이며 가격은 120입니다. 고정60초에서는 전투·수익 차이가 없습니다. Photon Boost Lv1은 같은 60초에서 추가 ${median(b('PhotonBoost').fixedRuns.map((run, i) => run.photonsEarned - b('ExtraTime').fixedRuns[i].photonsEarned))} Photon 중앙값(추가 가격180)을 만듭니다. HP 제거 수익은 그대로이고 보너스만 증가합니다. 자동 정책의 빠른 회수는 인간 구매력 추정치가 아닙니다.`,
+  '',
+  '## 11개 노드별 구매·효과',
+  '',
+  '각 노드의 직접·간접 선행조건만 최소로 소유한 상태에서 해당 노드 +1을 비교합니다. 가격은 현재 레벨에서의 다음 구매비용입니다. 도달 시간은 Run 내 수익이 가격을 넘는 시점일 뿐, 실제 구매는 RESULT에서만 가능합니다. 선행조건의 구매비용과 잔액 차감이 포함된 성장 경로는 다음 표와 원본 JSON을 참고하세요.',
+  '',
+  table(['스킬', '가격 기존/×3/×6', '효과 전→후', '60초 파괴 전→후', 'Photon 전→후', '기존 가격 수익 도달 초'], r.nodes.map(n => [C.upgrades[n.key].name, Object.values(n.costs).join('/'), `${describeSkill(n.key, n.beforeLevels)} → ${describeSkill(n.key, n.afterLevels)}`, `${n.before.destroyedMedian}→${n.after.destroyedMedian}`, `${n.before.photonMedian}→${n.after.photonMedian}`, fmt(n.earningCapacity[0].thresholdTimeMedian, 2)])),
+  '',
+  '경로가 바뀌면 마지막 치명타·다음 배치도 달라져 모든 지표가 단조 증가하지 않습니다. 노드별 seedPairs에 실제 연쇄 파괴·최고 Chain·수익·cap 쌍을 저장했습니다.',
+  '',
+  '## 1 / 3 / 5 Run 성장',
+  '',
+  '3전략은 가지를 먼저 강화한 뒤 나머지를 구매하는 고정 우선순위입니다. 누적 구매 수는 노드 수가 아니라 레벨 수(전체 최대35)입니다. 새 세이브에서 시작하며 동일 시드를 반복하므로 인간 학습 효과는 포함되지 않습니다. 구매 없이 같은 시드를 반복한 결과는 동일했습니다.',
+  '',
+  table(['전략', '가격', 'Run1 누적 Lv', 'Run3 누적 Lv', 'Run5 누적 Lv', 'Run1 구매 전 열린 노드'], r.growthSummary.map(g => [g.strategy, g.preset, ...g.runs.map(x => x.purchaseCountMedian), g.runs[0].firstRunAffordableNodesMedian])),
+  '',
+  '첫 구매 전 열린 루트 노드는 4개이며, 선행 구매 후 다른 노드가 열립니다. 기존 가격에서는 첫 판 후 순차 구매로 11개 노드 전체35Lv를 살 수 있습니다. ×3도 첫 판 19~20Lv, ×6은 9~11Lv여서 사람 입력의 구매력 확인이 필요합니다.',
+  '',
+  '## 권장값과 실제 사람 테스트',
+  '',
+  '실제 기본값은 유지합니다: spawnInterval=.20, spawnBatch=3, clusterChance=.60, costGrowth=1.6, 기존 baseCost. 스폰 시계의 오동작만 바로잡았습니다.',
+  '',
+  `다음 사람 비교 후보는 \`fast_spread\`(.15s×3 / 군집.45)입니다. 기본 빌드에서 ${find('modifiers_baseline').summary.destroyedMedian}→${find('modifiers_fast_spread').summary.destroyedMedian}파괴, 최고 Chain ${find('modifiers_baseline').summary.bestChainMedian}→${find('modifiers_fast_spread').summary.bestChainMedian}, cap 중앙값0으로 관측됐습니다. 강화 빌드에서는 cap 범위도 함께 관찰해야 합니다. 더 좋은 손맛이라는 결론은 유보합니다.`.replaceAll('\`', '`'),
+  '',
+  '경제는 `cost_x6` 샌드박스를 우선 비교할 후보로 권합니다. ×3은 3판째 최대35Lv, ×6은 3판째28~29Lv / 5판째35Lv로 다음 구매가 조금 더 남습니다. 그래도 첫 자동 Run 9~11Lv는 목표 가설 1~3개 구매보다 빠릅니다. 인간 3~5 Run 기록을 얻기 전 실제 가격에는 적용하지 않습니다. ×6 첫 비용 후보: Crush360 / Shard540 / Range420 / Amplifier780 / Time720 / Speed900 / Pulse1560 / Ricochet1020 / Bloom1740 / Echo1440 / Boost1080.',
+  '',
+  '가장 큰 문제는 수익과 가격의 비율입니다. 현재 기본 빌드 자동 수익 중앙값13,466 Photon이 전체 기존 구매비용10,349보다 큽니다. 반면 수정 후 기본60초의 cap은 0으로 줄어, 현재 데이터에서 cap 상향이 우선 해결책은 아닙니다.',
+  '',
+  '사람 3~5판에서 첫10초 연쇄 인지, 5/10/20 단계 구분, 균열·충전 표식 식별, Charged 우선 클릭 의도와 실제 spawn 대비 선택률, 구매 전후 손맛, 다시 하고 싶은 정도(1~5)를 기록하세요. Run별 시드·빌드·시간·해금·연쇄 비율·Photon·구매 노드를 함께 수집합니다. 탭 전환은 일반 브라우저에서 직접 확인해야 합니다.',
+  '',
+  'v0.9 후보: 사람 데이터에 따른 가지별 가격/Utility 회수기간 조정, 초반 해금 속도와 후반 직접 공격 역할, 큰 콤보의 읽기 쉬운 표시, Charged 기여량과 선택률에 따른 등장률 조정. 새로운 스킬을 더 늘리기 전에 위 항목을 검증합니다.',
+  '',
+  '## 브라우저·관측 한계',
+  '',
+  browser && !browser.failure ? `Chrome ${browser.browser}, 실제 포인터 홀드/드래그 60초×${browser.runs.length}판 PASS, 콘솔/페이지 오류 ${browser.errors.length}개. 실제 구매·새로고침 유지·정산1회·11노드/11연결선·MAX·선행조건·리사이즈를 확인했습니다.` : '60초 브라우저 회귀의 최종 결과를 아직 수집하지 않았습니다.',
+  '',
+  ...(browser && !browser.failure ? [table(['브라우저 자동 입력', '파괴', '직접/연쇄', '최고 Chain', 'Photon', '평균 FPS', 'cap'], browser.runs.map(x => [x.name, x.totalDestroyed, `${x.directKills}/${x.cascadeKills}`, x.bestChain, x.photonsEarned, fmt(x.wallFPSMean, 1), x.safetyCapsHit])), ''] : []),
+  '단계별 브라우저 fixture는 합성된 표시 상태임을 화면에 표시합니다. 실제 라이브 콤보 캡처와 구분합니다. phase2 QA는 실제 변종 출현·표식 토글의 HP/시간 불변·가격×3 구매·실험 종료와 새로고침의 저장 불변을 확인합니다. 기존 P1 실제 전투와 모의 visibility handler도 별도 검사합니다. 합성음의 생성·voice 제한은 검사하지만 주관적인 청감은 검증하지 않았습니다. 실제 탭 전환은 헤드리스 Chrome에서 재현하지 못했습니다.',
+  '',
+  '## 변경 파일·증거',
+  '',
+  table(['파일', '핵심 변경'], [
+    ['config.js / entities.js', '콤보·변종 수치와 기본 옵션, modifier/초기 HP'],
+    ['combo.js / game.js / renderer.js', '단일 콤보 피드백, native 합성, 정확한 보상, 통계·시계 수정·변종 표식'],
+    ['experiments.js / economy.js', '4개 생성 프리셋, 3개 가격 프리셋, 빌드·격리 구매·비교 함수'],
+    ['app.js / index.html / style.css', '개발자 실험 UI, 저장을 분리한 세션·복귀, 오디오 제한·관측'],
+    ['progression.js / storage.js / skill-tree.js', '실험 정산/저장 차단, 동일 그래프의 샌드박스 가격 표시'],
+    ['tests/v08.test.js / tests/simulation.js', '신규 회귀22개, 기존48개 유지, 공통 결정적 입력 정책'],
+    ['tests/benchmark.js / balance-benchmark.js / balance-report.js', '18판 회귀·5시드 난도/경제·증거 기반 보고서'],
+    ['tests/*check.mjs / tests/v08-browser.mjs', '실제 입력·P1·저장·visibility·콤보·변종 fixture·실험 QA'],
+    ['README.md / artifacts/v08-* / 이 문서', '실행·결과·스크린샷·수치와 관측 한계']
+  ]),
+  '',
+  '- [변경 전 v0.7 결과](../artifacts/v08-before.json), [스폰 시계 수정 전 결과](../artifacts/v08-before-cadence-fix.json)',
+  '- [70개 단위 테스트](../artifacts/v08-unit-test-results.txt), [회귀18판](../artifacts/simulation-results.json), [밸런스 원본](../artifacts/v08-balance-results.json)',
+  '- [브라우저 회귀](../artifacts/v08-browser-results.json), [phase2 UI/격리 QA](../artifacts/v08-browser-phase2.json), [P1 전투](../artifacts/v08-visual-proof.json), [모의 visibility](../artifacts/v08-visibility-results.json)',
+  '- [실제 콤보](../artifacts/v08-combo-live.png), [Chain20 표시 fixture](../artifacts/v08-combo-20.png), [4종 변종 fixture](../artifacts/v08-modifiers-pentagon.png), [개발자 패널](../artifacts/v08-developer-lab.png), [샌드박스 구매](../artifacts/v08-sandbox-result.png)',
+  ''
+];
+function findIn(data, scenario) { return data.difficulty.find(d => d.scenario === scenario && d.build === 'Baseline'); }
+writeFileSync('docs/Shard_Storm_v0.8_Balance_Report.md', lines.join('\n'), 'utf8');
+console.log('Wrote docs/Shard_Storm_v0.8_Balance_Report.md');
