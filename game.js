@@ -1,0 +1,286 @@
+import { CONFIG as C } from './config.js';
+import { TYPES, emptyLevels, durationFor, tierFor } from './progression.js';
+import { seededRNG, createShape, pointSegmentDistance } from './entities.js';
+import { makeShard, traceShard } from './effects.js';
+import { getDerivedStats } from './skill-tree.js';
+import { createAppearance, ClickVFXPool } from './visuals.js';
+
+export class Game {
+  constructor({ seed = C.seed, levels = emptyLevels(), options = C.options, duration } = {}) {
+    this.seed = seed >>> 0; this.rng = seededRNG(this.seed); this.vfxRng = seededRNG(this.seed ^ 0xabcdef);
+    this.levels = { ...emptyLevels(), ...levels }; this.stats = getDerivedStats(this.levels); this.options = { ...C.options, ...options }; this.initialOptions = { ...this.options }; this.optionChanges = [];
+    this.duration = duration ?? durationFor(levels); this.elapsed = 0; this.remaining = this.duration;
+    this.state = 'PLAYING'; this.paused = false; this.settled = false; this.shapes = []; this.shards = []; this.waves = []; this.visuals = []; this.particles = []; this.clickVFX = new ClickVFXPool();
+    this.queue = []; this.chains = new Map(); this.nextId = 1; this.nextChain = 1; this.spawnClock = 0; this.pending = [];
+    this.totalDestroyed = 0; this.directKills = 0; this.cascadeKills = 0; this.bestChain = 0; this.currentChain = 0; this.runEarned = 0;
+    this.highestTier = 0; this.unlockTimes = {}; this.safetyCapsHit = 0; this.peakShards = 0; this.firstCascadeTime = null;
+    this.held = false; this.pointer = null; this.attackClock = 0; this.onEvent = null;
+    this.nextEvent = 1; this.nextWave = 1; this.processingTime = null; this.cascadeDurations = []; this.variantCounts = {}; this.patternCounts = {}; this.patternPlan = null;
+    this.skippedSeconds = 0; this.skippedEvents = 0;
+    this.initializing = true; this.initialLayout(); this.initializing = false;
+  }
+  get alive() { return this.shapes.filter(s => !s.destroyed); }
+  get target() { return C.tiers[tierFor(this.totalDestroyed)].target; }
+  get simulationTime() { return this.processingTime ?? this.elapsed; }
+  initialLayout() {
+    const t = C.tutorial;
+    this.addShape('triangle', t.x, t.y, t.angle, false, 0);
+    for (let i = 0; i < 3; i++) { const a = t.angle + i * Math.PI * 2 / 3; this.addShape('triangle', t.x + Math.cos(a) * t.distance, t.y + Math.sin(a) * t.distance, t.angle, false, 0); }
+    const rays = Array.from({ length: 3 }, (_, i) => { const a = t.angle + i * Math.PI * 2 / 3; return [t.x, t.y, t.x + Math.cos(a) * C.shard.range, t.y + Math.sin(a) * C.shard.range]; });
+    for (let i = 0; i < 8; i++) this.spawn(null, 0, rays);
+  }
+  addShape(type, x, y, angle = 0, enhanced = false, grace = C.spawnGrace) {
+    if (this.state !== 'PLAYING') return null;
+    const s = createShape(this.nextId++, type, x, y, angle, enhanced, grace);
+    s.appearance = createAppearance(type, (this.seed ^ Math.imul(s.id, 0x9e3779b1)) >>> 0);
+    s.radius = Math.max(C.variety.minHitRadius, s.appearance.baseRadius); s.recoil = 0; s.vulnerableAt = this.elapsed + grace;
+    this.variantCounts[s.appearance.material] = (this.variantCounts[s.appearance.material] || 0) + 1;
+    this.shapes.push(s);
+    for (const wave of this.waves) this.registerWaveTarget(wave, s);
+    return s;
+  }
+  spawn(forced = null, grace = C.spawnGrace, avoid = []) {
+    if (this.state !== 'PLAYING' || this.remaining <= 0) return null;
+    const tier = C.tiers[tierFor(this.totalDestroyed)]; let type = forced;
+    if (!type) { let p = this.rng(); type = TYPES[TYPES.length - 1]; for (let i = 0; i < TYPES.length; i++) { p -= tier.weights[i]; if (p < 0) { type = TYPES[i]; break; } } }
+    const enhanced = this.rng() < tier.enhanced, r = C.shapes[type].radius, live = this.alive, A = C.arena;
+    const cluster = this.initializing ? this.rng() < C.clusterChance && live.length : false;
+    const usePattern = !this.initializing && live.length && this.rng() < C.clusterChance;
+    if (usePattern && (!this.patternPlan || this.patternPlan.index >= this.patternPlan.points.length)) this.patternPlan = this.createPatternPlan(true);
+    const plan = usePattern ? this.patternPlan : null;
+    let usedPattern = plan?.kind || 'scattered';
+    for (let attempt = 0; attempt < C.spawnAttempts; attempt++) {
+      let x, y;
+      if (plan && attempt === 0) ({ x, y } = plan.points[plan.index]);
+      else if ((cluster || (plan && plan.kind !== 'scattered')) && live.length && attempt < C.spawnAttempts / 2) { const parent = plan?.anchor || live[Math.floor(this.rng() * live.length)], a = this.rng() * Math.PI * 2, d = C.clusterMin + this.rng() * (C.clusterMax - C.clusterMin); x = parent.x + Math.cos(a) * d; y = parent.y + Math.sin(a) * d; }
+      else { x = A.left + r + this.rng() * (A.right - A.left - 2 * r); y = A.top + r + this.rng() * (A.bottom - A.top - 2 * r); }
+      if (x < A.left + r || x > A.right - r || y < A.top + r || y > A.bottom - r || live.some(s => Math.hypot(s.x - x, s.y - y) < s.radius + r + C.spawnGap)) continue;
+      if (avoid.some(ray => pointSegmentDistance(x, y, ...ray) < r + C.trajectoryMargin)) continue;
+      if (this.shards.some(s => !s.dead && pointSegmentDistance(x, y, s.x, s.y, s.x + Math.cos(s.angle) * (s.range - s.distance), s.y + Math.sin(s.angle) * (s.range - s.distance)) < r + C.trajectoryMargin)) continue;
+      if (plan) { plan.index++; if (attempt >= C.spawnAttempts / 2) usedPattern = 'scattered'; }
+      if (!this.initializing) this.patternCounts[usedPattern] = (this.patternCounts[usedPattern] || 0) + 1;
+      const shape = this.addShape(type, x, y, this.rng() * Math.PI * 2, enhanced, grace); shape.spawnPattern = usedPattern; return shape;
+    }
+    return null;
+  }
+  createPatternPlan(forceCluster = false) {
+    const live = this.alive, P = C.patterns, points = [], between = (a, b) => a + this.rng() * (b - a);
+    let kind = 'scattered', anchor = null;
+    if (live.length && (forceCluster || this.rng() < C.clusterChance)) {
+      const roll = this.rng() * (P.clusterWeight + P.arcWeight + P.bridgeWeight);
+      kind = roll < P.clusterWeight ? 'burst_cluster' : roll < P.clusterWeight + P.arcWeight ? 'arc' : 'bridge';
+      const stars = live.filter(s => s.type === 'star'); anchor = stars.length && this.rng() < P.starAnchorChance ? stars[Math.floor(this.rng() * stars.length)] : live[Math.floor(this.rng() * live.length)];
+    }
+    const tier = tierFor(this.totalDestroyed), angle = this.rng() * Math.PI * 2;
+    if (kind === 'burst_cluster') {
+      const count = Math.min(5, 3 + Math.floor(this.rng() * 3) + (tier >= 3 ? 1 : 0));
+      for (let i = 0; i < count; i++) { const a = angle + i * Math.PI * 2 / count, r = between(P.clusterMin, P.clusterMax); points.push({ x: anchor.x + Math.cos(a) * r, y: anchor.y + Math.sin(a) * r }); }
+    } else if (kind === 'arc') {
+      const count = Math.min(6, 4 + Math.floor(this.rng() * 3) + (tier >= 3 ? 1 : 0)), step = Math.PI / (count - 1);
+      const r = Math.min(C.clusterMax, between(P.arcSpacingMin, P.arcSpacingMax) / (2 * Math.sin(step / 2)));
+      for (let i = 0; i < count; i++) { const a = angle + i * step; points.push({ x: anchor.x + Math.cos(a) * r, y: anchor.y + Math.sin(a) * r }); }
+    } else if (kind === 'bridge') {
+      const others = live.filter(s => Math.hypot(s.x - anchor.x, s.y - anchor.y) > P.neighbourMax * 1.5 && Math.hypot(s.x - anchor.x, s.y - anchor.y) < P.neighbourMax * 3);
+      const other = others.length ? others[Math.floor(this.rng() * others.length)] : { x: anchor.x + Math.cos(angle) * P.neighbourMax * 2, y: anchor.y + Math.sin(angle) * P.neighbourMax * 2 };
+      const a = Math.atan2(other.y - anchor.y, other.x - anchor.x), side = P.neighbourMin;
+      for (const origin of [anchor, other]) points.push({ x: origin.x - Math.sin(a) * side, y: origin.y + Math.cos(a) * side });
+      for (const t of [1 / 3, 2 / 3]) points.push({ x: anchor.x + (other.x - anchor.x) * t, y: anchor.y + (other.y - anchor.y) * t });
+      points.push({ x: other.x + Math.sin(a) * side, y: other.y - Math.cos(a) * side });
+    } else {
+      for (let i = 0, count = 1 + Math.floor(this.rng() * 3); i < count; i++) points.push({ x: between(C.arena.left + C.variety.radiusMax, C.arena.right - C.variety.radiusMax), y: between(C.arena.top + C.variety.radiusMax, C.arena.bottom - C.variety.radiusMax) });
+    }
+    return { kind, anchor, points, index: 0 };
+  }
+  newChain() { const id = this.nextChain++; this.chains.set(id, { kills: 0, events: 0, photons: 0, startedAt: this.simulationTime, lastKillAt: this.simulationTime, cascadeKills: 0 }); return id; }
+  attack(x, y) {
+    if (this.state !== 'PLAYING' || this.paused || this.remaining <= 0) return false;
+    const chainId = this.newChain(); let target = null, nearest = Infinity;
+    for (const s of this.alive) { const d = Math.hypot(x - s.x, y - s.y); if (s.grace <= 1e-9 && d <= s.radius && d < nearest) { target = s; nearest = d; } }
+    this.clickVFX.add(x, y, Boolean(target), this.elapsed);
+    if (!target) return false;
+    target.recoil = C.visual.recoilLife; target.recoilUntil = this.elapsed + C.visual.recoilLife;
+    this.debris(target, 2 + Math.floor(this.vfxRng() * 3), C.visual.clickDebrisLife, x, y);
+    const cause = { chainId, source: 'direct', depth: 0, angle: 0 };
+    this.enqueue(target, this.stats.directDamage, cause); this.flush();
+    if (this.stats.impactEnabled) { this.area(target, this.stats.impactRadius, this.stats.impactDamage, { ...cause, source: 'impact', depth: 1 }, '#ffffff', target.id); this.flush(); }
+    this.onEvent?.('click'); return true;
+  }
+  scheduleEvent(event) {
+    if (this.state !== 'PLAYING' || this.remaining <= 0) return false;
+    if (this.queue.length >= C.caps.scheduled) { this.safetyCapsHit++; return false; }
+    event.eventId = this.nextEvent++; event.simulationTime = event.scheduledTime;
+    const compare = (a, b) => a.scheduledTime - b.scheduledTime || a.priority - b.priority || a.eventId - b.eventId;
+    let lo = 0, hi = this.queue.length;
+    while (lo < hi) { const mid = (lo + hi) >>> 1; if (compare(this.queue[mid], event) <= 0) lo = mid + 1; else hi = mid; }
+    this.queue.splice(lo, 0, event); return true;
+  }
+  scheduleEffect(action, cause, delay = C.propagation.delay) {
+    if (cause.depth > C.caps.depth) { this.safetyCapsHit++; return; }
+    this.scheduleEvent({ kind: 'effect', action, chainId: cause.chainId, sourceKind: cause.source, generation: cause.depth, scheduledTime: this.simulationTime + delay, priority: 1 });
+  }
+  enqueue(target, damage, cause, scheduledTime = this.simulationTime, wave = null) {
+    if (this.state !== 'PLAYING' || target.destroyed || scheduledTime + 1e-9 < (target.vulnerableAt || 0) || this.remaining <= 0) return;
+    const chain = this.chains.get(cause.chainId);
+    if (!chain) return;
+    if (cause.depth > C.caps.depth || chain.events >= C.caps.events) { this.safetyCapsHit++; return; }
+    if (this.scheduleEvent({ kind: 'damage', target, damage, cause, wave, chainId: cause.chainId, sourceKind: cause.source, generation: cause.depth, scheduledTime, priority: 0 })) chain.events++;
+  }
+  flush() {
+    // One stable, game-time queue for damage, delayed native effects and splits.
+    while (this.queue.length && this.queue[0].scheduledTime <= this.elapsed + 1e-9 && this.state === 'PLAYING') {
+      const event = this.queue.shift(); this.processingTime = event.scheduledTime;
+      if (event.kind === 'effect') { event.action(); continue; }
+      const { target: s, damage, cause, wave } = event;
+      if (wave) { if (wave.hitIds.has(s.id)) continue; wave.hitIds.add(s.id); }
+      if (s.destroyed || event.scheduledTime + 1e-9 < (s.vulnerableAt || 0) || this.remaining <= 0) continue;
+      if (wave) this.knockback(s, wave);
+      const actual = Math.min(s.hp, damage), chain = this.chains.get(cause.chainId);
+      s.hp -= actual; this.runEarned += actual; chain.photons += actual; s.flash = C.visual.flash; s.flashUntil = this.simulationTime + C.visual.flash;
+      if (this.options.damageVFX && cause.source !== 'direct') this.debris(s, 3);
+      if (s.hp > 0) continue;
+      const bonus = Math.ceil(s.bonus * this.stats.bonusMultiplier);
+      s.destroyed = true; this.totalDestroyed++; this.runEarned += bonus; chain.photons += bonus; chain.kills++; chain.lastKillAt = this.simulationTime;
+      if (cause.source === 'direct') this.directKills++; else { this.cascadeKills++; chain.cascadeKills++; this.firstCascadeTime ??= this.simulationTime; }
+      this.currentChain = chain.kills; this.bestChain = Math.max(this.bestChain, chain.kills);
+      this.visual({ kind: 'death', x: s.x, y: s.y, shape: { ...s }, color: C.shapes[s.type].color, life: C.visual.deathLife });
+      this.debris(s, s.type === 'star' ? C.visual.starParticles : 5);
+      this.onEvent?.(s.type);
+      this.unlock(); const child = { ...cause, depth: cause.depth + 1 }, inheritance = this.options.inheritance;
+      this.scheduleEffect(() => {
+        this.emitNative(s, child);
+        if (inheritance && s.type === 'square' && cause.source === 'triangle') this.emitShard(s.x, s.y, cause.angle, 'inherited', cause.chainId, child.depth, true);
+        if (inheritance && s.type === 'triangle' && cause.source === 'square') this.area(s, C.inheritance.radius, this.stats.inheritanceDamage, { ...child, source: 'inherited' }, '#ffffff');
+      }, child);
+      if (chain.kills >= 4) this.visual({ kind: 'popup', x: s.x, y: s.y, text: `${chain.kills} CHAIN  +${chain.photons}`, color: C.shapes[s.type].color, life: .7 });
+    }
+    this.processingTime = null;
+  }
+  unlock() {
+    const tier = tierFor(this.totalDestroyed);
+    for (let i = this.highestTier + 1; i <= tier; i++) {
+      if (i === 1) { this.pending.push('pentagon'); this.unlockTimes.pentagon = this.elapsed; }
+      if (i === 2) { this.pending.push('star'); this.unlockTimes.star = this.elapsed; }
+    }
+    this.highestTier = Math.max(this.highestTier, tier);
+  }
+  emitShard(x, y, angle, source, chainId, depth, small = false, exclude = null) {
+    if (this.state !== 'PLAYING' || this.remaining <= 0) return;
+    if (depth > C.caps.depth || this.shards.filter(s => !s.dead).length >= C.caps.shards) { this.safetyCapsHit++; return; }
+    const shard = makeShard(this, x, y, angle, source, chainId, depth, small, exclude); this.shards.push(shard); this.peakShards = Math.max(this.peakShards, this.shards.filter(s => !s.dead).length); return shard;
+  }
+  emitNative(s, cause) {
+    if (s.type === 'triangle') for (let i = 0; i < this.stats.triangleCount; i++) { const a = i < 3 ? i * Math.PI * 2 / 3 : Math.PI / 3 + (i - 3) * Math.PI * 2 / 3; this.emitShard(s.x, s.y, s.angle + a, s.type, cause.chainId, cause.depth); }
+    if (s.type === 'pentagon') for (let i = 0; i < this.stats.pentagonCount; i++) this.emitShard(s.x, s.y, s.angle - C.shapes.pentagon.splitAngle + 2 * C.shapes.pentagon.splitAngle * i / (this.stats.pentagonCount - 1), s.type, cause.chainId, cause.depth);
+    if (s.type === 'square' || s.type === 'star') this.area(s, this.stats[`${s.type}Radius`], this.stats[`${s.type}Damage`], { ...cause, source: s.type }, C.shapes[s.type].color);
+  }
+  area(s, radius, damage, cause, color, exclude = null) {
+    if (this.state !== 'PLAYING' || this.remaining <= 0) return;
+    if (cause.depth > C.caps.depth) { this.safetyCapsHit++; return; }
+    if (this.options.sequentialPropagation) {
+      if (this.waves.length >= C.caps.waves) { this.safetyCapsHit++; return; }
+      const wave = { id: this.nextWave++, x: s.x, y: s.y, radius: 0, maxRadius: radius, damage, speed: cause.source === 'star' ? C.propagation.starSpeed : C.propagation.squareSpeed, bornAt: this.simulationTime, age: 0, color, cause, chainId: cause.chainId, sourceKind: cause.source, generation: cause.depth, exclude, hitIds: new Set(), registeredIds: new Set() };
+      this.waves.push(wave); for (const target of this.alive) this.registerWaveTarget(wave, target); return wave;
+    }
+    this.visual({ kind: 'ring', x: s.x, y: s.y, radius, color, life: C.visual.ringLife });
+    for (const other of this.alive) if (other.id !== exclude && Math.hypot(other.x - s.x, other.y - s.y) - other.radius <= radius) {
+      this.enqueue(other, damage, cause);
+      this.knockback(other, s);
+    }
+  }
+  registerWaveTarget(wave, target) {
+    if (target.destroyed || target.id === wave.exclude || wave.registeredIds.has(target.id)) return;
+    const contact = Math.max(0, Math.hypot(target.x - wave.x, target.y - wave.y) - target.radius);
+    if (contact > wave.maxRadius || wave.bornAt + contact / wave.speed < this.simulationTime - 1e-9) return;
+    wave.registeredIds.add(target.id);
+    this.enqueue(target, wave.damage, wave.cause, wave.bornAt + contact / wave.speed, wave);
+  }
+  knockback(target, origin) { const a = Math.atan2(target.y - origin.y, target.x - origin.x); target.knockX = Math.cos(a) * C.visual.knockback; target.knockY = Math.sin(a) * C.visual.knockback; target.knockTime = C.visual.knockbackLife; }
+  moveShard(s, dt) {
+    const budget = Math.max(0, Math.min(C.shard.speed * dt, s.range - s.distance, C.shard.speed * (s.life - s.age)));
+    s.prevX = s.x; s.prevY = s.y;
+    const path = traceShard(this, s, budget);
+    for (const key of ['x', 'y', 'vx', 'vy', 'angle', 'bounces']) s[key] = path[key];
+    s.distance += path.distance; s.age += dt;
+    if (path.hit) {
+      s.dead = true; const hitAt = this.elapsed + path.distance / C.shard.speed;
+      this.enqueue(path.hit, s.damage, s, hitAt);
+      if (s.split) this.scheduleEvent({ kind: 'effect', chainId: s.chainId, sourceKind: s.source, generation: s.depth + 1, scheduledTime: hitAt, priority: 1, action: () => {
+        for (const direction of [-1, 1]) this.emitShard(s.x, s.y, s.angle + direction * C.smallShard.splitAngle, 'pentagon', s.chainId, s.depth + 1, true, path.hit.id);
+      } });
+    }
+    if (path.wallDead || s.distance >= s.range - 1e-7 || s.age >= s.life - 1e-7) s.dead = true;
+  }
+  update(dt) {
+    if (this.state !== 'PLAYING' || this.paused || dt <= 0) return;
+    // The endpoint frame never processes attacks, spawns or damage at/after zero.
+    if (dt >= this.remaining - 1e-9) {
+      this.elapsed = this.duration; this.remaining = 0; this.state = 'RESULT'; this.held = false;
+      for (const chain of this.chains.values()) this.finishChain(chain);
+      this.queue.length = 0; this.shards.length = 0; this.waves.length = 0; this.visuals.length = 0; this.particles.length = 0; this.clickVFX.clear(); this.chains.clear(); this.currentChain = 0;
+      return;
+    }
+    const end = this.elapsed + dt;
+    let iterations = 0;
+    // Split a fixed tick at every scheduled event and earliest swept collision.
+    // No projectile can absorb a target that an earlier event already destroyed.
+    while (this.elapsed < end - 1e-9) {
+      this.flush();
+      if (++iterations > C.caps.tickIterations) { this.safetyCapsHit++; this.elapsed = end; break; }
+      let slice = Math.min(end - this.elapsed, this.queue.length ? Math.max(0, this.queue[0].scheduledTime - this.elapsed) : Infinity);
+      for (const shard of this.shards) if (!shard.dead) {
+        const budget = Math.max(0, Math.min(C.shard.speed * slice, shard.range - shard.distance, C.shard.speed * (shard.life - shard.age)));
+        const path = traceShard(this, shard, budget); if (path.hit) slice = Math.min(slice, path.distance / C.shard.speed);
+      }
+      for (const shard of [...this.shards]) if (!shard.dead) this.moveShard(shard, slice);
+      this.elapsed += slice; this.flush(); this.shards = this.shards.filter(s => !s.dead);
+    }
+    this.elapsed = end; this.flush(); this.remaining = this.duration - this.elapsed;
+    for (const s of this.shapes) { s.grace = Math.max(0, s.vulnerableAt - this.elapsed); s.flash = Math.max(0, (s.flashUntil || 0) - this.elapsed); s.recoil = Math.max(0, (s.recoilUntil || 0) - this.elapsed); s.knockTime = Math.max(0, s.knockTime - dt); }
+    this.attackClock -= dt;
+    if (this.held && this.pointer && this.attackClock <= 1e-9) { this.attack(this.pointer.x, this.pointer.y); this.attackClock += this.stats.attackInterval; }
+    this.shards = this.shards.filter(s => !s.dead); this.shapes = this.shapes.filter(s => !s.destroyed);
+    for (const wave of this.waves) { wave.age = Math.max(0, this.elapsed - wave.bornAt); wave.radius = Math.min(wave.maxRadius, wave.age * wave.speed); }
+    this.waves = this.waves.filter(w => w.age < w.maxRadius / w.speed + C.propagation.tailLife);
+    this.clickVFX.update(dt, this.elapsed);
+    this.spawnClock += dt;
+    if (this.spawnClock >= C.spawnInterval - 1e-9) {
+      this.spawnClock %= C.spawnInterval;
+      for (let i = 0; i < C.spawnBatch && this.alive.length < this.target; i++) {
+        const shape = this.spawn(this.pending[0] || null); if (!shape) break; if (this.pending.length) this.pending.shift();
+      }
+    }
+    for (const p of [...this.visuals, ...this.particles]) { const age = Math.max(0, this.elapsed - p.bornAt), delta = age - p.age; p.age = age; if (p.vx !== undefined) { p.x += p.vx * delta; p.y += p.vy * delta; } }
+    this.visuals = this.visuals.filter(p => p.age < p.life); this.particles = this.particles.filter(p => p.age < p.life);
+    // Discard chains with no live effect. IDs remain monotonically increasing.
+    const active = new Set([...this.shards, ...this.waves, ...this.queue].map(s => s.chainId)); for (const [id, chain] of this.chains) if (!active.has(id)) { this.finishChain(chain); this.chains.delete(id); }
+    this.currentChain = Math.max(0, ...Array.from(this.chains.values(), chain => chain.kills));
+  }
+  skipAhead(seconds) {
+    if (this.state !== 'PLAYING' || this.paused || seconds <= 0) return;
+    if (seconds >= this.remaining) { this.update(seconds); return; }
+    // A visible stall consumes run time without replaying invisible past hits.
+    // Future wave arrivals remain valid; expired births and arrivals are dropped.
+    this.elapsed += seconds; this.remaining = this.duration - this.elapsed; this.skippedSeconds += seconds;
+    const pending = this.queue.filter(e => e.scheduledTime > this.elapsed);
+    this.skippedEvents += this.queue.length - pending.length; this.queue = pending;
+    for (const s of this.shards) {
+      const budget = Math.max(0, Math.min(C.shard.speed * seconds, s.range - s.distance, C.shard.speed * (s.life - s.age)));
+      const path = traceShard({ alive: [], options: this.options, elapsed: this.elapsed }, s, budget);
+      for (const key of ['x', 'y', 'vx', 'vy', 'angle', 'bounces']) s[key] = path[key];
+      s.distance += path.distance; s.age += seconds; s.dead = path.wallDead || s.age >= s.life || s.distance >= s.range;
+    }
+    this.shards = this.shards.filter(s => !s.dead);
+    for (const w of this.waves) { w.age = this.elapsed - w.bornAt; w.radius = Math.min(w.maxRadius, w.age * w.speed); }
+    this.waves = this.waves.filter(w => w.age < w.maxRadius / w.speed + C.propagation.tailLife);
+    for (const s of this.shapes) { s.grace = Math.max(0, s.vulnerableAt - this.elapsed); s.flash = Math.max(0, (s.flashUntil || 0) - this.elapsed); s.recoil = Math.max(0, (s.recoilUntil || 0) - this.elapsed); s.knockTime = Math.max(0, s.knockTime - seconds); }
+    for (const p of [...this.visuals, ...this.particles]) { const age = this.elapsed - p.bornAt, delta = age - p.age; p.age = age; if (p.vx !== undefined) { p.x += p.vx * delta; p.y += p.vy * delta; } }
+    this.visuals = this.visuals.filter(v => v.age < v.life); this.particles = this.particles.filter(p => p.age < p.life); this.clickVFX.update(0, this.elapsed);
+  }
+  visual(v) { if (this.visuals.length < C.caps.visuals) this.visuals.push({ ...v, age: 0, bornAt: this.simulationTime }); }
+  finishChain(chain) { if (chain.cascadeKills > 0) this.cascadeDurations.push((chain.lastKillAt - chain.startedAt) * 1000); }
+  debris(s, count, life = C.visual.debrisLife, x = s.x, y = s.y) {
+    if (!this.options.damageVFX) return;
+    for (let i = 0; i < count && this.particles.length < C.caps.particles; i++) { const a = this.vfxRng() * Math.PI * 2, speed = 40 + this.vfxRng() * 130; this.particles.push({ x, y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, angle: a, color: C.shapes[s.type].color, age: 0, life, bornAt: this.simulationTime }); }
+  }
+  record() { const durations = [...this.cascadeDurations, ...Array.from(this.chains.values()).filter(c => c.cascadeKills).map(c => (c.lastKillAt - c.startedAt) * 1000)]; return { durationSeconds: this.duration, seed: this.seed, levels: { ...this.levels }, totalDestroyed: this.totalDestroyed, directKills: this.directKills, cascadeKills: this.cascadeKills, bestChain: this.bestChain, photonsEarned: this.runEarned, highestTier: this.highestTier, unlockTimes: { ...this.unlockTimes }, firstCascadeTime: this.firstCascadeTime, inheritanceEnabled: this.initialOptions.inheritance, ricochetEnabled: this.initialOptions.ricochet, sequentialPropagationEnabled: this.initialOptions.sequentialPropagation, visualVarietyEnabled: this.initialOptions.visualVariety, avgCascadeDurationMs: durations.length ? durations.reduce((a, b) => a + b, 0) / durations.length : 0, variantCounts: { ...this.variantCounts }, patternCounts: { ...this.patternCounts }, optionChanges: [...this.optionChanges], safetyCapsHit: this.safetyCapsHit, skippedSeconds: this.skippedSeconds, skippedEvents: this.skippedEvents, peakShards: this.peakShards }; }
+}

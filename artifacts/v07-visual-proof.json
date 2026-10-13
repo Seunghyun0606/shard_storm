@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "actualStarHPAfterDirectHit": 4,
+  "actualImpactWavePresent": true,
+  "actualAppliedStats": {
+    "directDamage": 5,
+    "attackInterval": 0.18000000000000002,
+    "duration": 65,
+    "triangleDamage": 5,
+    "pentagonDamage": 5,
+    "shardRange": 230,
+    "bounces": 2,
+    "triangleCount": 4,
+    "pentagonCount": 3,
+    "squareDamage": 3,
+    "starDamage": 6,
+    "squareRadius": 105,
+    "starRadius": 160,
+    "inheritanceDamage": 2,
+    "impactEnabled": true,
+    "impactRadius": 42,
+    "impactDamage": 1,
+    "bonusMultiplier": 1.1
+  },
+  "independentSwitchesPreservedPausedWorld": true,
+  "errors": []
+}

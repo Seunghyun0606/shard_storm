@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "method": "simulated document.hidden + real visibilitychange handler; not an actual tab switch",
+  "pausedForMs": 700,
+  "timeBefore": 59.88333333333333,
+  "timeDuring": 59.88333333333333,
+  "timeOnResume": 59.88333333333333,
+  "timeAfter200ms": 59.68333333333333
+}

@@ -1,0 +1,173 @@
+{
+  "browser": "154.0.8037.98",
+  "checks": [
+    "legacy v0.6 save migrated and persisted with bank / five levels / best / history",
+    "manual pause / resume",
+    "unsettled reload gives no bank rewards",
+    "resized canvas pointer mapping",
+    "11 real nodes / 11 SVG edges / locked prerequisites",
+    "real upgrade purchases / bank deductions / persistence",
+    "upgraded 60s run increases cascade kills",
+    "Play Again / independent propagation-variety-inheritance A-B switches",
+    "MAX button disabled",
+    "all six P1 skills purchased through real prerequisite paths",
+    "graph-only scrolling keeps replay in result bounds",
+    "insufficient bank button disabled",
+    "hidden tab not reproducible in headless Chromium; engine pause verified separately",
+    "zero console / page errors"
+  ],
+  "runs": [
+    {
+      "name": "02-baseline",
+      "durationSeconds": 60,
+      "seed": 31415,
+      "totalDestroyed": 817,
+      "directKills": 170,
+      "cascadeKills": 647,
+      "bestChain": 39,
+      "photonsEarned": 14940,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 1.268848457255241,
+        "star": 3.012178093582203
+      },
+      "firstCascadeTime": 0.15612847958824486,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 511.96261555005515,
+      "variantCounts": {
+        "deep": 261,
+        "matte": 275,
+        "bright": 312
+      },
+      "patternCounts": {
+        "bridge": 114,
+        "scattered": 393,
+        "burst_cluster": 166,
+        "arc": 163
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 11,
+      "peakShards": 23,
+      "guidedDestroyed": 4,
+      "wallFPSMean": 128.48322293798608,
+      "first10SecondsFPS": 128.08693034253017,
+      "last10SecondsFPS": 128.47427635662254,
+      "shapeTypesSeen": [
+        "triangle",
+        "square",
+        "pentagon",
+        "star"
+      ],
+      "bank": 14940
+    },
+    {
+      "name": "04-upgraded",
+      "durationSeconds": 60,
+      "seed": 31415,
+      "totalDestroyed": 1001,
+      "directKills": 193,
+      "cascadeKills": 808,
+      "bestChain": 43,
+      "photonsEarned": 19523,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 0.9346888697338949,
+        "star": 3.1999999999999935
+      },
+      "firstCascadeTime": 0.15612847958824486,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 490.2321476777804,
+      "variantCounts": {
+        "deep": 315,
+        "matte": 341,
+        "bright": 377
+      },
+      "patternCounts": {
+        "bridge": 177,
+        "scattered": 509,
+        "burst_cluster": 193,
+        "arc": 142
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 9,
+      "peakShards": 34,
+      "guidedDestroyed": 4,
+      "wallFPSMean": 128.27655002194743,
+      "first10SecondsFPS": 128.26979253149617,
+      "last10SecondsFPS": 128.18856002412247,
+      "shapeTypesSeen": [
+        "triangle",
+        "square",
+        "pentagon",
+        "star"
+      ],
+      "bank": 34313
+    },
+    {
+      "name": "06-ab-disabled",
+      "durationSeconds": 60,
+      "seed": 31415,
+      "totalDestroyed": 967,
+      "directKills": 200,
+      "cascadeKills": 767,
+      "bestChain": 25,
+      "photonsEarned": 18194,
+      "highestTier": 5,
+      "unlockTimes": {
+        "pentagon": 0.8012035109684466,
+        "star": 2.2461961045211907
+      },
+      "firstCascadeTime": 0.15612847958824486,
+      "inheritanceEnabled": false,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": false,
+      "visualVarietyEnabled": false,
+      "avgCascadeDurationMs": 315.0593762730459,
+      "variantCounts": {
+        "deep": 305,
+        "matte": 331,
+        "bright": 362
+      },
+      "patternCounts": {
+        "bridge": 157,
+        "scattered": 463,
+        "burst_cluster": 209,
+        "arc": 157
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 2,
+      "peakShards": 30,
+      "guidedDestroyed": 4,
+      "wallFPSMean": 128.65373458895905,
+      "first10SecondsFPS": 128.62808095726174,
+      "last10SecondsFPS": 128.82758299213845,
+      "shapeTypesSeen": [
+        "triangle",
+        "square",
+        "pentagon",
+        "star"
+      ],
+      "bank": 52507
+    }
+  ],
+  "errors": [],
+  "finalLevels": {
+    "crushPower": 5,
+    "shardPower": 2,
+    "shardRange": 1,
+    "chainAmplifier": 1,
+    "extraTime": 1,
+    "crushSpeed": 1,
+    "impactPulse": 1,
+    "ricochetPlus": 1,
+    "shardBloom": 1,
+    "echoCatalyst": 1,
+    "photonBoost": 1
+  }
+}

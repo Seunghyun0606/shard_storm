@@ -1,0 +1,61 @@
+﻿
+> test
+> node --test tests/*.test.js
+
+✔ PRD 2: actual Triangle shard collision applies 3/4 damage with Shard Power 0/1 (13.7143ms)
+✔ PRD 3: Square shockwave damages three targets once, ring never reapplies damage (2.4143ms)
+✔ PRD 4: Pentagon impact produces exactly 2 small shards, excludes struck target, no resplit (0.8213ms)
+✔ PRD 5: swept collision hits nearest target even across a large step (0.4902ms)
+✔ PRD 5: Ricochet ON/OFF, exact total path, dynamic lifetime and longer upgraded flight (2.0249ms)
+✔ corner reflection consumes one bounce and a reflected leg cannot tunnel (0.3128ms)
+✔ PRD 8: Triangle native shard → Square grants one needle only when enabled (0.7503ms)
+✔ PRD 8: native Square → Triangle inheritance; auxiliary kill emits native effects but no re-inheritance (0.4302ms)
+✔ Star explosion and Chain Amplifier have distinct exact radius/damage (10.734ms)
+✔ VFX toggles never change seeded simulation or rewards (6.9297ms)
+✔ PRD 1: Square 4 → 1 → destroyed once; exact HP + bonus reward (12.1203ms)
+✔ PRD 9: guided first click reliably destroys at least 4 within 10 seconds, across seeds (8.6564ms)
+✔ PRD 10: overkill only pays actual HP; basic totals and enhanced ceil bonus (0.5059ms)
+✔ PRD 6: a single area-chain crosses 12 and 30, queues Pentagon then Star (12.0712ms)
+✔ PRD 7: replenishment respects caps, spacing, bounds, and no Enhanced before 55 (58.88ms)
+✔ spawn grace prevents immediate direct and area damage (0.5329ms)
+✔ PRD 11: exact run durations for Extra Time 0/1/2/6 (0.5913ms)
+✔ PRD 12: no damage, spawn, attack, reward after zero; pause does not advance time (0.3375ms)
+✔ fatal strike alone owns chain, direct and cascade stats sum correctly (0.5531ms)
+✔ PRD 16: logical pointer coordinates stay accurate after canvas resize (0.3685ms)
+✔ PRD 14: event/depth/shard limits block real work without fake rewards (1.1495ms)
+✔ all tiers use cumulative thresholds and exact densities (0.7692ms)
+✔ PRD 13: settlement exactly once, no active-run rewards saved, upgrades persist (5.0016ms)
+✔ PRD 15: purchase cost, level, MAX and insufficient funds/state restrictions (0.2322ms)
+✔ corrupt/out-of-range saves recover safely; unavailable storage never crashes (0.9644ms)
+✔ run history is bounded to 20 and stores actual best records (41.8527ms)
+✔ v0.7 / 17: Square wave hits near then far at actual circular contact times (7.5255ms)
+✔ v0.7 / 18: Star target at 120px keeps HP until front touches its hit circle (1.0788ms)
+✔ v0.7 / 19: native and inherited emissions wait exactly 0.03 simulation seconds (1.0212ms)
+✔ v0.7 / 20: immediate hit/miss feedback is cosmetic; flash/recoil/debris are timed (0.698ms)
+✔ click feedback pool is bounded and reuses expired objects (0.5176ms)
+✔ v0.7 / 21-22: same cosmetic seed reproduces geometry/material; Enhanced is mechanical (2.1579ms)
+✔ Visual Variety and Damage VFX toggles preserve gameplay RNG/HP/rewards/positions (23.8986ms)
+✔ four pattern plans are deterministic, fulfil shape sizes and have safe spawn fallbacks (3.5119ms)
+✔ v0.7 / 23: all prerequisite edges, costs and locked nodes use the same definitions (0.7557ms)
+✔ skill graph rejects duplicate, missing, cyclic and impossible prerequisite definitions (0.6253ms)
+✔ v0.7 / 24: legacy bank/5 levels/best/history/options survive migration; new skills are zero (1.5347ms)
+✔ v0.7 / 25: Impact Pulse only on successful hits, excludes original, shares chain and never inherits (0.6658ms)
+✔ v0.7 / 26: pending native birth and wave arrival are discarded at Game Over (0.459ms)
+✔ v0.7 / 27: overlapping equal-time waves pay HP and kill bonus once, stable last hit ownership (1.2782ms)
+✔ scheduler orders time → priority → event ID and keeps pending Chain alive (0.4949ms)
+✔ all six P1 derived effects have exact PRD values (0.1357ms)
+✔ Crush Speed changes actual hold cadence without losing fractional intervals (3.8304ms)
+✔ Shard Bloom creates real additional main shards and still only two children per Pentagon hit (0.8349ms)
+✔ Ricochet+ actually survives a second wall; small shards still never bounce (0.5237ms)
+✔ Echo Catalyst scales needle and wave; Photon Boost scales bonus only, never HP payout (0.3611ms)
+✔ v0.7 / 28: 120-target overlapping burst cannot duplicate rewards or exceed caps (42.5413ms)
+✔ visible catch-up skip drops past events instead of emitting late phantom attacks (0.9247ms)
+ℹ tests 48
+ℹ suites 0
+ℹ pass 48
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 243.6561
+

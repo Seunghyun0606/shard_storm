@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Shard Storm — Playtest</title><link rel="icon" href="data:,"><link rel="stylesheet" href="style.css"></head>
+<body>
+<main>
+  <header class="masthead"><a class="brand" href="./"><span class="brand-icon">◈</span> SHARD STORM</a><div class="edition"><span class="status-dot"></span> PROTOTYPE / v0.7</div></header>
+  <section class="game-shell" aria-label="Shard Storm 게임">
+    <div class="toolbar"><span>BREAK. CASCADE. REPEAT.</span><div><button id="sound" class="quiet">SOUND OFF</button><button id="pause" class="quiet" hidden>일시정지</button><button id="dev-toggle" class="quiet">DEV [D]</button></div></div>
+    <div class="arena-wrap">
+      <canvas id="game" width="960" height="540" aria-label="도형을 클릭하거나 누른 채 드래그해 파괴하세요"></canvas>
+      <div id="title" class="overlay">
+        <div class="eyebrow">60 SECONDS. ONE CHAIN REACTION.</div>
+        <h1>SHARD<br><span>STORM</span><sup>↗</sup></h1>
+        <p>도형을 깨고, 파편을 퍼뜨리세요.<br>더 큰 연쇄를 만들고 영구 스킬을 강화하세요.</p>
+        <button id="start" class="primary">START RUN <span>↗</span></button>
+        <small>마우스 클릭 · 누른 채 드래그 / 첫 판 60초</small>
+      </div>
+      <div id="paused" class="overlay pause-overlay" hidden><div class="eyebrow">TAKE A BREATH</div><h2>일시정지</h2><p>탭으로 돌아오면 이어서 플레이합니다.</p><button id="resume" class="primary">계속 플레이</button></div>
+      <div id="result" class="overlay result-overlay" hidden>
+        <div class="result-top"><div><div class="eyebrow">RUN COMPLETE</div><h2>GAME OVER<span>.</span></h2></div><div class="bank-label">PHOTON BANK<strong id="bank">0</strong></div></div>
+        <div id="stats" class="stats"></div><div id="comparison" class="comparison"></div>
+        <div class="upgrade-heading"><span>PERMANENT SKILL TREE</span><small>노드 선택 → 강화 · 다음 Run부터 적용</small></div>
+        <div id="upgrades" class="skill-tree-scroll" aria-label="영구 스킬 그래프"></div>
+        <div id="skill-info" class="skill-info" aria-live="polite"></div>
+        <div class="result-bottom"><span id="next-run"></span><button id="again" class="primary">PLAY AGAIN <span>↗</span></button></div>
+      </div>
+    </div>
+    <footer class="game-footer"><span><i></i> HOLD TO CRUSH <b>클릭 · 홀드 · 드래그</b></span><span>NO AIM ASSIST. JUST CHAIN REACTIONS.</span></footer>
+  </section>
+  <section class="legend" aria-label="도형별 효과"><div><span class="shape-icon triangle">△</span><p><strong>TRIANGLE</strong><small>3방향 파편 · 연쇄의 시작</small></p></div><div><span class="shape-icon square">□</span><p><strong>SQUARE</strong><small>충격파 · 주변 도형 약화</small></p></div><div><span class="shape-icon pentagon">⬠</span><p><strong>PENTAGON</strong><small>분열 파편 · 분기 확산</small></p></div><div><span class="shape-icon star">☆</span><p><strong>STAR</strong><small>광역 폭발 · 한 번에 크게</small></p></div></section>
+  <div class="page-bottom"><span>AN EXPERIMENT IN SATISFYING DESTRUCTION</span><span>로컬 저장 · 영구 강화 · 반복 플레이</span></div>
+  <div id="notice" role="status"></div>
+</main>
+<aside id="dev" hidden><div class="dev-heading">DEVELOPER LAB<button id="dev-close" class="quiet">닫기</button></div><pre id="debug-stats"></pre><div id="options"></div><label>RNG SEED<input id="seed" type="number" value="31415"></label><label>테스트 시간 (초 · 다음 Run)<input id="duration" type="number" min="1" max="90" placeholder="기본 스킬 시간"></label><button id="same-seed">동일 Seed 새 Run (미정산 Run 폐기)</button><div id="spawn-tools"></div><button id="grant">테스트 Photon +1000</button><button id="copy">Run JSON 복사</button><button id="reset" class="danger">세이브 초기화</button><small>테스트 지급·시간 변경·강제 생성은 재미 측정 기록과 분리하세요.</small></aside>
+<script type="module" src="app.js"></script>
+</body></html>
