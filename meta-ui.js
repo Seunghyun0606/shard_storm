@@ -1,0 +1,18 @@
+import {CONFIG as C} from './config.js';
+import {contractState,contractTerms} from './contracts.js';
+import {ensureOffer} from './anomalies.js';
+const el=(tag,text)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;return e;};
+const conditions={directKills:'직접 완전 파괴',chain10:'서로 다른 Chain10 달성',primaryShardKills:'Triangle/Pentagon 주 파편 완전 파괴',nativeWaveKills:'Square/Star 고유 파동 완전 파괴',directCrackedKills:'Cracked 직접 완전 파괴',wardReleasesFromHexDeath:'Hex 사망으로 실제 Ward 해제',coreOreKills:'Core 원석 완전 파괴',reactorStageWaveExecuted:'실행된 Reactor 단계 파동',anomalyWins:'Anomaly 성공 Run',ancientKills:'Ancient Core 완전 파괴',movingDirectKills:'움직이는 도형 직접 파괴',chain15:'한 Chain15 달성',chargedOrReactorKills:'Charged 또는 Reactor 파괴'};
+function section(container,label){const d=el('details');d.className='meta-section';d.open=container.querySelector('details')?.open||false;d.append(el('summary',label));container.replaceChildren(d);return d;}
+export function renderContracts(container,save,{state,accept,abandon}){
+ const d=section(container,`CONTRACTS · ${save.contracts.active.length}/3 · 배지 ${save.contractMedals.length}/10`),grid=el('div');grid.className='meta-grid';const locked=state==='PLAYING'||Boolean(save.pendingSettlement);
+ for(const[id,c]of Object.entries(C.contracts)){const r=contractState(save,id),t=contractTerms(id,r.stage),active=save.contracts.active.includes(id),card=el('article');card.className='meta-card';card.dataset.contract=id;card.append(el('strong',`${c.name} · ${['Ⅰ','Ⅱ','Ⅲ'][r.stage-1]}${active?' · ACTIVE':''}`),el('small',conditions[c.counter]||`${c.counter} · 정산된 Run만 누적`),el('small',r.maxCompletedStage===3?'Ⅲ 완료 · 영구 배지':`${r.progress} / ${t.target} · Photon +${t.photon} / Catalyst +${t.catalyst}`));
+ const b=el('button',active?'포기 · 진행도 초기화':r.maxCompletedStage===3?'완료':save.discoveryRank<c.rank?`Rank ${c.rank} 필요`:'수락');b.dataset.contractAction=active?'abandon':'accept';b.disabled=locked||r.maxCompletedStage===3||save.discoveryRank<c.rank||(active?state!=='RESULT':save.contracts.active.length>=3);b.onclick=()=>active?abandon(id):accept(id);card.append(b);grid.append(card);}
+ d.append(grid,el('small','완료 시 정산 보상 1회 · 다음 단계는 다시 수락 · 초과 진행도 이월 없음'));
+}
+export function renderAnomalies(container,save,{state,select}){
+ const offer=ensureOffer(save),d=section(container,`NEXT RUN · ${C.anomalies[save.selectedAnomaly]?.name||'NORMAL'}`),grid=el('div');grid.className='meta-grid';
+ for(const id of [null,...offer.offeredIds]){const a=C.anomalies[id],card=el('label');card.className='meta-card anomaly-choice';const input=el('input');input.type='radio';input.name=`anomaly-${container.id}`;input.value=id||'normal';input.checked=save.selectedAnomaly===id;input.disabled=state==='PLAYING'||Boolean(save.pendingSettlement);input.onchange=()=>select(id);card.append(input,el('strong',a?.name||'Normal Run'),el('small',a?.description||'기존 전투 규칙 · 추가 목표 없음'),el('small',a?`성공 목표: ${conditions[a.counter]} · Refinery +${Math.round(a.rate*100)}% (최대60 Photon)`:'기본 Refinery 보상'));grid.append(card);}
+ d.append(grid,el('small','선택은 다음 Run에만 적용 · 새로고침해도 후보 유지 · 기본 Normal'));
+}
+export function resultMetaText(game){const m=game.metaResult,a=m?.anomaly,d=C.anomalies[a?.id];return `Raw ${game.runEarned.toLocaleString()} → ×${game.refinery.multiplier.toFixed(3)} · Refinery +${game.refinery.payout} / Contract +${m?.contracts.photon||0} / Anomaly +${a?.photon||0} Photon · Catalyst +${m?.totalCatalyst??game.pendingCatalyst}${d?` · ${d.name}: ${a.succeeded?'SUCCESS':'FAIL'} (${a.actual}/${a.target}${d.alternateCounter?` 또는 ${a.alternate}/${a.alternateTarget}`:''})`:' · NORMAL'}`;}

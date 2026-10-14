@@ -19,6 +19,7 @@ export function draw(ctx, game, fps = 60) {
   const hud = game ? [[`${game.remaining.toFixed(1)}s`, 'TIME LEFT'], [String(game.totalDestroyed), 'DESTROYED'], [`+${game.runEarned}`, 'RAW SHARDS'], [`${game.currentChain} / ${game.bestChain}`, 'CHAIN / BEST']] : [[`${C.duration.toFixed(1)}s`,'TIME LEFT'],['0','DESTROYED'],['+0','RAW SHARDS'],['0 / 0','CHAIN / BEST']];
   hud.forEach(([value, label], i) => { const x = 42 + i * 231; ctx.font = '9px Arial'; ctx.fillStyle = '#80999f'; ctx.fillText(label, x, 24); ctx.font = 'bold 22px Arial'; ctx.fillStyle = i === 2 ? C.shapes.triangle.color : '#e8f0ed'; if (i === 0 && game?.remaining <= 10) ctx.fillStyle = '#ff6eab'; ctx.fillText(value, x, 53); });
   if (!game) return; ctx.fillStyle='#b8d9d4';ctx.font='10px Arial';ctx.fillText(`RANK ${game.discoveryRank} · PENDING CATALYST +${game.pendingCatalyst}`,C.width-250,72);
+  const active=game.contractSnapshot[0];ctx.fillText(`${C.anomalies[game.anomalyId]?.name||'NORMAL'}${active?` · ${C.contracts[active.id].name}: ${active.progress+(game.metaCounters[C.contracts[active.id].counter]||0)} / ${C.contracts[active.id].target*C.meta.contractTargets[active.stage-1]}`:''}`,42,72);
   ctx.save(); ctx.beginPath(); ctx.rect(C.arena.left, C.arena.top, C.arena.right - C.arena.left, C.arena.bottom - C.arena.top); ctx.clip();
   for (const s of game.alive) {
     const cfg = C.shapes[s.type], scale = (s.grace > 0 ? Math.max(.1, 1 - s.grace / C.spawnGrace) : 1) * (1 + (C.visual.recoilScale - 1) * s.recoil / C.visual.recoilLife);

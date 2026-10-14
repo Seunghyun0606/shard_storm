@@ -9,8 +9,11 @@ import { drawRefinery } from './refinery.js';
 import { EconomySandbox, buildPresets } from './economy.js';
 import { emptyLevels } from './progression.js';
 import { discoveryView } from './discovery.js';
-import { craftRelic,equipRelic } from './relics.js';
+import { craftRelic,equipRelic,blueprints } from './relics.js';
 import { renderRelics } from './relic-ui.js';
+import {renderContracts,renderAnomalies,resultMetaText}from'./meta-ui.js';
+import {acceptContract,abandonContract,snapshotContracts}from'./contracts.js';
+import {ensureOffer,selectAnomaly,consumeOffer}from'./anomalies.js';
 const $ = id => document.getElementById(id), canvas = $('game'), ctx = canvas.getContext('2d');
 let storage; try { storage = window.localStorage; } catch { storage = { getItem() { return null; }, setItem() { throw new Error('Unavailable'); } }; }
 let save = loadSave(storage), game = null, last = null, accumulator = 0, fps = 60, manualPause = false, previousBest = {}, audio = null, selectedSkill = 'crushPower', lastSoundAt = -Infinity, voices = 0;
@@ -45,7 +48,7 @@ function tone(type) {
 function start(seed = C.seed, duration) {
   if (game?.state === 'RESULT' && !game.settled) finishRefinery();
   if (resultEnteredAt !== null && save.lastRuns.at(-1)?.runId === game?.runId) { save.lastRuns.at(-1).resultScreenSeconds = (performance.now() - resultEnteredAt) / 1000; persist(); }
-  previousBest = { ...save.bestStats }; game = new Game({ seed, duration, runId: crypto.randomUUID(), levels: save.levels,relicLoadout:save.relicEquipped, options: save.options,discoveryRank:save.discoveryRank,welcomeFlags:save.milestoneWelcomeFlags,oreEnabled:save.options.oreEnabled,sandbox: Boolean(sandboxSession), tierPreset: sandboxSession ? $('tier-preset').value : 'v09_short', experiment: sandboxSession ? $('spawn-preset').value : 'baseline' }); game.onEvent = tone;
+  const offer=ensureOffer(save);previousBest = { ...save.bestStats }; game = new Game({ seed, duration, runId: crypto.randomUUID(), levels: save.levels,relicLoadout:save.relicEquipped,activeContracts:snapshotContracts(save),anomalyId:save.selectedAnomaly, options: save.options,discoveryRank:save.discoveryRank,welcomeFlags:save.milestoneWelcomeFlags,oreEnabled:save.options.oreEnabled,sandbox: Boolean(sandboxSession), tierPreset: sandboxSession ? $('tier-preset').value : 'v09_short', experiment: sandboxSession ? $('spawn-preset').value : 'baseline' }); game.offerId=offer.offerId;consumeOffer(save);persist();game.onEvent = tone;renderMeta();
   refineryStartedAt = null; resultEnteredAt = null; $('rank-banner').hidden=true;rankBannerShownId=null;
   manualPause = false; accumulator = 0; last = null;
   $('title').hidden = true; $('result').hidden = true; $('paused').hidden = true; $('pause').hidden = false; $('pause').textContent = '일시정지';
@@ -59,7 +62,7 @@ function result() {
   $('stats').replaceChildren(...values.map(([label, value]) => { const el = document.createElement('div'); el.className = 'stat'; const small = document.createElement('small'); small.textContent = label; const strong = document.createElement('strong'); strong.textContent = value; el.append(small, strong); return el; }));
   $('comparison').textContent = `이전 최고 파괴 ${previousBest.totalDestroyed || 0} → 이번 ${game.totalDestroyed} (${game.totalDestroyed - (previousBest.totalDestroyed || 0) >= 0 ? '+' : ''}${game.totalDestroyed - (previousBest.totalDestroyed || 0)}) · 이전 최고 연쇄 ${previousBest.bestChain || 0} · 이번 Run ${game.duration.toFixed(0)}초`;
   renderUpgrades();
-  $('refinery-summary').textContent = `Raw ${game.runEarned.toLocaleString()} → ×${game.refinery.multiplier.toFixed(3)} → Photon +${game.refinery.payout} · Catalyst +${game.pendingCatalyst} · Ore Raw +${game.rawOreBonus} / Skill +${game.rawSkillBonus}`;
+  $('refinery-summary').textContent = resultMetaText(game);
   if (!game.refinery.enabled) finishRefinery();
 }
 function finishRefinery(skipped = false) {
@@ -72,7 +75,7 @@ function finishRefinery(skipped = false) {
   }
   game.refinerySkipped = skipped; game.resultWaitSeconds = (performance.now() - refineryStartedAt) / 1000;
   if (save.pendingSettlement) { save.pendingSettlement.record.refinerySkipped = skipped; save.pendingSettlement.record.resultWaitSeconds = game.resultWaitSeconds; }
-  settle(save, game); persist(); if(save.discoveryRank>game.discoveryRank&&rankBannerShownId!==game.runId){rankBannerShownId=game.runId;$('rank-banner').textContent=`DISCOVERED · RANK ${save.discoveryRank} · 다음 Run부터 새 콘텐츠`;$('rank-banner').hidden=false;} $('result').classList.remove('processing'); $('refinery-canvas').hidden = true; $('refinery-skip').hidden = true; renderUpgrades();
+  const priorBlueprints=blueprints(save);settle(save, game);ensureOffer(save); persist();const newBlueprints=blueprints(save).filter(id=>!priorBlueprints.includes(id)); if((save.discoveryRank>game.discoveryRank||newBlueprints.length)&&rankBannerShownId!==game.runId){rankBannerShownId=game.runId;$('rank-banner').textContent=`DISCOVERED · RANK ${save.discoveryRank}${newBlueprints.length?` · 설계도 ${newBlueprints.map(id=>C.relics[id].name).join(', ')}`:''} · 다음 Run부터 적용`;$('rank-banner').hidden=false;} $('result').classList.remove('processing'); $('refinery-canvas').hidden = true; $('refinery-skip').hidden = true; renderUpgrades();
 }
 function renderUpgrades() {
   renderMeta();
@@ -85,7 +88,11 @@ function renderUpgrades() {
   $('time-note').textContent = save.legacyExtraTimeLevel && !save.timeRespecUsed ? `60~90초 → 20~32초. Extra Time은 Lv당 +2초이며 보유 Lv.${save.levels.extraTime}은 유지됩니다.` : `확인 가능한 과거 기록 ${save.knownHistoryKills || 0}킬 · 새 누적 파괴와 별도 보존`;
   $('time-refund').hidden = !save.legacyExtraTimeLevel || save.timeRespecUsed; $('time-refund').disabled = !game?.settled;
 }
-function renderMeta(){const state=game?.state||'TITLE';for(const id of ['relic-start','relic-result'])renderRelics($(id),save,{state,craft:key=>{if(game?.settled&&craftRelic(save,key,state)){persist();renderUpgrades();}},equip:(key,slot)=>{if(equipRelic(save,key,slot,state)){persist();renderMeta();}}});}
+function renderMeta(){const state=game?.state||'TITLE';for(const suffix of ['start','result']){
+ renderRelics($(`relic-${suffix}`),save,{state,craft:key=>{if(game?.settled&&craftRelic(save,key,state)){persist();renderUpgrades();}},equip:(key,slot)=>{if(equipRelic(save,key,slot,state)){persist();renderMeta();}}});
+ renderContracts($(`contracts-${suffix}`),save,{state,accept:id=>{if(acceptContract(save,id,state)){persist();renderMeta();}},abandon:id=>{if(abandonContract(save,id,state)){persist();renderMeta();}}});
+ renderAnomalies($(`anomaly-${suffix}`),save,{state,select:id=>{if(selectAnomaly(save,id,state)){persist();renderMeta();}}});
+}}
 function setOption(key, value) {
   if (key === 'refineryEnabled'||key==='oreEnabled') enterSandbox();
   save.options[key] = value;
@@ -96,7 +103,7 @@ function syncOptions() { for (const key of Object.keys(C.options)) $(`option-${k
 for (const [key, label] of Object.entries({ oreEnabled:'Ore · 희귀 원석 (실험)',motionEnabled: 'Motion · 회전 / 드리프트', refineryEnabled: 'Refinery · 슬롯 가공 (실험)', modifiers: 'Modifiers · 파손 / 충전', modifierVisuals: 'Modifier Marks · 변종 표식', comboFeedback: 'Combo Feedback · 연쇄 강조', sequentialPropagation: 'Sequential Propagation · 순차 전파', visualVariety: 'Visual Variety · 도형 다양성', inheritance: 'Inheritance · 효과 계승', ricochet: 'Ricochet · 벽 반사', damageVFX: 'Damage VFX · 손상 조각', sound: 'Sound · 합성 사운드' })) { const el = document.createElement('label'), input = document.createElement('input'); input.type = 'checkbox'; input.id = `option-${key}`; input.onchange = () => setOption(key, input.checked); el.append(input, document.createTextNode(label)); $('options').append(el); }
 syncOptions();
 renderMeta();
-persist(); // v1/v2 → v3 migration and pending settlement recovery.
+persist(); // schema1..4 → schema5; pending recovery and persisted deterministic offers.
 $('seed').value = C.seed; $('duration').min = C.dev.minDuration; $('duration').max = C.dev.maxDuration; $('grant').textContent = `테스트 Photon +${C.dev.grant}`;
 $('start').onclick = () => start(); $('again').onclick = () => start(); $('sound').onclick = () => setOption('sound', !save.options.sound);
 $('refinery-skip').onclick = () => finishRefinery(true);
@@ -110,7 +117,7 @@ document.addEventListener('visibilitychange', () => pause(manualPause));
 window.addEventListener('pageshow', event => {
   if (!event.persisted || sandboxSession) return;
   save = loadSave(storage); liveSave = save; completeSettlement(save); persist();
-  if (game?.state === 'RESULT') { game.settled = true; $('result').classList.remove('processing'); $('refinery-canvas').hidden = true; $('refinery-skip').hidden = true; renderUpgrades(); }
+  if (game?.state === 'RESULT') { game.settled = true; $('result').classList.remove('processing'); $('refinery-canvas').hidden = true; $('refinery-skip').hidden = true; renderUpgrades(); }else renderMeta();
 });
 function release() { if (game) game.held = false; }
 canvas.addEventListener('pointerdown', e => { if (e.button !== 0 || game?.state !== 'PLAYING' || game.paused) return; const p = logicalPoint(e.clientX, e.clientY, canvas.getBoundingClientRect()); game.pointer = p; game.held = true; if (game.attackClock <= 1e-9) { game.attack(p.x, p.y); game.attackClock = game.stats.attackInterval; } e.preventDefault(); });
@@ -118,7 +125,7 @@ canvas.addEventListener('pointermove', e => { if (game) game.pointer = logicalPo
 canvas.addEventListener('pointerleave', release); canvas.addEventListener('pointercancel', release); window.addEventListener('pointerup', release); window.addEventListener('blur', release);
 $('same-seed').onclick = () => { enterSandbox(); const value = $('duration').value; start(Number($('seed').value) >>> 0, value ? Math.max(C.dev.minDuration, Math.min(C.dev.maxDuration, Number(value))) : undefined); };
 $('experiment-start').onclick = () => { enterSandbox(); save.levels = { ...emptyLevels(), ...buildPresets[$('build-preset').value] }; const value = $('duration').value; start(Number($('seed').value) >>> 0, value ? Math.max(1, Math.min(90, Number(value))) : undefined); };
-$('experiment-end').onclick = () => { sandboxSession = null; save = liveSave; game = null; manualPause = false; $('title').hidden = false; $('result').hidden = true; $('paused').hidden = true; $('pause').hidden = true; $('sandbox-status').textContent = 'LIVE SAVE · 기본 가격 / 생성'; $('notice').textContent = '실험을 종료했습니다. 기존 재화와 강화가 유지됩니다.'; syncOptions(); };
+$('experiment-end').onclick = () => { sandboxSession = null; save = liveSave; game = null; manualPause = false; $('title').hidden = false; $('result').hidden = true; $('paused').hidden = true; $('pause').hidden = true; $('sandbox-status').textContent = 'LIVE SAVE · 기본 가격 / 생성'; $('notice').textContent = '실험을 종료했습니다. 기존 재화와 강화가 유지됩니다.'; syncOptions();renderMeta();persist(); };
 for (const type of Object.keys(C.shapes)) { const button = document.createElement('button'); button.textContent = `+ ${type}`; button.onclick = () => { if (game?.state === 'PLAYING' && !game.paused) { enterSandbox(); game.spawn(type); } }; $('spawn-tools').append(button); }
 $('grant').onclick = () => { enterSandbox(); save.bank += C.dev.grant; if (game?.state === 'RESULT') renderUpgrades(); };
 $('economy-preset').onchange = () => { if (sandboxSession) { sandboxSession.preset = $('economy-preset').value; if (game?.state === 'RESULT') renderUpgrades(); } };
@@ -149,4 +156,4 @@ function frame(now) {
 }
 requestAnimationFrame(frame);
 // Read-only snapshot for browser QA; gameplay still runs through real pointer input.
-window.shardStorm = { snapshot: () => ({ state: game?.state || 'TITLE', paused: game?.paused || false, remaining: game?.remaining, elapsed: game?.elapsed, fps, record: game?.record(), combo: game?.options.comboFeedback ? game?.combo.visible(game.elapsed) : null, audioVoices: voices, shapes: game?.alive.map(s => ({ id: s.id, type: s.type,oreGrade:s.oreGrade,wardSourceId:s.wardSourceId,shieldBroken:s.shieldBroken,channelUntil:s.channelUntil,angle: s.angle, anchorX: s.anchorX, anchorY: s.anchorY, motionProfile: s.motion.profile, modifier: s.modifier, maxHP: s.maxHP, x: s.x, y: s.y, hp: s.hp, grace: s.grace, enhanced: s.enhanced, radius: s.radius, material: s.appearance.material, pattern: s.appearance.pattern })) || [], waves: game?.waves.map(w => ({ radius: w.radius, maxRadius: w.maxRadius, source: w.sourceKind })) || [], scheduled: game?.queue.length || 0, clickRings: game?.clickVFX.items.length || 0, bank: save.bank, levels: { ...save.levels }, derivedStats: getDerivedStats(save.levels), options: { ...save.options }, saveVersion: save.saveVersion, relicOwned:[...save.relicOwned],relicEquipped:[...save.relicEquipped],relicAchievements:{...save.relicAchievements},relicBlueprintUnlocked:[...save.relicBlueprintUnlocked],sandbox: Boolean(sandboxSession), sandboxEconomy: sandboxSession?.preset, refinery: game?.refinery, pendingSettlement: save.pendingSettlement, totalRuns: save.totalRuns, lifetimeDestroyed: save.lifetimeDestroyed,discoveryRank:save.discoveryRank,catalystBalance:save.catalystBalance,milestoneWelcomeFlags:save.milestoneWelcomeFlags,settled: game?.settled }) };
+window.shardStorm = { snapshot: () => ({ state: game?.state || 'TITLE', paused: game?.paused || false, remaining: game?.remaining, elapsed: game?.elapsed, fps, record: game?.record(), combo: game?.options.comboFeedback ? game?.combo.visible(game.elapsed) : null, audioVoices: voices, shapes: game?.alive.map(s => ({ id: s.id, type: s.type,oreGrade:s.oreGrade,wardSourceId:s.wardSourceId,shieldBroken:s.shieldBroken,channelUntil:s.channelUntil,angle: s.angle, anchorX: s.anchorX, anchorY: s.anchorY, motionProfile: s.motion.profile, modifier: s.modifier, maxHP: s.maxHP, x: s.x, y: s.y, hp: s.hp, grace: s.grace, enhanced: s.enhanced, radius: s.radius, material: s.appearance.material, pattern: s.appearance.pattern })) || [], waves: game?.waves.map(w => ({ radius: w.radius, maxRadius: w.maxRadius, source: w.sourceKind })) || [], scheduled: game?.queue.length || 0, clickRings: game?.clickVFX.items.length || 0, bank: save.bank, levels: { ...save.levels }, derivedStats: getDerivedStats(save.levels), options: { ...save.options }, saveVersion: save.saveVersion,contracts:structuredClone(save.contracts),contractMedals:[...save.contractMedals],anomalyOffer:structuredClone(save.anomalyOffer),selectedAnomaly:save.selectedAnomaly,anomalyOfferIndex:save.anomalyOfferIndex,totalAnomalyWins:save.totalAnomalyWins, relicOwned:[...save.relicOwned],relicEquipped:[...save.relicEquipped],relicAchievements:{...save.relicAchievements},relicBlueprintUnlocked:[...save.relicBlueprintUnlocked],sandbox: Boolean(sandboxSession), sandboxEconomy: sandboxSession?.preset, refinery: game?.refinery, pendingSettlement: save.pendingSettlement, totalRuns: save.totalRuns, lifetimeDestroyed: save.lifetimeDestroyed,discoveryRank:save.discoveryRank,catalystBalance:save.catalystBalance,milestoneWelcomeFlags:save.milestoneWelcomeFlags,settled: game?.settled }) };

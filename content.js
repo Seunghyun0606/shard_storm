@@ -1,6 +1,7 @@
 import { CONFIG as C } from './config.js';
 import { poseAt } from './motion.js';
 import { count,releaseWard } from './run-metrics.js';
+import { specialChance,motionAnomaly } from './anomalies.js';
 const normal = s => !C.shapes[s.type].special;
 export function specialType(game) {
   const tier=game.highestTier,roll=game.specialRng();let cursor=0;
@@ -8,7 +9,7 @@ export function specialType(game) {
     if(game.discoveryRank<d.rank||tier<d.tier)continue;
     const eligible=game.alive.filter(s=>s.type===key).length<d.cap&&(game.specialSpawns[key]||0)<(d.runCap||Infinity);
     if(game.welcomeFlags[d.rank]&&eligible)return key;
-    cursor+=d.chance;if(roll<cursor)return eligible?key:null;
+    cursor+=specialChance(game,key,d.chance);if(roll<cursor)return eligible?key:null;
   }
   return null;
 }
@@ -21,7 +22,7 @@ export function linkWards(game) {
   }
 }
 export function shieldDamage(game,s,damage,cause) {
-  if(s.wardSourceId)damage=Math.max(0,damage-C.specialEffects.ward.reduction);
+  if(s.wardSourceId)damage=Math.max(0,damage-(C.anomalies[game.anomalyId]?.wardReduction||C.specialEffects.ward.reduction));
   if(s.type==='hex'&&!s.shieldBroken){s.shieldBroken=true;if(cause.source!=='direct'||damage<4)damage=Math.min(1,damage);}
   return damage;
 }
@@ -49,7 +50,7 @@ export function applyTether(game,plan,s,attempt) {
   if(plan?.kind!=='tether_pair')return;
   if(attempt!==0||!normal(s)){if(plan.pair.length===1)plan.pair[0].motion.startAt=game.elapsed;return;}
   plan.pair.push(s);s.motion.profile='tether';s.motion.startAt=Infinity;
-  if(plan.pair.length===2){const [a,b]=plan.pair;for(const [i,t]of [a,b].entries())Object.assign(t.motion,{startAt:game.elapsed,ampX:C.motion.maxDrift/2,ampY:0,phaseX:i*Math.PI,phaseY:0,speedX:Math.PI*2/4,speedY:0});game.tetherPairs++;}
+  if(plan.pair.length===2){const [a,b]=plan.pair;for(const [i,t]of [a,b].entries()){Object.assign(t.motion,{startAt:game.elapsed,ampX:C.motion.maxDrift/2,ampY:0,phaseX:i*Math.PI,phaseY:0,speedX:Math.PI*2/4,speedY:0});if(game.anomalyId==='fastOrbit'){t.motion.speedX*=C.anomalies.fastOrbit.motion;}}game.tetherPairs++;}
 }
 export function healthStages(game,s,previous,cause) {
   if(!['reactor','ancient'].includes(s.type))return;

@@ -2,6 +2,8 @@ import { CONFIG as C } from './config.js';
 import { emptyLevels } from './progression.js';
 import { rankFor, updateDiscovery } from './discovery.js';
 import { emptyAchievements, normalizeLoadout, blueprints } from './relics.js';
+import { normalizeContracts } from './contracts.js';
+import { validMetaPending } from './settlement-validation.js';
 export function freshSave() { return { saveVersion: C.saveVersion, bank: 0, levels: emptyLevels(), bestStats: {}, lastRuns: [], options: { ...C.options }, catalystBalance: 0, discoveryRank: 0, lifetimeDestroyed: 0, knownHistoryKills: 0, totalRuns: 0, milestoneWelcomeFlags: {}, pendingSettlement: null, lastSettlementId: null, legacyExtraTimeLevel: 0, timeRespecUsed: false, relicOwned:[],relicEquipped:[],relicAchievements:emptyAchievements(),relicBlueprintUnlocked:[],contracts:{active:[],records:{}},contractMedals:[],anomalyOffer:null,anomalyOfferIndex:0,anomalySeed:null,selectedAnomaly:null,totalAnomalyWins:0 }; }
 export function loadSave(storage) {
   const save = freshSave();
@@ -24,7 +26,7 @@ export function loadSave(storage) {
       save.timeRespecUsed = data.timeRespecUsed === true;
       if (typeof data.lastSettlementId === 'string') save.lastSettlementId = data.lastSettlementId;
       const pending = data.pendingSettlement;
-      if (pending && typeof pending.id === 'string' && Number.isSafeInteger(pending.payout) && pending.payout >= 0 && pending.record?.runId === pending.id && Number.isSafeInteger(pending.record.totalDestroyed) && pending.record.totalDestroyed >= 0 && pending.record.processedPhoton === pending.payout && pending.record.photonsEarned === pending.payout && (pending.catalystPayout === undefined || (Number.isSafeInteger(pending.catalystPayout) && pending.catalystPayout >= 0))) save.pendingSettlement = pending;
+      if (pending && typeof pending.id === 'string' && Number.isSafeInteger(pending.payout) && pending.payout >= 0 && pending.record?.runId === pending.id && Number.isSafeInteger(pending.record.totalDestroyed) && pending.record.totalDestroyed >= 0 && pending.record.processedPhoton === pending.payout && pending.record.photonsEarned === pending.payout && (pending.catalystPayout === undefined || (Number.isSafeInteger(pending.catalystPayout) && pending.catalystPayout >= 0))&&validMetaPending(pending)) save.pendingSettlement = pending;
     }
     if (data.saveVersion >= 4 && data.milestoneWelcomeFlags) for (let r=1;r<=4;r++) if (data.milestoneWelcomeFlags[r] === true) save.milestoneWelcomeFlags[r] = true;
     if (data.saveVersion < 4) { save.discoveryRank = 0; updateDiscovery(save); }
@@ -33,6 +35,11 @@ export function loadSave(storage) {
       save.relicOwned=[...new Set(Array.isArray(data.relicOwned)?data.relicOwned:[])].filter(id=>C.relics[id]);save.relicEquipped=normalizeLoadout(data.relicEquipped,save.relicOwned);
       for(const k of Object.keys(save.relicAchievements))if(Number.isSafeInteger(data.relicAchievements?.[k])&&data.relicAchievements[k]>=0)save.relicAchievements[k]=data.relicAchievements[k];
       save.relicBlueprintUnlocked=blueprints(save);
+      save.contracts=normalizeContracts(data.contracts);save.contractMedals=Object.keys(C.contracts).filter(id=>save.contracts.records[id]?.maxCompletedStage===3);
+      if(typeof data.anomalySeed==='string'&&data.anomalySeed.length<=150)save.anomalySeed=data.anomalySeed;
+      for(const k of ['anomalyOfferIndex','totalAnomalyWins'])if(Number.isSafeInteger(data[k])&&data[k]>=0)save[k]=data[k];
+      const offer=data.anomalyOffer;if(offer&&typeof offer.offerId==='string'&&typeof offer.seedKey==='string'&&offer.eligibilityRank===save.discoveryRank&&Array.isArray(offer.offeredIds)&&offer.offeredIds.length<=3&&new Set(offer.offeredIds).size===offer.offeredIds.length&&offer.offeredIds.every(id=>C.anomalies[id]?.rank<=save.discoveryRank))save.anomalyOffer=offer;
+      save.selectedAnomaly=save.anomalyOffer?.offeredIds.includes(data.selectedAnomaly)?data.selectedAnomaly:null;
     }
     for (const key of Object.keys(C.options)) if (typeof data.options?.[key] === 'boolean') save.options[key] = data.options[key];
   } catch { /* Invalid or inaccessible storage starts with a safe empty save. */ }

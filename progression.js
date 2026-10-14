@@ -3,6 +3,8 @@ import { getDerivedStats, skillCost, skillState } from './skill-tree.js';
 import { ensureRefinery } from './refinery.js';
 import { updateDiscovery } from './discovery.js';
 import { blueprints,emptyAchievements } from './relics.js';
+import { applyContracts } from './contracts.js';
+import { validMetaPending } from './settlement-validation.js';
 export const TYPES = Object.keys(C.shapes).filter(k=>!C.shapes[k].special);
 export const emptyLevels = () => Object.fromEntries(Object.keys(C.upgrades).map(k => [k, 0]));
 export function tierFor(kills, tiers = C.tiers) { let tier = 0; tiers.forEach((t, i) => { if (kills >= t.threshold) tier = i; }); return tier; }
@@ -34,11 +36,14 @@ export function stageSettlement(save, run) {
   const plan = ensureRefinery(run); if (!plan || save.lastSettlementId === plan.id) return false;
   if (save.pendingSettlement && save.pendingSettlement.id !== plan.id) throw new Error('Unfinished settlement');
   const record=run.record(),deltas=Object.fromEntries(Object.keys(emptyAchievements()).map(k=>[k,run.metaEnabled===false?0:record.metaCounters?.[k]||0]));
-  save.pendingSettlement ||= { id: plan.id, runId: plan.id, saveSchema: C.saveVersion,relicAchievementDeltas:deltas,payout: plan.payout, catalystPayout: run.pendingCatalyst || record.pendingCatalyst || 0, rawBase:run.rawBase||0,rawOreBonus:run.rawOreBonus||0,skillRawBonus:run.rawSkillBonus||0,totalDestroyed:run.totalDestroyed||record.totalDestroyed,oreKills:run.oreKills||{}, milestoneProgress:run.discoveryRank||0,shapeUnlockEvents:run.welcomeConsumed||[],record: { ...record, photonsEarned: plan.payout, processedPhoton: plan.payout, bankBefore: save.bank, bankAfter: save.bank + plan.payout } };
+  const meta=run.metaResult||record.metaResult,contractPlan=meta?.contracts||{changes:[],completed:[],photon:0,catalyst:0},anomaly=meta?.anomaly||{id:null,succeeded:false,photon:0},baseCatalyst=run.pendingCatalyst||record.pendingCatalyst||0,payout=plan.payout+contractPlan.photon+anomaly.photon,catalystPayout=baseCatalyst+contractPlan.catalyst;
+  if(![payout,catalystPayout,...Object.values(deltas)].every(n=>Number.isSafeInteger(n)&&n>=0))return false;
+  save.pendingSettlement ||= { id: plan.id, runId: plan.id, saveSchema: C.saveVersion,relicAchievementDeltas:deltas,contractPlan,contractsCompleted:contractPlan.completed,contractPhoton:contractPlan.photon,contractCatalyst:contractPlan.catalyst,anomalyId:anomaly.id,anomalySucceeded:anomaly.succeeded,anomalyPhoton:anomaly.photon,payoutBreakdown:{refineryPhoton:plan.payout,contractPhoton:contractPlan.photon,anomalyPhoton:anomaly.photon,baseCatalyst,contractCatalyst:contractPlan.catalyst},payout,catalystPayout, rawBase:run.rawBase||0,rawOreBonus:run.rawOreBonus||0,skillRawBonus:run.rawSkillBonus||0,totalDestroyed:run.totalDestroyed||record.totalDestroyed,oreKills:run.oreKills||{}, milestoneProgress:run.discoveryRank||0,shapeUnlockEvents:run.welcomeConsumed||[],record: { ...record, photonsEarned:payout,processedPhoton:payout,photonPayout:payout,refineryPayout:plan.payout,payoutBreakdown:{refineryPhoton:plan.payout,contractPhoton:contractPlan.photon,anomalyPhoton:anomaly.photon,baseCatalyst,contractCatalyst:contractPlan.catalyst},bankBefore:save.bank,bankAfter:save.bank+payout } };
   return true;
 }
 export function completeSettlement(save) {
   const pending = save.pendingSettlement; if (!pending) return false;
+  if(!validMetaPending(pending)){save.pendingSettlement=null;return false;}
   if (save.lastSettlementId === pending.id) { save.pendingSettlement = null; return false; }
   if(![save.bank+pending.payout,(save.catalystBalance||0)+(pending.catalystPayout||0),(save.lifetimeDestroyed||0)+pending.record.totalDestroyed,(save.totalRuns||0)+1].every(Number.isSafeInteger)){save.pendingSettlement=null;return false;}
   save.bank += pending.payout; save.lastSettlementId = pending.id; save.pendingSettlement = null;
@@ -47,6 +52,8 @@ export function completeSettlement(save) {
   updateDiscovery(save);
   save.relicAchievements ||= emptyAchievements();for(const key of Object.keys(save.relicAchievements)){const delta=pending.relicAchievementDeltas?.[key]||0;if(Number.isSafeInteger(delta)&&delta>=0&&Number.isSafeInteger(save.relicAchievements[key]+delta))save.relicAchievements[key]+=delta;}
   save.relicBlueprintUnlocked=blueprints(save);
+  if(pending.contractPlan)applyContracts(save,pending.contractPlan);
+  if(pending.anomalySucceeded)save.totalAnomalyWins=(save.totalAnomalyWins||0)+1;
   for (const rank of Array.isArray(pending.record.welcomeConsumed)?pending.record.welcomeConsumed:[]) delete save.milestoneWelcomeFlags[rank];
   save.lastRuns = [...save.lastRuns, pending.record].slice(-C.historyLimit);
   for (const key of ['totalDestroyed', 'bestChain', 'photonsEarned']) save.bestStats[key] = Math.max(save.bestStats[key] || 0, pending.record[key]);
