@@ -1,0 +1,7 @@
+Base: origin/feat/v09-short-run-progression f90d7de0cc19c8c3e82d428712d5a1de63af5df2
+PRD commit verified as ancestor. Working tree clean at start.
+2026-10-14: npm test PASS 94/94, 0 FAIL.
+npm run benchmark PASS: v0.8 seed31415 720/13625 and upgraded844/15291; v0.9 smoke164/163 and193/174.
+npm run benchmark:balance PASS: existing486 simulations; default20s median149kills/1942Raw/122Photon.
+tests/m5-m6-baseline.js captures original v0.9 5seeds x3strategies x2profiles x50runs before modules change.
+No live browser storage accessed. Automatic input is not human enjoyment evidence.
