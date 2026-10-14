@@ -2,5 +2,15 @@
   "name": "shard-storm-prototype",
   "private": true,
   "type": "module",
-  "scripts": { "start": "node server.js", "test": "node --test tests/*.test.js", "benchmark": "node tests/benchmark.js", "benchmark:balance": "node tests/v09-balance-benchmark.js", "benchmark:v08-balance": "node tests/v08-balance-benchmark.js", "benchmark:m5-m6": "node tests/m5-m6-balance.js", "qa:m5-m6": "node tests/m5-m6-browser.mjs" }
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test tests/*.test.js",
+    "benchmark": "node tests/benchmark.js",
+    "benchmark:balance": "node tests/v09-balance-benchmark.js",
+    "benchmark:v08-balance": "node tests/v08-balance-benchmark.js",
+    "benchmark:m5-m6": "node tests/m5-m6-balance.js",
+    "qa:m5-m6": "node tests/m5-m6-browser.mjs",
+    "benchmark:m7-m8": "node tests/m7-m8-benchmark.js",
+    "qa:m7-m8": "node tests/m7-m8-browser.mjs"
+  }
 }

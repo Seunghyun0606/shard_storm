@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import {CONFIG as C}from'../config.js';import{Game}from'../game.js';import{freshSave}from'../storage.js';
+import{settle,buyUpgrade}from'../progression.js';import{skillState}from'../skill-tree.js';
+import{craftRelic,equipRelic,blueprints}from'../relics.js';import{acceptContract,snapshotContracts,contractState}from'../contracts.js';import{ensureOffer,selectAnomaly,consumeOffer}from'../anomalies.js';import{chooseTarget}from'./simulation.js';
+export const seeds=[31415,1,7,42,99],milestones=[1,3,5,10,20,30,50,100,200,300];
+const priority={Crusher:['crushPower','crushSpeed','impactPulse','precisionFracture','yieldStabilizer','rareSeparator'],Cascade:['shardPower','shardRange','shardBloom','ricochetPlus','fragmentRelay','kineticReach'],Reactor:['chainAmplifier','echoCatalyst','yieldStabilizer','rareSeparator','resonanceLayer','salvageScanner','catalystChannel']};
+const relicPriority={Crusher:['hexSiphon','cracklingEdge','waveCondenser','ricochetCoil','reactorGovernor','ancientResonator'],Cascade:['ricochetCoil','waveCondenser','ancientResonator','hexSiphon','reactorGovernor','cracklingEdge'],Reactor:['reactorGovernor','waveCondenser','ancientResonator','hexSiphon','ricochetCoil','cracklingEdge']};
+export function battle(args){const g=new Game({...args,inputPolicy:'auto:density-hp-v1',sandbox:true});let next=C.attackInterval;g.attack(C.tutorial.x,C.tutorial.y);while(g.state==='PLAYING'){if(g.elapsed>=next-1e-9){const s=chooseTarget(g);if(s)g.attack(s.x,s.y);next+=g.stats.attackInterval;}g.update(C.step);}assert.equal(g.directKills+g.cascadeKills,g.totalDestroyed);assert.ok(g.peakShards<=C.caps.shards&&g.peakWaves<=C.caps.waves&&g.peakScheduled<=C.caps.scheduled);assert.ok(g.physicsChecks.maxProjectileContactError<.002&&g.physicsChecks.maxWaveContactError<.002);assert.equal(g.physicsChecks.lateWaveContacts,0);return g;}
+function selectMeta(s,mode,strategy,policy,index){
+ if(mode!=='OFF'){for(const id of relicPriority[strategy])craftRelic(s,id,'RESULT');const owned=relicPriority[strategy].filter(id=>s.relicOwned.includes(id));s.relicEquipped=[];for(const[slot,id]of owned.slice(0,2).entries())equipRelic(s,id,slot,'RESULT');
+ // Rotate among owned pairs after Run50; ownership/achievement conditions are never injected.
+ if(index>50&&owned.length>2){s.relicEquipped=[];for(let slot=0;slot<2;slot++)equipRelic(s,owned[(Math.floor(index/10)+slot)%owned.length],slot,'RESULT');}}
+ if(mode!=='M7M8')return null;
+ const ids=Object.keys(C.contracts).sort((a,b)=>{const pa=C.contracts[a].rank<=s.discoveryRank&&contractState(s,a).maxCompletedStage<3,pb=C.contracts[b].rank<=s.discoveryRank&&contractState(s,b).maxCompletedStage<3;return Number(pb)-Number(pa);});for(const id of ids)acceptContract(s,id,'RESULT');
+ const offered=ensureOffer(s).offeredIds;let chosen=null;
+ if(policy==='RiskSeeking')chosen=[...offered].sort((a,b)=>C.anomalies[b].rate-C.anomalies[a].rate)[0];
+ if(policy==='ContractFocused'){const active=s.contracts.active;const prefs=active.includes('crackedCleanup')?['fragileMatter']:active.includes('ancientHunter')||active.includes('reactorEngineer')?['unstableCore','overcharge']:active.includes('hexLiberator')?['fortified']:active.includes('preciseClicks')?['fastOrbit']:['denseField'];chosen=prefs.find(id=>offered.includes(id))||null;}
+ if(policy==='Adaptive'){const prefs=s.discoveryRank>=3?['unstableCore','overcharge','fastOrbit','fragileMatter','denseField','fortified']:['fastOrbit','fragileMatter','denseField','overcharge'];chosen=prefs.find(id=>offered.includes(id))||null;}
+ selectAnomaly(s,chosen,'RESULT');return chosen;
+}
+export function growth(spec){const{seed,strategy,profile,mode,timeMode,policy='Adaptive',count=300}=spec,s=freshSave();s.sandbox=true;s.anomalySeed=`growth-${seed}`;if(profile==='LegacyMax'){s.bank=10000;for(const[k,u]of Object.entries(C.upgrades))if(!u.rank)s.levels[k]=u.max;s.knownHistoryKills=1000;}
+ const rows=[];let photonTotal=0,catalystTotal=0,relicPhotonSpent=0,relicCatalystSpent=0,skillPhotonSpent=0,skillCatalystSpent=0,firstMax=null;
+ for(let index=1;index<=count;index++){
+ const beforeOwned=s.relicOwned.length,bp=s.bank,bc=s.catalystBalance,anomalyId=selectMeta(s,mode,strategy,policy,index);relicPhotonSpent+=bp-s.bank;relicCatalystSpent+=bc-s.catalystBalance;
+ const offer=mode==='M7M8'?consumeOffer(s):null;
+ const duration=timeMode==='Fixed20'?20:20+2*s.levels.extraTime,g=battle({seed:spec.distinct?seed+index*7919:seed,levels:s.levels,duration,runId:`${spec.key}-${index}`,discoveryRank:s.discoveryRank,welcomeFlags:s.milestoneWelcomeFlags,relicLoadout:s.relicEquipped,activeContracts:snapshotContracts(s),anomalyId,metaEnabled:mode!=='OFF'});g.offerId=offer?.offerId;assert.equal(settle(s,g),true);assert.equal(settle(s,g),false);const m=g.metaResult,photon=m?.totalPhoton??g.refinery.payout,catalyst=m?.totalCatalyst??g.pendingCatalyst;photonTotal+=photon;catalystTotal+=catalyst;
+ for(let j=0;j<100;j++){const key=[...priority[strategy],...Object.keys(C.upgrades)].find(k=>skillState(k,s.levels,Infinity,{...s,catalystBalance:Infinity}).canBuy);if(!key)break;const pb=s.bank,cb=s.catalystBalance;if(!buyUpgrade(s,key,'RESULT'))break;skillPhotonSpent+=pb-s.bank;skillCatalystSpent+=cb-s.catalystBalance;}
+ const levels=Object.values(s.levels).reduce((a,b)=>a+b,0);if(levels===50&&!firstMax)firstMax=index;
+ rows.push({run:index,duration,kills:g.totalDestroyed,direct:g.directKills,cascade:g.cascadeKills,chain:g.bestChain,raw:g.runEarned,refinery:g.refinery.payout,contract:m?.contracts.photon||0,anomaly:m?.anomaly.photon||0,anomalySelected:anomalyId,offered:offer?.offerId,anomalyWon:m?.anomaly.succeeded||false,objective:m?.anomaly,contractCompleted:m?.contracts.completed||[],counters:{...g.finalMetaCounters},activations:{...g.relicActivations},relicOwned:[...s.relicOwned],equipped:[...s.relicEquipped],blueprints:blueprints(s),newOwned:s.relicOwned.length-beforeOwned,rank:s.discoveryRank,lifetime:s.lifetimeDestroyed,levels,bank:s.bank,catalyst:s.catalystBalance,medals:[...s.contractMedals],stages:Object.fromEntries(Object.keys(C.contracts).map(id=>[id,contractState(s,id).maxCompletedStage])),activeContracts:[...s.contracts.active],photonTotal,catalystTotal,relicPhotonSpent,relicCatalystSpent,skillPhotonSpent,skillCatalystSpent,capHits:g.safetyCapsHit,firstMax});
+ assert.equal(s.totalRuns,index);assert.equal(s.bank,(profile==='LegacyMax'?10000:0)+photonTotal-relicPhotonSpent-skillPhotonSpent);assert.equal(s.catalystBalance,catalystTotal-relicCatalystSpent-skillCatalystSpent);
+ }
+ return{spec,firstMax,rows,milestones:rows.filter(r=>milestones.includes(r.run)),humanFun:'not measured; automatic input, zero UI dwell'};
+}
