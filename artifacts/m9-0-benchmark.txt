@@ -1,0 +1,94 @@
+
+> benchmark
+> node tests/benchmark.js
+
+{
+  "baseline": {
+    "seed": 31415,
+    "totalDestroyed": 720,
+    "cascadeKills": 524,
+    "photonsEarned": 13625,
+    "bestChain": 28,
+    "safetyCapsHit": 0,
+    "simulationStepP95ms": 0.1646999999999963
+  },
+  "upgraded": {
+    "seed": 31415,
+    "totalDestroyed": 844,
+    "cascadeKills": 623,
+    "photonsEarned": 15291,
+    "bestChain": 20,
+    "safetyCapsHit": 1,
+    "simulationStepP95ms": 0.16840000000001965
+  },
+  "ab": [
+    {
+      "seed": 31415,
+      "totalDestroyed": 688,
+      "cascadeKills": 487,
+      "photonsEarned": 12259,
+      "bestChain": 23,
+      "safetyCapsHit": 0,
+      "simulationStepP95ms": 0.13060000000007221
+    },
+    {
+      "seed": 31415,
+      "totalDestroyed": 680,
+      "cascadeKills": 469,
+      "photonsEarned": 12479,
+      "bestChain": 28,
+      "safetyCapsHit": 0,
+      "simulationStepP95ms": 0.10949999999991178
+    },
+    {
+      "seed": 31415,
+      "totalDestroyed": 650,
+      "cascadeKills": 455,
+      "photonsEarned": 12458,
+      "bestChain": 19,
+      "safetyCapsHit": 0,
+      "simulationStepP95ms": 0.10290000000009059
+    },
+    {
+      "seed": 31415,
+      "totalDestroyed": 720,
+      "cascadeKills": 524,
+      "photonsEarned": 13625,
+      "bestChain": 28,
+      "safetyCapsHit": 0,
+      "simulationStepP95ms": 0.13200000000006185
+    }
+  ],
+  "repeatedRuns": 12,
+  "repeatedSafetyCaps": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}
+v0.9 20s smoke: {
+  seed: 31415,
+  totalDestroyed: 164,
+  cascadeKills: 95,
+  photonsEarned: 163,
+  bestChain: 10,
+  safetyCapsHit: 0,
+  simulationStepP95ms: 0.2053000000000793
+} {
+  seed: 31415,
+  totalDestroyed: 193,
+  cascadeKills: 108,
+  photonsEarned: 174,
+  bestChain: 12,
+  safetyCapsHit: 0,
+  simulationStepP95ms: 0.17000000000007276
+}

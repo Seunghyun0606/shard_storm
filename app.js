@@ -1,6 +1,7 @@
 import { CONFIG as C } from './config.js';
 import { Game } from './game.js';
 import { draw } from './renderer.js';
+import { resizeBacking } from './presentation.js';
 import { logicalPoint } from './entities.js';
 import { TYPES, buyUpgrade, settle, stageSettlement, completeSettlement, refundLegacyTime } from './progression.js';
 import { loadSave, writeSave, freshSave } from './storage.js';
@@ -15,6 +16,14 @@ import {renderContracts,renderAnomalies,resultMetaText}from'./meta-ui.js';
 import {acceptContract,abandonContract,snapshotContracts}from'./contracts.js';
 import {ensureOffer,selectAnomaly,consumeOffer}from'./anomalies.js';
 const $ = id => document.getElementById(id), canvas = $('game'), ctx = canvas.getContext('2d');
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const resizeCanvas = () => resizeBacking(canvas, window.devicePixelRatio);
+new ResizeObserver(resizeCanvas).observe(canvas);
+window.addEventListener('resize', resizeCanvas);
+window.addEventListener('pageshow', resizeCanvas);
+document.addEventListener('visibilitychange', resizeCanvas);
+let focusMode = false;
+$('focus').onclick = () => { focusMode = !focusMode; document.body.classList.toggle('focus-mode', focusMode); $('focus').textContent = focusMode ? 'EXIT FOCUS' : 'FOCUS'; $('focus').setAttribute('aria-pressed',String(focusMode)); resizeCanvas(); };
 let storage; try { storage = window.localStorage; } catch { storage = { getItem() { return null; }, setItem() { throw new Error('Unavailable'); } }; }
 let save = loadSave(storage), game = null, last = null, accumulator = 0, fps = 60, manualPause = false, previousBest = {}, audio = null, selectedSkill = 'crushPower', lastSoundAt = -Infinity, voices = 0;
 let liveSave = save; let sandboxSession = null;
@@ -100,7 +109,7 @@ function setOption(key, value) {
   persist(); syncOptions();
 }
 function syncOptions() { for (const key of Object.keys(C.options)) $(`option-${key}`).checked = save.options[key]; $('sound').textContent = save.options.sound ? 'SOUND ON' : 'SOUND OFF'; }
-for (const [key, label] of Object.entries({ oreEnabled:'Ore · 희귀 원석 (실험)',motionEnabled: 'Motion · 회전 / 드리프트', refineryEnabled: 'Refinery · 슬롯 가공 (실험)', modifiers: 'Modifiers · 파손 / 충전', modifierVisuals: 'Modifier Marks · 변종 표식', comboFeedback: 'Combo Feedback · 연쇄 강조', sequentialPropagation: 'Sequential Propagation · 순차 전파', visualVariety: 'Visual Variety · 도형 다양성', inheritance: 'Inheritance · 효과 계승', ricochet: 'Ricochet · 벽 반사', damageVFX: 'Damage VFX · 손상 조각', sound: 'Sound · 합성 사운드' })) { const el = document.createElement('label'), input = document.createElement('input'); input.type = 'checkbox'; input.id = `option-${key}`; input.onchange = () => setOption(key, input.checked); el.append(input, document.createTextNode(label)); $('options').append(el); }
+for (const [key, label] of Object.entries({ combatFXEnabled:'Combat FX · 전투 강조',screenShakeEnabled:'Screen Shake · 미세 흔들림',reducedMotionEnabled:'Reduced Motion · 움직임 줄이기',oreEnabled:'Ore · 희귀 원석 (실험)',motionEnabled: 'Motion · 회전 / 드리프트', refineryEnabled: 'Refinery · 슬롯 가공 (실험)', modifiers: 'Modifiers · 파손 / 충전', modifierVisuals: 'Modifier Marks · 변종 표식', comboFeedback: 'Combo Feedback · 연쇄 강조', sequentialPropagation: 'Sequential Propagation · 순차 전파', visualVariety: 'Visual Variety · 도형 다양성', inheritance: 'Inheritance · 효과 계승', ricochet: 'Ricochet · 벽 반사', damageVFX: 'Damage VFX · 손상 조각', sound: 'Sound · 합성 사운드' })) { const el = document.createElement('label'), input = document.createElement('input'); input.type = 'checkbox'; input.id = `option-${key}`; input.onchange = () => setOption(key, input.checked); el.append(input, document.createTextNode(label)); $('options').append(el); }
 syncOptions();
 renderMeta();
 persist(); // schema1..4 → schema5; pending recovery and persisted deterministic offers.
@@ -150,7 +159,7 @@ function frame(now) {
   last = now;
   if (game?.state === 'RESULT' && refineryStartedAt === null) result();
   if (game?.state === 'RESULT' && !game.settled) { const progress = Math.min(1, (now - refineryStartedAt) / (C.refinery.animationSeconds * 1000)); drawRefinery($('refinery-canvas'), game.refinery, progress); if (progress >= 1) finishRefinery(); }
-  draw(ctx, game, fps);
+  draw(ctx, game, fps, reducedMotion.matches);
   if (!$('dev').hidden) $('debug-stats').textContent = game ? `TIME ${game.remaining.toFixed(2)} / ${game.duration}\nKILLS ${game.totalDestroyed} (D ${game.directKills} / C ${game.cascadeKills})\nCHAIN ${game.currentChain} / BEST ${game.bestChain}\nRAW +${game.runEarned} / BANK ${save.bank}\nTIER ${game.highestTier} / SHAPES ${game.alive.length}/${game.target}\nSHARDS ${game.shards.length} / PEAK ${game.peakShards}\nWAVES ${game.waves.length} / SCHEDULED ${game.queue.length}\nFPS ${fps.toFixed(1)} / CAPS ${game.safetyCapsHit}\nSEED ${game.seed}\nFIRST CASCADE ${game.firstCascadeTime?.toFixed(3) ?? '—'}\nCOMBO ${JSON.stringify(game.comboMilestones)}\nEMPTY ${game.emptyArenaDuration.toFixed(3)}s / FAIL ${game.spawnFailures}\nCAP TYPES ${JSON.stringify(game.capCounts)}\nMODIFIERS ${game.alive.filter(s => s.modifier === 'charged').length} charged\nPRESET ${game.experiment.spawnInterval}s / cluster ${game.experiment.clusterChance}` : `BANK ${save.bank}\nREADY / FPS ${fps.toFixed(1)}`;
   requestAnimationFrame(frame);
 }

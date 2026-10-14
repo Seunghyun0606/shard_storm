@@ -1,4 +1,5 @@
 import { CONFIG as C } from './config.js';
+import { spawnAlpha } from './presentation.js';
 export function polygon(ctx, s, scale = 1, variety = true) {
   const cfg = C.shapes[s.type], damageStage = s.hp === s.maxHP ? 0 : Math.min(3, Math.ceil((1 - s.hp / s.maxHP) * 3));
   ctx.beginPath();
@@ -12,12 +13,16 @@ export function polygon(ctx, s, scale = 1, variety = true) {
   }
   ctx.closePath();
 }
-export function draw(ctx, game, fps = 60) {
+export function draw(ctx, game, fps = 60, osReducedMotion = false) {
+  ctx.setTransform(ctx.canvas.width / C.width, 0, 0, ctx.canvas.height / C.height, 0, 0);
   ctx.clearRect(0, 0, C.width, C.height); ctx.fillStyle = '#0c1419'; ctx.fillRect(0, 0, C.width, C.height);
   ctx.fillStyle = '#1b2a31'; for (let x = C.arena.left; x <= C.arena.right; x += 32) for (let y = C.arena.top; y <= C.arena.bottom; y += 32) ctx.fillRect(x, y, 1, 1);
   ctx.strokeStyle = '#293b42'; ctx.lineWidth = 1; ctx.strokeRect(C.arena.left, C.arena.top, C.arena.right - C.arena.left, C.arena.bottom - C.arena.top);
+  const fx = game?.options.combatFXEnabled && game.state === 'PLAYING' ? game.presentation.active(game.elapsed) : [];
+  const reduced = osReducedMotion || game?.options.reducedMotionEnabled;
+  const combo = game?.options.comboFeedback && game.state === 'PLAYING' && game.combo.visible(game.elapsed);
   const hud = game ? [[`${game.remaining.toFixed(1)}s`, 'TIME LEFT'], [String(game.totalDestroyed), 'DESTROYED'], [`+${game.runEarned}`, 'RAW SHARDS'], [`${game.currentChain} / ${game.bestChain}`, 'CHAIN / BEST']] : [[`${C.duration.toFixed(1)}s`,'TIME LEFT'],['0','DESTROYED'],['+0','RAW SHARDS'],['0 / 0','CHAIN / BEST']];
-  hud.forEach(([value, label], i) => { const x = 42 + i * 231; ctx.font = '9px Arial'; ctx.fillStyle = '#80999f'; ctx.fillText(label, x, 24); ctx.font = 'bold 22px Arial'; ctx.fillStyle = i === 2 ? C.shapes.triangle.color : '#e8f0ed'; if (i === 0 && game?.remaining <= 10) ctx.fillStyle = '#ff6eab'; ctx.fillText(value, x, 53); });
+  hud.forEach(([value, label], i) => { const x = 42 + i * 231; ctx.font = '9px Arial'; ctx.fillStyle = '#80999f'; if(i===3&&combo){label=combo.label;ctx.fillStyle=combo.color;}if(i===1&&fx.some(e=>e.kind==='fieldClear')){label='FIELD CLEARED';ctx.fillStyle='#6ADFEF';}ctx.fillText(label, x, 24); ctx.font = 'bold 22px Arial'; ctx.fillStyle = i === 2 ? C.shapes.triangle.color : '#e8f0ed'; if (i === 0 && game?.remaining <= 10) ctx.fillStyle = '#ff6eab'; if(i===3&&combo)ctx.fillStyle=combo.color;ctx.fillText(value, x, 53); });
   if (!game) return; ctx.fillStyle='#b8d9d4';ctx.font='10px Arial';ctx.fillText(`RANK ${game.discoveryRank} · PENDING CATALYST +${game.pendingCatalyst}`,C.width-250,72);
   const active=game.contractSnapshot[0];ctx.fillText(`${C.anomalies[game.anomalyId]?.name||'NORMAL'}${active?` · ${C.contracts[active.id].name}: ${active.progress+(game.metaCounters[C.contracts[active.id].counter]||0)} / ${C.contracts[active.id].target*C.meta.contractTargets[active.stage-1]}`:''}`,42,72);
   ctx.save(); ctx.beginPath(); ctx.rect(C.arena.left, C.arena.top, C.arena.right - C.arena.left, C.arena.bottom - C.arena.top); ctx.clip();
@@ -25,6 +30,7 @@ export function draw(ctx, game, fps = 60) {
     const cfg = C.shapes[s.type], scale = (s.grace > 0 ? Math.max(.1, 1 - s.grace / C.spawnGrace) : 1) * (1 + (C.visual.recoilScale - 1) * s.recoil / C.visual.recoilLife);
     const knock = s.knockTime / C.visual.knockbackLife;
     ctx.save(); ctx.translate(s.x + s.knockX * Math.sin(knock * Math.PI), s.y + s.knockY * Math.sin(knock * Math.PI));
+    ctx.globalAlpha = spawnAlpha(s.grace);
     polygon(ctx, s, scale, game.options.visualVariety); ctx.fillStyle = s.flash > 0 ? '#ffffffdd' : game.options.visualVariety ? s.appearance.fill : `${cfg.color}24`; ctx.fill(); ctx.strokeStyle = s.flash > 0 ? '#ffffff' : cfg.color; ctx.lineWidth = s.enhanced ? 3 : 1.8; ctx.stroke();
     if (game.options.visualVariety && s.appearance.pattern !== 'none') {
       ctx.save(); polygon(ctx, s, scale, true); ctx.clip(); ctx.globalAlpha = .5; ctx.strokeStyle = cfg.color; ctx.lineWidth = .7;
@@ -65,32 +71,28 @@ export function draw(ctx, game, fps = 60) {
     ctx.restore();
   }
   for (const v of game.visuals) {
-    const t = v.age / v.life; ctx.save(); ctx.globalAlpha = 1 - t; ctx.strokeStyle = v.color; ctx.fillStyle = v.color;
+    const emphasize = !reduced && fx.some(e=>['combo','special'].includes(e.kind));
+    const t = Math.min(1,v.age / v.life * (emphasize ? .65 : 1)); ctx.save(); ctx.globalAlpha = 1 - t; ctx.strokeStyle = v.color; ctx.fillStyle = v.color;
     if (v.kind === 'ring') { ctx.beginPath(); ctx.arc(v.x, v.y, v.radius * (.15 + .85 * t), 0, Math.PI * 2); ctx.lineWidth = 3 * (1 - t) + 1; ctx.stroke(); }
     if (v.kind === 'death') { ctx.translate(v.x, v.y); polygon(ctx, v.shape, 1 - t, game.options.visualVariety); if (v.age < C.visual.flash) { ctx.fillStyle = '#ffffff'; ctx.fill(); } ctx.lineWidth = 1; ctx.stroke(); }
-    if (v.kind === 'popup') { ctx.font = 'bold 11px Arial'; ctx.textAlign = 'center'; ctx.fillText(v.text, v.x, v.y - 28 - t * 25); }
     ctx.restore();
   }
-  for (const p of game.particles) { ctx.save(); ctx.globalAlpha = 1 - p.age / p.life; ctx.translate(p.x, p.y); ctx.rotate(p.angle); ctx.fillStyle = p.color; ctx.beginPath(); ctx.moveTo(-2, -2); ctx.lineTo(3, 0); ctx.lineTo(-1, 3); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  for (const p of game.particles) { ctx.save(); ctx.globalAlpha = 1 - p.age / p.life; const emphasis=!reduced&&fx.some(e=>['combo','special'].includes(e.kind));ctx.translate(p.x-(emphasis?p.vx*p.age*.25:0), p.y-(emphasis?p.vy*p.age*.25:0)); ctx.rotate(p.angle); ctx.fillStyle = p.color; ctx.beginPath(); ctx.moveTo(-2, -2); ctx.lineTo(3, 0); ctx.lineTo(-1, 3); ctx.closePath(); ctx.fill(); ctx.restore(); }
   for (const ring of game.clickVFX.items) { const t = ring.age / ring.life; ctx.save(); ctx.globalAlpha = (1 - t) * (ring.hit ? .9 : .25); ctx.strokeStyle = '#f5fdff'; ctx.lineWidth = ring.hit ? 1.6 : .8; ctx.beginPath(); ctx.arc(ring.x, ring.y, ring.hit ? C.visual.clickStart + (C.visual.clickEnd - C.visual.clickStart) * t : 3 + (C.visual.missEnd - 3) * t, 0, Math.PI * 2); ctx.stroke(); ctx.restore(); }
   if (game.elapsed < C.visual.guideLife && game.alive.some(s => s.id === 1)) {
-    const t = C.tutorial; ctx.strokeStyle = '#42efcf88'; ctx.setLineDash([3, 5]); ctx.beginPath(); ctx.arc(t.x, t.y, 37 + Math.sin(game.elapsed * 5) * 3, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = '#b8e9df'; ctx.font = '11px Arial'; ctx.textAlign = 'center'; ctx.fillText('여기서 첫 연쇄를 시작하세요 ↓', t.x, t.y - 50); ctx.textAlign = 'left';
+    const t = C.tutorial; ctx.strokeStyle = '#42efcf88'; ctx.setLineDash([3, 5]); ctx.beginPath(); ctx.arc(t.x, t.y, 37 + (reduced?0:Math.sin(game.elapsed * 5) * 3), 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);
   }
   ctx.restore();
-  const combo = game.options.comboFeedback && game.state === 'PLAYING' && game.combo.visible(game.elapsed);
-  if (combo) {
-    const t = Math.max(0, (game.elapsed - combo.at) / combo.life);
-    ctx.save(); ctx.globalAlpha = Math.min(1, (1 - t) * 4); ctx.strokeStyle = combo.color; ctx.fillStyle = combo.color;
-    // One compact banner above targets; the accent is cosmetic and bounded.
-    ctx.fillStyle = '#0c1419e8'; ctx.fillRect(285, 80, 390, 39);
-    ctx.fillStyle = combo.color; ctx.font = `bold ${combo.threshold === 20 ? 22 : 18}px Arial`; ctx.textAlign = 'center';
-    ctx.fillText(`${combo.label} ×${combo.kills}`, C.width / 2, 107);
-    if (combo.accent) {
-    ctx.lineWidth = combo.threshold === 5 ? 1 : 2;
-    ctx.beginPath(); ctx.arc(combo.x, combo.y, 24 + 46 * t, 0, Math.PI * 2); ctx.stroke();
-    for (let i = 0; i < (combo.threshold === 5 ? 6 : 10); i++) { const a = i * Math.PI / 5, r = 30 + 35 * t; ctx.beginPath(); ctx.moveTo(combo.x + Math.cos(a) * r, combo.y + Math.sin(a) * r); ctx.lineTo(combo.x + Math.cos(a) * (r + 6), combo.y + Math.sin(a) * (r + 6)); ctx.stroke(); }
-    if (combo.threshold >= 10 && t < .45) { ctx.globalAlpha *= .35; ctx.strokeRect(C.arena.left, C.arena.top, C.arena.right - C.arena.left, C.arena.bottom - C.arena.top); }
-    }
+  // Shake only noninteractive highlights/debris, keeping target silhouettes at their hit coordinates.
+  for (const e of fx) {
+    const t=(game.elapsed-e.at)/e.life;ctx.save();ctx.globalAlpha=(1-t)*.65;ctx.strokeStyle=e.color||combo?.color||'#6ADFEF';ctx.lineWidth=1.5;
+    const shake=!reduced&&game.options.screenShakeEnabled?e.shake:0;
+    const cssScale=C.width/(ctx.canvas.clientWidth||C.width);
+    ctx.translate(Math.sin(t*35)*shake*cssScale,Math.cos(t*29)*shake*cssScale);
+    if(['special','combo'].includes(e.kind)){if(e.kind==='special'||e.threshold>=10)ctx.strokeRect(C.arena.left+2,C.arena.top+2,C.arena.right-C.arena.left-4,C.arena.bottom-C.arena.top-4);}
+    if(e.kind==='fieldClear'){ctx.beginPath();ctx.arc(e.x,e.y,20+110*t,0,Math.PI*2);ctx.stroke();}
+    if(e.kind==='hit'){for(const r of [5+15*t,17-7*t]){ctx.beginPath();ctx.arc(e.x,e.y,r,0,Math.PI*2);ctx.stroke();}ctx.fillStyle='#ffffff';ctx.fillRect(e.x-2,e.y-2,4,4);}
+    if(e.kind==='death'){ctx.beginPath();ctx.moveTo(e.x-5,e.y);ctx.lineTo(e.x+5,e.y);ctx.moveTo(e.x,e.y-5);ctx.lineTo(e.x,e.y+5);ctx.stroke();}
     ctx.restore();
   }
 }

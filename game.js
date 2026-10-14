@@ -5,6 +5,7 @@ import { makeShard, traceShard } from './effects.js';
 import { getDerivedStats } from './skill-tree.js';
 import { createAppearance, ClickVFXPool } from './visuals.js';
 import { ComboFeedback } from './combo.js';
+import { CombatPresentation } from './presentation.js';
 import { spawnSettings } from './experiments.js';
 import { createMotion, poseAt, firstContact } from './motion.js';
 import { ensureRefinery } from './refinery.js';
@@ -45,7 +46,7 @@ export class Game {
     this.held = false; this.pointer = null; this.attackClock = 0; this.onEvent = null;
     this.nextEvent = 1; this.nextWave = 1; this.processingTime = null; this.cascadeDurations = []; this.variantCounts = {}; this.patternCounts = {}; this.patternPlan = null;
     this.skippedSeconds = 0; this.skippedEvents = 0;
-    this.combo = new ComboFeedback(); this.comboMilestones = { 5: 0, 10: 0, 20: 0 }; this.comboEvents = []; this.timeToFirstChain5 = null;
+    this.presentation = new CombatPresentation(); this.combo = new ComboFeedback(); this.comboMilestones = { 5: 0, 10: 0, 20: 0 }; this.comboEvents = []; this.timeToFirstChain5 = null;
     // Separate mechanical lottery keeps Modifiers OFF on the exact v0.7 RNG path.
     // One draw per spawn call, even OFF / Enhanced / failed placement; never reroll at cap.
     this.modifierRng = seededRNG(this.seed ^ 0x51a8c3);
@@ -224,7 +225,7 @@ export class Game {
       highest = { chainId, threshold, kills: chain.kills, at: this.simulationTime, x: position.x, y: position.y };
       if (this.comboEvents.length < 1024) this.comboEvents.push(highest);
     }
-    if (highest && this.options.comboFeedback && this.combo.promote(highest)) this.onEvent?.(`combo${highest.threshold}`);
+    if (highest && this.options.comboFeedback && this.combo.promote(highest)) { this.onEvent?.(`combo${highest.threshold}`); this.presentation.emit({kind:'combo',...highest},this.options); }
     if (this.options.comboFeedback && this.combo.visible(this.simulationTime)?.chainId === chainId) this.combo.main.kills = chain.kills;
     if (this.options.comboFeedback && chain.kills >= 2 && chain.kills <= 4 && this.visuals.filter(v => v.kind === 'popup').length < C.combo.popupCap)
       this.visual({ kind: 'popup', x: position.x, y: position.y, text: `×${chain.kills} CHAIN`, color: '#b8e9df', life: .35 });
@@ -233,7 +234,8 @@ export class Game {
     if (this.state !== 'PLAYING' || this.paused || this.remaining <= 0) return false;
     const chainId = this.newChain(); let target = null, nearest = Infinity;
     for (const s of this.alive) { const d = Math.hypot(x - s.x, y - s.y); if (s.grace <= 1e-9 && d <= s.radius && d < nearest) { target = s; nearest = d; } }
-    this.clickVFX.add(x, y, Boolean(target), this.elapsed);
+    this.presentation.emit({kind:target?'hit':'miss',at:this.elapsed,x,y},this.options);
+    if (!target || this.elapsed - (this.lastClickRing ?? -Infinity) >= .12 - 1e-9) { this.clickVFX.add(x, y, Boolean(target), this.elapsed); if(target)this.lastClickRing=this.elapsed; }
     if (!target) { this.missedClicks++; return false; }
     this.successfulClicks++;
     if (target.id === 1 && !Number.isFinite(target.motion.startAt)) for (const guide of this.alive.filter(s => s.id <= 4)) guide.motion.startAt = this.elapsed + C.motion.tutorialHold;
@@ -314,6 +316,8 @@ export class Game {
       this.visual({ kind: 'death', x: s.x, y: s.y, shape: { ...s }, color: C.shapes[s.type].color, life: C.visual.deathLife });
       this.debris(s, s.type === 'star' ? C.visual.starParticles : 5);
       this.onEvent?.(s.type);
+      this.presentation.emit({kind:['reactor','ancient'].includes(s.type)?'special':'death',type:s.type,at:this.simulationTime,x:s.x,y:s.y,color:C.shapes[s.type].color,heavy:cause.source==='direct'&&this.levels.crushPower>=3&&s.radius>=24},this.options);
+      if (!this.alive.length && this.totalDestroyed) this.presentation.emit({kind:'fieldClear',at:this.simulationTime,x:s.x,y:s.y,color:'#6ADFEF'},this.options);
       this.unlock(); const child = { ...cause, depth: cause.depth + 1, chargedOrigin: Boolean(cause.chargedOrigin) || s.modifier === 'charged' }, inheritance = this.options.inheritance;
       this.scheduleEffect(() => {
         this.emitNative(s, child);
