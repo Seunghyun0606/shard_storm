@@ -1,0 +1,5 @@
+
+> qa:m7-m8
+> node tests/m7-m8-browser.mjs
+
+M7 M8 browser PASS: 6 actual20s runs

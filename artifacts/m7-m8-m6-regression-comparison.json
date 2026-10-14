@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "runsCompared": 1550,
+  "fields": [
+    "totalDestroyed",
+    "rawEarned",
+    "refineryPayout",
+    "bankAfter",
+    "catalystBalance",
+    "discoveryRank",
+    "totalLevels"
+  ],
+  "differences": []
+}

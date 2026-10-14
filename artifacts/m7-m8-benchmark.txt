@@ -1,0 +1,5 @@
+
+> benchmark:m7-m8
+> node tests/m7-m8-benchmark.js
+
+M7 M8 benchmark PASS: 69420 actual Runs, 420 effects A/B

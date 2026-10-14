@@ -1,0 +1,33 @@
+
+> benchmark:m7-m8
+> node tests/m7-m8-benchmark.js
+
+Growth 1/230 · ae1df9909050-31415-Crusher-Fresh-OFF-Fixed20-Adaptive-repeat-300 · 36.7s
+Growth 2/230 · ae1df9909050-31415-Crusher-LegacyMax-OFF-Fixed20-Adaptive-repeat-300 · 37.0s
+Growth 3/230 · ae1df9909050-31415-Crusher-Fresh-M7-Fixed20-Adaptive-repeat-300 · 40.6s
+Growth 4/230 · ae1df9909050-31415-Crusher-Fresh-M7M8-Fixed20-Adaptive-repeat-300 · 43.5s
+Growth 5/230 · ae1df9909050-31415-Crusher-Fresh-OFF-ExtraTime-Adaptive-repeat-300 · 54.7s
+Growth 6/230 · ae1df9909050-31415-Crusher-LegacyMax-OFF-ExtraTime-Adaptive-repeat-300 · 56.6s
+Growth 7/230 · ae1df9909050-31415-Crusher-Fresh-M7-ExtraTime-Adaptive-repeat-300 · 63.4s
+Growth 8/230 · ae1df9909050-31415-Crusher-Fresh-M7M8-ExtraTime-Adaptive-repeat-300 · 66.2s
+Growth 9/230 · ae1df9909050-31415-Crusher-LegacyMax-M7-Fixed20-Adaptive-repeat-300 · 78.8s
+Growth 10/230 · ae1df9909050-31415-Crusher-LegacyMax-M7M8-Fixed20-Adaptive-repeat-300 · 82.0s
+Growth 11/230 · ae1df9909050-31415-Cascade-Fresh-OFF-Fixed20-Adaptive-repeat-300 · 90.6s
+Growth 12/230 · ae1df9909050-31415-Crusher-LegacyMax-M7-ExtraTime-Adaptive-repeat-300 · 101.8s
+Growth 13/230 · ae1df9909050-31415-Cascade-Fresh-M7-Fixed20-Adaptive-repeat-300 · 103.4s
+Growth 14/230 · ae1df9909050-31415-Crusher-LegacyMax-M7M8-ExtraTime-Adaptive-repeat-300 · 108.8s
+Growth 15/230 · ae1df9909050-31415-Cascade-Fresh-OFF-ExtraTime-Adaptive-repeat-300 · 109.7s
+Growth 16/230 · ae1df9909050-31415-Cascade-Fresh-M7M8-Fixed20-Adaptive-repeat-300 · 120.4s
+Growth 17/230 · ae1df9909050-31415-Cascade-LegacyMax-OFF-Fixed20-Adaptive-repeat-300 · 126.4s
+Growth 18/230 · ae1df9909050-31415-Cascade-Fresh-M7-ExtraTime-Adaptive-repeat-300 · 128.5s
+Growth 19/230 · ae1df9909050-31415-Cascade-LegacyMax-M7-Fixed20-Adaptive-repeat-300 · 145.9s
+Growth 20/230 · ae1df9909050-31415-Cascade-Fresh-M7M8-ExtraTime-Adaptive-repeat-300 · 149.7s
+Growth 21/230 · ae1df9909050-31415-Cascade-LegacyMax-M7M8-Fixed20-Adaptive-repeat-300 · 155.8s
+Growth 22/230 · ae1df9909050-31415-Cascade-LegacyMax-OFF-ExtraTime-Adaptive-repeat-300 · 163.6s
+Growth 23/230 · ae1df9909050-31415-Reactor-Fresh-OFF-Fixed20-Adaptive-repeat-300 · 168.0s
+Growth 24/230 · ae1df9909050-31415-Cascade-LegacyMax-M7-ExtraTime-Adaptive-repeat-300 · 184.4s
+Growth 25/230 · ae1df9909050-31415-Reactor-Fresh-OFF-ExtraTime-Adaptive-repeat-300 · 194.2s
+Growth 26/230 · ae1df9909050-31415-Reactor-Fresh-M7-Fixed20-Adaptive-repeat-300 · 196.4s
+Growth 27/230 · ae1df9909050-31415-Cascade-LegacyMax-M7M8-ExtraTime-Adaptive-repeat-300 · 199.4s
+Growth 28/230 · ae1df9909050-31415-Reactor-Fresh-M7M8-Fixed20-Adaptive-repeat-300 · 209.2s
+Growth 29/230 · ae1df9909050-31415-Reactor-LegacyMax-OFF-Fixed20-Adaptive-repeat-300 · 215.0s

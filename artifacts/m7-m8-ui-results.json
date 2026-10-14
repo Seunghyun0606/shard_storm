@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "fixture": true,
+  "duration": 20,
+  "input": "actual UI pointer; no combat hits in this fixture",
+  "bankBefore": 10000,
+  "bankAfter": 5770,
+  "catalystBefore": 200,
+  "catalystAfter": 114,
+  "owned": [
+    "ricochetCoil",
+    "waveCondenser",
+    "cracklingEdge",
+    "hexSiphon",
+    "reactorGovernor",
+    "ancientResonator"
+  ],
+  "errors": [],
+  "checks": [
+    "three contract slots",
+    "explicit Normal",
+    "six craft transactions Photon4230/Catalyst86",
+    "two loadout persistence",
+    "duplicate slot option disabled",
+    "Crackling damage penalty updates Next Run headline",
+    "abandon result only",
+    "reload no double spend"
+  ]
+}

@@ -1,4 +1,39 @@
-# Shard Storm — playable prototype M5 · M6
+# Shard Storm — playable prototype M7 · M8
+
+현재 구현 기준은 [M7·M8 PRD](docs/Shard_Storm_M7_M8_Relic_Contract_Anomaly_PRD_v1.0.md)입니다. 기본20초, 기존7도형·19스킬/50Lv·순차 연쇄·Modifier·Refinery·콤보를 유지합니다.
+
+- **Relic 6종 / 장착2개:** 실제 정산된 업적과 Rank로 설계도를 해금하고, RESULT에서 Photon+Catalyst로 제작합니다. 영구 소유이며 슬롯을 비우거나 교체할 수 있습니다. 효과와 사거리·피해·지연 등의 기회비용을 카드에서 확인하세요.
+- **Contract 10종 / 활성3개:** START/RESULT에서 수락, RESULT에서 포기합니다. 여러 Run의 실제 사건을 정산할 때 누적하고, Ⅰ/Ⅱ/Ⅲ 목표는1/2/4배입니다. 완료 보상은1회이며 다음 단계는 다시 수락합니다. Ⅲ 완료는 영구 배지입니다.
+- **Anomaly 6종 / 다음 후보3개 + Normal:** Rank에 맞는 저장된 후보 중 선택합니다. 기본은 Normal입니다. 선택은 다음 Run만 바꾸고 성공 보너스는 기본 Refinery의8~15%, 최대60 Photon입니다. 실패해도 기본 보상은 유지됩니다. 새로고침은 후보를 재추첨하지 않습니다.
+- **START/RESULT:** 펼칠 수 있는 Loadout/Contracts/Next Run 섹션을 제공합니다. Run 중에는 선택이 고정되고, HUD는 한 계약과 위험 이름만 표시합니다. 정산 결과는 Refinery/Contract/Anomaly Photon과 Catalyst를 구분합니다.
+- **schema5 저장:** 기존 `shard-storm-v1` 키와 schema1..4의 재화·스킬·기록·미완료 정산을 보존합니다. 새 Relic 업적은0부터 시작하며 과거 기록으로 추정하지 않습니다. Fresh Lab과 개발자 지급/강제 생성은 실제 저장과 분리됩니다.
+
+실행은 `npm start` → **http://127.0.0.1:4173**. 외부 게임 엔진이나 새 에셋 없이 Canvas/Vanilla JavaScript를 확장했습니다.
+
+```powershell
+npm test
+npm run benchmark
+npm run benchmark:balance
+npm run benchmark:m5-m6
+npm run benchmark:m7-m8
+node tests/m7-m8-performance.mjs
+# 별도 터미널에서 npm start 실행
+$env:PLAYWRIGHT_MODULE = Join-Path $env:TEMP 'shard-storm-qa/node_modules/playwright'
+$env:QA_BASE_URL = 'http://127.0.0.1:4173'
+npm run qa:m7-m8
+node tests/m7-m8-ui.mjs
+node tests/m7-m8-report.js
+```
+
+Playwright가 없으면 앱 외부에 `npm install --prefix "$env:TEMP/shard-storm-qa" playwright`로 설치합니다. Chrome은 `CHROME_PATH`로 지정하며 QA는 임시 프로필만 사용합니다. 성장 실험은 기본300Run/230경로+420개별 비교로 CPU 시간이 필요합니다. 게임규칙 해시를 포함한 경로별 gzip checkpoint가 있어 중단 후 같은 명령으로 재개합니다. `$env:M7_WORKERS='6'`으로 병렬 프로세스 수, `$env:M7_RUNS='3'`으로 별도 smoke 실험을 지정할 수 있습니다. smoke는300Run 완료 근거로 사용하지 않습니다. stdout을 UTF-8로 보존하려면 `node tests/log-command.mjs artifacts/m7-m8-benchmark.txt npm run benchmark:m7-m8`을 사용하세요.
+
+기능·검증·커밋·한계는 [구현 보고서](docs/Shard_Storm_M7_M8_Implementation_Report.md), 5~300Run 성장·2Relic 조합·4선택 정책은 [밸런스 보고서](docs/Shard_Storm_M7_M8_Balance_Report.md)와 `artifacts/m7-m8-*` 원본에 기록합니다. 단위 테스트153개, 기존 회귀 및 브라우저 로그는 해당 보고서를 기준으로 확인하세요. 자동 입력과 Chrome 포인터 QA는 사람의 재미·장기 재도전 의향 검증과 구분합니다. 기존 가격·.06 변환율·Rank 기준은 유지했습니다.
+
+[Fresh 결과](artifacts/m7-m8-fresh-fresh-result.png) · [제작6종 fixture](artifacts/m7-m8-fixture-crafted-six.png) · [Anomaly 성공 fixture](artifacts/m7-m8-fixture-success-result.png) · [좁은창](artifacts/m7-m8-fixture-narrow.png)
+
+## M5 · M6 기록 (이하 과거 기준)
+
+아래 schema4/118-test/M7 범위 밖 표현은 M6 당시 기록입니다. 현재 상태는 위 M7·M8와 최신 보고서를 기준으로 확인하세요.
 
 [M5·M6 명세](docs/Shard_Storm_M5_M6_Development_PRD_v1.0.md)를 v0.9 완성본에 구현했습니다. 기본20초, 직접 클릭/홀드/드래그, 순차 연쇄와 기존4도형·11스킬·Modifier·Refinery·콤보를 유지합니다. 현재 스킬은 **19개 / 총50레벨**입니다.
 

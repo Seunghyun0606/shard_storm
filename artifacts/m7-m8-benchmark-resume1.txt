@@ -1,0 +1,52 @@
+
+> benchmark:m7-m8
+> node tests/m7-m8-benchmark.js
+
+Growth 1/230 · fcc4754bea2b-31415-Crusher-Fresh-OFF-Fixed20-Adaptive-repeat-300 · 33.5s
+Growth 2/230 · fcc4754bea2b-31415-Crusher-Fresh-M7-Fixed20-Adaptive-repeat-300 · 38.4s
+Growth 3/230 · fcc4754bea2b-31415-Crusher-Fresh-M7M8-Fixed20-Adaptive-repeat-300 · 39.4s
+Growth 4/230 · fcc4754bea2b-31415-Crusher-Fresh-OFF-ExtraTime-Adaptive-repeat-300 · 50.3s
+Growth 5/230 · fcc4754bea2b-31415-Crusher-Fresh-M7-ExtraTime-Adaptive-repeat-300 · 58.0s
+Growth 6/230 · fcc4754bea2b-31415-Crusher-Fresh-M7M8-ExtraTime-Adaptive-repeat-300 · 59.6s
+Growth 7/230 · fcc4754bea2b-31415-Crusher-LegacyMax-OFF-Fixed20-Adaptive-repeat-300 · 64.6s
+Growth 8/230 · fcc4754bea2b-31415-Crusher-LegacyMax-M7-Fixed20-Adaptive-repeat-300 · 75.0s
+Growth 9/230 · fcc4754bea2b-31415-Crusher-LegacyMax-OFF-ExtraTime-Adaptive-repeat-300 · 86.7s
+Growth 10/230 · fcc4754bea2b-31415-Crusher-LegacyMax-M7M8-Fixed20-Adaptive-repeat-300 · 95.4s
+Growth 11/230 · fcc4754bea2b-31415-Cascade-Fresh-OFF-Fixed20-Adaptive-repeat-300 · 96.5s
+Growth 12/230 · fcc4754bea2b-31415-Crusher-LegacyMax-M7-ExtraTime-Adaptive-repeat-300 · 107.5s
+Growth 13/230 · fcc4754bea2b-31415-Crusher-LegacyMax-M7M8-ExtraTime-Adaptive-repeat-300 · 117.6s
+Growth 14/230 · fcc4754bea2b-31415-Cascade-Fresh-OFF-ExtraTime-Adaptive-repeat-300 · 122.9s
+Growth 15/230 · fcc4754bea2b-31415-Cascade-Fresh-M7-Fixed20-Adaptive-repeat-300 · 123.2s
+Growth 16/230 · fcc4754bea2b-31415-Cascade-Fresh-M7M8-Fixed20-Adaptive-repeat-300 · 134.1s
+Growth 17/230 · fcc4754bea2b-31415-Cascade-LegacyMax-OFF-Fixed20-Adaptive-repeat-300 · 148.2s
+Growth 18/230 · fcc4754bea2b-31415-Cascade-Fresh-M7-ExtraTime-Adaptive-repeat-300 · 150.6s
+Growth 19/230 · fcc4754bea2b-31415-Cascade-LegacyMax-M7-Fixed20-Adaptive-repeat-300 · 157.3s
+Growth 20/230 · fcc4754bea2b-31415-Cascade-Fresh-M7M8-ExtraTime-Adaptive-repeat-300 · 165.0s
+Growth 21/230 · fcc4754bea2b-31415-Cascade-LegacyMax-OFF-ExtraTime-Adaptive-repeat-300 · 171.2s
+Growth 22/230 · fcc4754bea2b-31415-Cascade-LegacyMax-M7M8-Fixed20-Adaptive-repeat-300 · 183.7s
+Growth 23/230 · fcc4754bea2b-31415-Reactor-Fresh-OFF-Fixed20-Adaptive-repeat-300 · 187.3s
+Growth 24/230 · fcc4754bea2b-31415-Cascade-LegacyMax-M7-ExtraTime-Adaptive-repeat-300 · 189.1s
+Growth 25/230 · fcc4754bea2b-31415-Reactor-Fresh-M7-Fixed20-Adaptive-repeat-300 · 202.0s
+Growth 26/230 · fcc4754bea2b-31415-Cascade-LegacyMax-M7M8-ExtraTime-Adaptive-repeat-300 · 205.5s
+Growth 27/230 · fcc4754bea2b-31415-Reactor-Fresh-OFF-ExtraTime-Adaptive-repeat-300 · 209.2s
+Growth 28/230 · fcc4754bea2b-31415-Reactor-Fresh-M7M8-Fixed20-Adaptive-repeat-300 · 219.5s
+Growth 29/230 · fcc4754bea2b-31415-Reactor-LegacyMax-OFF-Fixed20-Adaptive-repeat-300 · 229.5s
+Growth 30/230 · fcc4754bea2b-31415-Reactor-Fresh-M7-ExtraTime-Adaptive-repeat-300 · 233.6s
+Growth 31/230 · fcc4754bea2b-31415-Reactor-Fresh-M7M8-ExtraTime-Adaptive-repeat-300 · 241.1s
+Growth 32/230 · fcc4754bea2b-31415-Reactor-LegacyMax-M7-Fixed20-Adaptive-repeat-300 · 241.4s
+Growth 33/230 · fcc4754bea2b-31415-Reactor-LegacyMax-OFF-ExtraTime-Adaptive-repeat-300 · 249.9s
+Growth 34/230 · fcc4754bea2b-31415-Reactor-LegacyMax-M7M8-Fixed20-Adaptive-repeat-300 · 263.1s
+Growth 35/230 · fcc4754bea2b-1-Crusher-Fresh-OFF-Fixed20-Adaptive-repeat-300 · 270.6s
+Growth 36/230 · fcc4754bea2b-31415-Reactor-LegacyMax-M7-ExtraTime-Adaptive-repeat-300 · 272.0s
+Growth 37/230 · fcc4754bea2b-1-Crusher-Fresh-M7-Fixed20-Adaptive-repeat-300 · 282.7s
+Growth 38/230 · fcc4754bea2b-1-Crusher-Fresh-OFF-ExtraTime-Adaptive-repeat-300 · 287.2s
+Growth 39/230 · fcc4754bea2b-31415-Reactor-LegacyMax-M7M8-ExtraTime-Adaptive-repeat-300 · 287.2s
+Growth 40/230 · fcc4754bea2b-1-Crusher-Fresh-M7M8-Fixed20-Adaptive-repeat-300 · 304.4s
+Growth 41/230 · fcc4754bea2b-1-Crusher-LegacyMax-OFF-Fixed20-Adaptive-repeat-300 · 311.1s
+Growth 42/230 · fcc4754bea2b-1-Crusher-Fresh-M7-ExtraTime-Adaptive-repeat-300 · 312.2s
+Growth 43/230 · fcc4754bea2b-1-Crusher-LegacyMax-M7-Fixed20-Adaptive-repeat-300 · 319.4s
+Growth 44/230 · fcc4754bea2b-1-Crusher-Fresh-M7M8-ExtraTime-Adaptive-repeat-300 · 324.0s
+Growth 45/230 · fcc4754bea2b-1-Crusher-LegacyMax-OFF-ExtraTime-Adaptive-repeat-300 · 334.0s
+Growth 46/230 · fcc4754bea2b-1-Crusher-LegacyMax-M7M8-Fixed20-Adaptive-repeat-300 · 344.2s
+Growth 47/230 · fcc4754bea2b-1-Cascade-Fresh-OFF-Fixed20-Adaptive-repeat-300 · 350.0s
+Growth 48/230 · fcc4754bea2b-1-Crusher-LegacyMax-M7-ExtraTime-Adaptive-repeat-300 · 356.7s
