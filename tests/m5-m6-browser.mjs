@@ -14,10 +14,14 @@ async function play(name,rank=0){
  const before=await snap();await page.locator('#start').click();assert.equal((await snap()).remaining,20);const first=await point({x:480,y:335});await page.mouse.click(first.x,first.y);await page.waitForTimeout(220);assert.ok((await snap()).record.bestChain>=4);const seen=new Set();let captured=false;
  await page.mouse.down();let live;
  while((live=await snap()).state==='PLAYING'){
+  let screenshotTaken=false;
   const targets=live.shapes.filter(s=>s.grace<=0);targets.sort((a,b)=>Number(['hex','reactor','ancient'].includes(b.type))-Number(['hex','reactor','ancient'].includes(a.type))||a.hp-b.hp||a.id-b.id);
-  for(const s of targets)if(['hex','reactor','ancient'].includes(s.type)&&!seen.has(s.type)){seen.add(s.type);await page.screenshot({path:`artifacts/m5-m6-${name}-${s.type}.png`,fullPage:true});}
+  for(const s of targets)if(['hex','reactor','ancient'].includes(s.type)&&!seen.has(s.type)){seen.add(s.type);await page.screenshot({path:`artifacts/m5-m6-${name}-${s.type}.png`,fullPage:true});screenshotTaken=true;}
   if(targets[0]){const p=await point(targets[0]);await page.mouse.move(p.x,p.y);}
-  if(!captured&&live.elapsed>5){await page.screenshot({path:`artifacts/m5-m6-${name}-playing.png`,fullPage:true});captured=true;}
+  if(!captured&&live.elapsed>5){await page.screenshot({path:`artifacts/m5-m6-${name}-playing.png`,fullPage:true});captured=true;screenshotTaken=true;}
+  // Full-page capture can resize the surface and trigger pointerleave. Restore
+  // physical hold inside the Canvas so QA does not silently stop attacking.
+  if(screenshotTaken&&targets[0]){await page.mouse.up();const p=await point(targets[0]);await page.mouse.move(p.x,p.y);await page.mouse.down();}
   await page.waitForTimeout(75);
  }
  await page.mouse.up();const pending=await snap();assert.equal(pending.bank,before.bank);assert.ok(pending.pendingSettlement);await page.screenshot({path:`artifacts/m5-m6-${name}-refinery.png`,fullPage:true});
@@ -33,8 +37,13 @@ async function play(name,rank=0){
   await page.setViewportSize({width:620,height:1000});await page.screenshot({path:'artifacts/m5-m6-narrow-result.png',fullPage:true});assert.ok(await page.locator('#again').isVisible());await page.locator('#again').click();assert.equal((await snap()).state,'PLAYING');await page.setViewportSize({width:1200,height:1000});
  }
 }
-await play('fresh',0);await play('rank2',2);assert.ok(runs.at(-1).seen.includes('hex'));await play('rank3',3);assert.ok(runs.at(-1).seen.includes('reactor'));await play('rank4',4);assert.ok(runs.find(r=>r.rank===4).seen.includes('ancient'));
+await play('fresh',0);await play('rank2',2);assert.ok(runs.at(-1).seen.includes('hex'));assert.ok(runs.at(-1).typeStats.hex.directHitCount>0);await play('rank3',3);assert.ok(runs.at(-1).seen.includes('reactor'));assert.ok(runs.at(-1).typeStats.reactor.directHitCount>0);await play('rank4',4);assert.ok(runs.find(r=>r.rank===4).seen.includes('ancient'));assert.ok(runs.at(-1).typeStats.ancient.directHitCount>0);
 await page.reload();const preserved=await page.evaluate(()=>localStorage.getItem('shard-storm-v1'));await page.keyboard.press('d');await page.locator('#fresh-lab').click();await page.locator('#option-oreEnabled').uncheck();await page.locator('#option-refineryEnabled').uncheck();await page.locator('#grant').click();assert.equal(await page.evaluate(()=>localStorage.getItem('shard-storm-v1')),preserved);checks.push('Fresh Lab ore/refinery/grant cannot change isolated context live save');
 await page.reload();const beforeBack=await snap();await page.goto(`${base}/index.html?back-check=1`);await page.goBack();assert.equal((await snap()).bank,beforeBack.bank);assert.equal((await snap()).catalystBalance,beforeBack.catalystBalance);checks.push('Back and replay do not recredit');
+// A short, explicitly isolated boundary fixture checks the banner and next-run
+// welcome without claiming that a new human reached Rank1 in one run.
+await page.evaluate(async()=>{const{freshSave}=await import('./storage.js');const s=freshSave();s.lifetimeDestroyed=299;localStorage.setItem('shard-storm-v1',JSON.stringify(s));});await page.reload();await page.setViewportSize({width:1022,height:1000});const arena=await page.locator('#game').boundingBox();assert.equal(arena.width,960);assert.equal(arena.height,540);
+await page.keyboard.press('d');await page.locator('#duration').fill('1');await page.locator('#same-seed').click();await page.locator('#dev-close').click();let p=await point({x:480,y:335});await page.mouse.click(p.x,p.y);await page.waitForFunction(()=>window.shardStorm.snapshot().settled);assert.equal((await snap()).discoveryRank,1);assert.ok((await snap()).milestoneWelcomeFlags[1]);assert.match(await page.locator('#rank-banner').innerText(),/RANK 1/);await page.screenshot({path:'artifacts/m5-m6-rank-banner.png',fullPage:true});
+await page.keyboard.press('d');await page.locator('#same-seed').click();await page.locator('#dev-close').click();p=await point({x:480,y:335});await page.mouse.click(p.x,p.y);await page.waitForFunction(()=>window.shardStorm.snapshot().settled);assert.ok((await snap()).record.welcomeConsumed.includes(1));assert.equal((await snap()).milestoneWelcomeFlags[1],undefined);checks.push('960x540 CSS arena; isolated299→Rank1 banner, next eligible run Prism welcome consumed once');
 assert.deepEqual(errors,[]);writeFileSync('artifacts/m5-m6-browser-results.json',JSON.stringify({passed:true,browser:await browser.version(),viewport:'1200x1000 / logical960x540; narrow620x1000',fixtures:'rank2/3/4 seed31415, old levels max except Extra Time0, unlocked new skills max, bank10000 Catalyst100; temporary Playwright profile only',inputPolicy:'actual pointer click then held drag every75ms; specials first then low HP',runs,checks,errors},null,2));console.log('M5 M6 browser PASS');
 }catch(e){writeFileSync('artifacts/m5-m6-browser-results.json',JSON.stringify({passed:false,runs,checks,errors,failure:e.stack},null,2));throw e;}finally{await browser.close();}

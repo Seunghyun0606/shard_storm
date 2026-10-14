@@ -108,3 +108,20 @@ test('M6 complete dynamic battle deterministic and cosmetic-neutral at Rank4 wit
  const {simulate}=await import('./simulation.js'),levels=Object.fromEntries(Object.entries(C.upgrades).map(([k,u])=>[k,u.max]));const args={seed:42,levels,discoveryRank:4,welcomeFlags:{4:true},duration:20};const a=simulate(args),b=simulate({...args,options:{...C.options,visualVariety:false,modifierVisuals:false,damageVFX:false,comboFeedback:false,sound:false}});
  for(const field of ['rawEarned','rawBase','rawOreBonus','rawSkillBonus','pendingCatalyst','totalDestroyed','photonsEarned','bestChain'])assert.equal(a[field],b[field]);assert.deepEqual(a.oreKills,b.oreKills);assert.deepEqual(a.skillActivations,b.skillActivations);
 });
+test('M6 actual Reactor wave contacts schedule Resonance; Ancient wave contacts allocate Channel marks',()=>{
+ const g=emptyGameM6({levels:{resonanceLayer:2}}),r=g.addShape('reactor',400,300,0,false,0),a=g.addShape('star',450,300,0,false,0,'charged');hit(g,r,6);step(g,.09);assert.equal(g.skillActivations.resonanceLayer,1);const e=g.skillEvents.find(e=>e.triggeredBySkill==='resonanceLayer');assert.ok(Math.abs(e.scheduledAt-e.at-.08)<1e-9);step(g,.1);assert.ok(g.waves.some(w=>w.sourceKind==='resonance'&&w.maxRadius===60));assert.ok(a.hp<7);
+ const q=emptyGameM6({levels:{catalystChannel:1}}),core=q.addShape('ancient',400,300,0,false,0);for(const [x,y]of [[440,300],[400,350],[350,300]])q.addShape('square',x,y,0,false,0);hit(q,core,8);step(q,.15);assert.equal(q.channelCounts.get(core.id),2);const marked=q.alive.filter(s=>s.channelUntil>=q.elapsed);assert.equal(marked.length,2);hit(q,marked[0],99);step(q,.04);assert.equal(q.skillActivations.catalystChannel,1);
+});
+test('M5 pending v3 refresh migrates and atomically credits exactly once in schema4; unsafe values preserve bank',()=>{
+ const storage=memoryStorage(),save=freshSave(),g=new Game({runId:'v3-pending'});g.totalDestroyed=20;g.runEarned=1000;g.update(20);stageSettlement(save,g);save.saveVersion=3;storage.setItem(C.storageKey,JSON.stringify(save));const a=loadSave(storage);assert.equal(a.saveVersion,4);const payout=a.pendingSettlement.payout;assert.equal(completeSettlement(a),true);writeSave(storage,a);const b=loadSave(storage);assert.equal(completeSettlement(b),false);assert.equal(b.bank,payout);assert.equal(b.lifetimeDestroyed,20);
+ const bad=freshSave();bad.bank=Number.MAX_SAFE_INTEGER;bad.pendingSettlement={id:'unsafe',payout:1,record:{totalDestroyed:0}};assert.equal(completeSettlement(bad),false);assert.equal(bad.bank,Number.MAX_SAFE_INTEGER);
+});
+test('M6 Ward failsafe survives visible stall skipping release events',()=>{
+ const g=emptyGameM6(),h=g.addShape('hex',400,300,0,false,0),s=g.addShape('square',450,300,0,false,0);hit(g,h,99);assert.equal(s.wardSourceId,h.id);g.skipAhead(.3);assert.equal(s.wardSourceId,undefined);assert.equal(s.hp,4);hit(g,s,1);assert.equal(s.hp,3);
+});
+test('M6 Ancient Channel wave can reach safely spaced ordinary circles under the real spawn policy',()=>{
+ const g=new Game({discoveryRank:4,options:{motionEnabled:false},levels:{catalystChannel:1}});g.shapes=[];g.totalDestroyed=200;g.unlock();g.pending=[];
+ const a=g.addShape('ancient',480,300,0,false,0),cfg=C.shapes.square;g.rng=()=>.5;g.patternPlan={kind:'burst_cluster',anchor:a,index:0,points:[{x:480+76,y:300}]};g.experiment.clusterChance=1;
+ const s=g.spawn('square',0);assert.ok(s);s.modifier='normal';s.hp=s.maxHP=cfg.hp;assert.ok(Math.hypot(s.anchorX-a.anchorX,s.anchorY-a.anchorY)>=a.radius+s.radius+C.spawnGap+C.motion.maxDrift);
+ assert.ok(Math.hypot(s.x-a.x,s.y-a.y)-s.radius<=60);hit(g,a,8);step(g,.15);assert.ok(s.channelUntil>g.elapsed);hit(g,s,99);step(g,.04);assert.equal(g.skillActivations.catalystChannel,1);
+});

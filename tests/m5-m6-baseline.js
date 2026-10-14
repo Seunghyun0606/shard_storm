@@ -5,6 +5,7 @@ import { freshSave } from '../storage.js';
 import { settle, buyUpgrade } from '../progression.js';
 import { nextPurchase } from '../economy.js';
 const seeds=[31415,1,7,42,99], growth=[];
+if(C.saveVersion!==3)throw new Error('Baseline requires original v0.9 source: checkout baseline commit81559ce in a separate directory. Current M5/M6 source must not overwrite the historical baseline.');
 for(const profile of ['fresh','legacy_max']) for(const strategy of ['Crusher','Cascade','Reactor']) for(const seed of seeds){
   const save={...freshSave(),sandbox:true}; if(profile==='legacy_max'){save.bank=10000; for(const [k,u] of Object.entries(C.upgrades))save.levels[k]=u.max;}
   const runs=[];let purchases=0;
