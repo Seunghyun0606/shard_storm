@@ -1,6 +1,6 @@
-# Shard Storm — playable prototype v0.8
+# Shard Storm — playable prototype v0.9 P0
 
-[v0.8 개선 명세](docs/Shard_Storm_v0.8_Gameplay_Improvements_P1-P4.md)와 [PRD v0.7](docs/Shard_Storm_Codex_Prototype_PRD_v0.7.md)을 기준으로 기존 게임을 확장한 재미 검증용 프로토타입입니다. HTML5 Canvas 2D + Vanilla JavaScript ES Modules이며 외부 게임 엔진·이미지·폰트·런타임 패키지·서버 저장은 없습니다. 최신 수치·경제·변경 파일·관측 한계는 [v0.8 검증 보고서](docs/Shard_Storm_v0.8_Balance_Report.md)에 있습니다.
+[v0.9 기획서](docs/Shard_Storm_v0.9_Short_Run_Deep_Progression_PRD.md)의 **P0**를 v0.8 완성본에 구현했습니다. HTML5 Canvas 2D + Vanilla JavaScript 구조와 기존 파괴감·콤보·11노드 트리를 유지합니다. 현재 수치·저장·충돌·경제·QA 결과는 [v0.9 P0 보고서](docs/Shard_Storm_v0.9_P0_Implementation_Report.md)에 있습니다. P1/P2의 광석·촉매·신규 노드·신규 도형은 아직 구현하지 않았습니다.
 
 ## 실행과 조작
 
@@ -10,13 +10,58 @@ Node.js 20 이상에서 의존성 설치 없이 실행합니다.
 npm start
 ```
 
-**http://127.0.0.1:4173** 에서 `START RUN`. 기본 60초 동안 도형을 클릭하거나 누른 채 드래그하세요. 중앙 안내 Triangle은 최소 4개 연쇄를 경험하도록 배치했습니다. 도형은 12/30/55/90/140 누적 완전 파괴에 따라 계속 해금·보충되며 단계 전환이나 타이머 초기화가 없습니다.
+**http://127.0.0.1:4173** 에서 `START RUN`. 기본 **20초** 동안 클릭하거나 누른 채 드래그하세요. 중앙 안내 Triangle은 최초 클릭의4연쇄를 유지하며, 이후 도형은 조금씩 회전·드리프트합니다. 누적 파괴15/45/100/200/400/750에 따라 같은 화면에서 해금·보충되며 타이머를 초기화하지 않습니다.
 
-Game Over에서 한 번만 Photon을 정산합니다. 스킬 노드를 선택한 뒤 아래 상세 패널의 `강화`를 눌러 구매하고 `PLAY AGAIN`으로 다시 플레이합니다. 그래프 영역만 스크롤하며 상세 패널·재시작은 결과 화면에 유지됩니다. Extra Time은 다음 판을 65~90초로 늘립니다. 동일 60초 비교에는 구매하지 않거나 개발 패널의 테스트 시간을 60으로 고정하세요.
+HUD의 **Raw Shards**는 전투 재료입니다. 종료 후 같은 결과 화면의 **Shard Refinery**에서10토큰·5슬롯으로 Photon을 확정하고 한 번 정산합니다. 연출은1.2초이며 `SKIP` 또는 `PLAY AGAIN`으로 바로 끝낼 수 있습니다. 스킬 노드를 선택해 `강화`하고 재도전하세요. Extra Time은 Lv당+2초로 **22~32초**가 됩니다. 기존 보유 레벨은 유지하며, 해당 사용자는 기존에 구매한 시간 스킬 비용만1회 선택적으로 반환할 수 있습니다.
 
 `D` / `DEV [D]`: 개발자 패널. 수동 일시정지 버튼·탭 비활성화 일시정지·선택적 Web Audio 합성음도 있습니다. 버튼 해제, 아레나 이탈, 창 포커스 상실 시 홀드가 멈춥니다.
 
 서버 종료는 `Ctrl+C`. 포트 변경은 `$env:PORT = '4174'; npm start`. Python 대안은 `python -m http.server 4173 --bind 127.0.0.1`. ES Modules 때문에 `file://` 실행은 지원하지 않습니다. 저장은 프로토콜·호스트·포트별이므로 기존 저장을 이어가려면 같은 주소를 사용하세요.
+
+## v0.9 P0 변경·저장·검증
+
+- **모션/충돌:** 최대 드리프트6px(Star4px), 느린 회전. 클릭·렌더는 현재 월드 좌표를 공유합니다. 파편은 목표의 연속 이동 경로에서 접촉을 계산하고, 파동도 실제 최초 접촉만 예약합니다. Motion OFF는 고정 대상 경로를 사용합니다. 두 v0.9 모드는 같은 안전한 초기 앵커 간격을 써서 비교합니다.
+- **경제:** `floor(sum(tokenRaw × .06 × slotMultiplier))`, 슬롯×0.8/1/1.1/1.3/1.6, 가중치15/35/30/15/5, 기대 배율1.075. 기존 스킬 가격과 성장1.6은 그대로입니다. 원재료와 실제 정산 Photon을 분리합니다.
+- **세이브:** 키 `shard-storm-v1` 유지, schema3. v1/v2 bank·levels·bestStats·lastRuns·options 보존, 과거 수익 재가공 없음. 애니메이션 전에 확정 pending 결과를 저장하고 완료/Skip/새로고침/뒤로 가기에서 재추첨·중복 지급을 막습니다. 저장 차단 시에는 기존 안내대로 현재 세션만 유지됩니다.
+- **Fresh Lab:** `D` → `Fresh Lab`은 새 계정으로 시작하는 메모리 실험입니다. 실제 은행·레벨을 덮어쓰지 않습니다. `Refinery OFF`도 자동으로 격리 실험에 들어가×1 변환만 비교합니다. `legacy_tiers` / `v09_short`, 기존 생성·가격·빌드 프리셋도 선택할 수 있습니다. 종료 버튼이나 새로고침으로 실제 세이브로 돌아옵니다.
+- **기록:** 신규5초 구간과 기존10초 구간, Raw/가공 수익·시드·빌드·입력 정책·프로필·접촉 오차·상한·지연. 과거20개 기록 합계는 `knownHistoryKills`로 구분하며 전체 lifetime을 거짓 복원하지 않습니다. rank/catalyst는 P1 준비 필드이며 실제 해금은 없습니다.
+
+```powershell
+npm test
+npm run benchmark
+npm run benchmark:balance
+npm run benchmark:v08-balance
+node tests/v09-report.js
+```
+
+변경 전70/70, 현재 **94 PASS / 0 FAIL**. 기존70개 회귀는 정적 v0.8 비교 규칙에서 유지하고 새20초·이동·Refinery·schema3는24개 신규 검사로 확인합니다. v1/v2를 읽는 현재 버전 기대값과 새 기본 시간 기대값은 명세에 맞게 변경했습니다. 테스트를 삭제하지 않았습니다.
+
+`benchmark`는 구형60초 회귀18판+신규20초2판입니다. `benchmark:balance`는5시드의 비교150판, Utility35판, Fresh/Legacy의1/3/5/10 Run 성장300판, 재현성1판(총486판)을 실행합니다. 보존한 구형 전체 경제 비교도 별도 스크립트로 통과했습니다. [단위 테스트](artifacts/v09-unit-results.txt), [밸런스 원본](artifacts/v09-balance-results.json), [보고서](docs/Shard_Storm_v0.9_P0_Implementation_Report.md).
+
+새20초 Motion ON 기본 빌드 자동 입력은5시드 중앙값 **149파괴 / 1,942 Raw / 122 Photon**입니다. 기존 가격으로5판 후에도 대부분의 강화가 남았습니다. 전략별 실제 누적 구매·Utility20/22/32초 비교와 범위는 보고서를 참고하세요. **자동 결과를 사람의 재미·정확도로 간주하지 않습니다.** 기존 올맥스 계정의 새로운 구매 동기는 P1 확장 전까지 남은 한계입니다.
+
+실제 브라우저 QA:
+
+```powershell
+$env:PLAYWRIGHT_MODULE = Join-Path $env:TEMP 'shard-storm-qa/node_modules/playwright'
+$env:QA_BASE_URL = 'http://127.0.0.1:4173'
+node tests/v09-browser.mjs
+node tests/visibility-check.mjs
+node tests/v09-report.js
+```
+
+Chrome의 분리된 테스트 프로필에서20초 실제 포인터 Run4회, 구매·Replay, Motion/Modifier/Refinery 비교, 실제 가공 중 새로고침 복구, 뒤로 가기, v2 기존 세이브와 격리 환불을 확인했습니다. 콘솔/페이지 오류0개. 모의 visibility는 실제 OS 탭 전환과 구분합니다. [브라우저 결과](artifacts/v09-browser-results.json).
+
+- [20초 플레이](artifacts/v09-01-baseline-playing.png)
+- [Shard Refinery](artifacts/v09-01-baseline-refinery.png)
+- [정산과11노드 트리](artifacts/v09-01-baseline-result.png)
+- [새로고침 직전의 확정 결과](artifacts/v09-04-refresh-recovery-refinery.png)
+
+사람5~10판에서 확인할 것: 짧은 Run의 재도전 의욕, 회전/넉백 중 클릭 실패, 큰 연쇄의 빈도, 정산 기대감과 Skip 비율, 첫 구매1~3회와5/10판 성장 목표. 다음 P1은 Discovery Rank0~2·Prism/Core·촉매·신규5노드·Hex/Reactor이며, P2와 Prestige는 별도 보류 범위입니다.
+
+## v0.8 기록 (이하 과거 기준)
+
+아래 시간·수익·schema2·QA 수치는 v0.8 당시 기록입니다. 현재20초 규칙과 저장은 위 내용을 기준으로 보세요.
 
 ## v0.8 신규 기능과 실험
 

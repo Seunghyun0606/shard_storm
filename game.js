@@ -6,18 +6,26 @@ import { getDerivedStats } from './skill-tree.js';
 import { createAppearance, ClickVFXPool } from './visuals.js';
 import { ComboFeedback } from './combo.js';
 import { spawnSettings } from './experiments.js';
+import { createMotion, poseAt, firstContact } from './motion.js';
+import { ensureRefinery } from './refinery.js';
+let nextRunId = 1;
 
 export class Game {
-  constructor({ seed = C.seed, levels = emptyLevels(), options = C.options, duration, experiment = 'baseline', inputPolicy = 'human', sandbox = false } = {}) {
+  constructor({ seed = C.seed, levels = emptyLevels(), options = C.options, duration, experiment = 'baseline', inputPolicy = 'human', sandbox = false, ruleset = 'v09', tierPreset = 'v09_short', runId } = {}) {
+    this.ruleset = ruleset; this.tierPreset = ruleset === 'legacy_v08' ? 'legacy_tiers' : tierPreset; this.tiers = this.tierPreset === 'legacy_tiers' ? C.legacyTiers : C.tiers; this.runId = runId || `run-${seed}-${nextRunId++}`; this.refinery = null;
     this.seed = seed >>> 0; this.rng = seededRNG(this.seed); this.vfxRng = seededRNG(this.seed ^ 0xabcdef);
     this.levels = { ...emptyLevels(), ...levels }; this.stats = getDerivedStats(this.levels); this.options = { ...C.options, ...options }; this.initialOptions = { ...this.options }; this.optionChanges = [];
-    this.duration = duration ?? durationFor(levels); this.elapsed = 0; this.remaining = this.duration;
+    if (ruleset === 'legacy_v08') this.stats.duration = 60 + 5 * (this.levels.extraTime || 0);
+    this.duration = duration ?? this.stats.duration; this.elapsed = 0; this.remaining = this.duration;
     this.experiment = spawnSettings(experiment); this.inputPolicy = inputPolicy; this.sandbox = sandbox;
     this.bins = Array.from({ length: Math.ceil(this.duration / 10) }, (_, i) => ({ start: i * 10, end: Math.min(this.duration, (i + 1) * 10), totalDestroyed: 0, directKills: 0, cascadeKills: 0, earnedPhoton: 0, comboMilestones: { 5: 0, 10: 0, 20: 0 }, bestChain: 0, cascadeDurationTotalMs: 0, completedCascadeChains: 0, sampledSeconds: 0, samples: 0, aliveIntegral: 0, targetIntegral: 0, emptyArenaDuration: 0, spawnAttempts: 0, spawnSuccesses: 0, spawnFailures: 0, safetyCapsHit: 0, caps: {}, typeStats: {}, modifierStats: {}, hpDistribution: {}, enhancedSpawns: 0 }));
+    this.bins5 = Array.from({ length: Math.ceil(this.duration / 5) }, (_, i) => ({ ...structuredClone(this.bins[0]), start: i * 5, end: Math.min(this.duration, (i + 1) * 5) }));
     this.emptyArenaDuration = 0; this.emptyEpisode = 0; this.emptyEpisodesOverHalfSecond = 0; this.maxEmptyEpisode = 0;
     this.capCounts = {}; this.capSources = {}; this.chargedCaps = 0; this.spawnAttempts = 0; this.spawnSuccesses = 0; this.spawnFailures = 0;
     this.hpDistribution = {}; this.enhancedSpawnCount = 0; this.secondShardPeaks = Array(Math.ceil(this.duration)).fill(0); this.peakWaves = 0; this.peakScheduled = 0;
-    this.frameSamples = []; this.stepSamples = [];
+    this.frameSamples = []; this.stepSamples = []; this.motionRunning = this.options.motionEnabled; this.motionPausedAt = this.motionRunning ? null : 0; this.motionProfiles = {}; this.missedClicks = 0; this.successfulClicks = 0; this.shardsEmitted = 0; this.projectileHits = 0; this.waveContacts = 0; this.maxMotionSpeed = 0;
+    this.physicsChecks = { waveContactsChecked: 0, maxWaveContactError: 0, lateWaveContacts: 0, duplicateWaveRejected: 0, projectileContactsChecked: 0, maxProjectileContactError: 0 };
+    this.motionMeasurements = { maxObservedSpeed: 0, maxObservedDisplacement: 0, rotationRateMinDeg: null, rotationRateMaxDeg: 0, driftingSpawnCount: 0, rotatingSpawnCount: 0 };
     this.state = 'PLAYING'; this.paused = false; this.settled = false; this.shapes = []; this.shards = []; this.waves = []; this.visuals = []; this.particles = []; this.clickVFX = new ClickVFXPool();
     this.queue = []; this.chains = new Map(); this.nextId = 1; this.nextChain = 1; this.spawnClock = 0; this.pending = [];
     this.totalDestroyed = 0; this.directKills = 0; this.cascadeKills = 0; this.bestChain = 0; this.currentChain = 0; this.runEarned = 0;
@@ -35,8 +43,53 @@ export class Game {
     this.initializing = true; this.initialLayout(); this.initializing = false;
   }
   get alive() { return this.shapes.filter(s => !s.destroyed); }
-  get target() { return C.tiers[tierFor(this.totalDestroyed)].target; }
+  get target() { return this.tiers[tierFor(this.totalDestroyed, this.tiers)].target; }
   get simulationTime() { return this.processingTime ?? this.elapsed; }
+  positionAt(s, time) { return this.options.motionEnabled ? poseAt(s, time) : { x: s.x, y: s.y, angle: s.angle }; }
+  syncMotion() { if (this.motionRunning !== this.options.motionEnabled) this.setMotionEnabled(this.options.motionEnabled); }
+  setMotionEnabled(value) {
+    if (value === this.motionRunning) { this.options.motionEnabled = value; return; }
+    if (!value) this.motionPausedAt = this.elapsed;
+    else {
+      for (const s of this.alive) if (Number.isFinite(s.motion.startAt)) s.motion.startAt += Math.max(0, this.elapsed - Math.max(this.motionPausedAt, s.motion.startAt));
+      for (const wave of this.waves.filter(w => !w.dynamic)) {
+        for (const event of this.queue.filter(e => e.wave === wave)) wave.registeredIds.delete(event.target.id);
+        this.queue = this.queue.filter(e => e.wave !== wave); wave.dynamic = true;
+        for (const s of this.alive) if (this.waveGap(wave, s, this.elapsed) < -C.motion.contactTolerance) wave.registeredIds.add(s.id);
+      }
+    }
+    this.options.motionEnabled = value; this.motionRunning = value;
+  }
+  updateMotion(time) {
+    if (!this.options.motionEnabled) return;
+    for (const s of this.alive) {
+      const pose = this.positionAt(s, time); s.prevX = s.x; s.prevY = s.y;
+      Object.assign(s, pose);
+      const m = s.motion; this.maxMotionSpeed = Math.max(this.maxMotionSpeed, Math.hypot(m.ampX * m.speedX, m.ampY * m.speedY));
+      if (Number.isFinite(m.startAt) && time >= m.startAt) {
+        const t = time - m.startAt;
+        this.motionMeasurements.maxObservedSpeed = Math.max(this.motionMeasurements.maxObservedSpeed, Math.hypot(m.ampX * m.speedX * Math.cos(m.phaseX + m.speedX * t), m.ampY * m.speedY * Math.cos(m.phaseY + m.speedY * t)));
+        this.motionMeasurements.maxObservedDisplacement = Math.max(this.motionMeasurements.maxObservedDisplacement, Math.hypot(s.x - m.anchorX, s.y - m.anchorY));
+      }
+    }
+  }
+  waveGap(wave, target, time) { const p = this.positionAt(target, time); return Math.hypot(p.x - wave.x, p.y - wave.y) - target.radius - Math.min(wave.maxRadius, Math.max(0, wave.speed * (time - wave.bornAt))); }
+  dynamicWaveContacts(start, end) {
+    const hits = [];
+    for (const wave of this.waves.filter(w => w.dynamic)) {
+      const last = Math.min(end, wave.bornAt + wave.maxRadius / wave.speed);
+      if (start > last + 1e-12) continue;
+      for (const target of this.alive) {
+        if (target.id === wave.exclude || wave.registeredIds.has(target.id)) continue;
+        const initial = this.waveGap(wave, target, start);
+        // A newly spawned/toggled target behind an already passed front cannot hit.
+        if (initial < -C.motion.contactTolerance && start > wave.bornAt + 1e-9) { wave.registeredIds.add(target.id); continue; }
+        const time = firstContact(t => this.waveGap(wave, target, t), start, last, wave.speed + C.motion.maxSpeed);
+        if (time !== null) hits.push({ wave, target, time });
+      }
+    }
+    return hits.sort((a,b) => a.time - b.time || a.wave.id - b.wave.id || a.target.id - b.target.id);
+  }
   initialLayout() {
     const t = C.tutorial;
     this.addShape('triangle', t.x, t.y, t.angle, false, 0);
@@ -51,20 +104,25 @@ export class Game {
     s.appearance = createAppearance(type, (this.seed ^ Math.imul(s.id, 0x9e3779b1)) >>> 0);
     s.radius = Math.max(C.variety.minHitRadius, s.appearance.baseRadius); s.recoil = 0; s.vulnerableAt = this.elapsed + grace;
     this.variantCounts[s.appearance.material] = (this.variantCounts[s.appearance.material] || 0) + 1;
-    this.shapes.push(s);
+    s.motion = createMotion(s, this.seed, this.elapsed, this.initializing && s.id <= 4); s.anchorX = x; s.anchorY = y; s.prevX = x; s.prevY = y;
+    if (s.motion.ampX || s.motion.ampY) this.motionMeasurements.driftingSpawnCount++;
+    if (s.motion.rotationRate) { const degrees = Math.abs(s.motion.rotationRate) * 180 / Math.PI; this.motionMeasurements.rotatingSpawnCount++; this.motionMeasurements.rotationRateMinDeg = Math.min(this.motionMeasurements.rotationRateMinDeg ?? degrees, degrees); this.motionMeasurements.rotationRateMaxDeg = Math.max(this.motionMeasurements.rotationRateMaxDeg, degrees); }
+    this.motionProfiles[s.motion.profile] = (this.motionProfiles[s.motion.profile] || 0) + 1; this.shapes.push(s);
     this.modifierStats[s.modifier].spawnCount++; this.typeStats[type].spawnCount++;
     this.hpDistribution[s.hp] = (this.hpDistribution[s.hp] || 0) + 1; this.enhancedSpawnCount += Number(s.enhanced);
     this.binMetric('typeStats', type, 'spawnCount'); this.binMetric('modifierStats', s.modifier, 'spawnCount');
-    const bin = this.binAt(); bin.hpDistribution[s.hp] = (bin.hpDistribution[s.hp] || 0) + 1; bin.enhancedSpawns += Number(s.enhanced);
+    const bin = this.binAt(); bin.hpDistribution[s.hp] = (bin.hpDistribution[s.hp] || 0) + 1; bin.enhancedSpawns += Number(s.enhanced); const b5 = this.binAt5(); b5.hpDistribution[s.hp] = (b5.hpDistribution[s.hp] || 0) + 1; b5.enhancedSpawns += Number(s.enhanced);
     for (const wave of this.waves) this.registerWaveTarget(wave, s);
     return s;
   }
   spawn(forced = null, grace = C.spawnGrace, avoid = []) {
     if (this.state !== 'PLAYING' || this.remaining <= 0) return null;
-    this.spawnAttempts++; this.binAt().spawnAttempts++;
-    const tier = C.tiers[tierFor(this.totalDestroyed)]; let type = forced;
+    this.spawnAttempts++; this.binAt().spawnAttempts++; this.binAt5().spawnAttempts++;
+    const tier = this.tiers[tierFor(this.totalDestroyed, this.tiers)]; let type = forced;
     if (!type) { let p = this.rng(); type = TYPES[TYPES.length - 1]; for (let i = 0; i < TYPES.length; i++) { p -= tier.weights[i]; if (p < 0) { type = TYPES[i]; break; } } }
-    const enhanced = this.rng() < tier.enhanced, r = C.shapes[type].radius, live = this.alive, A = C.arena;
+    // Reserve identical motion-safe anchors in both v0.9 A/B modes. Only the
+    // legacy ruleset retains v0.8 placement, avoiding a spacing confound.
+    const enhanced = this.rng() < tier.enhanced, margin = this.ruleset === 'legacy_v08' ? 0 : C.motion.maxDrift, r = C.shapes[type].radius + margin, live = this.alive, A = C.arena;
     const modifier = this.rollModifier(enhanced);
     const cluster = this.initializing ? this.rng() < this.experiment.clusterChance && live.length : false;
     const usePattern = !this.initializing && live.length && this.rng() < this.experiment.clusterChance;
@@ -76,20 +134,20 @@ export class Game {
       if (plan && attempt === 0) ({ x, y } = plan.points[plan.index]);
       else if ((cluster || (plan && plan.kind !== 'scattered')) && live.length && attempt < C.spawnAttempts / 2) { const parent = plan?.anchor || live[Math.floor(this.rng() * live.length)], a = this.rng() * Math.PI * 2, d = C.clusterMin + this.rng() * (C.clusterMax - C.clusterMin); x = parent.x + Math.cos(a) * d; y = parent.y + Math.sin(a) * d; }
       else { x = A.left + r + this.rng() * (A.right - A.left - 2 * r); y = A.top + r + this.rng() * (A.bottom - A.top - 2 * r); }
-      if (x < A.left + r || x > A.right - r || y < A.top + r || y > A.bottom - r || live.some(s => Math.hypot(s.x - x, s.y - y) < s.radius + r + C.spawnGap)) continue;
+      if (x < A.left + r || x > A.right - r || y < A.top + r || y > A.bottom - r || live.some(s => Math.hypot(s.x - x, s.y - y) < s.radius + r + C.spawnGap + margin)) continue;
       if (avoid.some(ray => pointSegmentDistance(x, y, ...ray) < r + C.trajectoryMargin)) continue;
       if (this.shards.some(s => !s.dead && pointSegmentDistance(x, y, s.x, s.y, s.x + Math.cos(s.angle) * (s.range - s.distance), s.y + Math.sin(s.angle) * (s.range - s.distance)) < r + C.trajectoryMargin)) continue;
       if (plan) { plan.index++; if (attempt >= C.spawnAttempts / 2) usedPattern = 'scattered'; }
       if (!this.initializing) this.patternCounts[usedPattern] = (this.patternCounts[usedPattern] || 0) + 1;
       const shape = this.addShape(type, x, y, this.rng() * Math.PI * 2, enhanced, grace, modifier); shape.spawnPattern = usedPattern;
-      this.spawnSuccesses++; this.binAt().spawnSuccesses++; return shape;
+      this.spawnSuccesses++; this.binAt().spawnSuccesses++; this.binAt5().spawnSuccesses++; return shape;
     }
-    this.spawnFailures++; this.binAt().spawnFailures++; return null;
+    this.spawnFailures++; this.binAt().spawnFailures++; this.binAt5().spawnFailures++; return null;
   }
   rollModifier(enhanced = false) {
     const roll = this.modifierRng();
     if (!this.options.modifiers || enhanced) return 'normal';
-    const chance = C.modifiers.chances.findLast(c => this.totalDestroyed >= c.threshold);
+    const chance = this.tierPreset === 'legacy_tiers' ? C.modifiers.chances.findLast(c => this.totalDestroyed >= c.threshold) : this.tiers[tierFor(this.totalDestroyed, this.tiers)];
     if (roll < chance.cracked) return 'cracked';
     if (roll < chance.cracked + chance.charged && this.alive.filter(s => s.modifier === 'charged').length < C.modifiers.chargedCap) return 'charged';
     return 'normal';
@@ -102,7 +160,7 @@ export class Game {
       kind = roll < P.clusterWeight ? 'burst_cluster' : roll < P.clusterWeight + P.arcWeight ? 'arc' : 'bridge';
       const stars = live.filter(s => s.type === 'star'); anchor = stars.length && this.rng() < P.starAnchorChance ? stars[Math.floor(this.rng() * stars.length)] : live[Math.floor(this.rng() * live.length)];
     }
-    const tier = tierFor(this.totalDestroyed), angle = this.rng() * Math.PI * 2;
+    const tier = tierFor(this.totalDestroyed, this.tiers), angle = this.rng() * Math.PI * 2;
     if (kind === 'burst_cluster') {
       const count = Math.min(5, 3 + Math.floor(this.rng() * 3) + (tier >= 3 ? 1 : 0));
       for (let i = 0; i < count; i++) { const a = angle + i * Math.PI * 2 / count, r = between(P.clusterMin, P.clusterMax); points.push({ x: anchor.x + Math.cos(a) * r, y: anchor.y + Math.sin(a) * r }); }
@@ -129,7 +187,7 @@ export class Game {
     let highest = null;
     for (const threshold of [5, 10, 20]) if (chain.kills >= threshold && !chain.milestonesEmitted.has(threshold)) {
       chain.milestonesEmitted.add(threshold); this.comboMilestones[threshold]++;
-      this.binAt().comboMilestones[threshold]++;
+      this.binAt().comboMilestones[threshold]++; this.binAt5().comboMilestones[threshold]++;
       if (threshold === 5) this.timeToFirstChain5 ??= this.simulationTime;
       highest = { chainId, threshold, kills: chain.kills, at: this.simulationTime, x: position.x, y: position.y };
       if (this.comboEvents.length < 1024) this.comboEvents.push(highest);
@@ -144,7 +202,9 @@ export class Game {
     const chainId = this.newChain(); let target = null, nearest = Infinity;
     for (const s of this.alive) { const d = Math.hypot(x - s.x, y - s.y); if (s.grace <= 1e-9 && d <= s.radius && d < nearest) { target = s; nearest = d; } }
     this.clickVFX.add(x, y, Boolean(target), this.elapsed);
-    if (!target) return false;
+    if (!target) { this.missedClicks++; return false; }
+    this.successfulClicks++;
+    if (target.id === 1 && !Number.isFinite(target.motion.startAt)) for (const guide of this.alive.filter(s => s.id <= 4)) guide.motion.startAt = this.elapsed + C.motion.tutorialHold;
     const m = this.modifierStats[target.modifier]; m.directHitCount++; this.typeStats[target.type].directHitCount++;
     this.binMetric('typeStats', target.type, 'directHitCount'); this.binMetric('modifierStats', target.modifier, 'directHitCount');
     if (!target.clickedFirst) { target.clickedFirst = true; m.clickedFirstCount++; this.binMetric('modifierStats', target.modifier, 'clickedFirstCount'); }
@@ -182,12 +242,13 @@ export class Game {
       const event = this.queue.shift(); this.processingTime = event.scheduledTime;
       if (event.kind === 'effect') { event.action(); continue; }
       const { target: s, damage, cause, wave } = event;
-      if (wave) { if (wave.hitIds.has(s.id)) continue; wave.hitIds.add(s.id); }
+      if (wave) { if (wave.hitIds.has(s.id)) { this.physicsChecks.duplicateWaveRejected++; continue; } wave.hitIds.add(s.id); }
       if (s.destroyed || event.scheduledTime + 1e-9 < (s.vulnerableAt || 0) || this.remaining <= 0) continue;
+      if (wave?.dynamic) { const gap = this.waveGap(wave, s, this.simulationTime); this.physicsChecks.waveContactsChecked++; this.physicsChecks.maxWaveContactError = Math.max(this.physicsChecks.maxWaveContactError, Math.max(0, gap)); if (this.simulationTime > wave.bornAt + 1e-9 && gap < -.002) this.physicsChecks.lateWaveContacts++; }
       if (wave) this.knockback(s, wave);
       const actual = Math.min(s.hp, damage), chain = this.chains.get(cause.chainId);
       s.hp -= actual; this.runEarned += actual; chain.photons += actual; s.flash = C.visual.flash; s.flashUntil = this.simulationTime + C.visual.flash;
-      this.binAt().earnedPhoton += actual;
+      this.binAt().earnedPhoton += actual; this.binAt5().earnedPhoton += actual;
       if (cause.chargedOrigin) { this.chargedContribution.damage += actual; this.chargedContribution.photons += actual; }
       if (this.options.damageVFX && cause.source !== 'direct') this.debris(s, 3);
       if (s.hp > 0) continue;
@@ -195,6 +256,7 @@ export class Game {
       s.destroyed = true; this.totalDestroyed++; this.runEarned += bonus; chain.photons += bonus; chain.kills++; chain.lastKillAt = this.simulationTime;
       const bin = this.binAt(); bin.earnedPhoton += bonus; bin.totalDestroyed++; bin.bestChain = Math.max(bin.bestChain, chain.kills); bin[cause.source === 'direct' ? 'directKills' : 'cascadeKills']++;
       if (cause.source === 'direct') this.directKills++; else { this.cascadeKills++; chain.cascadeKills++; this.firstCascadeTime ??= this.simulationTime; }
+      const b5 = this.binAt5(); b5.earnedPhoton += bonus; b5.totalDestroyed++; b5.bestChain = Math.max(b5.bestChain, chain.kills); b5[cause.source === 'direct' ? 'directKills' : 'cascadeKills']++;
       const killKey = cause.source === 'direct' ? 'directKillCount' : 'cascadeKillCount';
       this.modifierStats[s.modifier][killKey]++; this.typeStats[s.type][killKey]++;
       this.binMetric('typeStats', s.type, killKey); this.binMetric('modifierStats', s.modifier, killKey);
@@ -214,9 +276,9 @@ export class Game {
     this.processingTime = null;
   }
   unlock() {
-    const tier = tierFor(this.totalDestroyed);
+    const tier = tierFor(this.totalDestroyed, this.tiers);
     for (let i = this.highestTier + 1; i <= tier; i++) {
-      this.unlockTimes[C.tiers[i].threshold] = this.simulationTime;
+      this.unlockTimes[this.tiers[i].threshold] = this.simulationTime;
       if (i === 1) { this.pending.push('pentagon'); this.unlockTimes.pentagon = this.elapsed; }
       if (i === 2) { this.pending.push('star'); this.unlockTimes.star = this.elapsed; }
     }
@@ -226,7 +288,7 @@ export class Game {
     if (this.state !== 'PLAYING' || this.remaining <= 0) return;
     if (depth > C.caps.depth) { this.cap('depth', { source, chargedOrigin }); return; }
     if (this.shards.filter(s => !s.dead).length >= C.caps.shards) { this.cap('shards', { source, chargedOrigin }); return; }
-    const shard = makeShard(this, x, y, angle, source, chainId, depth, small, exclude); shard.chargedOrigin = chargedOrigin; this.shards.push(shard); this.peakShards = Math.max(this.peakShards, this.shards.filter(s => !s.dead).length); return shard;
+    const shard = makeShard(this, x, y, angle, source, chainId, depth, small, exclude); shard.chargedOrigin = chargedOrigin; this.shards.push(shard); this.shardsEmitted++; this.peakShards = Math.max(this.peakShards, this.shards.filter(s => !s.dead).length); return shard;
   }
   emitNative(s, cause) {
     const charged = s.modifier === 'charged', origin = charged || Boolean(cause.chargedOrigin);
@@ -245,7 +307,7 @@ export class Game {
     if (cause.depth > C.caps.depth) { this.cap('depth', cause); return; }
     if (this.options.sequentialPropagation) {
       if (this.waves.length >= C.caps.waves) { this.cap('waves', cause); return; }
-      const wave = { id: this.nextWave++, x: s.x, y: s.y, radius: 0, maxRadius: radius, damage, speed: cause.source === 'star' ? C.propagation.starSpeed : C.propagation.squareSpeed, bornAt: this.simulationTime, age: 0, color, cause, chainId: cause.chainId, sourceKind: cause.source, generation: cause.depth, exclude, hitIds: new Set(), registeredIds: new Set() };
+      const wave = { id: this.nextWave++, x: s.x, y: s.y, radius: 0, maxRadius: radius, damage, speed: cause.source === 'star' ? C.propagation.starSpeed : C.propagation.squareSpeed, bornAt: this.simulationTime, age: 0, color, cause, chainId: cause.chainId, sourceKind: cause.source, generation: cause.depth, exclude, dynamic: this.options.motionEnabled, hitIds: new Set(), registeredIds: new Set() };
       this.waves.push(wave); this.peakWaves = Math.max(this.peakWaves, this.waves.length); for (const target of this.alive) this.registerWaveTarget(wave, target); return wave;
     }
     this.visual({ kind: 'ring', x: s.x, y: s.y, radius, color, life: C.visual.ringLife });
@@ -255,6 +317,7 @@ export class Game {
     }
   }
   registerWaveTarget(wave, target) {
+    if (wave.dynamic) return;
     if (target.destroyed || target.id === wave.exclude || wave.registeredIds.has(target.id)) return;
     const contact = Math.max(0, Math.hypot(target.x - wave.x, target.y - wave.y) - target.radius);
     if (contact > wave.maxRadius || wave.bornAt + contact / wave.speed < this.simulationTime - 1e-9) return;
@@ -269,7 +332,8 @@ export class Game {
     for (const key of ['x', 'y', 'vx', 'vy', 'angle', 'bounces']) s[key] = path[key];
     s.distance += path.distance; s.age += dt;
     if (path.hit) {
-      s.dead = true; const hitAt = this.elapsed + path.distance / C.shard.speed;
+      s.dead = true; this.projectileHits++; const hitAt = this.elapsed + path.distance / C.shard.speed;
+      const pos = this.positionAt(path.hit, hitAt); this.physicsChecks.projectileContactsChecked++; this.physicsChecks.maxProjectileContactError = Math.max(this.physicsChecks.maxProjectileContactError, Math.max(0, Math.hypot(s.x - pos.x, s.y - pos.y) - path.hit.radius - C.shard.radius));
       this.enqueue(path.hit, s.damage, s, hitAt);
       if (s.split) this.scheduleEvent({ kind: 'effect', chainId: s.chainId, sourceKind: s.source, generation: s.depth + 1, scheduledTime: hitAt, priority: 1, action: () => {
         for (const direction of [-1, 1]) this.emitShard(s.x, s.y, s.angle + direction * C.smallShard.splitAngle, 'pentagon', s.chainId, s.depth + 1, true, path.hit.id, s.chargedOrigin);
@@ -281,12 +345,17 @@ export class Game {
     if (this.state !== 'PLAYING' || this.paused || dt <= 0) return;
     // The endpoint frame never processes attacks, spawns or damage at/after zero.
     if (dt >= this.remaining - 1e-9) {
+      // Legacy keeps its historical endpoint behavior for exact comparisons.
+      // New runs process events strictly before the deadline, then close once.
+      if (this.ruleset !== 'legacy_v08' && !this.suppressEndpointPhysics && this.remaining > 1e-8) this.update(this.remaining - 1e-8);
       this.sampleDensity(this.elapsed, this.remaining);
       this.elapsed = this.duration; this.remaining = 0; this.state = 'RESULT'; this.held = false;
+      if (this.ruleset !== 'legacy_v08') ensureRefinery(this);
       for (const chain of this.chains.values()) this.finishChain(chain);
       this.queue.length = 0; this.shards.length = 0; this.waves.length = 0; this.visuals.length = 0; this.particles.length = 0; this.clickVFX.clear(); this.chains.clear(); this.currentChain = 0;
       return;
     }
+    this.syncMotion();
     const end = this.elapsed + dt;
     let iterations = 0;
     // Split a fixed tick at every scheduled event and earliest swept collision.
@@ -299,11 +368,14 @@ export class Game {
         const budget = Math.max(0, Math.min(C.shard.speed * slice, shard.range - shard.distance, C.shard.speed * (shard.life - shard.age)));
         const path = traceShard(this, shard, budget); if (path.hit) slice = Math.min(slice, path.distance / C.shard.speed);
       }
+      const contacts = this.dynamicWaveContacts(this.elapsed, this.elapsed + slice);
+      for (const hit of contacts) slice = Math.min(slice, Math.max(0, hit.time - this.elapsed));
       this.sampleDensity(this.elapsed, slice);
       for (const shard of [...this.shards]) if (!shard.dead) this.moveShard(shard, slice);
-      this.elapsed += slice; this.flush(); this.shards = this.shards.filter(s => !s.dead);
+      for (const hit of contacts) if (hit.time <= this.elapsed + slice + 1e-9) { hit.wave.registeredIds.add(hit.target.id); this.waveContacts++; this.enqueue(hit.target, hit.wave.damage, hit.wave.cause, hit.time, hit.wave); }
+      this.elapsed += slice; this.updateMotion(this.elapsed); this.flush(); this.shards = this.shards.filter(s => !s.dead);
     }
-    this.elapsed = end; this.flush(); this.remaining = this.duration - this.elapsed;
+    this.elapsed = end; this.updateMotion(this.elapsed); this.flush(); this.remaining = this.duration - this.elapsed;
     for (const s of this.shapes) { s.grace = Math.max(0, s.vulnerableAt - this.elapsed); s.flash = Math.max(0, (s.flashUntil || 0) - this.elapsed); s.recoil = Math.max(0, (s.recoilUntil || 0) - this.elapsed); s.knockTime = Math.max(0, s.knockTime - dt); }
     this.attackClock -= dt;
     if (this.held && this.pointer && this.attackClock <= 1e-9) { this.attack(this.pointer.x, this.pointer.y); this.attackClock += this.stats.attackInterval; }
@@ -328,10 +400,18 @@ export class Game {
   }
   skipAhead(seconds) {
     if (this.state !== 'PLAYING' || this.paused || seconds <= 0) return;
-    if (seconds >= this.remaining) { this.skippedSeconds += this.remaining; this.skippedEvents += this.queue.filter(e => e.scheduledTime < this.duration).length; this.update(seconds); return; }
+    if (seconds >= this.remaining) { this.skippedSeconds += this.remaining; this.skippedEvents += this.queue.filter(e => e.scheduledTime < this.duration).length; this.suppressEndpointPhysics = true; this.update(seconds); this.suppressEndpointPhysics = false; return; }
     // A visible stall consumes run time without replaying invisible past hits.
     // Future wave arrivals remain valid; expired births and arrivals are dropped.
+    const skippedFrom = this.elapsed;
     this.sampleDensity(this.elapsed, seconds); this.elapsed += seconds; this.remaining = this.duration - this.elapsed; this.skippedSeconds += seconds;
+    this.syncMotion();
+    for (const wave of this.waves.filter(w => w.dynamic)) for (const target of this.alive) if (target.id !== wave.exclude && !wave.registeredIds.has(target.id) && this.waveGap(wave, target, this.elapsed) < 0) {
+      wave.registeredIds.add(target.id);
+      const contact = firstContact(t => this.waveGap(wave, target, t), skippedFrom, Math.min(this.elapsed, wave.bornAt + wave.maxRadius / wave.speed), wave.speed + C.motion.maxSpeed);
+      if (contact !== null && contact >= (target.vulnerableAt || 0)) this.skippedEvents++;
+    }
+    this.updateMotion(this.elapsed);
     const pending = this.queue.filter(e => e.scheduledTime > this.elapsed);
     this.skippedEvents += this.queue.length - pending.length; this.queue = pending;
     for (const s of this.shards) {
@@ -349,11 +429,12 @@ export class Game {
   }
   visual(v) { if (this.visuals.length < C.caps.visuals) this.visuals.push({ ...v, age: 0, bornAt: this.simulationTime }); }
   binAt(time = this.simulationTime) { return this.bins[Math.max(0, Math.min(this.bins.length - 1, Math.floor(time / 10)))]; }
-  binMetric(group, key, field) { const values = this.binAt()[group]; values[key] ||= {}; values[key][field] = (values[key][field] || 0) + 1; }
+  binAt5(time = this.simulationTime) { return this.bins5[Math.max(0, Math.min(this.bins5.length - 1, Math.floor(time / 5)))]; }
+  binMetric(group, key, field) { for (const bin of [this.binAt(), this.binAt5()]) { const values = bin[group]; values[key] ||= {}; values[key][field] = (values[key][field] || 0) + 1; } }
   cap(kind, cause = {}) {
     this.safetyCapsHit++; this.capCounts[kind] = (this.capCounts[kind] || 0) + 1;
     const source = cause.source || cause.sourceKind || 'scheduler'; this.capSources[source] = (this.capSources[source] || 0) + 1;
-    this.chargedCaps += Number(Boolean(cause.chargedOrigin || cause.cause?.chargedOrigin)); const bin = this.binAt(); bin.safetyCapsHit++; bin.caps[kind] = (bin.caps[kind] || 0) + 1;
+    this.chargedCaps += Number(Boolean(cause.chargedOrigin || cause.cause?.chargedOrigin)); const bin = this.binAt(); bin.safetyCapsHit++; bin.caps[kind] = (bin.caps[kind] || 0) + 1; const b5 = this.binAt5(); b5.safetyCapsHit++; b5.caps[kind] = (b5.caps[kind] || 0) + 1;
   }
   sampleDensity(start, seconds) {
     if (seconds <= 0) return;
@@ -361,8 +442,8 @@ export class Game {
     if (!alive) { const prior = this.emptyEpisode; this.emptyEpisode += seconds; this.emptyArenaDuration += seconds; if (prior < .5 && this.emptyEpisode >= .5) this.emptyEpisodesOverHalfSecond++; this.maxEmptyEpisode = Math.max(this.maxEmptyEpisode, this.emptyEpisode); }
     else this.emptyEpisode = 0;
     const end = Math.min(this.duration, start + seconds);
-    for (let at = start; at < end - 1e-9;) {
-      const bin = this.binAt(at), slice = Math.min(end, bin.end) - at;
+    for (const size of [10, 5]) for (let at = start; at < end - 1e-9;) {
+      const bin = size === 10 ? this.binAt(at) : this.binAt5(at), slice = Math.min(end, bin.end) - at;
       bin.sampledSeconds += slice; bin.samples++; bin.aliveIntegral += alive * slice; bin.targetIntegral += this.target * slice;
       if (!alive) bin.emptyArenaDuration += slice; at += slice;
     }
@@ -374,11 +455,11 @@ export class Game {
     if (Number.isFinite(stepMs) && this.stepSamples.length < 15000) this.stepSamples.push(stepMs);
   }
   finishChain(chain) {
-    if (chain.cascadeKills > 0) { const ms = (chain.lastKillAt - chain.startedAt) * 1000; this.cascadeDurations.push(ms); const bin = this.binAt(chain.lastKillAt); bin.cascadeDurationTotalMs += ms; bin.completedCascadeChains++; }
+    if (chain.cascadeKills > 0) { const ms = (chain.lastKillAt - chain.startedAt) * 1000; this.cascadeDurations.push(ms); const bin = this.binAt(chain.lastKillAt); bin.cascadeDurationTotalMs += ms; bin.completedCascadeChains++; const b5 = this.binAt5(chain.lastKillAt); b5.cascadeDurationTotalMs += ms; b5.completedCascadeChains++; }
   }
   debris(s, count, life = C.visual.debrisLife, x = s.x, y = s.y) {
     if (!this.options.damageVFX) return;
     for (let i = 0; i < count && this.particles.length < C.caps.particles; i++) { const a = this.vfxRng() * Math.PI * 2, speed = 40 + this.vfxRng() * 130; this.particles.push({ x, y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, angle: a, color: C.shapes[s.type].color, age: 0, life, bornAt: this.simulationTime }); }
   }
-  record() { const durations = [...this.cascadeDurations, ...Array.from(this.chains.values()).filter(c => c.cascadeKills).map(c => (c.lastKillAt - c.startedAt) * 1000)]; return { inputPolicy: this.inputPolicy, sandbox: this.sandbox, experiment: { ...this.experiment }, elapsed: this.elapsed, bins: this.bins.map(b => ({ ...structuredClone(b), averageAlive: b.sampledSeconds ? b.aliveIntegral / b.sampledSeconds : 0, averageTarget: b.sampledSeconds ? b.targetIntegral / b.sampledSeconds : 0, spawnSuccessRate: b.spawnAttempts ? b.spawnSuccesses / b.spawnAttempts : null, cascadeRatio: b.totalDestroyed ? b.cascadeKills / b.totalDestroyed : 0, avgCascadeDurationMs: b.completedCascadeChains ? b.cascadeDurationTotalMs / b.completedCascadeChains : 0 })), emptyArenaDuration: this.emptyArenaDuration, emptyEpisodesOverHalfSecond: this.emptyEpisodesOverHalfSecond, maxEmptyEpisode: this.maxEmptyEpisode, spawnAttempts: this.spawnAttempts, spawnSuccesses: this.spawnSuccesses, spawnFailures: this.spawnFailures, capCounts: { ...this.capCounts }, capSources: { ...this.capSources }, chargedCaps: this.chargedCaps, peakWaves: this.peakWaves, peakScheduled: this.peakScheduled, secondShardPeaks: [...this.secondShardPeaks], hpDistribution: { ...this.hpDistribution }, enhancedSpawnCount: this.enhancedSpawnCount, frameSampleCount: this.frameSamples.length, stepSampleCount: this.stepSamples.length, averageFPS: this.frameSamples.length ? this.frameSamples.reduce((a, b) => a + b, 0) / this.frameSamples.length : null, fixedStepP95ms: this.stepSamples.length ? [...this.stepSamples].sort((a,b) => a-b)[Math.floor(this.stepSamples.length * .95)] : null, modifiersEnabled: this.initialOptions.modifiers, modifierStats: Object.fromEntries(Object.entries(this.modifierStats).map(([k, v]) => [k, { ...v, selectionRate: v.spawnCount ? v.clickedFirstCount / v.spawnCount : 0 }])), typeStats: structuredClone(this.typeStats), chargedContribution: { ...this.chargedContribution }, modifierRngPolicy: "independent mechanical stream; one draw per spawn attempt including OFF and Enhanced", comboMilestones: { ...this.comboMilestones }, comboEvents: [...this.comboEvents], timeToFirstChain5: this.timeToFirstChain5, maxChain: this.bestChain, comboFeedbackEnabled: this.initialOptions.comboFeedback, durationSeconds: this.duration, seed: this.seed, levels: { ...this.levels }, totalDestroyed: this.totalDestroyed, directKills: this.directKills, cascadeKills: this.cascadeKills, bestChain: this.bestChain, photonsEarned: this.runEarned, highestTier: this.highestTier, unlockTimes: { ...this.unlockTimes }, firstCascadeTime: this.firstCascadeTime, inheritanceEnabled: this.initialOptions.inheritance, ricochetEnabled: this.initialOptions.ricochet, sequentialPropagationEnabled: this.initialOptions.sequentialPropagation, visualVarietyEnabled: this.initialOptions.visualVariety, avgCascadeDurationMs: durations.length ? durations.reduce((a, b) => a + b, 0) / durations.length : 0, variantCounts: { ...this.variantCounts }, patternCounts: { ...this.patternCounts }, optionChanges: [...this.optionChanges], safetyCapsHit: this.safetyCapsHit, skippedSeconds: this.skippedSeconds, skippedEvents: this.skippedEvents, peakShards: this.peakShards }; }
+  record() { const durations = [...this.cascadeDurations, ...Array.from(this.chains.values()).filter(c => c.cascadeKills).map(c => (c.lastKillAt - c.startedAt) * 1000)]; return { motionMeasurements: { ...this.motionMeasurements }, refinerySkipped: this.refinerySkipped ?? null, resultWaitSeconds: this.resultWaitSeconds ?? null, physicsChecks: { ...this.physicsChecks }, ruleset: this.ruleset, tierPreset: this.tierPreset, runId: this.runId, runDurationConfigured: this.duration, runDurationActual: this.elapsed, rawEarned: this.runEarned, processedPhoton: this.refinery?.payout ?? null, photonPayout: this.refinery?.payout ?? null, refinery: this.refinery, motionEnabled: this.initialOptions.motionEnabled, motionProfiles: { ...this.motionProfiles }, missedClicks: this.missedClicks, movingHitAccuracy: this.successfulClicks / Math.max(1, this.successfulClicks + this.missedClicks), projectileHitRate: this.projectileHits / Math.max(1, this.shardsEmitted), projectileHits: this.projectileHits, waveContacts: this.waveContacts, maxMotionSpeed: this.maxMotionSpeed, bins5: this.ruleset === 'legacy_v08' ? [] : this.bins5.map(b => ({ ...structuredClone(b), rawEarned: b.earnedPhoton, averageAlive: b.sampledSeconds ? b.aliveIntegral / b.sampledSeconds : 0, averageTarget: b.sampledSeconds ? b.targetIntegral / b.sampledSeconds : 0 })), inputPolicy: this.inputPolicy, sandbox: this.sandbox, experiment: { ...this.experiment }, elapsed: this.elapsed, bins: this.bins.map(b => ({ ...structuredClone(b), averageAlive: b.sampledSeconds ? b.aliveIntegral / b.sampledSeconds : 0, averageTarget: b.sampledSeconds ? b.targetIntegral / b.sampledSeconds : 0, spawnSuccessRate: b.spawnAttempts ? b.spawnSuccesses / b.spawnAttempts : null, cascadeRatio: b.totalDestroyed ? b.cascadeKills / b.totalDestroyed : 0, avgCascadeDurationMs: b.completedCascadeChains ? b.cascadeDurationTotalMs / b.completedCascadeChains : 0 })), emptyArenaDuration: this.emptyArenaDuration, emptyEpisodesOverHalfSecond: this.emptyEpisodesOverHalfSecond, maxEmptyEpisode: this.maxEmptyEpisode, spawnAttempts: this.spawnAttempts, spawnSuccesses: this.spawnSuccesses, spawnFailures: this.spawnFailures, capCounts: { ...this.capCounts }, capSources: { ...this.capSources }, chargedCaps: this.chargedCaps, peakWaves: this.peakWaves, peakScheduled: this.peakScheduled, secondShardPeaks: [...this.secondShardPeaks], hpDistribution: { ...this.hpDistribution }, enhancedSpawnCount: this.enhancedSpawnCount, frameSampleCount: this.frameSamples.length, stepSampleCount: this.stepSamples.length, averageFPS: this.frameSamples.length ? this.frameSamples.reduce((a, b) => a + b, 0) / this.frameSamples.length : null, fixedStepP95ms: this.stepSamples.length ? [...this.stepSamples].sort((a,b) => a-b)[Math.floor(this.stepSamples.length * .95)] : null, modifiersEnabled: this.initialOptions.modifiers, modifierStats: Object.fromEntries(Object.entries(this.modifierStats).map(([k, v]) => [k, { ...v, selectionRate: v.spawnCount ? v.clickedFirstCount / v.spawnCount : 0 }])), typeStats: structuredClone(this.typeStats), chargedContribution: { ...this.chargedContribution }, modifierRngPolicy: "independent mechanical stream; one draw per spawn attempt including OFF and Enhanced", comboMilestones: { ...this.comboMilestones }, comboEvents: [...this.comboEvents], timeToFirstChain5: this.timeToFirstChain5, maxChain: this.bestChain, comboFeedbackEnabled: this.initialOptions.comboFeedback, durationSeconds: this.duration, seed: this.seed, levels: { ...this.levels }, totalDestroyed: this.totalDestroyed, directKills: this.directKills, cascadeKills: this.cascadeKills, bestChain: this.bestChain, photonsEarned: this.ruleset === 'legacy_v08' ? this.runEarned : this.refinery?.payout ?? 0, highestTier: this.highestTier, unlockTimes: { ...this.unlockTimes }, firstCascadeTime: this.firstCascadeTime, inheritanceEnabled: this.initialOptions.inheritance, ricochetEnabled: this.initialOptions.ricochet, sequentialPropagationEnabled: this.initialOptions.sequentialPropagation, visualVarietyEnabled: this.initialOptions.visualVariety, avgCascadeDurationMs: durations.length ? durations.reduce((a, b) => a + b, 0) / durations.length : 0, variantCounts: { ...this.variantCounts }, patternCounts: { ...this.patternCounts }, optionChanges: [...this.optionChanges], safetyCapsHit: this.safetyCapsHit, skippedSeconds: this.skippedSeconds, skippedEvents: this.skippedEvents, peakShards: this.peakShards }; }
 }

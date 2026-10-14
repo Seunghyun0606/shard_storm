@@ -2,17 +2,21 @@ import { CONFIG as C } from './config.js';
 import { Game } from './game.js';
 import { draw } from './renderer.js';
 import { logicalPoint } from './entities.js';
-import { TYPES, buyUpgrade, settle } from './progression.js';
+import { TYPES, buyUpgrade, settle, stageSettlement, completeSettlement, refundLegacyTime } from './progression.js';
 import { loadSave, writeSave, freshSave } from './storage.js';
-import { renderSkillTree, getDerivedStats } from './skill-tree.js';
+import { renderSkillTree, getDerivedStats, skillState } from './skill-tree.js';
+import { drawRefinery } from './refinery.js';
 import { EconomySandbox, buildPresets } from './economy.js';
 import { emptyLevels } from './progression.js';
 const $ = id => document.getElementById(id), canvas = $('game'), ctx = canvas.getContext('2d');
 let storage; try { storage = window.localStorage; } catch { storage = { getItem() { return null; }, setItem() { throw new Error('Unavailable'); } }; }
 let save = loadSave(storage), game = null, last = null, accumulator = 0, fps = 60, manualPause = false, previousBest = {}, audio = null, selectedSkill = 'crushPower', lastSoundAt = -Infinity, voices = 0;
 let liveSave = save; let sandboxSession = null;
+let refineryStartedAt = null, resultEnteredAt = null;
+if (completeSettlement(save)) $('notice').textContent = '이전 Run의 확정된 Refinery 보상을 복구했습니다. 재추첨하지 않습니다.';
 function persist() { if (sandboxSession) return; if (!writeSave(storage, save)) $('notice').textContent = '브라우저 저장을 사용할 수 없습니다. 현재 세션에서는 플레이와 강화가 유지됩니다.'; }
 function enterSandbox() {
+  if (game?.state === 'RESULT' && !game.settled) finishRefinery();
   if (!sandboxSession) { sandboxSession = new EconomySandbox(liveSave, $('economy-preset').value); save = sandboxSession.save; }
   sandboxSession.preset = $('economy-preset').value;
   if (game) game.sandbox = true;
@@ -36,38 +40,68 @@ function tone(type) {
   } catch { /* Audio is optional. */ }
 }
 function start(seed = C.seed, duration) {
-  previousBest = { ...save.bestStats }; game = new Game({ seed, duration, levels: save.levels, options: save.options, sandbox: Boolean(sandboxSession), experiment: sandboxSession ? $('spawn-preset').value : 'baseline' }); game.onEvent = tone;
+  if (game?.state === 'RESULT' && !game.settled) finishRefinery();
+  if (resultEnteredAt !== null && save.lastRuns.at(-1)?.runId === game?.runId) { save.lastRuns.at(-1).resultScreenSeconds = (performance.now() - resultEnteredAt) / 1000; persist(); }
+  previousBest = { ...save.bestStats }; game = new Game({ seed, duration, runId: crypto.randomUUID(), levels: save.levels, options: save.options, sandbox: Boolean(sandboxSession), tierPreset: sandboxSession ? $('tier-preset').value : 'v09_short', experiment: sandboxSession ? $('spawn-preset').value : 'baseline' }); game.onEvent = tone;
+  refineryStartedAt = null; resultEnteredAt = null;
   manualPause = false; accumulator = 0; last = null;
   $('title').hidden = true; $('result').hidden = true; $('paused').hidden = true; $('pause').hidden = false; $('pause').textContent = '일시정지';
   if (save.options.sound) tone('triangle');
 }
 function result() {
-  settle(save, game); persist(); $('result').hidden = false; $('pause').hidden = true; $('paused').hidden = true;
-  const values = [['완전 파괴', game.totalDestroyed], ['직접 / 연쇄', `${game.directKills} / ${game.cascadeKills}`], ['최고 연쇄', game.bestChain], ['최고 밀도', C.tiers[game.highestTier].target], ['획득 PHOTON', `+${game.runEarned}`]];
+  stageSettlement(save, game); persist(); refineryStartedAt = performance.now(); resultEnteredAt = refineryStartedAt;
+  $('result').classList.add('processing'); $('refinery-canvas').hidden = false; $('refinery-skip').hidden = false;
+  $('result').hidden = false; $('pause').hidden = true; $('paused').hidden = true;
+  const values = [['완전 파괴', game.totalDestroyed], ['직접 / 연쇄', `${game.directKills} / ${game.cascadeKills}`], ['최고 연쇄', game.bestChain], ['최고 밀도', game.tiers[game.highestTier].target], ['RAW SHARDS', `+${game.runEarned}`]];
   $('stats').replaceChildren(...values.map(([label, value]) => { const el = document.createElement('div'); el.className = 'stat'; const small = document.createElement('small'); small.textContent = label; const strong = document.createElement('strong'); strong.textContent = value; el.append(small, strong); return el; }));
   $('comparison').textContent = `이전 최고 파괴 ${previousBest.totalDestroyed || 0} → 이번 ${game.totalDestroyed} (${game.totalDestroyed - (previousBest.totalDestroyed || 0) >= 0 ? '+' : ''}${game.totalDestroyed - (previousBest.totalDestroyed || 0)}) · 이전 최고 연쇄 ${previousBest.bestChain || 0} · 이번 Run ${game.duration.toFixed(0)}초`;
   renderUpgrades();
+  $('refinery-summary').textContent = `Raw ${game.runEarned.toLocaleString()} → ×${game.refinery.multiplier.toFixed(3)} → Photon +${game.refinery.payout}`;
+  if (!game.refinery.enabled) finishRefinery();
+}
+function finishRefinery(skipped = false) {
+  if (!game || game.state !== 'RESULT' || game.settled) return;
+  if (refineryStartedAt === null) result();
+  if (game.settled) return;
+  if (!sandboxSession) {
+    const stored = loadSave(storage);
+    if (stored.lastSettlementId === game.runId || stored.lastRuns.some(r => r.runId === game.runId)) { save = stored; liveSave = save; game.settled = true; $('result').classList.remove('processing'); $('refinery-canvas').hidden = true; $('refinery-skip').hidden = true; renderUpgrades(); return; }
+  }
+  game.refinerySkipped = skipped; game.resultWaitSeconds = (performance.now() - refineryStartedAt) / 1000;
+  if (save.pendingSettlement) { save.pendingSettlement.record.refinerySkipped = skipped; save.pendingSettlement.record.resultWaitSeconds = game.resultWaitSeconds; }
+  settle(save, game); persist(); $('result').classList.remove('processing'); $('refinery-canvas').hidden = true; $('refinery-skip').hidden = true; renderUpgrades();
 }
 function renderUpgrades() {
   const stats = getDerivedStats(save.levels); $('bank').textContent = save.bank.toLocaleString(); $('next-run').textContent = `NEXT RUN ${stats.duration}초 · 피해 ${stats.directDamage} · 반복 ${stats.attackInterval.toFixed(2)}초`;
-  renderSkillTree($('upgrades'), $('skill-info'), save, selectedSkill, key => { selectedSkill = key; renderUpgrades(); }, key => { if (sandboxSession ? sandboxSession.buy(key, game?.state) : buyUpgrade(save, key, game?.state)) { persist(); renderUpgrades(); } }, sandboxSession?.state);
+  renderSkillTree($('upgrades'), $('skill-info'), save, selectedSkill, key => { selectedSkill = key; renderUpgrades(); }, key => { if (!game?.settled) return; if (sandboxSession ? sandboxSession.buy(key, game?.state) : buyUpgrade(save, key, game?.state)) { persist(); renderUpgrades(); } }, (key, levels, bank) => { const state = sandboxSession ? sandboxSession.state(key, levels, bank) : skillState(key, levels, bank); return { ...state, canBuy: Boolean(game?.settled) && state.canBuy }; });
+  $('time-note').textContent = save.legacyExtraTimeLevel && !save.timeRespecUsed ? `60~90초 → 20~32초. Extra Time은 Lv당 +2초이며 보유 Lv.${save.levels.extraTime}은 유지됩니다.` : '20초 파괴 → 빠른 정산 → 강화 · 추가 원석/노드는 P1 확장 예정';
+  $('time-refund').hidden = !save.legacyExtraTimeLevel || save.timeRespecUsed; $('time-refund').disabled = !game?.settled;
 }
 function setOption(key, value) {
+  if (key === 'refineryEnabled') enterSandbox();
   save.options[key] = value;
-  if (game) { game.options[key] = value; if (game.state === 'PLAYING') game.optionChanges.push({ at: Number(game.elapsed.toFixed(3)), key, value }); }
+  if (game) { if (key === 'motionEnabled') game.setMotionEnabled(value); else game.options[key] = value; if (game.state === 'PLAYING') game.optionChanges.push({ at: Number(game.elapsed.toFixed(3)), key, value }); }
   persist(); syncOptions();
 }
 function syncOptions() { for (const key of Object.keys(C.options)) $(`option-${key}`).checked = save.options[key]; $('sound').textContent = save.options.sound ? 'SOUND ON' : 'SOUND OFF'; }
-for (const [key, label] of Object.entries({ modifiers: 'Modifiers · 파손 / 충전', modifierVisuals: 'Modifier Marks · 변종 표식', comboFeedback: 'Combo Feedback · 연쇄 강조', sequentialPropagation: 'Sequential Propagation · 순차 전파', visualVariety: 'Visual Variety · 도형 다양성', inheritance: 'Inheritance · 효과 계승', ricochet: 'Ricochet · 벽 반사', damageVFX: 'Damage VFX · 손상 조각', sound: 'Sound · 합성 사운드' })) { const el = document.createElement('label'), input = document.createElement('input'); input.type = 'checkbox'; input.id = `option-${key}`; input.onchange = () => setOption(key, input.checked); el.append(input, document.createTextNode(label)); $('options').append(el); }
+for (const [key, label] of Object.entries({ motionEnabled: 'Motion · 회전 / 드리프트', refineryEnabled: 'Refinery · 슬롯 가공 (실험)', modifiers: 'Modifiers · 파손 / 충전', modifierVisuals: 'Modifier Marks · 변종 표식', comboFeedback: 'Combo Feedback · 연쇄 강조', sequentialPropagation: 'Sequential Propagation · 순차 전파', visualVariety: 'Visual Variety · 도형 다양성', inheritance: 'Inheritance · 효과 계승', ricochet: 'Ricochet · 벽 반사', damageVFX: 'Damage VFX · 손상 조각', sound: 'Sound · 합성 사운드' })) { const el = document.createElement('label'), input = document.createElement('input'); input.type = 'checkbox'; input.id = `option-${key}`; input.onchange = () => setOption(key, input.checked); el.append(input, document.createTextNode(label)); $('options').append(el); }
 syncOptions();
-persist(); // Save version 1 → 2 migration without touching bank or old levels.
+persist(); // v1/v2 → v3 migration and pending settlement recovery.
 $('seed').value = C.seed; $('duration').min = C.dev.minDuration; $('duration').max = C.dev.maxDuration; $('grant').textContent = `테스트 Photon +${C.dev.grant}`;
 $('start').onclick = () => start(); $('again').onclick = () => start(); $('sound').onclick = () => setOption('sound', !save.options.sound);
+$('refinery-skip').onclick = () => finishRefinery(true);
+$('time-refund').onclick = () => { if (game?.settled && refundLegacyTime(save, 'RESULT')) { persist(); renderUpgrades(); } };
+$('fresh-lab').onclick = () => { if (game?.state === 'RESULT' && !game.settled) finishRefinery(); sandboxSession = new EconomySandbox(freshSave()); save = sandboxSession.save; syncOptions(); $('sandbox-status').textContent = 'FRESH LAB · 새 계정 / 저장하지 않음'; $('notice').textContent = 'Fresh Lab: 실제 재화·보유 스킬은 그대로 유지됩니다.'; $('tier-preset').value = 'v09_short'; $('duration').value = ''; start(Number($('seed').value) >>> 0); };
 const toggleDev = () => { $('dev').hidden = !$('dev').hidden; }; $('dev-toggle').onclick = toggleDev; $('dev-close').onclick = toggleDev;
 document.addEventListener('keydown', e => { if (e.key.toLowerCase() === 'd' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) toggleDev(); });
 function pause(value) { manualPause = value; if (game?.state === 'PLAYING') { game.paused = value || document.hidden; game.held = false; $('paused').hidden = !game.paused; $('pause').textContent = value ? '계속 플레이' : '일시정지'; } last = null; accumulator = 0; }
 $('pause').onclick = () => pause(!manualPause); $('resume').onclick = () => pause(false);
 document.addEventListener('visibilitychange', () => pause(manualPause));
+window.addEventListener('pageshow', event => {
+  if (!event.persisted || sandboxSession) return;
+  save = loadSave(storage); liveSave = save; completeSettlement(save); persist();
+  if (game?.state === 'RESULT') { game.settled = true; $('result').classList.remove('processing'); $('refinery-canvas').hidden = true; $('refinery-skip').hidden = true; renderUpgrades(); }
+});
 function release() { if (game) game.held = false; }
 canvas.addEventListener('pointerdown', e => { if (e.button !== 0 || game?.state !== 'PLAYING' || game.paused) return; const p = logicalPoint(e.clientX, e.clientY, canvas.getBoundingClientRect()); game.pointer = p; game.held = true; if (game.attackClock <= 1e-9) { game.attack(p.x, p.y); game.attackClock = game.stats.attackInterval; } e.preventDefault(); });
 canvas.addEventListener('pointermove', e => { if (game) game.pointer = logicalPoint(e.clientX, e.clientY, canvas.getBoundingClientRect()); });
@@ -80,6 +114,7 @@ $('grant').onclick = () => { enterSandbox(); save.bank += C.dev.grant; if (game?
 $('economy-preset').onchange = () => { if (sandboxSession) { sandboxSession.preset = $('economy-preset').value; if (game?.state === 'RESULT') renderUpgrades(); } };
 $('reset').onclick = () => { if (confirm('영구 강화, 광자, 플레이 기록을 모두 초기화할까요?')) { save = freshSave(); if (sandboxSession) { save.sandbox = true; sandboxSession.save = save; } else liveSave = save; persist(); syncOptions(); game = null; $('title').hidden = false; $('result').hidden = true; $('paused').hidden = true; $('pause').hidden = true; } };
 $('copy').onclick = async () => { const data = JSON.stringify({ current: game?.record() || null, lastRuns: save.lastRuns }, null, 2); try { await navigator.clipboard.writeText(data); $('notice').textContent = 'Run JSON을 복사했습니다.'; } catch { $('notice').textContent = '클립보드 접근이 제한되어 JSON 파일로 저장합니다.'; const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'application/json' })); a.download = 'shard-storm-runs.json'; a.click(); URL.revokeObjectURL(a.href); } };
+$('export-save').onclick = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(liveSave, null, 2)], { type: 'application/json' })); a.download = 'shard-storm-save-v3.json'; a.click(); URL.revokeObjectURL(a.href); };
 function frame(now) {
   if (last !== null) {
     const delta = Math.max(0, (now - last) / 1000); if (delta > 0 && delta < 1) fps = fps * .95 + Math.min(240, 1 / delta) * .05;
@@ -96,11 +131,12 @@ function frame(now) {
     }
   }
   last = now;
-  if (game?.state === 'RESULT' && !game.settled) result();
+  if (game?.state === 'RESULT' && refineryStartedAt === null) result();
+  if (game?.state === 'RESULT' && !game.settled) { const progress = Math.min(1, (now - refineryStartedAt) / (C.refinery.animationSeconds * 1000)); drawRefinery($('refinery-canvas'), game.refinery, progress); if (progress >= 1) finishRefinery(); }
   draw(ctx, game, fps);
-  if (!$('dev').hidden) $('debug-stats').textContent = game ? `TIME ${game.remaining.toFixed(2)} / ${game.duration}\nKILLS ${game.totalDestroyed} (D ${game.directKills} / C ${game.cascadeKills})\nCHAIN ${game.currentChain} / BEST ${game.bestChain}\nPHOTON +${game.runEarned} / BANK ${save.bank}\nTIER ${game.highestTier} / SHAPES ${game.alive.length}/${game.target}\nSHARDS ${game.shards.length} / PEAK ${game.peakShards}\nWAVES ${game.waves.length} / SCHEDULED ${game.queue.length}\nFPS ${fps.toFixed(1)} / CAPS ${game.safetyCapsHit}\nSEED ${game.seed}\nFIRST CASCADE ${game.firstCascadeTime?.toFixed(3) ?? '—'}\nCOMBO ${JSON.stringify(game.comboMilestones)}\nEMPTY ${game.emptyArenaDuration.toFixed(3)}s / FAIL ${game.spawnFailures}\nCAP TYPES ${JSON.stringify(game.capCounts)}\nMODIFIERS ${game.alive.filter(s => s.modifier === 'charged').length} charged\nPRESET ${game.experiment.spawnInterval}s / cluster ${game.experiment.clusterChance}` : `BANK ${save.bank}\nREADY / FPS ${fps.toFixed(1)}`;
+  if (!$('dev').hidden) $('debug-stats').textContent = game ? `TIME ${game.remaining.toFixed(2)} / ${game.duration}\nKILLS ${game.totalDestroyed} (D ${game.directKills} / C ${game.cascadeKills})\nCHAIN ${game.currentChain} / BEST ${game.bestChain}\nRAW +${game.runEarned} / BANK ${save.bank}\nTIER ${game.highestTier} / SHAPES ${game.alive.length}/${game.target}\nSHARDS ${game.shards.length} / PEAK ${game.peakShards}\nWAVES ${game.waves.length} / SCHEDULED ${game.queue.length}\nFPS ${fps.toFixed(1)} / CAPS ${game.safetyCapsHit}\nSEED ${game.seed}\nFIRST CASCADE ${game.firstCascadeTime?.toFixed(3) ?? '—'}\nCOMBO ${JSON.stringify(game.comboMilestones)}\nEMPTY ${game.emptyArenaDuration.toFixed(3)}s / FAIL ${game.spawnFailures}\nCAP TYPES ${JSON.stringify(game.capCounts)}\nMODIFIERS ${game.alive.filter(s => s.modifier === 'charged').length} charged\nPRESET ${game.experiment.spawnInterval}s / cluster ${game.experiment.clusterChance}` : `BANK ${save.bank}\nREADY / FPS ${fps.toFixed(1)}`;
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
 // Read-only snapshot for browser QA; gameplay still runs through real pointer input.
-window.shardStorm = { snapshot: () => ({ state: game?.state || 'TITLE', paused: game?.paused || false, remaining: game?.remaining, elapsed: game?.elapsed, fps, record: game?.record(), combo: game?.options.comboFeedback ? game?.combo.visible(game.elapsed) : null, audioVoices: voices, shapes: game?.alive.map(s => ({ id: s.id, type: s.type, modifier: s.modifier, maxHP: s.maxHP, x: s.x, y: s.y, hp: s.hp, grace: s.grace, enhanced: s.enhanced, radius: s.radius, material: s.appearance.material, pattern: s.appearance.pattern })) || [], waves: game?.waves.map(w => ({ radius: w.radius, maxRadius: w.maxRadius, source: w.sourceKind })) || [], scheduled: game?.queue.length || 0, clickRings: game?.clickVFX.items.length || 0, bank: save.bank, levels: { ...save.levels }, derivedStats: getDerivedStats(save.levels), options: { ...save.options }, saveVersion: save.saveVersion, sandbox: Boolean(sandboxSession), sandboxEconomy: sandboxSession?.preset, settled: game?.settled }) };
+window.shardStorm = { snapshot: () => ({ state: game?.state || 'TITLE', paused: game?.paused || false, remaining: game?.remaining, elapsed: game?.elapsed, fps, record: game?.record(), combo: game?.options.comboFeedback ? game?.combo.visible(game.elapsed) : null, audioVoices: voices, shapes: game?.alive.map(s => ({ id: s.id, type: s.type, angle: s.angle, anchorX: s.anchorX, anchorY: s.anchorY, motionProfile: s.motion.profile, modifier: s.modifier, maxHP: s.maxHP, x: s.x, y: s.y, hp: s.hp, grace: s.grace, enhanced: s.enhanced, radius: s.radius, material: s.appearance.material, pattern: s.appearance.pattern })) || [], waves: game?.waves.map(w => ({ radius: w.radius, maxRadius: w.maxRadius, source: w.sourceKind })) || [], scheduled: game?.queue.length || 0, clickRings: game?.clickVFX.items.length || 0, bank: save.bank, levels: { ...save.levels }, derivedStats: getDerivedStats(save.levels), options: { ...save.options }, saveVersion: save.saveVersion, sandbox: Boolean(sandboxSession), sandboxEconomy: sandboxSession?.preset, refinery: game?.refinery, pendingSettlement: save.pendingSettlement, totalRuns: save.totalRuns, lifetimeDestroyed: save.lifetimeDestroyed, settled: game?.settled }) };

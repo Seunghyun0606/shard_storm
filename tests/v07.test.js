@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { Game } from '../game.js';
+import { LegacyGame as Game } from './helpers.js';
 import { CONFIG as C } from '../config.js';
 import { getDerivedStats, skillDefinitions, skillState, validateSkillTree } from '../skill-tree.js';
 import { createAppearance, ClickVFXPool } from '../visuals.js';
@@ -85,7 +85,7 @@ test('skill graph rejects duplicate, missing, cyclic and impossible prerequisite
 test('v0.7 / 24: legacy bank/5 levels/best/history/options survive migration; new skills are zero', () => {
   const old = { saveVersion: 1, bank: 789, levels: { crushPower: 2, shardPower: 0, shardRange: 1, chainAmplifier: 1, extraTime: 2 }, bestStats: { totalDestroyed: 120, bestChain: 14, photonsEarned: 900 }, lastRuns: [{ photonsEarned: 900, seed: 7 }], options: { inheritance: false, ricochet: false, damageVFX: true, sound: false } };
   const storage = memoryStorage(); storage.setItem(C.storageKey, JSON.stringify(old)); const migrated = loadSave(storage);
-  assert.equal(migrated.saveVersion, 2); assert.equal(migrated.bank, old.bank); assert.deepEqual(migrated.bestStats, old.bestStats); assert.deepEqual(migrated.lastRuns, old.lastRuns);
+  assert.equal(migrated.saveVersion, 3); assert.equal(migrated.bank, old.bank); assert.deepEqual(migrated.bestStats, old.bestStats); assert.deepEqual(migrated.lastRuns, old.lastRuns);
   for (const [k, value] of Object.entries(old.levels)) assert.equal(migrated.levels[k], value);
   for (const k of ['crushSpeed', 'impactPulse', 'ricochetPlus', 'shardBloom', 'echoCatalyst', 'photonBoost']) assert.equal(migrated.levels[k], 0);
   assert.equal(getDerivedStats(migrated.levels).shardRange, 230); // Owned legacy skill still works before its new prerequisite is met.

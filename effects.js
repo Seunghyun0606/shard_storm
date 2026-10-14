@@ -1,5 +1,6 @@
 import { CONFIG as C } from './config.js';
 import { segmentCircle } from './entities.js';
+import { firstContact } from './motion.js';
 export function makeShard(run, x, y, angle, source, chainId, depth, small = false, exclude = null) {
   const range = small ? C.smallShard.range : run.stats.shardRange;
   return { x, y, prevX: x, prevY: y, vx: Math.cos(angle) * C.shard.speed, vy: Math.sin(angle) * C.shard.speed, angle,
@@ -22,7 +23,12 @@ export function traceShard(run, shard, budget) {
     let hit = null, first = Infinity;
     for (const target of run.alive) {
       if (target.id === shard.exclude) continue;
-      const t = segmentCircle(p.x, p.y, nx, ny, target.x, target.y, target.radius + C.shard.radius);
+      let t;
+      if (run.options.motionEnabled && run.positionAt && (target.motion?.ampX || target.motion?.ampY)) {
+        const start = run.elapsed + travelled / C.shard.speed, end = start + distance / C.shard.speed;
+        const time = firstContact(time => { const pos = run.positionAt(target, time), d = (time - start) * C.shard.speed; return Math.hypot(p.x + ux * d - pos.x, p.y + uy * d - pos.y) - target.radius - C.shard.radius; }, Math.max(start, target.vulnerableAt || 0), end, C.shard.speed + C.motion.maxSpeed);
+        t = time === null ? null : distance ? (time - start) * C.shard.speed / distance : 0;
+      } else t = segmentCircle(p.x, p.y, nx, ny, target.x, target.y, target.radius + C.shard.radius);
       if (t !== null && t < first && (target.vulnerableAt || 0) <= run.elapsed + (travelled + distance * t) / C.shard.speed + 1e-9) { first = t; hit = target; }
     }
     if (hit) { p.x += ux * distance * first; p.y += uy * distance * first; return { ...p, distance: travelled + distance * first, hit, wallDead: false }; }

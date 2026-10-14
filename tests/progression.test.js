@@ -1,12 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CONFIG as C } from '../config.js';
-import { Game } from '../game.js';
+import { LegacyGame as Game } from './helpers.js';
 import { freshSave, loadSave, writeSave } from '../storage.js';
 import { buyUpgrade, upgradeCost, settle, tierFor } from '../progression.js';
 import { memoryStorage } from './helpers.js';
 test('all tiers use cumulative thresholds and exact densities', () => {
-  for (const [kills, tier] of [[0, 0], [11, 0], [12, 1], [29, 1], [30, 2], [55, 3], [90, 4], [140, 5]]) assert.equal(tierFor(kills), tier);
+  for (const [kills, tier] of [[0, 0], [11, 0], [12, 1], [29, 1], [30, 2], [55, 3], [90, 4], [140, 5]]) assert.equal(tierFor(kills, C.legacyTiers), tier);
 });
 test('PRD 13: settlement exactly once, no active-run rewards saved, upgrades persist', () => {
   const save = freshSave(), storage = memoryStorage(), g = new Game();

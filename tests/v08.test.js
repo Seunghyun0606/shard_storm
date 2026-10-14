@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CONFIG as C } from '../config.js';
-import { Game } from '../game.js';
+import { LegacyGame as Game } from './helpers.js';
 import { emptyGame, cause, advance } from './helpers.js';
 import { emptyLevels } from '../progression.js';
 import { createShape } from '../entities.js';
@@ -46,15 +46,15 @@ test('v0.8 economy: sandbox purchases enforce balance/MAX and support presets wi
   assert.equal(lab.save.levels.crushPower, 5); assert.equal(lab.buy('crushPower', 'RESULT'), false); assert.equal(lab.buy('missing', 'RESULT'), false); assert.equal(source.levels.crushPower, 0); assert.equal(source.bank, 360);
 });
 test('v0.8 economy: existing v2 history and owned levels preserved; new fields optional', () => {
-  const source = freshSave(), storage = memoryStorage(); source.bank = 789; source.levels.shardBloom = 2; source.lastRuns = [{ seed: 42, photonsEarned: 200 }];
+  const source = freshSave(), storage = memoryStorage(); source.saveVersion = 2; source.bank = 789; source.levels.shardBloom = 2; source.lastRuns = [{ seed: 42, photonsEarned: 200 }];
   delete source.options.comboFeedback; delete source.options.modifiers; writeSave(storage, source);
-  const loaded = loadSave(storage); assert.equal(loaded.saveVersion, 2); assert.equal(loaded.bank, 789); assert.equal(loaded.levels.shardBloom, 2); assert.deepEqual(loaded.lastRuns, source.lastRuns); assert.equal(loaded.options.modifiers, true);
+  const loaded = loadSave(storage); assert.equal(loaded.saveVersion, 3); assert.equal(loaded.bank, 789); assert.equal(loaded.levels.shardBloom, 2); assert.deepEqual(loaded.lastRuns, source.lastRuns); assert.equal(loaded.options.modifiers, true);
 });
 test('v0.8 economy: every build and per-node experiment meets prerequisites; Extra Time isolated', () => {
   for (const levels of Object.values(buildPresets)) for (const node of C.skillDefinitions) if (levels[node.id]) for (const p of node.prerequisites) assert.ok(levels[p.id] >= p.minLevel);
   const comparisons = nodeComparisons(); assert.equal(comparisons.length, 11);
   for (const n of comparisons) for (const p of C.skillDefinitions.find(d => d.id === n.key).prerequisites) assert.ok(n.before[p.id] >= p.minLevel);
-  for (const [level, duration] of [[0, 60], [1, 65], [6, 90]]) { assert.equal(durationFor({ extraTime: level }), duration); const g = new Game({ levels: { extraTime: level }, duration: 60 }); assert.equal(g.duration, 60); assert.equal(g.levels.extraTime, level); }
+  for (const [level, duration] of [[0, 20], [1, 22], [6, 32]]) { assert.equal(durationFor({ extraTime: level }), duration); const g = new Game({ levels: { extraTime: level }, duration: 60 }); assert.equal(g.duration, 60); assert.equal(g.levels.extraTime, level); }
 });
 test('v0.8 diagnostics: exact 10-second event boundary, bin sums and Extra Time bins', () => {
   const g = emptyGame({ duration: 65 }); g.elapsed = 10; g.remaining = 55;

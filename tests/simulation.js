@@ -10,8 +10,8 @@ export function chooseTarget(g) {
   const score = s => all.filter(t => t.id !== s.id && Math.hypot(s.x - t.x, s.y - t.y) <= C.shard.range).length * 3 - Math.ceil(s.hp / g.stats.directDamage) * 2;
   return live.map(s => ({ s, score: score(s) })).sort((a, b) => b.score - a.score || a.s.id - b.s.id)[0]?.s;
 }
-export function simulate({ seed = C.seed, levels = emptyLevels(), options = C.options, duration = 60, experiment = 'baseline' } = {}) {
-  const g = new Game({ seed, levels, options, duration, experiment, inputPolicy: 'auto:density-hp-v1', sandbox: true });
+export function simulate({ seed = C.seed, levels = emptyLevels(), options = C.options, duration = C.duration, experiment = 'baseline', ruleset = 'v09', tierPreset = 'v09_short', runId = `simulation-${seed}` } = {}) {
+  const g = new Game({ seed, levels, options, duration, experiment, ruleset, tierPreset, runId, inputPolicy: 'auto:density-hp-v1', sandbox: true });
   let nextAttack = C.attackInterval; const timings = [], earningThresholdTimes = {};
   const thresholds = Object.fromEntries(Object.keys(C.upgrades).map(k => [k, Object.fromEntries(['baseline', 'cost_x3', 'cost_x6'].map(p => [p, experimentCost(k, g.levels[k], p)]))]));
   g.attack(C.tutorial.x, C.tutorial.y);
@@ -28,7 +28,8 @@ export function simulate({ seed = C.seed, levels = emptyLevels(), options = C.op
     assert.ok(g.alive.filter(s => s.modifier === 'charged').length <= C.modifiers.chargedCap);
   }
   const r = g.record();
-  for (const [field, total] of [['totalDestroyed', r.totalDestroyed], ['directKills', r.directKills], ['cascadeKills', r.cascadeKills], ['earnedPhoton', r.photonsEarned], ['safetyCapsHit', r.safetyCapsHit]]) assert.equal(r.bins.reduce((sum, b) => sum + b[field], 0), total);
+  assert.ok(r.physicsChecks.maxWaveContactError < .002); assert.ok(r.physicsChecks.maxProjectileContactError < .002); assert.equal(r.physicsChecks.lateWaveContacts, 0);
+  for (const [field, total] of [['totalDestroyed', r.totalDestroyed], ['directKills', r.directKills], ['cascadeKills', r.cascadeKills], ['earnedPhoton', r.rawEarned], ['safetyCapsHit', r.safetyCapsHit]]) assert.equal(r.bins.reduce((sum, b) => sum + b[field], 0), total);
   assert.ok(Math.abs(r.bins.reduce((sum, b) => sum + b.sampledSeconds, 0) - duration) < 1e-6);
   timings.sort((a, b) => a - b);
   return { ...r, earningThresholdTimes, purchasingAllowedAt: 'RESULT only; threshold time is earning capacity, not an in-run purchase', simulationSampleCount: timings.length, simulationStepP95ms: timings[Math.floor(timings.length * .95)], simulationStepMaxMs: timings.at(-1) };

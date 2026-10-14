@@ -1,11 +1,11 @@
 import { CONFIG as C } from './config.js';
 import { emptyLevels } from './progression.js';
-export function freshSave() { return { saveVersion: C.saveVersion, bank: 0, levels: emptyLevels(), bestStats: {}, lastRuns: [], options: { ...C.options } }; }
+export function freshSave() { return { saveVersion: C.saveVersion, bank: 0, levels: emptyLevels(), bestStats: {}, lastRuns: [], options: { ...C.options }, catalystBalance: 0, discoveryRank: 0, lifetimeDestroyed: 0, knownHistoryKills: 0, totalRuns: 0, pendingSettlement: null, lastSettlementId: null, legacyExtraTimeLevel: 0, timeRespecUsed: false }; }
 export function loadSave(storage) {
   const save = freshSave();
   try {
     const data = JSON.parse(storage.getItem(C.storageKey));
-    if (!data || ![1, C.saveVersion].includes(data.saveVersion) || !Number.isSafeInteger(data.bank) || data.bank < 0) return save;
+    if (!data || ![1, 2, C.saveVersion].includes(data.saveVersion) || !Number.isSafeInteger(data.bank) || data.bank < 0) return save;
     const legacyKeys = ['crushPower', 'shardPower', 'shardRange', 'chainAmplifier', 'extraTime'];
     if (!data.levels || typeof data.levels !== 'object') return save;
     for (const [key, u] of Object.entries(C.upgrades)) {
@@ -16,6 +16,14 @@ export function loadSave(storage) {
     save.bank = data.bank;
     for (const key of ['totalDestroyed', 'bestChain', 'photonsEarned']) if (Number.isSafeInteger(data.bestStats?.[key]) && data.bestStats[key] >= 0) save.bestStats[key] = data.bestStats[key];
     save.lastRuns = Array.isArray(data.lastRuns) ? data.lastRuns.filter(r => r && Number.isFinite(r.photonsEarned)).slice(-C.historyLimit) : [];
+    if (data.saveVersion < 3) { save.knownHistoryKills = save.lastRuns.reduce((n,r) => n + (Number.isSafeInteger(r.totalDestroyed) && r.totalDestroyed > 0 ? r.totalDestroyed : 0), 0); save.legacyExtraTimeLevel = save.levels.extraTime; }
+    else {
+      for (const key of ['catalystBalance', 'discoveryRank', 'lifetimeDestroyed', 'knownHistoryKills', 'totalRuns', 'legacyExtraTimeLevel']) if (Number.isSafeInteger(data[key]) && data[key] >= 0) save[key] = data[key];
+      save.timeRespecUsed = data.timeRespecUsed === true;
+      if (typeof data.lastSettlementId === 'string') save.lastSettlementId = data.lastSettlementId;
+      const pending = data.pendingSettlement;
+      if (pending && typeof pending.id === 'string' && Number.isSafeInteger(pending.payout) && pending.payout >= 0 && pending.record?.runId === pending.id && Number.isSafeInteger(pending.record.totalDestroyed) && pending.record.totalDestroyed >= 0 && pending.record.processedPhoton === pending.payout && pending.record.photonsEarned === pending.payout) save.pendingSettlement = pending;
+    }
     for (const key of Object.keys(C.options)) if (typeof data.options?.[key] === 'boolean') save.options[key] = data.options[key];
   } catch { /* Invalid or inaccessible storage starts with a safe empty save. */ }
   return save;

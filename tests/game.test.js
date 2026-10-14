@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { Game } from '../game.js';
+import { LegacyGame as Game } from './helpers.js';
 import { CONFIG as C } from '../config.js';
 import { logicalPoint } from '../entities.js';
 import { emptyLevels } from '../progression.js';

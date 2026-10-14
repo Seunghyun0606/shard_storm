@@ -2,7 +2,8 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import { CONFIG as C } from '../config.js';
 import { emptyLevels } from '../progression.js';
-import { simulate } from './simulation.js';
+import { simulate as run } from './simulation.js';
+const simulate = (args = {}) => run({ ...args, ruleset: 'legacy_v08', duration: 60, options: { ...args.options, motionEnabled: false } });
 export { simulate } from './simulation.js';
 const baseline = simulate();
 const upgraded = simulate({ levels: { ...emptyLevels(), crushPower: 1, shardPower: 1 } });
@@ -13,6 +14,10 @@ assert.ok(upgraded.cascadeKills > baseline.cascadeKills, 'permanent upgrades mus
 assert.equal(ab[3].cascadeKills, baseline.cascadeKills); assert.equal(ab[3].photonsEarned, baseline.photonsEarned);
 mkdirSync('artifacts', { recursive: true });
 const output = { policy: 'deterministic density / HP efficiency, one direct attack per derived interval, guided first click; all runs 60s', baseline, upgraded, ab, repetitions };
-writeFileSync('artifacts/simulation-results.json', JSON.stringify(output, null, 2));
+writeFileSync('artifacts/v09-legacy-regression-results.json', JSON.stringify(output, null, 2));
 const compact = r => ({ seed: r.seed, totalDestroyed: r.totalDestroyed, cascadeKills: r.cascadeKills, photonsEarned: r.photonsEarned, bestChain: r.bestChain, safetyCapsHit: r.safetyCapsHit, simulationStepP95ms: r.simulationStepP95ms });
 console.log(JSON.stringify({ baseline: compact(baseline), upgraded: compact(upgraded), ab: ab.map(compact), repeatedRuns: repetitions.length, repeatedSafetyCaps: repetitions.map(r => r.safetyCapsHit) }, null, 2));
+
+const short = run(), shortUpgraded = run({ levels: { ...emptyLevels(), crushPower: 1, shardPower: 1 } });
+writeFileSync('artifacts/v09-short-regression-results.json', JSON.stringify({ baseline: short, upgraded: shortUpgraded }, null, 2));
+console.log('v0.9 20s smoke:', compact(short), compact(shortUpgraded));

@@ -16,6 +16,6 @@ try {
   const resumed = await page.evaluate(() => window.shardStorm.snapshot()); assert.equal(resumed.paused, false); assert.equal(resumed.remaining, before.remaining);
   await page.waitForTimeout(200);
   const after = await page.evaluate(() => window.shardStorm.snapshot()); assert.ok(before.remaining - after.remaining > .1 && before.remaining - after.remaining < .4);
-  writeFileSync('artifacts/v08-visibility-results.json', JSON.stringify({ passed: true, method: 'simulated document.hidden + real visibilitychange handler; not an actual tab switch', pausedForMs: 700, timeBefore: before.remaining, timeDuring: during.remaining, timeOnResume: resumed.remaining, timeAfter200ms: after.remaining }, null, 2));
+  writeFileSync('artifacts/v09-visibility-results.json', JSON.stringify({ passed: true, method: 'simulated document.hidden + real visibilitychange handler; not an actual tab switch', pausedForMs: 700, timeBefore: before.remaining, timeDuring: during.remaining, timeOnResume: resumed.remaining, timeAfter200ms: after.remaining }, null, 2));
   console.log('Visibility handler: pause, freeze, resume without time jump PASSED (simulated visibility).');
 } finally { await browser.close(); }

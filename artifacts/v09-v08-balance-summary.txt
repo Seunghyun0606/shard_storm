@@ -1,0 +1,1034 @@
+
+> benchmark:v08-balance
+> node tests/v08-balance-benchmark.js
+
+Difficulty: 50 controlled runs complete.
+Build, utility and all 11 node comparisons complete.
+{
+  "uniqueSimulations": 231,
+  "difficulty": [
+    {
+      "scenario": "vanilla",
+      "build": "Baseline",
+      "runs": 5,
+      "destroyedMedian": 663,
+      "destroyedRange": [
+        593,
+        689
+      ],
+      "photonMedian": 12426,
+      "photonRange": [
+        11505,
+        12753
+      ],
+      "cascadeRatioMedian": 0.702954898911353,
+      "bestChainMedian": 23,
+      "densityMedian": 24.280483407029553,
+      "emptySecondsMedian": 0,
+      "emptyEpisodesOverHalfSecond": 0,
+      "spawnFailures": 0,
+      "capsMedian": 0,
+      "capRange": [
+        0,
+        4
+      ],
+      "stepP95MedianMs": 0.05679999999995289,
+      "photonPerSecondMedian": 207.1
+    },
+    {
+      "scenario": "vanilla",
+      "build": "Upgraded",
+      "runs": 5,
+      "destroyedMedian": 776,
+      "destroyedRange": [
+        758,
+        812
+      ],
+      "photonMedian": 14372,
+      "photonRange": [
+        13806,
+        15463
+      ],
+      "cascadeRatioMedian": 0.7061855670103093,
+      "bestChainMedian": 23,
+      "densityMedian": 22.192579435501177,
+      "emptySecondsMedian": 0,
+      "emptyEpisodesOverHalfSecond": 0,
+      "spawnFailures": 0,
+      "capsMedian": 1,
+      "capRange": [
+        0,
+        3
+      ],
+      "stepP95MedianMs": 0.054700000000025284,
+      "photonPerSecondMedian": 239.53333333333333
+    },
+    {
+      "scenario": "modifiers_baseline",
+      "build": "Baseline",
+      "runs": 5,
+      "destroyedMedian": 695,
+      "destroyedRange": [
+        680,
+        736
+      ],
+      "photonMedian": 13466,
+      "photonRange": [
+        12668,
+        13677
+      ],
+      "cascadeRatioMedian": 0.7237410071942446,
+      "bestChainMedian": 24,
+      "densityMedian": 23.822538186785827,
+      "emptySecondsMedian": 0,
+      "emptyEpisodesOverHalfSecond": 0,
+      "spawnFailures": 0,
+      "capsMedian": 0,
+      "capRange": [
+        0,
+        0
+      ],
+      "stepP95MedianMs": 0.05890000000022155,
+      "photonPerSecondMedian": 224.43333333333334
+    },
+    {
+      "scenario": "modifiers_baseline",
+      "build": "Upgraded",
+      "runs": 5,
+      "destroyedMedian": 820,
+      "destroyedRange": [
+        778,
+        844
+      ],
+      "photonMedian": 15239,
+      "photonRange": [
+        14823,
+        15342
+      ],
+      "cascadeRatioMedian": 0.7244283995186522,
+      "bestChainMedian": 26,
+      "densityMedian": 21.753450101454362,
+      "emptySecondsMedian": 0,
+      "emptyEpisodesOverHalfSecond": 0,
+      "spawnFailures": 0,
+      "capsMedian": 1,
+      "capRange": [
+        0,
+        1
+      ],
+      "stepP95MedianMs": 0.053200000000060754,
+      "photonPerSecondMedian": 253.98333333333332
+    },
+    {
+      "scenario": "modifiers_spread",
+      "build": "Baseline",
+      "runs": 5,
+      "destroyedMedian": 693,
+      "destroyedRange": [
+        628,
+        725
+      ],
+      "photonMedian": 12753,
+      "photonRange": [
+        11020,
+        13258
+      ],
+      "cascadeRatioMedian": 0.7091690544412608,
+      "bestChainMedian": 25,
+      "densityMedian": 24.19115451490104,
+      "emptySecondsMedian": 0,
+      "emptyEpisodesOverHalfSecond": 0,
+      "spawnFailures": 0,
+      "capsMedian": 0,
+      "capRange": [
+        0,
+        2
+      ],
+      "stepP95MedianMs": 0.052999999999883585,
+      "photonPerSecondMedian": 212.55
+    },
+    {
+      "scenario": "modifiers_spread",
+      "build": "Upgraded",
+      "runs": 5,
+      "destroyedMedian": 803,
+      "destroyedRange": [
+        761,
+        827
+      ],
+      "photonMedian": 14991,
+      "photonRange": [
+        14881,
+        16102
+      ],
+      "cascadeRatioMedian": 0.7158403869407497,
+      "bestChainMedian": 23,
+      "densityMedian": 22.31720410821789,
+      "emptySecondsMedian": 0,
+      "emptyEpisodesOverHalfSecond": 0,
+      "spawnFailures": 0,
+      "capsMedian": 0,
+      "capRange": [
+        0,
+        1
+      ],
+      "stepP95MedianMs": 0.05059999999957654,
+      "photonPerSecondMedian": 249.85
+    },
+    {
+      "scenario": "modifiers_fast",
+      "build": "Baseline",
+      "runs": 5,
+      "destroyedMedian": 828,
+      "destroyedRange": [
+        802,
+        896
+      ],
+      "photonMedian": 15877,
+      "photonRange": [
+        14496,
+        17413
+      ],
+      "cascadeRatioMedian": 0.7548076923076923,
+      "bestChainMedian": 28,
+      "densityMedian": 25.785622548705042,
+      "emptySecondsMedian": 0,
+      "emptyEpisodesOverHalfSecond": 0,
+      "spawnFailures": 0,
+      "capsMedian": 4,
+      "capRange": [
+        0,
+        9
+      ],
+      "stepP95MedianMs": 0.0682000000001608,
+      "photonPerSecondMedian": 264.6166666666667
+    },
+    {
+      "scenario": "modifiers_fast",
+      "build": "Upgraded",
+      "runs": 5,
+      "destroyedMedian": 971,
+      "destroyedRange": [
+        946,
+        1016
+      ],
+      "photonMedian": 18579,
+      "photonRange": [
+        17506,
+        19621
+      ],
+      "cascadeRatioMedian": 0.7674418604651163,
+      "bestChainMedian": 29,
+      "densityMedian": 23.767484306612,
+      "emptySecondsMedian": 0,
+      "emptyEpisodesOverHalfSecond": 0,
+      "spawnFailures": 0,
+      "capsMedian": 2,
+      "capRange": [
+        0,
+        6
+      ],
+      "stepP95MedianMs": 0.07420000000001892,
+      "photonPerSecondMedian": 309.65
+    },
+    {
+      "scenario": "modifiers_fast_spread",
+      "build": "Baseline",
+      "runs": 5,
+      "destroyedMedian": 768,
+      "destroyedRange": [
+        716,
+        837
+      ],
+      "photonMedian": 14288,
+      "photonRange": [
+        12845,
+        16269
+      ],
+      "cascadeRatioMedian": 0.73046875,
+      "bestChainMedian": 30,
+      "densityMedian": 26.15639239634799,
+      "emptySecondsMedian": 0,
+      "emptyEpisodesOverHalfSecond": 0,
+      "spawnFailures": 0,
+      "capsMedian": 0,
+      "capRange": [
+        0,
+        1
+      ],
+      "stepP95MedianMs": 0.0725999999999658,
+      "photonPerSecondMedian": 238.13333333333333
+    },
+    {
+      "scenario": "modifiers_fast_spread",
+      "build": "Upgraded",
+      "runs": 5,
+      "destroyedMedian": 954,
+      "destroyedRange": [
+        947,
+        965
+      ],
+      "photonMedian": 18014,
+      "photonRange": [
+        17048,
+        18685
+      ],
+      "cascadeRatioMedian": 0.7660020986358866,
+      "bestChainMedian": 30,
+      "densityMedian": 24.472820778406792,
+      "emptySecondsMedian": 0,
+      "emptyEpisodesOverHalfSecond": 0,
+      "spawnFailures": 0,
+      "capsMedian": 0,
+      "capRange": [
+        0,
+        4
+      ],
+      "stepP95MedianMs": 0.07600000000002183,
+      "photonPerSecondMedian": 300.23333333333335
+    }
+  ],
+  "builds": [
+    {
+      "build": "Baseline",
+      "cost": {
+        "baseline": 0,
+        "cost_x3": 0,
+        "cost_x6": 0
+      },
+      "fixed60": {
+        "runs": 5,
+        "destroyedMedian": 695,
+        "destroyedRange": [
+          680,
+          736
+        ],
+        "photonMedian": 13466,
+        "photonRange": [
+          12668,
+          13677
+        ],
+        "cascadeRatioMedian": 0.7237410071942446,
+        "bestChainMedian": 24,
+        "densityMedian": 23.822538186785827,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 0,
+        "capRange": [
+          0,
+          0
+        ],
+        "stepP95MedianMs": 0.07070000000021537,
+        "photonPerSecondMedian": 224.43333333333334
+      },
+      "actualDuration": 60,
+      "actual": {
+        "runs": 5,
+        "destroyedMedian": 695,
+        "destroyedRange": [
+          680,
+          736
+        ],
+        "photonMedian": 13466,
+        "photonRange": [
+          12668,
+          13677
+        ],
+        "cascadeRatioMedian": 0.7237410071942446,
+        "bestChainMedian": 24,
+        "densityMedian": 23.822538186785827,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 0,
+        "capRange": [
+          0,
+          0
+        ],
+        "stepP95MedianMs": 0.07070000000021537,
+        "photonPerSecondMedian": 224.43333333333334
+      },
+      "actualNormalizedPhoton60": 13466
+    },
+    {
+      "build": "Upgraded",
+      "cost": {
+        "baseline": 150,
+        "cost_x3": 450,
+        "cost_x6": 900
+      },
+      "fixed60": {
+        "runs": 5,
+        "destroyedMedian": 820,
+        "destroyedRange": [
+          778,
+          844
+        ],
+        "photonMedian": 15239,
+        "photonRange": [
+          14823,
+          15342
+        ],
+        "cascadeRatioMedian": 0.7244283995186522,
+        "bestChainMedian": 26,
+        "densityMedian": 21.753450101454362,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 1,
+        "capRange": [
+          0,
+          1
+        ],
+        "stepP95MedianMs": 0.05259999999998399,
+        "photonPerSecondMedian": 253.98333333333332
+      },
+      "actualDuration": 60,
+      "actual": {
+        "runs": 5,
+        "destroyedMedian": 820,
+        "destroyedRange": [
+          778,
+          844
+        ],
+        "photonMedian": 15239,
+        "photonRange": [
+          14823,
+          15342
+        ],
+        "cascadeRatioMedian": 0.7244283995186522,
+        "bestChainMedian": 26,
+        "densityMedian": 21.753450101454362,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 1,
+        "capRange": [
+          0,
+          1
+        ],
+        "stepP95MedianMs": 0.05259999999998399,
+        "photonPerSecondMedian": 253.98333333333332
+      },
+      "actualNormalizedPhoton60": 15239
+    },
+    {
+      "build": "Crusher",
+      "cost": {
+        "baseline": 806,
+        "cost_x3": 2418,
+        "cost_x6": 4836
+      },
+      "fixed60": {
+        "runs": 5,
+        "destroyedMedian": 877,
+        "destroyedRange": [
+          866,
+          885
+        ],
+        "photonMedian": 16966,
+        "photonRange": [
+          16549,
+          17234
+        ],
+        "cascadeRatioMedian": 0.6386651323360184,
+        "bestChainMedian": 20,
+        "densityMedian": 18.533376448078492,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 0,
+        "capRange": [
+          0,
+          1
+        ],
+        "stepP95MedianMs": 0.05169999999998254,
+        "photonPerSecondMedian": 282.76666666666665
+      },
+      "actualDuration": 60,
+      "actual": {
+        "runs": 5,
+        "destroyedMedian": 877,
+        "destroyedRange": [
+          866,
+          885
+        ],
+        "photonMedian": 16966,
+        "photonRange": [
+          16549,
+          17234
+        ],
+        "cascadeRatioMedian": 0.6386651323360184,
+        "bestChainMedian": 20,
+        "densityMedian": 18.533376448078492,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 0,
+        "capRange": [
+          0,
+          1
+        ],
+        "stepP95MedianMs": 0.05169999999998254,
+        "photonPerSecondMedian": 282.76666666666665
+      },
+      "actualNormalizedPhoton60": 16966
+    },
+    {
+      "build": "Cascade",
+      "cost": {
+        "baseline": 764,
+        "cost_x3": 2292,
+        "cost_x6": 4584
+      },
+      "fixed60": {
+        "runs": 5,
+        "destroyedMedian": 887,
+        "destroyedRange": [
+          866,
+          900
+        ],
+        "photonMedian": 16931,
+        "photonRange": [
+          16650,
+          17595
+        ],
+        "cascadeRatioMedian": 0.7917133258678611,
+        "bestChainMedian": 26,
+        "densityMedian": 16.72588871982017,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 2,
+        "capRange": [
+          0,
+          5
+        ],
+        "stepP95MedianMs": 0.0727999999999156,
+        "photonPerSecondMedian": 282.18333333333334
+      },
+      "actualDuration": 60,
+      "actual": {
+        "runs": 5,
+        "destroyedMedian": 887,
+        "destroyedRange": [
+          866,
+          900
+        ],
+        "photonMedian": 16931,
+        "photonRange": [
+          16650,
+          17595
+        ],
+        "cascadeRatioMedian": 0.7917133258678611,
+        "bestChainMedian": 26,
+        "densityMedian": 16.72588871982017,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 2,
+        "capRange": [
+          0,
+          5
+        ],
+        "stepP95MedianMs": 0.0727999999999156,
+        "photonPerSecondMedian": 282.18333333333334
+      },
+      "actualNormalizedPhoton60": 16931
+    },
+    {
+      "build": "Reactor",
+      "cost": {
+        "baseline": 578,
+        "cost_x3": 1734,
+        "cost_x6": 3468
+      },
+      "fixed60": {
+        "runs": 5,
+        "destroyedMedian": 866,
+        "destroyedRange": [
+          852,
+          871
+        ],
+        "photonMedian": 16282,
+        "photonRange": [
+          15330,
+          16803
+        ],
+        "cascadeRatioMedian": 0.7772675086107922,
+        "bestChainMedian": 36,
+        "densityMedian": 16.98586918204365,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 0,
+        "capRange": [
+          0,
+          1
+        ],
+        "stepP95MedianMs": 0.05349999999998545,
+        "photonPerSecondMedian": 271.3666666666667
+      },
+      "actualDuration": 60,
+      "actual": {
+        "runs": 5,
+        "destroyedMedian": 866,
+        "destroyedRange": [
+          852,
+          871
+        ],
+        "photonMedian": 16282,
+        "photonRange": [
+          15330,
+          16803
+        ],
+        "cascadeRatioMedian": 0.7772675086107922,
+        "bestChainMedian": 36,
+        "densityMedian": 16.98586918204365,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 0,
+        "capRange": [
+          0,
+          1
+        ],
+        "stepP95MedianMs": 0.05349999999998545,
+        "photonPerSecondMedian": 271.3666666666667
+      },
+      "actualNormalizedPhoton60": 16282
+    },
+    {
+      "build": "ExtraTime",
+      "cost": {
+        "baseline": 120,
+        "cost_x3": 360,
+        "cost_x6": 720
+      },
+      "fixed60": {
+        "runs": 5,
+        "destroyedMedian": 695,
+        "destroyedRange": [
+          680,
+          736
+        ],
+        "photonMedian": 13466,
+        "photonRange": [
+          12668,
+          13677
+        ],
+        "cascadeRatioMedian": 0.7237410071942446,
+        "bestChainMedian": 24,
+        "densityMedian": 23.822538186785827,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 0,
+        "capRange": [
+          0,
+          0
+        ],
+        "stepP95MedianMs": 0.06860000000051514,
+        "photonPerSecondMedian": 224.43333333333334
+      },
+      "actualDuration": 65,
+      "actual": {
+        "runs": 5,
+        "destroyedMedian": 756,
+        "destroyedRange": [
+          723,
+          816
+        ],
+        "photonMedian": 14671,
+        "photonRange": [
+          13446,
+          15365
+        ],
+        "cascadeRatioMedian": 0.7281167108753316,
+        "bestChainMedian": 24,
+        "densityMedian": 23.84103994037011,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 0,
+        "capRange": [
+          0,
+          2
+        ],
+        "stepP95MedianMs": 0.054200000000491855,
+        "photonPerSecondMedian": 225.7076923076923
+      },
+      "actualNormalizedPhoton60": 13542.461538461539
+    },
+    {
+      "build": "PhotonBoost",
+      "cost": {
+        "baseline": 300,
+        "cost_x3": 900,
+        "cost_x6": 1800
+      },
+      "fixed60": {
+        "runs": 5,
+        "destroyedMedian": 695,
+        "destroyedRange": [
+          680,
+          736
+        ],
+        "photonMedian": 14736,
+        "photonRange": [
+          13853,
+          14957
+        ],
+        "cascadeRatioMedian": 0.7237410071942446,
+        "bestChainMedian": 24,
+        "densityMedian": 23.822538186785827,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 0,
+        "capRange": [
+          0,
+          0
+        ],
+        "stepP95MedianMs": 0.056199999999989814,
+        "photonPerSecondMedian": 245.6
+      },
+      "actualDuration": 65,
+      "actual": {
+        "runs": 5,
+        "destroyedMedian": 756,
+        "destroyedRange": [
+          723,
+          816
+        ],
+        "photonMedian": 16052,
+        "photonRange": [
+          14704,
+          16805
+        ],
+        "cascadeRatioMedian": 0.7281167108753316,
+        "bestChainMedian": 24,
+        "densityMedian": 23.84103994037011,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 0,
+        "capRange": [
+          0,
+          2
+        ],
+        "stepP95MedianMs": 0.055099999999583815,
+        "photonPerSecondMedian": 246.95384615384614
+      },
+      "actualNormalizedPhoton60": 14817.23076923077
+    },
+    {
+      "build": "UtilityMax",
+      "cost": {
+        "baseline": 4087,
+        "cost_x3": 12255,
+        "cost_x6": 24508
+      },
+      "fixed60": {
+        "runs": 5,
+        "destroyedMedian": 695,
+        "destroyedRange": [
+          680,
+          736
+        ],
+        "photonMedian": 16759,
+        "photonRange": [
+          15771,
+          17025
+        ],
+        "cascadeRatioMedian": 0.7237410071942446,
+        "bestChainMedian": 24,
+        "densityMedian": 23.822538186785827,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 0,
+        "capRange": [
+          0,
+          0
+        ],
+        "stepP95MedianMs": 0.07749999999941792,
+        "photonPerSecondMedian": 279.31666666666666
+      },
+      "actualDuration": 90,
+      "actual": {
+        "runs": 5,
+        "destroyedMedian": 1081,
+        "destroyedRange": [
+          1014,
+          1136
+        ],
+        "photonMedian": 25837,
+        "photonRange": [
+          23252,
+          26911
+        ],
+        "cascadeRatioMedian": 0.730804810360777,
+        "bestChainMedian": 24,
+        "densityMedian": 24.303893360592674,
+        "emptySecondsMedian": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "spawnFailures": 0,
+        "capsMedian": 0,
+        "capRange": [
+          0,
+          2
+        ],
+        "stepP95MedianMs": 0.06259999999929278,
+        "photonPerSecondMedian": 287.0777777777778
+      },
+      "actualNormalizedPhoton60": 17224.666666666668
+    }
+  ],
+  "growthSummary": [
+    {
+      "strategy": "Crusher",
+      "preset": "baseline",
+      "runs": [
+        {
+          "run": 1,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 3117
+        },
+        {
+          "run": 3,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 69358
+        },
+        {
+          "run": 5,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 135440
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "preset": "cost_x3",
+      "runs": [
+        {
+          "run": 1,
+          "purchaseCountMedian": 20,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 308
+        },
+        {
+          "run": 3,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 33427
+        },
+        {
+          "run": 5,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 99728
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "preset": "cost_x6",
+      "runs": [
+        {
+          "run": 1,
+          "purchaseCountMedian": 11,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 323
+        },
+        {
+          "run": 3,
+          "purchaseCountMedian": 29,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 1553
+        },
+        {
+          "run": 5,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 50231
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "preset": "baseline",
+      "runs": [
+        {
+          "run": 1,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 3117
+        },
+        {
+          "run": 3,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 69358
+        },
+        {
+          "run": 5,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 135440
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "preset": "cost_x3",
+      "runs": [
+        {
+          "run": 1,
+          "purchaseCountMedian": 19,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 663
+        },
+        {
+          "run": 3,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 30026
+        },
+        {
+          "run": 5,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 96108
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "preset": "cost_x6",
+      "runs": [
+        {
+          "run": 1,
+          "purchaseCountMedian": 9,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 1020
+        },
+        {
+          "run": 3,
+          "purchaseCountMedian": 28,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 1851
+        },
+        {
+          "run": 5,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 48228
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "preset": "baseline",
+      "runs": [
+        {
+          "run": 1,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 3117
+        },
+        {
+          "run": 3,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 69358
+        },
+        {
+          "run": 5,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 135440
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "preset": "cost_x3",
+      "runs": [
+        {
+          "run": 1,
+          "purchaseCountMedian": 20,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 444
+        },
+        {
+          "run": 3,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 35206
+        },
+        {
+          "run": 5,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 101288
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "preset": "cost_x6",
+      "runs": [
+        {
+          "run": 1,
+          "purchaseCountMedian": 10,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 215
+        },
+        {
+          "run": 3,
+          "purchaseCountMedian": 29,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 400
+        },
+        {
+          "run": 5,
+          "purchaseCountMedian": 35,
+          "firstRunAffordableNodesMedian": 4,
+          "capsMedian": 0,
+          "bankMedian": 49288
+        }
+      ]
+    }
+  ]
+}

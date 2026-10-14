@@ -1,8 +1,10 @@
-// PRD v0.7: gameplay values and experiment controls live here.
+// v0.9 P0. Legacy settings remain explicit for regression and controlled A/B.
 export const CONFIG = {
   width: 960, height: 540,
   arena: { left: 32, right: 928, top: 78, bottom: 512 },
-  seed: 31415, duration: 60, directDamage: 3, attackInterval: .20,
+  seed: 31415, duration: 20, directDamage: 3, attackInterval: .20,
+  motion: { maxDrift: 6, starDrift: 4, maxSpeed: 16, periodMin: 3, periodMax: 6, rotationMin: 10, rotationMax: 35, starRotationMin: 6, starRotationMax: 18, tutorialHold: .4, contactTolerance: 1e-6, contactIterations: 256 },
+  refinery: { rate: .06, tokens: 10, animationSeconds: 1.2, slots: [{ multiplier: .8, weight: 15 }, { multiplier: 1, weight: 35 }, { multiplier: 1.1, weight: 30 }, { multiplier: 1.3, weight: 15 }, { multiplier: 1.6, weight: 5 }] },
   step: 1 / 60, maxCatchUp: 8, spawnInterval: .2, spawnBatch: 3,
   spawnGrace: .15, spawnAttempts: 80, spawnGap: 12, clusterChance: .6,
   clusterMin: 65, clusterMax: 125, trajectoryMargin: 15,
@@ -39,7 +41,7 @@ export const CONFIG = {
     pentagon: { hp: 5, bonus: 12, radius: 25, color: '#C7ADFF', hue: 259, sides: 5, shardDamage: 3, splitAngle: Math.PI / 4 },
     star: { hp: 9, bonus: 40, radius: 29, color: '#FFD884', hue: 42, sides: 10, innerRatio: .47, areaRadius: 145, areaDamage: 5 }
   },
-  tiers: [
+  legacyTiers: [
     { threshold: 0, target: 12, weights: [.65, .35, 0, 0], enhanced: 0 },
     { threshold: 12, target: 16, weights: [.45, .35, .2, 0], enhanced: 0 },
     { threshold: 30, target: 20, weights: [.4, .3, .2, .1], enhanced: 0 },
@@ -47,13 +49,22 @@ export const CONFIG = {
     { threshold: 90, target: 28, weights: [.35, .3, .2, .15], enhanced: .2 },
     { threshold: 140, target: 32, weights: [.35, .3, .2, .15], enhanced: .3 }
   ],
+  tiers: [
+    { threshold: 0, target: 12, weights: [.65, .35, 0, 0], enhanced: 0, cracked: 0, charged: 0 },
+    { threshold: 15, target: 15, weights: [.45, .35, .20, 0], enhanced: 0, cracked: .08, charged: 0 },
+    { threshold: 45, target: 18, weights: [.40, .30, .20, .10], enhanced: 0, cracked: .10, charged: .04 },
+    { threshold: 100, target: 21, weights: [.35, .30, .20, .15], enhanced: .08, cracked: .10, charged: .05 },
+    { threshold: 200, target: 25, weights: [.35, .30, .20, .15], enhanced: .15, cracked: .12, charged: .08 },
+    { threshold: 400, target: 28, weights: [.35, .30, .20, .15], enhanced: .20, cracked: .12, charged: .08 },
+    { threshold: 750, target: 30, weights: [.35, .30, .20, .15], enhanced: .25, cracked: .12, charged: .08 }
+  ],
   tutorial: { x: 480, y: 335, distance: 108, angle: -Math.PI / 2 },
   upgrades: {
     crushPower: { name: 'Crush Power', subtitle: '직접 공격력', baseCost: 60, max: 5, perLevel: 1 },
     shardPower: { name: 'Shard Power', subtitle: '주 파편 피해', baseCost: 90, max: 5, perLevel: 1 },
     shardRange: { name: 'Shard Range', subtitle: '파편 비행거리', baseCost: 70, max: 3 },
     chainAmplifier: { name: 'Chain Amplifier', subtitle: '충격파 · 폭발', baseCost: 130, max: 3, perLevel: 1 },
-    extraTime: { name: 'Extra Time', subtitle: '플레이 시간', baseCost: 120, max: 6, perLevel: 5 },
+    extraTime: { name: 'Extra Time', subtitle: '플레이 시간', baseCost: 120, max: 6, perLevel: 2 },
     crushSpeed: { name: 'Crush Speed', subtitle: '홀드 공격 속도', baseCost: 150, max: 3 },
     impactPulse: { name: 'Impact Pulse', subtitle: '직접 타격 추가 파동', baseCost: 260, max: 1 },
     ricochetPlus: { name: 'Ricochet+', subtitle: '주 파편 반사 횟수', baseCost: 170, max: 2 },
@@ -75,7 +86,7 @@ export const CONFIG = {
     { id: 'extraTime', branch: 'utility', position: { col: 3, row: 1 }, prerequisites: [] },
     { id: 'photonBoost', branch: 'utility', position: { col: 3, row: 2 }, prerequisites: [{ id: 'extraTime', minLevel: 1 }] }
   ],
-  costGrowth: 1.6, saveVersion: 2, storageKey: 'shard-storm-v1', historyLimit: 20,
+  costGrowth: 1.6, saveVersion: 3, storageKey: 'shard-storm-v1', historyLimit: 20,
   dev: { grant: 1000, minDuration: 1, maxDuration: 90 },
-  options: { inheritance: true, ricochet: true, sequentialPropagation: true, visualVariety: true, damageVFX: true, sound: false, comboFeedback: true, modifiers: true, modifierVisuals: true }
+  options: { inheritance: true, ricochet: true, sequentialPropagation: true, visualVariety: true, damageVFX: true, sound: false, comboFeedback: true, modifiers: true, modifierVisuals: true, motionEnabled: true, refineryEnabled: true }
 };

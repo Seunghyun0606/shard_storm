@@ -16,7 +16,7 @@ export function draw(ctx, game, fps = 60) {
   ctx.clearRect(0, 0, C.width, C.height); ctx.fillStyle = '#0c1419'; ctx.fillRect(0, 0, C.width, C.height);
   ctx.fillStyle = '#1b2a31'; for (let x = C.arena.left; x <= C.arena.right; x += 32) for (let y = C.arena.top; y <= C.arena.bottom; y += 32) ctx.fillRect(x, y, 1, 1);
   ctx.strokeStyle = '#293b42'; ctx.lineWidth = 1; ctx.strokeRect(C.arena.left, C.arena.top, C.arena.right - C.arena.left, C.arena.bottom - C.arena.top);
-  const hud = game ? [[`${game.remaining.toFixed(1)}s`, 'TIME LEFT'], [String(game.totalDestroyed), 'DESTROYED'], [`+${game.runEarned}`, 'PHOTONS'], [`${game.currentChain} / ${game.bestChain}`, 'CHAIN / BEST']] : [[`${C.duration.toFixed(1)}s`,'TIME LEFT'],['0','DESTROYED'],['+0','PHOTONS'],['0 / 0','CHAIN / BEST']];
+  const hud = game ? [[`${game.remaining.toFixed(1)}s`, 'TIME LEFT'], [String(game.totalDestroyed), 'DESTROYED'], [`+${game.runEarned}`, 'RAW SHARDS'], [`${game.currentChain} / ${game.bestChain}`, 'CHAIN / BEST']] : [[`${C.duration.toFixed(1)}s`,'TIME LEFT'],['0','DESTROYED'],['+0','RAW SHARDS'],['0 / 0','CHAIN / BEST']];
   hud.forEach(([value, label], i) => { const x = 42 + i * 231; ctx.font = '9px Arial'; ctx.fillStyle = '#80999f'; ctx.fillText(label, x, 24); ctx.font = 'bold 22px Arial'; ctx.fillStyle = i === 2 ? C.shapes.triangle.color : '#e8f0ed'; if (i === 0 && game?.remaining <= 10) ctx.fillStyle = '#ff6eab'; ctx.fillText(value, x, 53); });
   if (!game) return;
   ctx.save(); ctx.beginPath(); ctx.rect(C.arena.left, C.arena.top, C.arena.right - C.arena.left, C.arena.bottom - C.arena.top); ctx.clip();
@@ -31,9 +31,9 @@ export function draw(ctx, game, fps = 60) {
       else { ctx.rotate(s.angle); ctx.beginPath(); if (s.appearance.pattern === 'split-line') { ctx.moveTo(-s.radius, -s.radius * .2); ctx.lineTo(s.radius, s.radius * .2); } else { ctx.moveTo(0, -5); ctx.lineTo(5, 0); ctx.lineTo(0, 5); ctx.lineTo(-5, 0); ctx.closePath(); } ctx.stroke(); }
       ctx.restore();
     }
-    if (s.enhanced) { polygon(ctx, s, scale * .79, game.options.visualVariety); ctx.lineWidth = 1; ctx.stroke(); ctx.fillStyle = '#e9f9ff'; ctx.fillRect(-3, -4, 6, 8); }
+    if (s.enhanced) { polygon(ctx, s, scale * .79, game.options.visualVariety); ctx.lineWidth = 1; ctx.stroke(); ctx.fillStyle = '#e9f9ff'; ctx.save(); ctx.rotate(s.angle); ctx.fillRect(-3, -4, 6, 8); ctx.restore(); }
     if (s.modifier === 'charged' && game.options.modifierVisuals) {
-      ctx.save(); ctx.strokeStyle = '#e4fff4'; ctx.lineWidth = 1.2; ctx.setLineDash([3, 4]);
+      ctx.save(); ctx.rotate(s.angle); ctx.strokeStyle = '#e4fff4'; ctx.lineWidth = 1.2; ctx.setLineDash([3, 4]);
       const pulse = 1 + .06 * Math.sin(game.elapsed * Math.PI * 4);
       for (const r of [s.radius + 3, s.radius + 7]) { ctx.beginPath(); ctx.arc(0, 0, r * pulse, 0, Math.PI * 2); ctx.stroke(); }
       ctx.setLineDash([]); ctx.shadowColor = cfg.color; ctx.shadowBlur = 8; ctx.beginPath();

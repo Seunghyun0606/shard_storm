@@ -1,0 +1,3290 @@
+{
+  "passed": true,
+  "browser": "154.0.8037.98",
+  "checks": [
+    "Play Again starts20s without re-crediting; result-screen duration measured",
+    "normal payout, upgrade, reload, 11 nodes, replay visible",
+    "motion/time pause, automatic animation completion",
+    "Fresh Lab motion/modifiers/refinery OFF, live save unchanged",
+    "actual 20s result refreshed during refinery, recovered once",
+    "navigation/back retains already paid bank",
+    "pending persisted result recovered exactly once without reroll",
+    "v2 legacy bank/11 levels/history preserved, Extra Time32",
+    "once-only optional time refund tested only in isolated lab"
+  ],
+  "runs": [
+    {
+      "name": "01-baseline",
+      "refinerySkipped": true,
+      "resultWaitSeconds": 0.16939999997615815,
+      "physicsChecks": {
+        "waveContactsChecked": 90,
+        "maxWaveContactError": 9.92133664112771e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 68,
+        "maxProjectileContactError": 9.64256972935118e-7
+      },
+      "ruleset": "v09",
+      "tierPreset": "v09_short",
+      "runId": "b9165aa7-51c3-4d15-a1b7-e87b9a9e0f84",
+      "runDurationConfigured": 20,
+      "runDurationActual": 20,
+      "rawEarned": 2112,
+      "processedPhoton": 139,
+      "photonPayout": 139,
+      "refinery": {
+        "id": "b9165aa7-51c3-4d15-a1b7-e87b9a9e0f84",
+        "raw": 2112,
+        "rate": 0.06,
+        "multiplier": 1.1,
+        "payout": 139,
+        "enabled": true,
+        "tokens": [
+          {
+            "raw": 211,
+            "slot": 2,
+            "multiplier": 1.1
+          },
+          {
+            "raw": 211,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 211,
+            "slot": 2,
+            "multiplier": 1.1
+          },
+          {
+            "raw": 211,
+            "slot": 2,
+            "multiplier": 1.1
+          },
+          {
+            "raw": 211,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 211,
+            "slot": 3,
+            "multiplier": 1.3
+          },
+          {
+            "raw": 211,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 211,
+            "slot": 3,
+            "multiplier": 1.3
+          },
+          {
+            "raw": 211,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 213,
+            "slot": 2,
+            "multiplier": 1.1
+          }
+        ],
+        "confirmed": true
+      },
+      "motionEnabled": true,
+      "motionProfiles": {
+        "both": 50,
+        "drift": 45,
+        "rotate": 65,
+        "static": 16
+      },
+      "missedClicks": 3,
+      "movingHitAccuracy": 0.97,
+      "projectileHitRate": 0.22077922077922077,
+      "projectileHits": 68,
+      "waveContacts": 101,
+      "maxMotionSpeed": 5.73092561901246,
+      "bins5": [
+        {
+          "start": 0,
+          "end": 5,
+          "totalDestroyed": 38,
+          "directKills": 20,
+          "cascadeKills": 18,
+          "earnedPhoton": 374,
+          "comboMilestones": {
+            "5": 1,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 5,
+          "cascadeDurationTotalMs": 2279.881380426572,
+          "completedCascadeChains": 9,
+          "sampledSeconds": 5,
+          "samples": 370,
+          "aliveIntegral": 65.70441889594302,
+          "targetIntegral": 71.30000000000018,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 49,
+          "spawnSuccesses": 49,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "triangle": {
+              "spawnCount": 34,
+              "directHitCount": 15,
+              "directKillCount": 15,
+              "cascadeKillCount": 11
+            },
+            "square": {
+              "spawnCount": 16,
+              "cascadeKillCount": 6,
+              "directHitCount": 6,
+              "directKillCount": 3
+            },
+            "pentagon": {
+              "spawnCount": 3,
+              "cascadeKillCount": 1,
+              "directHitCount": 3,
+              "directKillCount": 2
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 49,
+              "directHitCount": 23,
+              "clickedFirstCount": 20,
+              "directKillCount": 19,
+              "cascadeKillCount": 18
+            },
+            "cracked": {
+              "spawnCount": 4,
+              "directHitCount": 1,
+              "clickedFirstCount": 1,
+              "directKillCount": 1
+            }
+          },
+          "hpDistribution": {
+            "2": 4,
+            "3": 31,
+            "4": 15,
+            "5": 3
+          },
+          "enhancedSpawns": 0,
+          "rawEarned": 374,
+          "averageAlive": 13.140883779188604,
+          "averageTarget": 14.260000000000037
+        },
+        {
+          "start": 5,
+          "end": 10,
+          "totalDestroyed": 38,
+          "directKills": 20,
+          "cascadeKills": 18,
+          "earnedPhoton": 476,
+          "comboMilestones": {
+            "5": 2,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 6,
+          "cascadeDurationTotalMs": 1345.7305400808036,
+          "completedCascadeChains": 8,
+          "sampledSeconds": 5,
+          "samples": 380,
+          "aliveIntegral": 79.25870526674761,
+          "targetIntegral": 86.29999999999961,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 39,
+          "spawnSuccesses": 39,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "triangle": {
+              "directHitCount": 11,
+              "directKillCount": 11,
+              "spawnCount": 14,
+              "cascadeKillCount": 7
+            },
+            "square": {
+              "directHitCount": 9,
+              "directKillCount": 7,
+              "spawnCount": 13,
+              "cascadeKillCount": 7
+            },
+            "star": {
+              "spawnCount": 4,
+              "directHitCount": 3,
+              "directKillCount": 2
+            },
+            "pentagon": {
+              "spawnCount": 8,
+              "cascadeKillCount": 4
+            }
+          },
+          "modifierStats": {
+            "cracked": {
+              "directHitCount": 3,
+              "clickedFirstCount": 3,
+              "directKillCount": 3,
+              "spawnCount": 1,
+              "cascadeKillCount": 1
+            },
+            "normal": {
+              "spawnCount": 37,
+              "directHitCount": 20,
+              "clickedFirstCount": 18,
+              "directKillCount": 17,
+              "cascadeKillCount": 17
+            },
+            "charged": {
+              "spawnCount": 1
+            }
+          },
+          "hpDistribution": {
+            "3": 15,
+            "4": 13,
+            "5": 7,
+            "9": 4
+          },
+          "enhancedSpawns": 0,
+          "rawEarned": 476,
+          "averageAlive": 15.851741053349523,
+          "averageTarget": 17.259999999999923
+        },
+        {
+          "start": 10,
+          "end": 15,
+          "totalDestroyed": 43,
+          "directKills": 18,
+          "cascadeKills": 25,
+          "earnedPhoton": 665,
+          "comboMilestones": {
+            "5": 4,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 7,
+          "cascadeDurationTotalMs": 1933.36568209933,
+          "completedCascadeChains": 7,
+          "sampledSeconds": 4.999999999999924,
+          "samples": 394,
+          "aliveIntegral": 85.80707297058922,
+          "targetIntegral": 94.3601124231115,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 40,
+          "spawnSuccesses": 40,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "pentagon": {
+              "spawnCount": 7,
+              "directHitCount": 8,
+              "directKillCount": 5,
+              "cascadeKillCount": 2
+            },
+            "triangle": {
+              "spawnCount": 16,
+              "cascadeKillCount": 9,
+              "directHitCount": 8,
+              "directKillCount": 8
+            },
+            "square": {
+              "spawnCount": 13,
+              "cascadeKillCount": 12,
+              "directHitCount": 4,
+              "directKillCount": 2
+            },
+            "star": {
+              "spawnCount": 4,
+              "directHitCount": 5,
+              "directKillCount": 3,
+              "cascadeKillCount": 2
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 35,
+              "directHitCount": 23,
+              "clickedFirstCount": 18,
+              "directKillCount": 17,
+              "cascadeKillCount": 22
+            },
+            "charged": {
+              "spawnCount": 2,
+              "directHitCount": 2,
+              "clickedFirstCount": 1,
+              "directKillCount": 1,
+              "cascadeKillCount": 1
+            },
+            "cracked": {
+              "spawnCount": 3,
+              "cascadeKillCount": 2
+            }
+          },
+          "hpDistribution": {
+            "2": 2,
+            "3": 14,
+            "4": 13,
+            "5": 8,
+            "9": 3
+          },
+          "enhancedSpawns": 0,
+          "rawEarned": 665,
+          "averageAlive": 17.161414594118106,
+          "averageTarget": 18.87202248462259
+        },
+        {
+          "start": 15,
+          "end": 20,
+          "totalDestroyed": 39,
+          "directKills": 17,
+          "cascadeKills": 22,
+          "earnedPhoton": 597,
+          "comboMilestones": {
+            "5": 2,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 9,
+          "cascadeDurationTotalMs": 2505.643496678322,
+          "completedCascadeChains": 9,
+          "sampledSeconds": 4.999999999999675,
+          "samples": 381,
+          "aliveIntegral": 96.6301013108547,
+          "targetIntegral": 104.99999999999315,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 44,
+          "spawnSuccesses": 44,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "pentagon": {
+              "spawnCount": 11,
+              "directHitCount": 6,
+              "directKillCount": 5,
+              "cascadeKillCount": 5
+            },
+            "square": {
+              "spawnCount": 13,
+              "directHitCount": 8,
+              "directKillCount": 5,
+              "cascadeKillCount": 6
+            },
+            "star": {
+              "spawnCount": 7,
+              "directHitCount": 7,
+              "directKillCount": 3
+            },
+            "triangle": {
+              "cascadeKillCount": 11,
+              "spawnCount": 13,
+              "directHitCount": 4,
+              "directKillCount": 4
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 38,
+              "directHitCount": 20,
+              "clickedFirstCount": 15,
+              "cascadeKillCount": 20,
+              "directKillCount": 14
+            },
+            "charged": {
+              "spawnCount": 2,
+              "directHitCount": 4,
+              "clickedFirstCount": 2,
+              "directKillCount": 2,
+              "cascadeKillCount": 1
+            },
+            "cracked": {
+              "spawnCount": 4,
+              "cascadeKillCount": 1,
+              "directHitCount": 1,
+              "clickedFirstCount": 1,
+              "directKillCount": 1
+            }
+          },
+          "hpDistribution": {
+            "2": 2,
+            "3": 13,
+            "4": 10,
+            "5": 12,
+            "6": 1,
+            "9": 6
+          },
+          "enhancedSpawns": 2,
+          "rawEarned": 597,
+          "averageAlive": 19.326020262172197,
+          "averageTarget": 20.999999999999996
+        }
+      ],
+      "inputPolicy": "auto:browser-density-pointer",
+      "sandbox": false,
+      "experiment": {
+        "spawnInterval": 0.2,
+        "spawnBatch": 3,
+        "clusterChance": 0.6
+      },
+      "elapsed": 20,
+      "bins": [
+        {
+          "start": 0,
+          "end": 10,
+          "totalDestroyed": 76,
+          "directKills": 40,
+          "cascadeKills": 36,
+          "earnedPhoton": 850,
+          "comboMilestones": {
+            "5": 3,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 6,
+          "cascadeDurationTotalMs": 3625.6119205073755,
+          "completedCascadeChains": 17,
+          "sampledSeconds": 10,
+          "samples": 749,
+          "aliveIntegral": 144.96312416269097,
+          "targetIntegral": 157.5999999999998,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 88,
+          "spawnSuccesses": 88,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "triangle": {
+              "spawnCount": 48,
+              "directHitCount": 26,
+              "directKillCount": 26,
+              "cascadeKillCount": 18
+            },
+            "square": {
+              "spawnCount": 29,
+              "cascadeKillCount": 13,
+              "directHitCount": 15,
+              "directKillCount": 10
+            },
+            "pentagon": {
+              "spawnCount": 11,
+              "cascadeKillCount": 5,
+              "directHitCount": 3,
+              "directKillCount": 2
+            },
+            "star": {
+              "spawnCount": 4,
+              "directHitCount": 3,
+              "directKillCount": 2
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 86,
+              "directHitCount": 43,
+              "clickedFirstCount": 38,
+              "directKillCount": 36,
+              "cascadeKillCount": 35
+            },
+            "cracked": {
+              "spawnCount": 5,
+              "directHitCount": 4,
+              "clickedFirstCount": 4,
+              "directKillCount": 4,
+              "cascadeKillCount": 1
+            },
+            "charged": {
+              "spawnCount": 1
+            }
+          },
+          "hpDistribution": {
+            "2": 4,
+            "3": 46,
+            "4": 28,
+            "5": 10,
+            "9": 4
+          },
+          "enhancedSpawns": 0,
+          "averageAlive": 14.496312416269097,
+          "averageTarget": 15.75999999999998,
+          "spawnSuccessRate": 1,
+          "cascadeRatio": 0.47368421052631576,
+          "avgCascadeDurationMs": 213.27128944161032
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "totalDestroyed": 82,
+          "directKills": 35,
+          "cascadeKills": 47,
+          "earnedPhoton": 1262,
+          "comboMilestones": {
+            "5": 6,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 9,
+          "cascadeDurationTotalMs": 4439.009178777652,
+          "completedCascadeChains": 16,
+          "sampledSeconds": 9.999999999999924,
+          "samples": 775,
+          "aliveIntegral": 182.43717428144748,
+          "targetIntegral": 199.36011242311002,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 84,
+          "spawnSuccesses": 84,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "pentagon": {
+              "spawnCount": 18,
+              "directHitCount": 14,
+              "directKillCount": 10,
+              "cascadeKillCount": 7
+            },
+            "triangle": {
+              "spawnCount": 29,
+              "cascadeKillCount": 20,
+              "directHitCount": 12,
+              "directKillCount": 12
+            },
+            "square": {
+              "spawnCount": 26,
+              "cascadeKillCount": 18,
+              "directHitCount": 12,
+              "directKillCount": 7
+            },
+            "star": {
+              "spawnCount": 11,
+              "directHitCount": 12,
+              "directKillCount": 6,
+              "cascadeKillCount": 2
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 73,
+              "directHitCount": 43,
+              "clickedFirstCount": 33,
+              "directKillCount": 31,
+              "cascadeKillCount": 42
+            },
+            "charged": {
+              "spawnCount": 4,
+              "directHitCount": 6,
+              "clickedFirstCount": 3,
+              "directKillCount": 3,
+              "cascadeKillCount": 2
+            },
+            "cracked": {
+              "spawnCount": 7,
+              "cascadeKillCount": 3,
+              "directHitCount": 1,
+              "clickedFirstCount": 1,
+              "directKillCount": 1
+            }
+          },
+          "hpDistribution": {
+            "2": 4,
+            "3": 27,
+            "4": 23,
+            "5": 20,
+            "6": 1,
+            "9": 9
+          },
+          "enhancedSpawns": 2,
+          "averageAlive": 18.243717428144887,
+          "averageTarget": 19.936011242311153,
+          "spawnSuccessRate": 1,
+          "cascadeRatio": 0.573170731707317,
+          "avgCascadeDurationMs": 277.43807367360324
+        }
+      ],
+      "emptyArenaDuration": 0,
+      "emptyEpisodesOverHalfSecond": 0,
+      "maxEmptyEpisode": 0,
+      "spawnAttempts": 172,
+      "spawnSuccesses": 172,
+      "spawnFailures": 0,
+      "capCounts": {},
+      "capSources": {},
+      "chargedCaps": 0,
+      "peakWaves": 6,
+      "peakScheduled": 5,
+      "secondShardPeaks": [
+        11,
+        11,
+        10,
+        6,
+        10,
+        5,
+        9,
+        8,
+        10,
+        6,
+        6,
+        6,
+        6,
+        8,
+        11,
+        13,
+        14,
+        14,
+        7,
+        13
+      ],
+      "hpDistribution": {
+        "2": 8,
+        "3": 73,
+        "4": 51,
+        "5": 30,
+        "6": 1,
+        "9": 13
+      },
+      "enhancedSpawnCount": 2,
+      "frameSampleCount": 2581,
+      "stepSampleCount": 1199,
+      "averageFPS": 129.4637853034245,
+      "fixedStepP95ms": 0.20000004768371582,
+      "modifiersEnabled": true,
+      "modifierStats": {
+        "normal": {
+          "spawnCount": 159,
+          "clickedFirstCount": 71,
+          "directHitCount": 86,
+          "directKillCount": 67,
+          "cascadeKillCount": 77,
+          "selectionRate": 0.44654088050314467
+        },
+        "cracked": {
+          "spawnCount": 12,
+          "clickedFirstCount": 5,
+          "directHitCount": 5,
+          "directKillCount": 5,
+          "cascadeKillCount": 4,
+          "selectionRate": 0.4166666666666667
+        },
+        "charged": {
+          "spawnCount": 5,
+          "clickedFirstCount": 3,
+          "directHitCount": 6,
+          "directKillCount": 3,
+          "cascadeKillCount": 2,
+          "selectionRate": 0.6
+        }
+      },
+      "typeStats": {
+        "triangle": {
+          "spawnCount": 77,
+          "directHitCount": 38,
+          "directKillCount": 38,
+          "cascadeKillCount": 38
+        },
+        "square": {
+          "spawnCount": 55,
+          "directHitCount": 27,
+          "directKillCount": 17,
+          "cascadeKillCount": 31
+        },
+        "pentagon": {
+          "spawnCount": 29,
+          "directHitCount": 17,
+          "directKillCount": 12,
+          "cascadeKillCount": 12
+        },
+        "star": {
+          "spawnCount": 15,
+          "directHitCount": 15,
+          "directKillCount": 8,
+          "cascadeKillCount": 2
+        }
+      },
+      "chargedContribution": {
+        "damage": 47,
+        "kills": 11,
+        "photons": 128
+      },
+      "modifierRngPolicy": "independent mechanical stream; one draw per spawn attempt including OFF and Enhanced",
+      "comboMilestones": {
+        "5": 9,
+        "10": 0,
+        "20": 0
+      },
+      "comboEvents": [
+        {
+          "chainId": 9,
+          "threshold": 5,
+          "kills": 5,
+          "at": 2.2588714120117395,
+          "x": 402.66927928738306,
+          "y": 478.3432167099924
+        },
+        {
+          "chainId": 39,
+          "threshold": 5,
+          "kills": 5,
+          "at": 7.805625887211871,
+          "x": 317.3237276468297,
+          "y": 127.51172911403712
+        },
+        {
+          "chainId": 44,
+          "threshold": 5,
+          "kills": 5,
+          "at": 8.797471841420759,
+          "x": 292.97742624022067,
+          "y": 346.9701546318829
+        },
+        {
+          "chainId": 64,
+          "threshold": 5,
+          "kills": 5,
+          "at": 12.839943089356435,
+          "x": 314.02745217390134,
+          "y": 157.24708202416215
+        },
+        {
+          "chainId": 68,
+          "threshold": 5,
+          "kills": 5,
+          "at": 13.61338683780262,
+          "x": 68.25216001752506,
+          "y": 419.9816451550475
+        },
+        {
+          "chainId": 73,
+          "threshold": 5,
+          "kills": 5,
+          "at": 14.885002841302818,
+          "x": 436.54251356609166,
+          "y": 242.54665150074288
+        },
+        {
+          "chainId": 74,
+          "threshold": 5,
+          "kills": 5,
+          "at": 14.968318368213057,
+          "x": 272.6259855553508,
+          "y": 430.2195348809473
+        },
+        {
+          "chainId": 84,
+          "threshold": 5,
+          "kills": 5,
+          "at": 16.7900198756334,
+          "x": 134.57998060013873,
+          "y": 255.21217866548815
+        },
+        {
+          "chainId": 94,
+          "threshold": 5,
+          "kills": 5,
+          "at": 18.817948233860363,
+          "x": 574.0047450098209,
+          "y": 157.59991458896548
+        }
+      ],
+      "timeToFirstChain5": 2.2588714120117395,
+      "maxChain": 9,
+      "comboFeedbackEnabled": true,
+      "durationSeconds": 20,
+      "seed": 31415,
+      "levels": {
+        "crushPower": 0,
+        "shardPower": 0,
+        "shardRange": 0,
+        "chainAmplifier": 0,
+        "extraTime": 0,
+        "crushSpeed": 0,
+        "impactPulse": 0,
+        "ricochetPlus": 0,
+        "shardBloom": 0,
+        "echoCatalyst": 0,
+        "photonBoost": 0
+      },
+      "totalDestroyed": 158,
+      "directKills": 75,
+      "cascadeKills": 83,
+      "bestChain": 9,
+      "photonsEarned": 139,
+      "highestTier": 3,
+      "unlockTimes": {
+        "15": 1.2333333333333338,
+        "45": 6.2333333333333165,
+        "100": 13.546629192295738,
+        "pentagon": 1.2333333333333338,
+        "star": 6.2333333333333165
+      },
+      "firstCascadeTime": 0.1561284795882449,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 244.38245755409176,
+      "variantCounts": {
+        "deep": 54,
+        "matte": 49,
+        "bright": 73
+      },
+      "patternCounts": {
+        "arc": 22,
+        "scattered": 81,
+        "burst_cluster": 46,
+        "bridge": 15
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 0,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 14,
+      "bankBefore": 0,
+      "bankAfter": 139,
+      "resultScreenSeconds": 0.5666000000238418
+    },
+    {
+      "name": "02-upgraded",
+      "refinerySkipped": false,
+      "resultWaitSeconds": 1.2057000000476836,
+      "physicsChecks": {
+        "waveContactsChecked": 95,
+        "maxWaveContactError": 9.855008471504334e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 72,
+        "maxProjectileContactError": 9.640816749367787e-7
+      },
+      "ruleset": "v09",
+      "tierPreset": "v09_short",
+      "runId": "b7e33c76-dec4-4512-87c0-491e3691e916",
+      "runDurationConfigured": 20,
+      "runDurationActual": 20,
+      "rawEarned": 2425,
+      "processedPhoton": 145,
+      "photonPayout": 145,
+      "refinery": {
+        "id": "b7e33c76-dec4-4512-87c0-491e3691e916",
+        "raw": 2425,
+        "rate": 0.06,
+        "multiplier": 0.9995876288659794,
+        "payout": 145,
+        "enabled": true,
+        "tokens": [
+          {
+            "raw": 242,
+            "slot": 2,
+            "multiplier": 1.1
+          },
+          {
+            "raw": 242,
+            "slot": 3,
+            "multiplier": 1.3
+          },
+          {
+            "raw": 242,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 242,
+            "slot": 0,
+            "multiplier": 0.8
+          },
+          {
+            "raw": 242,
+            "slot": 2,
+            "multiplier": 1.1
+          },
+          {
+            "raw": 242,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 242,
+            "slot": 2,
+            "multiplier": 1.1
+          },
+          {
+            "raw": 242,
+            "slot": 0,
+            "multiplier": 0.8
+          },
+          {
+            "raw": 242,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 247,
+            "slot": 0,
+            "multiplier": 0.8
+          }
+        ],
+        "confirmed": true
+      },
+      "motionEnabled": true,
+      "motionProfiles": {
+        "both": 51,
+        "drift": 46,
+        "rotate": 67,
+        "static": 16
+      },
+      "missedClicks": 4,
+      "movingHitAccuracy": 0.96,
+      "projectileHitRate": 0.24161073825503357,
+      "projectileHits": 72,
+      "waveContacts": 108,
+      "maxMotionSpeed": 5.70574238414976,
+      "bins5": [
+        {
+          "start": 0,
+          "end": 5,
+          "totalDestroyed": 44,
+          "directKills": 22,
+          "cascadeKills": 22,
+          "earnedPhoton": 437,
+          "comboMilestones": {
+            "5": 1,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 5,
+          "cascadeDurationTotalMs": 2845.5130841269006,
+          "completedCascadeChains": 13,
+          "sampledSeconds": 5,
+          "samples": 383,
+          "aliveIntegral": 64.01741539858929,
+          "targetIntegral": 71.35000000000018,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 55,
+          "spawnSuccesses": 55,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "triangle": {
+              "spawnCount": 33,
+              "directHitCount": 12,
+              "directKillCount": 12,
+              "cascadeKillCount": 15
+            },
+            "square": {
+              "spawnCount": 21,
+              "cascadeKillCount": 5,
+              "directHitCount": 9,
+              "directKillCount": 9
+            },
+            "pentagon": {
+              "spawnCount": 5,
+              "cascadeKillCount": 2,
+              "directHitCount": 2,
+              "directKillCount": 1
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 55,
+              "directHitCount": 21,
+              "clickedFirstCount": 20,
+              "directKillCount": 20,
+              "cascadeKillCount": 20
+            },
+            "cracked": {
+              "spawnCount": 4,
+              "directHitCount": 2,
+              "clickedFirstCount": 2,
+              "directKillCount": 2,
+              "cascadeKillCount": 2
+            }
+          },
+          "hpDistribution": {
+            "2": 4,
+            "3": 31,
+            "4": 19,
+            "5": 5
+          },
+          "enhancedSpawns": 0,
+          "rawEarned": 437,
+          "averageAlive": 12.803483079717859,
+          "averageTarget": 14.270000000000035
+        },
+        {
+          "start": 5,
+          "end": 10,
+          "totalDestroyed": 37,
+          "directKills": 23,
+          "cascadeKills": 14,
+          "earnedPhoton": 492,
+          "comboMilestones": {
+            "5": 1,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 5,
+          "cascadeDurationTotalMs": 2043.6615842818771,
+          "completedCascadeChains": 9,
+          "sampledSeconds": 5,
+          "samples": 376,
+          "aliveIntegral": 83.11146542312527,
+          "targetIntegral": 89.94999999999968,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 38,
+          "spawnSuccesses": 38,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "square": {
+              "directHitCount": 9,
+              "directKillCount": 9,
+              "spawnCount": 12,
+              "cascadeKillCount": 5
+            },
+            "star": {
+              "spawnCount": 3,
+              "directHitCount": 1,
+              "directKillCount": 1,
+              "cascadeKillCount": 1
+            },
+            "triangle": {
+              "spawnCount": 16,
+              "directHitCount": 9,
+              "directKillCount": 9,
+              "cascadeKillCount": 7
+            },
+            "pentagon": {
+              "directHitCount": 6,
+              "directKillCount": 4,
+              "spawnCount": 7,
+              "cascadeKillCount": 1
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "directHitCount": 25,
+              "clickedFirstCount": 23,
+              "directKillCount": 23,
+              "spawnCount": 35,
+              "cascadeKillCount": 13
+            },
+            "cracked": {
+              "spawnCount": 1
+            },
+            "charged": {
+              "spawnCount": 2,
+              "cascadeKillCount": 1
+            }
+          },
+          "hpDistribution": {
+            "3": 17,
+            "4": 12,
+            "5": 6,
+            "9": 3
+          },
+          "enhancedSpawns": 0,
+          "rawEarned": 492,
+          "averageAlive": 16.622293084625053,
+          "averageTarget": 17.989999999999934
+        },
+        {
+          "start": 10,
+          "end": 15,
+          "totalDestroyed": 33,
+          "directKills": 20,
+          "cascadeKills": 13,
+          "earnedPhoton": 451,
+          "comboMilestones": {
+            "5": 0,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 4,
+          "cascadeDurationTotalMs": 1305.5648158030415,
+          "completedCascadeChains": 8,
+          "sampledSeconds": 4.999999999999924,
+          "samples": 366,
+          "aliveIntegral": 91.22044402719503,
+          "targetIntegral": 97.1499999999982,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 36,
+          "spawnSuccesses": 36,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "pentagon": {
+              "spawnCount": 7,
+              "directHitCount": 6,
+              "directKillCount": 4,
+              "cascadeKillCount": 2
+            },
+            "square": {
+              "spawnCount": 11,
+              "directHitCount": 9,
+              "directKillCount": 9,
+              "cascadeKillCount": 4
+            },
+            "triangle": {
+              "spawnCount": 11,
+              "directHitCount": 6,
+              "directKillCount": 6,
+              "cascadeKillCount": 6
+            },
+            "star": {
+              "spawnCount": 7,
+              "cascadeKillCount": 1,
+              "directHitCount": 2,
+              "directKillCount": 1
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 31,
+              "directHitCount": 20,
+              "clickedFirstCount": 17,
+              "directKillCount": 17,
+              "cascadeKillCount": 9
+            },
+            "cracked": {
+              "directHitCount": 2,
+              "clickedFirstCount": 2,
+              "directKillCount": 2,
+              "spawnCount": 3,
+              "cascadeKillCount": 2
+            },
+            "charged": {
+              "spawnCount": 2,
+              "directHitCount": 1,
+              "clickedFirstCount": 1,
+              "directKillCount": 1,
+              "cascadeKillCount": 2
+            }
+          },
+          "hpDistribution": {
+            "2": 2,
+            "3": 11,
+            "4": 10,
+            "5": 6,
+            "9": 6,
+            "11": 1
+          },
+          "enhancedSpawns": 1,
+          "rawEarned": 451,
+          "averageAlive": 18.244088805439283,
+          "averageTarget": 19.429999999999936
+        },
+        {
+          "start": 15,
+          "end": 20,
+          "totalDestroyed": 49,
+          "directKills": 19,
+          "cascadeKills": 30,
+          "earnedPhoton": 1045,
+          "comboMilestones": {
+            "5": 3,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 8,
+          "cascadeDurationTotalMs": 3045.1187613791626,
+          "completedCascadeChains": 11,
+          "sampledSeconds": 4.999999999999675,
+          "samples": 416,
+          "aliveIntegral": 96.99306783399862,
+          "targetIntegral": 104.99999999999315,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 47,
+          "spawnSuccesses": 47,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "pentagon": {
+              "spawnCount": 9,
+              "cascadeKillCount": 8,
+              "directHitCount": 5,
+              "directKillCount": 3
+            },
+            "star": {
+              "spawnCount": 9,
+              "directHitCount": 7,
+              "directKillCount": 4,
+              "cascadeKillCount": 7
+            },
+            "triangle": {
+              "directHitCount": 7,
+              "directKillCount": 7,
+              "spawnCount": 15,
+              "cascadeKillCount": 9
+            },
+            "square": {
+              "cascadeKillCount": 6,
+              "spawnCount": 14,
+              "directHitCount": 6,
+              "directKillCount": 5
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 41,
+              "directHitCount": 24,
+              "clickedFirstCount": 19,
+              "directKillCount": 18,
+              "cascadeKillCount": 25
+            },
+            "charged": {
+              "spawnCount": 1,
+              "cascadeKillCount": 1
+            },
+            "cracked": {
+              "spawnCount": 5,
+              "cascadeKillCount": 4,
+              "directHitCount": 1,
+              "clickedFirstCount": 1,
+              "directKillCount": 1
+            }
+          },
+          "hpDistribution": {
+            "2": 4,
+            "3": 10,
+            "4": 9,
+            "5": 12,
+            "6": 4,
+            "9": 7,
+            "11": 1
+          },
+          "enhancedSpawns": 7,
+          "rawEarned": 1045,
+          "averageAlive": 19.398613566800986,
+          "averageTarget": 20.999999999999996
+        }
+      ],
+      "inputPolicy": "auto:browser-density-pointer",
+      "sandbox": false,
+      "experiment": {
+        "spawnInterval": 0.2,
+        "spawnBatch": 3,
+        "clusterChance": 0.6
+      },
+      "elapsed": 20,
+      "bins": [
+        {
+          "start": 0,
+          "end": 10,
+          "totalDestroyed": 81,
+          "directKills": 45,
+          "cascadeKills": 36,
+          "earnedPhoton": 929,
+          "comboMilestones": {
+            "5": 2,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 5,
+          "cascadeDurationTotalMs": 4889.1746684087775,
+          "completedCascadeChains": 22,
+          "sampledSeconds": 10,
+          "samples": 758,
+          "aliveIntegral": 147.128880821715,
+          "targetIntegral": 161.29999999999967,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 93,
+          "spawnSuccesses": 93,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "triangle": {
+              "spawnCount": 49,
+              "directHitCount": 21,
+              "directKillCount": 21,
+              "cascadeKillCount": 22
+            },
+            "square": {
+              "spawnCount": 33,
+              "cascadeKillCount": 10,
+              "directHitCount": 18,
+              "directKillCount": 18
+            },
+            "pentagon": {
+              "spawnCount": 12,
+              "cascadeKillCount": 3,
+              "directHitCount": 8,
+              "directKillCount": 5
+            },
+            "star": {
+              "spawnCount": 3,
+              "directHitCount": 1,
+              "directKillCount": 1,
+              "cascadeKillCount": 1
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 90,
+              "directHitCount": 46,
+              "clickedFirstCount": 43,
+              "directKillCount": 43,
+              "cascadeKillCount": 33
+            },
+            "cracked": {
+              "spawnCount": 5,
+              "directHitCount": 2,
+              "clickedFirstCount": 2,
+              "directKillCount": 2,
+              "cascadeKillCount": 2
+            },
+            "charged": {
+              "spawnCount": 2,
+              "cascadeKillCount": 1
+            }
+          },
+          "hpDistribution": {
+            "2": 4,
+            "3": 48,
+            "4": 31,
+            "5": 11,
+            "9": 3
+          },
+          "enhancedSpawns": 0,
+          "averageAlive": 14.7128880821715,
+          "averageTarget": 16.129999999999967,
+          "spawnSuccessRate": 1,
+          "cascadeRatio": 0.4444444444444444,
+          "avgCascadeDurationMs": 222.235212200399
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "totalDestroyed": 82,
+          "directKills": 39,
+          "cascadeKills": 43,
+          "earnedPhoton": 1496,
+          "comboMilestones": {
+            "5": 3,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 8,
+          "cascadeDurationTotalMs": 4350.683577182204,
+          "completedCascadeChains": 19,
+          "sampledSeconds": 9.999999999999924,
+          "samples": 782,
+          "aliveIntegral": 188.2135118611995,
+          "targetIntegral": 202.1499999999966,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 83,
+          "spawnSuccesses": 83,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "pentagon": {
+              "spawnCount": 16,
+              "directHitCount": 11,
+              "directKillCount": 7,
+              "cascadeKillCount": 10
+            },
+            "square": {
+              "spawnCount": 25,
+              "directHitCount": 15,
+              "directKillCount": 14,
+              "cascadeKillCount": 10
+            },
+            "triangle": {
+              "spawnCount": 26,
+              "directHitCount": 13,
+              "directKillCount": 13,
+              "cascadeKillCount": 15
+            },
+            "star": {
+              "spawnCount": 16,
+              "cascadeKillCount": 8,
+              "directHitCount": 9,
+              "directKillCount": 5
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 72,
+              "directHitCount": 44,
+              "clickedFirstCount": 36,
+              "directKillCount": 35,
+              "cascadeKillCount": 34
+            },
+            "cracked": {
+              "directHitCount": 3,
+              "clickedFirstCount": 3,
+              "directKillCount": 3,
+              "spawnCount": 8,
+              "cascadeKillCount": 6
+            },
+            "charged": {
+              "spawnCount": 3,
+              "directHitCount": 1,
+              "clickedFirstCount": 1,
+              "directKillCount": 1,
+              "cascadeKillCount": 3
+            }
+          },
+          "hpDistribution": {
+            "2": 6,
+            "3": 21,
+            "4": 19,
+            "5": 18,
+            "6": 4,
+            "9": 13,
+            "11": 2
+          },
+          "enhancedSpawns": 8,
+          "averageAlive": 18.821351186120094,
+          "averageTarget": 20.214999999999815,
+          "spawnSuccessRate": 1,
+          "cascadeRatio": 0.524390243902439,
+          "avgCascadeDurationMs": 228.98334616748443
+        }
+      ],
+      "emptyArenaDuration": 0,
+      "emptyEpisodesOverHalfSecond": 0,
+      "maxEmptyEpisode": 0,
+      "spawnAttempts": 176,
+      "spawnSuccesses": 176,
+      "spawnFailures": 0,
+      "capCounts": {},
+      "capSources": {},
+      "chargedCaps": 0,
+      "peakWaves": 5,
+      "peakScheduled": 4,
+      "secondShardPeaks": [
+        10,
+        12,
+        13,
+        6,
+        6,
+        6,
+        13,
+        6,
+        6,
+        6,
+        7,
+        6,
+        6,
+        6,
+        7,
+        9,
+        8,
+        14,
+        9,
+        5
+      ],
+      "hpDistribution": {
+        "2": 10,
+        "3": 69,
+        "4": 50,
+        "5": 29,
+        "6": 4,
+        "9": 16,
+        "11": 2
+      },
+      "enhancedSpawnCount": 8,
+      "frameSampleCount": 2588,
+      "stepSampleCount": 1199,
+      "averageFPS": 129.76273735680493,
+      "fixedStepP95ms": 0.20000004768371582,
+      "modifiersEnabled": true,
+      "modifierStats": {
+        "normal": {
+          "spawnCount": 162,
+          "clickedFirstCount": 79,
+          "directHitCount": 90,
+          "directKillCount": 78,
+          "cascadeKillCount": 67,
+          "selectionRate": 0.4876543209876543
+        },
+        "cracked": {
+          "spawnCount": 13,
+          "clickedFirstCount": 5,
+          "directHitCount": 5,
+          "directKillCount": 5,
+          "cascadeKillCount": 8,
+          "selectionRate": 0.38461538461538464
+        },
+        "charged": {
+          "spawnCount": 5,
+          "clickedFirstCount": 1,
+          "directHitCount": 1,
+          "directKillCount": 1,
+          "cascadeKillCount": 4,
+          "selectionRate": 0.2
+        }
+      },
+      "typeStats": {
+        "triangle": {
+          "spawnCount": 75,
+          "directHitCount": 34,
+          "directKillCount": 34,
+          "cascadeKillCount": 37
+        },
+        "square": {
+          "spawnCount": 58,
+          "directHitCount": 33,
+          "directKillCount": 32,
+          "cascadeKillCount": 20
+        },
+        "pentagon": {
+          "spawnCount": 28,
+          "directHitCount": 19,
+          "directKillCount": 12,
+          "cascadeKillCount": 13
+        },
+        "star": {
+          "spawnCount": 19,
+          "directHitCount": 10,
+          "directKillCount": 6,
+          "cascadeKillCount": 9
+        }
+      },
+      "chargedContribution": {
+        "damage": 8,
+        "kills": 0,
+        "photons": 8
+      },
+      "modifierRngPolicy": "independent mechanical stream; one draw per spawn attempt including OFF and Enhanced",
+      "comboMilestones": {
+        "5": 5,
+        "10": 0,
+        "20": 0
+      },
+      "comboEvents": [
+        {
+          "chainId": 9,
+          "threshold": 5,
+          "kills": 5,
+          "at": 2.14165149016509,
+          "x": 557.6843252292533,
+          "y": 485.4358660614096
+        },
+        {
+          "chainId": 30,
+          "threshold": 5,
+          "kills": 5,
+          "at": 6.426904320223683,
+          "x": 469.7519481951336,
+          "y": 187.05751909293963
+        },
+        {
+          "chainId": 78,
+          "threshold": 5,
+          "kills": 5,
+          "at": 15.810204438415461,
+          "x": 857.7356732215386,
+          "y": 388.27227959297306
+        },
+        {
+          "chainId": 88,
+          "threshold": 5,
+          "kills": 5,
+          "at": 17.646350861207683,
+          "x": 278.01788086647616,
+          "y": 159.50669438544008
+        },
+        {
+          "chainId": 99,
+          "threshold": 5,
+          "kills": 5,
+          "at": 19.829887781928196,
+          "x": 697.8072445947618,
+          "y": 136.21306005407266
+        }
+      ],
+      "timeToFirstChain5": 2.14165149016509,
+      "maxChain": 8,
+      "comboFeedbackEnabled": true,
+      "durationSeconds": 20,
+      "seed": 31415,
+      "levels": {
+        "crushPower": 1,
+        "shardPower": 0,
+        "shardRange": 0,
+        "chainAmplifier": 0,
+        "extraTime": 0,
+        "crushSpeed": 0,
+        "impactPulse": 0,
+        "ricochetPlus": 0,
+        "shardBloom": 0,
+        "echoCatalyst": 0,
+        "photonBoost": 0
+      },
+      "totalDestroyed": 163,
+      "directKills": 84,
+      "cascadeKills": 79,
+      "bestChain": 8,
+      "photonsEarned": 145,
+      "highestTier": 3,
+      "unlockTimes": {
+        "15": 1.2166666666666672,
+        "45": 5.016666666666654,
+        "100": 12.616666666666873,
+        "pentagon": 1.2166666666666672,
+        "star": 5.016666666666654
+      },
+      "firstCascadeTime": 0.1561284795882449,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 225.36239623392643,
+      "variantCounts": {
+        "deep": 55,
+        "matte": 51,
+        "bright": 74
+      },
+      "patternCounts": {
+        "arc": 47,
+        "scattered": 80,
+        "burst_cluster": 36,
+        "bridge": 5
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 0,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 14,
+      "bankBefore": 79,
+      "bankAfter": 224
+    },
+    {
+      "name": "03-fresh-off",
+      "refinerySkipped": false,
+      "resultWaitSeconds": 0.001399999976158142,
+      "physicsChecks": {
+        "waveContactsChecked": 0,
+        "maxWaveContactError": 0,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 58,
+        "maxProjectileContactError": 9.947598300641403e-14
+      },
+      "ruleset": "v09",
+      "tierPreset": "v09_short",
+      "runId": "0a3c95e4-93df-4ae4-806d-c5bbe2800de6",
+      "runDurationConfigured": 20,
+      "runDurationActual": 20,
+      "rawEarned": 2101,
+      "processedPhoton": 126,
+      "photonPayout": 126,
+      "refinery": {
+        "id": "0a3c95e4-93df-4ae4-806d-c5bbe2800de6",
+        "raw": 2101,
+        "rate": 0.06,
+        "multiplier": 1,
+        "payout": 126,
+        "enabled": false,
+        "tokens": [
+          {
+            "raw": 210,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 210,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 210,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 210,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 210,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 210,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 210,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 210,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 210,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 211,
+            "slot": 1,
+            "multiplier": 1
+          }
+        ],
+        "confirmed": true
+      },
+      "motionEnabled": false,
+      "motionProfiles": {
+        "both": 40,
+        "drift": 44,
+        "rotate": 63,
+        "static": 16
+      },
+      "missedClicks": 1,
+      "movingHitAccuracy": 0.99,
+      "projectileHitRate": 0.2230769230769231,
+      "projectileHits": 58,
+      "waveContacts": 0,
+      "maxMotionSpeed": 0,
+      "bins5": [
+        {
+          "start": 0,
+          "end": 5,
+          "totalDestroyed": 32,
+          "directKills": 21,
+          "cascadeKills": 11,
+          "earnedPhoton": 309,
+          "comboMilestones": {
+            "5": 0,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 4,
+          "cascadeDurationTotalMs": 1528.01577150127,
+          "completedCascadeChains": 8,
+          "sampledSeconds": 5,
+          "samples": 353,
+          "aliveIntegral": 64.34593315198376,
+          "targetIntegral": 69.50000000000016,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 43,
+          "spawnSuccesses": 43,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "triangle": {
+              "spawnCount": 31,
+              "directHitCount": 14,
+              "directKillCount": 14,
+              "cascadeKillCount": 9
+            },
+            "square": {
+              "spawnCount": 12,
+              "cascadeKillCount": 2,
+              "directHitCount": 8,
+              "directKillCount": 5
+            },
+            "pentagon": {
+              "spawnCount": 4,
+              "directHitCount": 2,
+              "directKillCount": 2
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 47,
+              "directHitCount": 24,
+              "clickedFirstCount": 22,
+              "directKillCount": 21,
+              "cascadeKillCount": 11
+            }
+          },
+          "hpDistribution": {
+            "3": 31,
+            "4": 12,
+            "5": 4
+          },
+          "enhancedSpawns": 0,
+          "rawEarned": 309,
+          "averageAlive": 12.86918663039675,
+          "averageTarget": 13.90000000000003
+        },
+        {
+          "start": 5,
+          "end": 10,
+          "totalDestroyed": 27,
+          "directKills": 18,
+          "cascadeKills": 9,
+          "earnedPhoton": 366,
+          "comboMilestones": {
+            "5": 0,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 4,
+          "cascadeDurationTotalMs": 1091.3210161263596,
+          "completedCascadeChains": 5,
+          "sampledSeconds": 5,
+          "samples": 353,
+          "aliveIntegral": 80.17478213809419,
+          "targetIntegral": 84.69916792989834,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 28,
+          "spawnSuccesses": 28,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "square": {
+              "directHitCount": 16,
+              "directKillCount": 10,
+              "spawnCount": 13,
+              "cascadeKillCount": 3
+            },
+            "triangle": {
+              "directHitCount": 6,
+              "directKillCount": 6,
+              "spawnCount": 8,
+              "cascadeKillCount": 5
+            },
+            "star": {
+              "spawnCount": 4,
+              "directHitCount": 1,
+              "directKillCount": 1,
+              "cascadeKillCount": 1
+            },
+            "pentagon": {
+              "spawnCount": 3,
+              "directHitCount": 2,
+              "directKillCount": 1
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "directHitCount": 25,
+              "directKillCount": 18,
+              "spawnCount": 28,
+              "clickedFirstCount": 18,
+              "cascadeKillCount": 9
+            }
+          },
+          "hpDistribution": {
+            "3": 8,
+            "4": 13,
+            "5": 3,
+            "9": 4
+          },
+          "enhancedSpawns": 0,
+          "rawEarned": 366,
+          "averageAlive": 16.034956427618837,
+          "averageTarget": 16.939833585979667
+        },
+        {
+          "start": 10,
+          "end": 15,
+          "totalDestroyed": 37,
+          "directKills": 17,
+          "cascadeKills": 20,
+          "earnedPhoton": 564,
+          "comboMilestones": {
+            "5": 3,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 5,
+          "cascadeDurationTotalMs": 2056.546075619803,
+          "completedCascadeChains": 10,
+          "sampledSeconds": 4.999999999999924,
+          "samples": 378,
+          "aliveIntegral": 84.64095061935059,
+          "targetIntegral": 89.9999999999981,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 38,
+          "spawnSuccesses": 38,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "star": {
+              "spawnCount": 3,
+              "directHitCount": 4,
+              "directKillCount": 3
+            },
+            "triangle": {
+              "spawnCount": 9,
+              "directHitCount": 7,
+              "directKillCount": 7,
+              "cascadeKillCount": 4
+            },
+            "square": {
+              "cascadeKillCount": 10,
+              "spawnCount": 18,
+              "directHitCount": 11,
+              "directKillCount": 5
+            },
+            "pentagon": {
+              "directHitCount": 3,
+              "directKillCount": 2,
+              "cascadeKillCount": 6,
+              "spawnCount": 8
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 38,
+              "cascadeKillCount": 20,
+              "directHitCount": 25,
+              "clickedFirstCount": 19,
+              "directKillCount": 17
+            }
+          },
+          "hpDistribution": {
+            "3": 9,
+            "4": 18,
+            "5": 8,
+            "9": 3
+          },
+          "enhancedSpawns": 0,
+          "rawEarned": 564,
+          "averageAlive": 16.928190123870376,
+          "averageTarget": 17.999999999999893
+        },
+        {
+          "start": 15,
+          "end": 20,
+          "totalDestroyed": 54,
+          "directKills": 22,
+          "cascadeKills": 32,
+          "earnedPhoton": 862,
+          "comboMilestones": {
+            "5": 3,
+            "10": 1,
+            "20": 0
+          },
+          "bestChain": 10,
+          "cascadeDurationTotalMs": 2567.7576061868776,
+          "completedCascadeChains": 11,
+          "sampledSeconds": 4.999999999999675,
+          "samples": 422,
+          "aliveIntegral": 95.18305520447404,
+          "targetIntegral": 103.69999999999311,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 50,
+          "spawnSuccesses": 50,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "square": {
+              "spawnCount": 14,
+              "directHitCount": 9,
+              "directKillCount": 8,
+              "cascadeKillCount": 10
+            },
+            "pentagon": {
+              "spawnCount": 7,
+              "directHitCount": 4,
+              "directKillCount": 3,
+              "cascadeKillCount": 4
+            },
+            "star": {
+              "spawnCount": 7,
+              "directHitCount": 3,
+              "directKillCount": 2,
+              "cascadeKillCount": 4
+            },
+            "triangle": {
+              "spawnCount": 22,
+              "directHitCount": 9,
+              "directKillCount": 9,
+              "cascadeKillCount": 14
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 50,
+              "directHitCount": 25,
+              "directKillCount": 22,
+              "cascadeKillCount": 32,
+              "clickedFirstCount": 21
+            }
+          },
+          "hpDistribution": {
+            "3": 21,
+            "4": 13,
+            "5": 8,
+            "6": 1,
+            "9": 5,
+            "11": 2
+          },
+          "enhancedSpawns": 4,
+          "rawEarned": 862,
+          "averageAlive": 19.036611040896048,
+          "averageTarget": 20.73999999999997
+        }
+      ],
+      "inputPolicy": "auto:browser-density-pointer",
+      "sandbox": true,
+      "experiment": {
+        "spawnInterval": 0.2,
+        "spawnBatch": 3,
+        "clusterChance": 0.6
+      },
+      "elapsed": 20,
+      "bins": [
+        {
+          "start": 0,
+          "end": 10,
+          "totalDestroyed": 59,
+          "directKills": 39,
+          "cascadeKills": 20,
+          "earnedPhoton": 675,
+          "comboMilestones": {
+            "5": 0,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 4,
+          "cascadeDurationTotalMs": 2619.3367876276297,
+          "completedCascadeChains": 13,
+          "sampledSeconds": 10,
+          "samples": 705,
+          "aliveIntegral": 144.52071529007821,
+          "targetIntegral": 154.19916792989858,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 71,
+          "spawnSuccesses": 71,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "triangle": {
+              "spawnCount": 39,
+              "directHitCount": 20,
+              "directKillCount": 20,
+              "cascadeKillCount": 14
+            },
+            "square": {
+              "spawnCount": 25,
+              "cascadeKillCount": 5,
+              "directHitCount": 24,
+              "directKillCount": 15
+            },
+            "pentagon": {
+              "spawnCount": 7,
+              "directHitCount": 4,
+              "directKillCount": 3
+            },
+            "star": {
+              "spawnCount": 4,
+              "directHitCount": 1,
+              "directKillCount": 1,
+              "cascadeKillCount": 1
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 75,
+              "directHitCount": 49,
+              "clickedFirstCount": 40,
+              "directKillCount": 39,
+              "cascadeKillCount": 20
+            }
+          },
+          "hpDistribution": {
+            "3": 39,
+            "4": 25,
+            "5": 7,
+            "9": 4
+          },
+          "enhancedSpawns": 0,
+          "averageAlive": 14.45207152900782,
+          "averageTarget": 15.419916792989858,
+          "spawnSuccessRate": 1,
+          "cascadeRatio": 0.3389830508474576,
+          "avgCascadeDurationMs": 201.48744520212537
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "totalDestroyed": 91,
+          "directKills": 39,
+          "cascadeKills": 52,
+          "earnedPhoton": 1426,
+          "comboMilestones": {
+            "5": 6,
+            "10": 1,
+            "20": 0
+          },
+          "bestChain": 10,
+          "cascadeDurationTotalMs": 4624.303681806679,
+          "completedCascadeChains": 21,
+          "sampledSeconds": 9.999999999999924,
+          "samples": 800,
+          "aliveIntegral": 179.82400582382996,
+          "targetIntegral": 193.69999999999587,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 88,
+          "spawnSuccesses": 88,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "star": {
+              "spawnCount": 10,
+              "directHitCount": 7,
+              "directKillCount": 5,
+              "cascadeKillCount": 4
+            },
+            "triangle": {
+              "spawnCount": 31,
+              "directHitCount": 16,
+              "directKillCount": 16,
+              "cascadeKillCount": 18
+            },
+            "square": {
+              "cascadeKillCount": 20,
+              "spawnCount": 32,
+              "directHitCount": 20,
+              "directKillCount": 13
+            },
+            "pentagon": {
+              "directHitCount": 7,
+              "directKillCount": 5,
+              "cascadeKillCount": 10,
+              "spawnCount": 15
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 88,
+              "cascadeKillCount": 52,
+              "directHitCount": 50,
+              "clickedFirstCount": 40,
+              "directKillCount": 39
+            }
+          },
+          "hpDistribution": {
+            "3": 30,
+            "4": 31,
+            "5": 16,
+            "6": 1,
+            "9": 8,
+            "11": 2
+          },
+          "enhancedSpawns": 4,
+          "averageAlive": 17.982400582383132,
+          "averageTarget": 19.369999999999735,
+          "spawnSuccessRate": 1,
+          "cascadeRatio": 0.5714285714285714,
+          "avgCascadeDurationMs": 220.2049372288895
+        }
+      ],
+      "emptyArenaDuration": 0,
+      "emptyEpisodesOverHalfSecond": 0,
+      "maxEmptyEpisode": 0,
+      "spawnAttempts": 159,
+      "spawnSuccesses": 159,
+      "spawnFailures": 0,
+      "capCounts": {},
+      "capSources": {},
+      "chargedCaps": 0,
+      "peakWaves": 6,
+      "peakScheduled": 8,
+      "secondShardPeaks": [
+        9,
+        10,
+        3,
+        9,
+        8,
+        6,
+        6,
+        3,
+        0,
+        9,
+        9,
+        7,
+        5,
+        4,
+        3,
+        4,
+        7,
+        14,
+        10,
+        7
+      ],
+      "hpDistribution": {
+        "3": 69,
+        "4": 56,
+        "5": 23,
+        "6": 1,
+        "9": 12,
+        "11": 2
+      },
+      "enhancedSpawnCount": 4,
+      "frameSampleCount": 2587,
+      "stepSampleCount": 1199,
+      "averageFPS": 129.71636764035958,
+      "fixedStepP95ms": 0.19999992847442627,
+      "modifiersEnabled": false,
+      "modifierStats": {
+        "normal": {
+          "spawnCount": 163,
+          "clickedFirstCount": 80,
+          "directHitCount": 99,
+          "directKillCount": 78,
+          "cascadeKillCount": 72,
+          "selectionRate": 0.49079754601226994
+        },
+        "cracked": {
+          "spawnCount": 0,
+          "clickedFirstCount": 0,
+          "directHitCount": 0,
+          "directKillCount": 0,
+          "cascadeKillCount": 0,
+          "selectionRate": 0
+        },
+        "charged": {
+          "spawnCount": 0,
+          "clickedFirstCount": 0,
+          "directHitCount": 0,
+          "directKillCount": 0,
+          "cascadeKillCount": 0,
+          "selectionRate": 0
+        }
+      },
+      "typeStats": {
+        "triangle": {
+          "spawnCount": 70,
+          "directHitCount": 36,
+          "directKillCount": 36,
+          "cascadeKillCount": 32
+        },
+        "square": {
+          "spawnCount": 57,
+          "directHitCount": 44,
+          "directKillCount": 28,
+          "cascadeKillCount": 25
+        },
+        "pentagon": {
+          "spawnCount": 22,
+          "directHitCount": 11,
+          "directKillCount": 8,
+          "cascadeKillCount": 10
+        },
+        "star": {
+          "spawnCount": 14,
+          "directHitCount": 8,
+          "directKillCount": 6,
+          "cascadeKillCount": 5
+        }
+      },
+      "chargedContribution": {
+        "damage": 0,
+        "kills": 0,
+        "photons": 0
+      },
+      "modifierRngPolicy": "independent mechanical stream; one draw per spawn attempt including OFF and Enhanced",
+      "comboMilestones": {
+        "5": 6,
+        "10": 1,
+        "20": 0
+      },
+      "comboEvents": [
+        {
+          "chainId": 49,
+          "threshold": 5,
+          "kills": 5,
+          "at": 10.001528962635417,
+          "x": 574.6084526099175,
+          "y": 420.6882590996045
+        },
+        {
+          "chainId": 57,
+          "threshold": 5,
+          "kills": 5,
+          "at": 11.472910246621323,
+          "x": 795.9220355021965,
+          "y": 316.24863582043844
+        },
+        {
+          "chainId": 66,
+          "threshold": 5,
+          "kills": 5,
+          "at": 13.215809763647451,
+          "x": 454.1710952357322,
+          "y": 154.53567161159728
+        },
+        {
+          "chainId": 85,
+          "threshold": 5,
+          "kills": 5,
+          "at": 16.995100943054297,
+          "x": 766.9618849393765,
+          "y": 218.5401951987963
+        },
+        {
+          "chainId": 88,
+          "threshold": 5,
+          "kills": 5,
+          "at": 17.812613539791617,
+          "x": 97.32317804976479,
+          "y": 325.4740106579344
+        },
+        {
+          "chainId": 98,
+          "threshold": 5,
+          "kills": 5,
+          "at": 19.65193307677815,
+          "x": 342.0028175458007,
+          "y": 223.48995960899745
+        },
+        {
+          "chainId": 98,
+          "threshold": 10,
+          "kills": 10,
+          "at": 19.98848969647601,
+          "x": 201.83975521580717,
+          "y": 286.7231550140052
+        }
+      ],
+      "timeToFirstChain5": 10.001528962635417,
+      "maxChain": 10,
+      "comboFeedbackEnabled": true,
+      "durationSeconds": 20,
+      "seed": 31415,
+      "levels": {
+        "crushPower": 0,
+        "shardPower": 0,
+        "shardRange": 0,
+        "chainAmplifier": 0,
+        "extraTime": 0,
+        "crushSpeed": 0,
+        "impactPulse": 0,
+        "ricochetPlus": 0,
+        "shardBloom": 0,
+        "echoCatalyst": 0,
+        "photonBoost": 0
+      },
+      "totalDestroyed": 150,
+      "directKills": 78,
+      "cascadeKills": 72,
+      "bestChain": 10,
+      "photonsEarned": 126,
+      "highestTier": 3,
+      "unlockTimes": {
+        "15": 1.8333333333333317,
+        "45": 6.766944023367074,
+        "100": 15.43333333333368,
+        "pentagon": 1.8333333333333317,
+        "star": 6.766944023367074
+      },
+      "firstCascadeTime": 0.1727951462549115,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 213.0482491010091,
+      "variantCounts": {
+        "deep": 49,
+        "matte": 48,
+        "bright": 66
+      },
+      "patternCounts": {
+        "arc": 30,
+        "scattered": 72,
+        "burst_cluster": 49
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 0,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 14,
+      "bankBefore": 0,
+      "bankAfter": 126
+    },
+    {
+      "name": "04-refresh-recovery",
+      "refinerySkipped": null,
+      "resultWaitSeconds": null,
+      "physicsChecks": {
+        "waveContactsChecked": 130,
+        "maxWaveContactError": 9.858050873390312e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 83,
+        "maxProjectileContactError": 9.543309786863574e-7
+      },
+      "ruleset": "v09",
+      "tierPreset": "v09_short",
+      "runId": "b9cce619-826b-4a8c-9a6d-46a78be58cfe",
+      "runDurationConfigured": 20,
+      "runDurationActual": 20,
+      "rawEarned": 2791,
+      "processedPhoton": 177,
+      "photonPayout": 177,
+      "refinery": {
+        "id": "b9cce619-826b-4a8c-9a6d-46a78be58cfe",
+        "raw": 2791,
+        "rate": 0.06,
+        "multiplier": 1.0600143317807238,
+        "payout": 177,
+        "enabled": true,
+        "tokens": [
+          {
+            "raw": 279,
+            "slot": 0,
+            "multiplier": 0.8
+          },
+          {
+            "raw": 279,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 279,
+            "slot": 2,
+            "multiplier": 1.1
+          },
+          {
+            "raw": 279,
+            "slot": 3,
+            "multiplier": 1.3
+          },
+          {
+            "raw": 279,
+            "slot": 0,
+            "multiplier": 0.8
+          },
+          {
+            "raw": 279,
+            "slot": 2,
+            "multiplier": 1.1
+          },
+          {
+            "raw": 279,
+            "slot": 4,
+            "multiplier": 1.6
+          },
+          {
+            "raw": 279,
+            "slot": 1,
+            "multiplier": 1
+          },
+          {
+            "raw": 279,
+            "slot": 0,
+            "multiplier": 0.8
+          },
+          {
+            "raw": 280,
+            "slot": 2,
+            "multiplier": 1.1
+          }
+        ],
+        "confirmed": true
+      },
+      "motionEnabled": true,
+      "motionProfiles": {
+        "both": 68,
+        "drift": 59,
+        "rotate": 75,
+        "static": 18
+      },
+      "missedClicks": 7,
+      "movingHitAccuracy": 0.93,
+      "projectileHitRate": 0.22133333333333333,
+      "projectileHits": 83,
+      "waveContacts": 146,
+      "maxMotionSpeed": 5.73092561901246,
+      "bins5": [
+        {
+          "start": 0,
+          "end": 5,
+          "totalDestroyed": 46,
+          "directKills": 22,
+          "cascadeKills": 24,
+          "earnedPhoton": 442,
+          "comboMilestones": {
+            "5": 1,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 7,
+          "cascadeDurationTotalMs": 3178.561837925935,
+          "completedCascadeChains": 10,
+          "sampledSeconds": 5,
+          "samples": 388,
+          "aliveIntegral": 64.13008106017328,
+          "targetIntegral": 72.50000000000017,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 60,
+          "spawnSuccesses": 60,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "triangle": {
+              "spawnCount": 36,
+              "directHitCount": 14,
+              "directKillCount": 14,
+              "cascadeKillCount": 18
+            },
+            "square": {
+              "spawnCount": 19,
+              "cascadeKillCount": 4,
+              "directHitCount": 8,
+              "directKillCount": 8
+            },
+            "pentagon": {
+              "spawnCount": 8,
+              "cascadeKillCount": 2,
+              "directHitCount": 1
+            },
+            "star": {
+              "spawnCount": 1
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 60,
+              "directHitCount": 21,
+              "clickedFirstCount": 21,
+              "directKillCount": 20,
+              "cascadeKillCount": 22
+            },
+            "cracked": {
+              "spawnCount": 4,
+              "cascadeKillCount": 2,
+              "directHitCount": 2,
+              "clickedFirstCount": 2,
+              "directKillCount": 2
+            }
+          },
+          "hpDistribution": {
+            "2": 4,
+            "3": 33,
+            "4": 18,
+            "5": 8,
+            "9": 1
+          },
+          "enhancedSpawns": 0,
+          "rawEarned": 442,
+          "averageAlive": 12.826016212034656,
+          "averageTarget": 14.500000000000034
+        },
+        {
+          "start": 5,
+          "end": 10,
+          "totalDestroyed": 53,
+          "directKills": 24,
+          "cascadeKills": 29,
+          "earnedPhoton": 736,
+          "comboMilestones": {
+            "5": 2,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 5,
+          "cascadeDurationTotalMs": 3305.985455781955,
+          "completedCascadeChains": 14,
+          "sampledSeconds": 5,
+          "samples": 414,
+          "aliveIntegral": 81.75797436031016,
+          "targetIntegral": 89.9999999999996,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 51,
+          "spawnSuccesses": 51,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "pentagon": {
+              "directHitCount": 4,
+              "directKillCount": 4,
+              "cascadeKillCount": 8,
+              "spawnCount": 10
+            },
+            "triangle": {
+              "cascadeKillCount": 10,
+              "spawnCount": 21,
+              "directHitCount": 9,
+              "directKillCount": 9
+            },
+            "square": {
+              "spawnCount": 15,
+              "cascadeKillCount": 10,
+              "directHitCount": 9,
+              "directKillCount": 9
+            },
+            "star": {
+              "spawnCount": 5,
+              "directHitCount": 2,
+              "directKillCount": 2,
+              "cascadeKillCount": 1
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "directHitCount": 23,
+              "directKillCount": 23,
+              "cascadeKillCount": 27,
+              "spawnCount": 47,
+              "clickedFirstCount": 22
+            },
+            "cracked": {
+              "spawnCount": 1,
+              "cascadeKillCount": 1
+            },
+            "charged": {
+              "spawnCount": 3,
+              "cascadeKillCount": 1,
+              "directHitCount": 1,
+              "clickedFirstCount": 1,
+              "directKillCount": 1
+            }
+          },
+          "hpDistribution": {
+            "3": 21,
+            "4": 15,
+            "5": 11,
+            "9": 4
+          },
+          "enhancedSpawns": 0,
+          "rawEarned": 736,
+          "averageAlive": 16.35159487206203,
+          "averageTarget": 17.999999999999922
+        },
+        {
+          "start": 10,
+          "end": 15,
+          "totalDestroyed": 49,
+          "directKills": 18,
+          "cascadeKills": 31,
+          "earnedPhoton": 725,
+          "comboMilestones": {
+            "5": 3,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 7,
+          "cascadeDurationTotalMs": 3406.264293318244,
+          "completedCascadeChains": 9,
+          "sampledSeconds": 4.999999999999924,
+          "samples": 405,
+          "aliveIntegral": 93.40437618327392,
+          "targetIntegral": 104.3499999999987,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 49,
+          "spawnSuccesses": 49,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "triangle": {
+              "spawnCount": 18,
+              "directHitCount": 8,
+              "directKillCount": 7,
+              "cascadeKillCount": 14
+            },
+            "pentagon": {
+              "directHitCount": 5,
+              "directKillCount": 3,
+              "spawnCount": 9,
+              "cascadeKillCount": 6
+            },
+            "square": {
+              "spawnCount": 18,
+              "directHitCount": 6,
+              "directKillCount": 6,
+              "cascadeKillCount": 9
+            },
+            "star": {
+              "cascadeKillCount": 2,
+              "spawnCount": 4,
+              "directHitCount": 4,
+              "directKillCount": 2
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 40,
+              "directHitCount": 22,
+              "clickedFirstCount": 17,
+              "directKillCount": 17,
+              "cascadeKillCount": 23
+            },
+            "cracked": {
+              "spawnCount": 6,
+              "cascadeKillCount": 6
+            },
+            "charged": {
+              "spawnCount": 3,
+              "directHitCount": 1,
+              "clickedFirstCount": 1,
+              "directKillCount": 1,
+              "cascadeKillCount": 2
+            }
+          },
+          "hpDistribution": {
+            "2": 6,
+            "3": 11,
+            "4": 16,
+            "5": 12,
+            "9": 3,
+            "11": 1
+          },
+          "enhancedSpawns": 4,
+          "rawEarned": 725,
+          "averageAlive": 18.68087523665507,
+          "averageTarget": 20.870000000000058
+        },
+        {
+          "start": 15,
+          "end": 20,
+          "totalDestroyed": 52,
+          "directKills": 16,
+          "cascadeKills": 36,
+          "earnedPhoton": 888,
+          "comboMilestones": {
+            "5": 4,
+            "10": 2,
+            "20": 0
+          },
+          "bestChain": 12,
+          "cascadeDurationTotalMs": 2538.0497823806786,
+          "completedCascadeChains": 8,
+          "sampledSeconds": 4.999999999999675,
+          "samples": 419,
+          "aliveIntegral": 90.83640269973112,
+          "targetIntegral": 105.73333333332585,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 56,
+          "spawnSuccesses": 56,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "pentagon": {
+              "spawnCount": 12,
+              "cascadeKillCount": 10,
+              "directHitCount": 4,
+              "directKillCount": 2
+            },
+            "square": {
+              "spawnCount": 17,
+              "cascadeKillCount": 14,
+              "directHitCount": 4,
+              "directKillCount": 4
+            },
+            "triangle": {
+              "spawnCount": 21,
+              "directHitCount": 6,
+              "directKillCount": 6,
+              "cascadeKillCount": 10
+            },
+            "star": {
+              "directHitCount": 9,
+              "spawnCount": 6,
+              "directKillCount": 4,
+              "cascadeKillCount": 2
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 50,
+              "cascadeKillCount": 31,
+              "directHitCount": 23,
+              "clickedFirstCount": 16,
+              "directKillCount": 16
+            },
+            "cracked": {
+              "spawnCount": 4,
+              "cascadeKillCount": 3
+            },
+            "charged": {
+              "cascadeKillCount": 2,
+              "spawnCount": 2
+            }
+          },
+          "hpDistribution": {
+            "2": 4,
+            "3": 18,
+            "4": 13,
+            "5": 12,
+            "6": 3,
+            "9": 4,
+            "11": 2
+          },
+          "enhancedSpawns": 5,
+          "rawEarned": 888,
+          "averageAlive": 18.167280539947406,
+          "averageTarget": 21.146666666666544
+        }
+      ],
+      "inputPolicy": "auto:browser-density-pointer",
+      "sandbox": false,
+      "experiment": {
+        "spawnInterval": 0.2,
+        "spawnBatch": 3,
+        "clusterChance": 0.6
+      },
+      "elapsed": 20,
+      "bins": [
+        {
+          "start": 0,
+          "end": 10,
+          "totalDestroyed": 99,
+          "directKills": 46,
+          "cascadeKills": 53,
+          "earnedPhoton": 1178,
+          "comboMilestones": {
+            "5": 3,
+            "10": 0,
+            "20": 0
+          },
+          "bestChain": 7,
+          "cascadeDurationTotalMs": 6484.54729370789,
+          "completedCascadeChains": 24,
+          "sampledSeconds": 10,
+          "samples": 801,
+          "aliveIntegral": 145.88805542048345,
+          "targetIntegral": 162.49999999999977,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 111,
+          "spawnSuccesses": 111,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "triangle": {
+              "spawnCount": 57,
+              "directHitCount": 23,
+              "directKillCount": 23,
+              "cascadeKillCount": 28
+            },
+            "square": {
+              "spawnCount": 34,
+              "cascadeKillCount": 14,
+              "directHitCount": 17,
+              "directKillCount": 17
+            },
+            "pentagon": {
+              "spawnCount": 18,
+              "cascadeKillCount": 10,
+              "directHitCount": 5,
+              "directKillCount": 4
+            },
+            "star": {
+              "spawnCount": 6,
+              "directHitCount": 2,
+              "directKillCount": 2,
+              "cascadeKillCount": 1
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 107,
+              "directHitCount": 44,
+              "clickedFirstCount": 43,
+              "directKillCount": 43,
+              "cascadeKillCount": 49
+            },
+            "cracked": {
+              "spawnCount": 5,
+              "cascadeKillCount": 3,
+              "directHitCount": 2,
+              "clickedFirstCount": 2,
+              "directKillCount": 2
+            },
+            "charged": {
+              "spawnCount": 3,
+              "cascadeKillCount": 1,
+              "directHitCount": 1,
+              "clickedFirstCount": 1,
+              "directKillCount": 1
+            }
+          },
+          "hpDistribution": {
+            "2": 4,
+            "3": 54,
+            "4": 33,
+            "5": 19,
+            "9": 5
+          },
+          "enhancedSpawns": 0,
+          "averageAlive": 14.588805542048345,
+          "averageTarget": 16.24999999999998,
+          "spawnSuccessRate": 1,
+          "cascadeRatio": 0.5353535353535354,
+          "avgCascadeDurationMs": 270.1894705711621
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "totalDestroyed": 101,
+          "directKills": 34,
+          "cascadeKills": 67,
+          "earnedPhoton": 1613,
+          "comboMilestones": {
+            "5": 7,
+            "10": 2,
+            "20": 0
+          },
+          "bestChain": 12,
+          "cascadeDurationTotalMs": 5944.314075698923,
+          "completedCascadeChains": 17,
+          "sampledSeconds": 9.999999999999924,
+          "samples": 824,
+          "aliveIntegral": 184.24077888300965,
+          "targetIntegral": 210.08333333332908,
+          "emptyArenaDuration": 0,
+          "spawnAttempts": 105,
+          "spawnSuccesses": 105,
+          "spawnFailures": 0,
+          "safetyCapsHit": 0,
+          "caps": {},
+          "typeStats": {
+            "triangle": {
+              "spawnCount": 39,
+              "directHitCount": 14,
+              "directKillCount": 13,
+              "cascadeKillCount": 24
+            },
+            "pentagon": {
+              "directHitCount": 9,
+              "directKillCount": 5,
+              "spawnCount": 21,
+              "cascadeKillCount": 16
+            },
+            "square": {
+              "spawnCount": 35,
+              "directHitCount": 10,
+              "directKillCount": 10,
+              "cascadeKillCount": 23
+            },
+            "star": {
+              "cascadeKillCount": 4,
+              "spawnCount": 10,
+              "directHitCount": 13,
+              "directKillCount": 6
+            }
+          },
+          "modifierStats": {
+            "normal": {
+              "spawnCount": 90,
+              "directHitCount": 45,
+              "clickedFirstCount": 33,
+              "directKillCount": 33,
+              "cascadeKillCount": 54
+            },
+            "cracked": {
+              "spawnCount": 10,
+              "cascadeKillCount": 9
+            },
+            "charged": {
+              "spawnCount": 5,
+              "directHitCount": 1,
+              "clickedFirstCount": 1,
+              "directKillCount": 1,
+              "cascadeKillCount": 4
+            }
+          },
+          "hpDistribution": {
+            "2": 10,
+            "3": 29,
+            "4": 29,
+            "5": 24,
+            "6": 3,
+            "9": 7,
+            "11": 3
+          },
+          "enhancedSpawns": 9,
+          "averageAlive": 18.424077888301106,
+          "averageTarget": 21.00833333333307,
+          "spawnSuccessRate": 1,
+          "cascadeRatio": 0.6633663366336634,
+          "avgCascadeDurationMs": 349.66553386464255
+        }
+      ],
+      "emptyArenaDuration": 0,
+      "emptyEpisodesOverHalfSecond": 0,
+      "maxEmptyEpisode": 0,
+      "spawnAttempts": 216,
+      "spawnSuccesses": 216,
+      "spawnFailures": 0,
+      "capCounts": {},
+      "capSources": {},
+      "chargedCaps": 0,
+      "peakWaves": 6,
+      "peakScheduled": 5,
+      "secondShardPeaks": [
+        10,
+        12,
+        12,
+        9,
+        6,
+        9,
+        6,
+        10,
+        6,
+        11,
+        8,
+        8,
+        15,
+        9,
+        8,
+        8,
+        17,
+        7,
+        10,
+        7
+      ],
+      "hpDistribution": {
+        "2": 14,
+        "3": 83,
+        "4": 62,
+        "5": 43,
+        "6": 3,
+        "9": 12,
+        "11": 3
+      },
+      "enhancedSpawnCount": 9,
+      "frameSampleCount": 2587,
+      "stepSampleCount": 1199,
+      "averageFPS": 129.72505278375328,
+      "fixedStepP95ms": 0.20000004768371582,
+      "modifiersEnabled": true,
+      "modifierStats": {
+        "normal": {
+          "spawnCount": 197,
+          "clickedFirstCount": 76,
+          "directHitCount": 89,
+          "directKillCount": 76,
+          "cascadeKillCount": 103,
+          "selectionRate": 0.38578680203045684
+        },
+        "cracked": {
+          "spawnCount": 15,
+          "clickedFirstCount": 2,
+          "directHitCount": 2,
+          "directKillCount": 2,
+          "cascadeKillCount": 12,
+          "selectionRate": 0.13333333333333333
+        },
+        "charged": {
+          "spawnCount": 8,
+          "clickedFirstCount": 2,
+          "directHitCount": 2,
+          "directKillCount": 2,
+          "cascadeKillCount": 5,
+          "selectionRate": 0.25
+        }
+      },
+      "typeStats": {
+        "triangle": {
+          "spawnCount": 96,
+          "directHitCount": 37,
+          "directKillCount": 36,
+          "cascadeKillCount": 52
+        },
+        "square": {
+          "spawnCount": 69,
+          "directHitCount": 27,
+          "directKillCount": 27,
+          "cascadeKillCount": 37
+        },
+        "pentagon": {
+          "spawnCount": 39,
+          "directHitCount": 14,
+          "directKillCount": 9,
+          "cascadeKillCount": 26
+        },
+        "star": {
+          "spawnCount": 16,
+          "directHitCount": 15,
+          "directKillCount": 8,
+          "cascadeKillCount": 5
+        }
+      },
+      "chargedContribution": {
+        "damage": 26,
+        "kills": 9,
+        "photons": 119
+      },
+      "modifierRngPolicy": "independent mechanical stream; one draw per spawn attempt including OFF and Enhanced",
+      "comboMilestones": {
+        "5": 10,
+        "10": 2,
+        "20": 0
+      },
+      "comboEvents": [
+        {
+          "chainId": 9,
+          "threshold": 5,
+          "kills": 5,
+          "at": 2.14165149016509,
+          "x": 557.6843252292533,
+          "y": 485.4358660614096
+        },
+        {
+          "chainId": 26,
+          "threshold": 5,
+          "kills": 5,
+          "at": 5.40180386325833,
+          "x": 790.947368554467,
+          "y": 403.0717881217021
+        },
+        {
+          "chainId": 47,
+          "threshold": 5,
+          "kills": 5,
+          "at": 9.44191500170871,
+          "x": 602.838561997837,
+          "y": 342.4386871581905
+        },
+        {
+          "chainId": 59,
+          "threshold": 5,
+          "kills": 5,
+          "at": 12.057047585282252,
+          "x": 321.5474446769804,
+          "y": 117.50808165268973
+        },
+        {
+          "chainId": 69,
+          "threshold": 5,
+          "kills": 5,
+          "at": 13.786471683019897,
+          "x": 886.5996439188503,
+          "y": 151.42088489688993
+        },
+        {
+          "chainId": 75,
+          "threshold": 5,
+          "kills": 5,
+          "at": 14.978085988089552,
+          "x": 585.46985283494,
+          "y": 323.73944754339755
+        },
+        {
+          "chainId": 79,
+          "threshold": 5,
+          "kills": 5,
+          "at": 15.836790762168457,
+          "x": 585.8376939767676,
+          "y": 473.35352373933387
+        },
+        {
+          "chainId": 82,
+          "threshold": 5,
+          "kills": 5,
+          "at": 16.381791624513728,
+          "x": 345.59107902311774,
+          "y": 252.36354652019622
+        },
+        {
+          "chainId": 82,
+          "threshold": 10,
+          "kills": 10,
+          "at": 16.58854707328633,
+          "x": 480.323034806177,
+          "y": 211.40447046374902
+        },
+        {
+          "chainId": 92,
+          "threshold": 5,
+          "kills": 5,
+          "at": 18.39163319754118,
+          "x": 774.5589716864981,
+          "y": 335.79326707947143
+        },
+        {
+          "chainId": 92,
+          "threshold": 10,
+          "kills": 10,
+          "at": 18.679937830806423,
+          "x": 496.4892175829958,
+          "y": 357.12944362775494
+        },
+        {
+          "chainId": 94,
+          "threshold": 5,
+          "kills": 5,
+          "at": 18.82698533920713,
+          "x": 723.3014585605173,
+          "y": 463.10102928087895
+        }
+      ],
+      "timeToFirstChain5": 2.14165149016509,
+      "maxChain": 12,
+      "comboFeedbackEnabled": true,
+      "durationSeconds": 20,
+      "seed": 31415,
+      "levels": {
+        "crushPower": 1,
+        "shardPower": 0,
+        "shardRange": 0,
+        "chainAmplifier": 0,
+        "extraTime": 0,
+        "crushSpeed": 0,
+        "impactPulse": 0,
+        "ricochetPlus": 0,
+        "shardBloom": 0,
+        "echoCatalyst": 0,
+        "photonBoost": 0
+      },
+      "totalDestroyed": 200,
+      "directKills": 80,
+      "cascadeKills": 120,
+      "bestChain": 12,
+      "photonsEarned": 177,
+      "highestTier": 4,
+      "unlockTimes": {
+        "15": 1.2166666666666672,
+        "45": 4.616666666666656,
+        "100": 10.216666666666754,
+        "200": 19.816666666666823,
+        "pentagon": 1.2166666666666672,
+        "star": 4.616666666666656
+      },
+      "firstCascadeTime": 0.1561284795882449,
+      "inheritanceEnabled": true,
+      "ricochetEnabled": true,
+      "sequentialPropagationEnabled": true,
+      "visualVarietyEnabled": true,
+      "avgCascadeDurationMs": 303.1429602294345,
+      "variantCounts": {
+        "deep": 69,
+        "matte": 63,
+        "bright": 88
+      },
+      "patternCounts": {
+        "arc": 45,
+        "scattered": 106,
+        "burst_cluster": 37,
+        "bridge": 20
+      },
+      "optionChanges": [],
+      "safetyCapsHit": 0,
+      "skippedSeconds": 0,
+      "skippedEvents": 0,
+      "peakShards": 17,
+      "bankBefore": 224,
+      "bankAfter": 401,
+      "recoveredAfterRefresh": true
+    }
+  ],
+  "errors": []
+}
