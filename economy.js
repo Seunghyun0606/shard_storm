@@ -15,18 +15,18 @@ export function experimentCost(key, level, preset = 'baseline') {
   const multiplier = economyPresets[preset]; if (!multiplier) throw new Error('Unknown economy preset');
   return Math.ceil(C.upgrades[key].baseCost * multiplier * C.costGrowth ** level);
 }
-export function economyState(key, levels, bank, preset = 'baseline') {
-  const state = skillState(key, levels, bank), cost = experimentCost(key, state.level || 0, preset);
-  return { ...state, cost, affordable: bank >= cost, canBuy: state.unlocked && !state.max && bank >= cost,
+export function economyState(key, levels, bank, preset = 'baseline', progression = {}) {
+  const state = skillState(key, levels, bank,progression), cost = experimentCost(key, state.level || 0, preset);
+  return { ...state, cost, affordable: bank >= cost && state.catalystMet, canBuy: state.unlocked && !state.max && bank >= cost && state.catalystMet,
     state: state.state === 'affordable' || state.state === 'available' ? bank >= cost ? 'affordable' : 'available' : state.state };
 }
 // A deep copy with no storage handle. It cannot write the live user's save.
 export class EconomySandbox {
   constructor(source, preset = 'baseline') { if (!economyPresets[preset]) throw new Error('Unknown economy preset'); this.preset = preset; this.save = { ...structuredClone(source), sandbox: true }; }
-  state = (key, levels = this.save.levels, bank = this.save.bank) => economyState(key, levels, bank, this.preset);
+  state = (key, levels = this.save.levels, bank = this.save.bank) => economyState(key, levels, bank, this.preset,this.save);
   buy(key, state) {
     if (state !== 'RESULT' || !C.upgrades[key] || !this.state(key).canBuy) return false;
-    this.save.bank -= experimentCost(key, this.save.levels[key], this.preset); this.save.levels[key]++; return true;
+    this.save.bank -= experimentCost(key, this.save.levels[key], this.preset); this.save.catalystBalance-=this.state(key).catalystCost;this.save.levels[key]++; return true;
   }
 }
 export function buildCost(levels, preset = 'baseline') {

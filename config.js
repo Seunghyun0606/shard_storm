@@ -70,7 +70,15 @@ export const CONFIG = {
     ricochetPlus: { name: 'Ricochet+', subtitle: '주 파편 반사 횟수', baseCost: 170, max: 2 },
     shardBloom: { name: 'Shard Bloom', subtitle: '고유 파편 추가', baseCost: 290, max: 2 },
     echoCatalyst: { name: 'Echo Catalyst', subtitle: '계승 피해 강화', baseCost: 240, max: 2 },
-    photonBoost: { name: 'Photon Boost', subtitle: '파괴 보너스 강화', baseCost: 180, max: 3 }
+    photonBoost: { name: 'Photon Boost', subtitle: '파괴 보너스 강화', baseCost: 180, max: 3 },
+    precisionFracture: { name:'Precision Fracture',subtitle:'Cracked 직접 최종타 · 파편과 Raw',baseCost:180,max:2,rank:1,catalyst:[0,0] },
+    yieldStabilizer: { name:'Yield Stabilizer',subtitle:'낮은 Refinery 슬롯 보정',baseCost:220,max:2,rank:1,catalyst:[0,0] },
+    rareSeparator: { name:'Rare Separator',subtitle:'Core 보너스 · 첫 Core Catalyst',baseCost:350,max:2,rank:2,catalyst:[2,4] },
+    fragmentRelay: { name:'Fragment Relay',subtitle:'주 파편 최종타 후 Relay',baseCost:520,max:2,rank:2,catalyst:[4,6] },
+    kineticReach: { name:'Kinetic Reach',subtitle:'회전 원본 주 파편 거리',baseCost:420,max:2,rank:2,catalyst:[2,3] },
+    resonanceLayer: { name:'Resonance Layer',subtitle:'Reactor → Charged 여진',baseCost:650,max:2,rank:3,catalyst:[6,8] },
+    salvageScanner: { name:'Salvage Scanner',subtitle:'희귀 강조 · Core/Void 확률',baseCost:700,max:2,rank:3,catalyst:[6,8] },
+    catalystChannel: { name:'Catalyst Channel',subtitle:'Ancient 표식 직접 파괴 파편',baseCost:1400,max:1,rank:4,catalyst:[24] }
   },
   // Positions and prerequisite edges are declarative. Existing balances stay above.
   skillDefinitions: [
@@ -84,7 +92,15 @@ export const CONFIG = {
     { id: 'chainAmplifier', branch: 'reaction', position: { col: 2, row: 1 }, prerequisites: [] },
     { id: 'echoCatalyst', branch: 'reaction', position: { col: 2, row: 2 }, prerequisites: [{ id: 'chainAmplifier', minLevel: 1 }] },
     { id: 'extraTime', branch: 'utility', position: { col: 3, row: 1 }, prerequisites: [] },
-    { id: 'photonBoost', branch: 'utility', position: { col: 3, row: 2 }, prerequisites: [{ id: 'extraTime', minLevel: 1 }] }
+    { id: 'photonBoost', branch: 'utility', position: { col: 3, row: 2 }, prerequisites: [{ id: 'extraTime', minLevel: 1 }] },
+    {id:'precisionFracture',branch:'destroy',position:{col:0,row:4},prerequisites:[{id:'crushPower',minLevel:2}]},
+    {id:'fragmentRelay',branch:'cascade',position:{col:1,row:5},prerequisites:[{id:'shardPower',minLevel:2}]},
+    {id:'kineticReach',branch:'cascade',position:{col:1,row:6},prerequisites:[{id:'shardRange',minLevel:1}]},
+    {id:'resonanceLayer',branch:'reaction',position:{col:2,row:3},prerequisites:[{id:'chainAmplifier',minLevel:2}]},
+    {id:'salvageScanner',branch:'utility',position:{col:3,row:3},prerequisites:[{id:'photonBoost',minLevel:1}]},
+    {id:'yieldStabilizer',branch:'refinery',position:{col:4,row:1},prerequisites:[]},
+    {id:'rareSeparator',branch:'refinery',position:{col:4,row:2},prerequisites:[{id:'yieldStabilizer',minLevel:1}]},
+    {id:'catalystChannel',branch:'legacy',position:{col:4,row:4},prerequisites:[{id:'rareSeparator',minLevel:1},{id:'resonanceLayer',minLevel:1}]}
   ],
   discovery: [
     { threshold: 0, unlock: '기본 4종 · 기존 11스킬' },

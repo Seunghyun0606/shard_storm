@@ -9,10 +9,11 @@ export function upgradeCost(key, level) { return skillCost(key, level); }
 export function durationFor(levels) { return getDerivedStats(levels).duration; }
 export function buyUpgrade(save, key, state) {
   const u = C.upgrades[key];
-  if (state !== 'RESULT' || !u || !skillState(key, save.levels, save.bank).canBuy) return false;
+  if (state !== 'RESULT' || !u || !skillState(key, save.levels, save.bank,save).canBuy || save.pendingSettlement) return false;
   const cost = upgradeCost(key, save.levels[key]);
   if (save.bank < cost) return false;
-  save.bank -= cost; save.levels[key]++; return true;
+  const catalystCost=u.catalyst?.[save.levels[key]]||0;
+  save.bank -= cost; save.catalystBalance=(save.catalystBalance||0)-catalystCost; save.levels[key]++; return true;
 }
 export function settle(save, run) {
   if (run.state !== 'RESULT' || run.settled || (run.sandbox && !save.sandbox)) return false;

@@ -16,11 +16,12 @@ export function validateSkillTree(definitions = skillDefinitions) {
 }
 validateSkillTree();
 export const skillCost = (key, level) => Math.ceil(C.upgrades[key].baseCost * C.costGrowth ** level);
-export function skillState(key, levels, bank) {
+export function skillState(key, levels, bank, progression = {}) {
   const node = skillDefinitions.find(n => n.id === key); if (!node) return { state: 'locked', unlocked: false, canBuy: false };
   const level = levels[key] || 0, max = level >= node.maxLevel;
-  const unlocked = node.implemented && node.prerequisites.every(p => (levels[p.id] || 0) >= p.minLevel), cost = skillCost(key, level);
-  return { level, cost, max, unlocked, affordable: bank >= cost, canBuy: unlocked && !max && bank >= cost,
+  const requiredRank=node.rank||0,catalystCost=node.catalyst?.[level]||0,rankMet=(progression.discoveryRank||0)>=requiredRank,catalystMet=(progression.catalystBalance||0)>=catalystCost;
+  const unlocked = node.implemented && rankMet && node.prerequisites.every(p => (levels[p.id] || 0) >= p.minLevel), cost = skillCost(key, level);
+  return { level, cost, max, unlocked, requiredRank, catalystCost, rankMet, catalystMet, affordable: bank >= cost && catalystMet, canBuy: unlocked && !max && bank >= cost && catalystMet,
     state: !node.implemented ? 'coming' : max ? 'max' : !unlocked ? 'locked' : level > 0 ? 'purchased' : bank >= cost ? 'affordable' : 'available' };
 }
 export function getDerivedStats(levels = {}) {

@@ -10,8 +10,8 @@ export function chooseTarget(g) {
   const score = s => all.filter(t => t.id !== s.id && Math.hypot(s.x - t.x, s.y - t.y) <= C.shard.range).length * 3 - Math.ceil(s.hp / g.stats.directDamage) * 2;
   return live.map(s => ({ s, score: score(s) })).sort((a, b) => b.score - a.score || a.s.id - b.s.id)[0]?.s;
 }
-export function simulate({ seed = C.seed, levels = emptyLevels(), options = C.options, duration = C.duration, experiment = 'baseline', ruleset = 'v09', tierPreset = 'v09_short', runId = `simulation-${seed}` } = {}) {
-  const g = new Game({ seed, levels, options, duration, experiment, ruleset, tierPreset, runId, inputPolicy: 'auto:density-hp-v1', sandbox: true });
+export function simulate({ seed = C.seed, levels = emptyLevels(), options = C.options, duration = C.duration, experiment = 'baseline', ruleset = 'v09', tierPreset = 'v09_short', runId = `simulation-${seed}`,discoveryRank=0,welcomeFlags={},contentMode='M5_M6_ON',oreEnabled=true } = {}) {
+  const g = new Game({ seed, levels, options, duration, experiment, ruleset, tierPreset, runId,discoveryRank,welcomeFlags,contentMode,oreEnabled, inputPolicy: 'auto:density-hp-v1', sandbox: true });
   let nextAttack = C.attackInterval; const timings = [], earningThresholdTimes = {};
   const thresholds = Object.fromEntries(Object.keys(C.upgrades).map(k => [k, Object.fromEntries(['baseline', 'cost_x3', 'cost_x6'].map(p => [p, experimentCost(k, g.levels[k], p)]))]));
   g.attack(C.tutorial.x, C.tutorial.y);

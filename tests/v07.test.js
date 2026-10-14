@@ -75,7 +75,7 @@ test('v0.7 / 23: all prerequisite edges, costs and locked nodes use the same def
   for (const [parent, child] of [['shardPower', 'shardRange'], ['shardRange', 'ricochetPlus'], ['shardPower', 'shardBloom'], ['chainAmplifier', 'echoCatalyst'], ['extraTime', 'photonBoost']]) {
     while (!skillState(child, save.levels, save.bank).unlocked) assert.ok(buyUpgrade(save, parent, 'RESULT')); assert.ok(buyUpgrade(save, child, 'RESULT'));
   }
-  assert.equal(skillDefinitions.length, 11); assert.ok(skillDefinitions.every(n => n.implemented));
+  assert.equal(skillDefinitions.length, 19); assert.ok(skillDefinitions.every(n => n.implemented));
 });
 test('skill graph rejects duplicate, missing, cyclic and impossible prerequisite definitions', () => {
   assert.ok(validateSkillTree());

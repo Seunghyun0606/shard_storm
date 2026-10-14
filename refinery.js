@@ -1,13 +1,15 @@
 import { CONFIG as C } from './config.js';
 import { seededRNG } from './entities.js';
 
-export function planRefinery({ raw, seed, enabled = true, id = 'simulation' }) {
+export function planRefinery({ raw, seed, enabled = true, id = 'simulation', yieldLevel = 0 }) {
   if (!Number.isSafeInteger(raw) || raw < 0) throw new Error('Invalid Raw Shards');
   const rng = seededRNG(seed ^ 0x7ef1ae), count = C.refinery.tokens, share = Math.floor(raw / count);
   const tokens = Array.from({ length: count }, (_, i) => {
     let slot = 1;
     if (enabled) { let roll = rng() * C.refinery.slots.reduce((n, s) => n + s.weight, 0); slot = C.refinery.slots.findIndex(s => (roll -= s.weight) < 0); }
-    return { raw: i === count - 1 ? raw - share * (count - 1) : share, slot, multiplier: enabled ? C.refinery.slots[slot].multiplier : 1 };
+    const originalMultiplier=enabled ? C.refinery.slots[slot].multiplier : 1;
+    const multiplier=enabled&&yieldLevel>=1&&originalMultiplier===.8?1:enabled&&yieldLevel>=2&&originalMultiplier===1?1.1:originalMultiplier;
+    return { raw: i === count - 1 ? raw - share * (count - 1) : share, slot, originalMultiplier, multiplier };
   });
   const weighted = tokens.reduce((n, t) => n + t.raw * t.multiplier, 0);
   const payout = Math.floor(weighted * C.refinery.rate + 1e-9);
@@ -15,7 +17,7 @@ export function planRefinery({ raw, seed, enabled = true, id = 'simulation' }) {
 }
 export function ensureRefinery(run) {
   if (run.state !== 'RESULT') return null;
-  run.refinery ||= planRefinery({ raw: run.runEarned, seed: run.seed ^ run.totalDestroyed, enabled: run.options.refineryEnabled, id: run.runId });
+  run.refinery ||= planRefinery({ raw: run.runEarned, seed: run.seed ^ run.totalDestroyed, enabled: run.options.refineryEnabled, id: run.runId, yieldLevel: run.levels?.yieldStabilizer||0 });
   return run.refinery;
 }
 export function drawRefinery(canvas, plan, progress) {

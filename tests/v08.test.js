@@ -52,7 +52,7 @@ test('v0.8 economy: existing v2 history and owned levels preserved; new fields o
 });
 test('v0.8 economy: every build and per-node experiment meets prerequisites; Extra Time isolated', () => {
   for (const levels of Object.values(buildPresets)) for (const node of C.skillDefinitions) if (levels[node.id]) for (const p of node.prerequisites) assert.ok(levels[p.id] >= p.minLevel);
-  const comparisons = nodeComparisons(); assert.equal(comparisons.length, 11);
+  const comparisons = nodeComparisons(); assert.equal(comparisons.length, 19);
   for (const n of comparisons) for (const p of C.skillDefinitions.find(d => d.id === n.key).prerequisites) assert.ok(n.before[p.id] >= p.minLevel);
   for (const [level, duration] of [[0, 20], [1, 22], [6, 32]]) { assert.equal(durationFor({ extraTime: level }), duration); const g = new Game({ levels: { extraTime: level }, duration: 60 }); assert.equal(g.duration, 60); assert.equal(g.levels.extraTime, level); }
 });
