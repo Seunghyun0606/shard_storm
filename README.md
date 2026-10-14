@@ -1,4 +1,38 @@
-# Shard Storm — playable prototype v0.9 P0
+# Shard Storm — playable prototype M5 · M6
+
+[M5·M6 명세](docs/Shard_Storm_M5_M6_Development_PRD_v1.0.md)를 v0.9 완성본에 구현했습니다. 기본20초, 직접 클릭/홀드/드래그, 순차 연쇄와 기존4도형·11스킬·Modifier·Refinery·콤보를 유지합니다. 현재 스킬은 **19개 / 총50레벨**입니다.
+
+- **Discovery Rank0~4:** 정산 완료 누적 파괴300/1200/3500/8000에서 해금합니다. 같은 Run 중 Rank가 바뀌지 않습니다. 결과 화면에 다음 목표와 새 도형의 Run 문턱을 표시합니다.
+- **광석:** Prism8%/+15Raw, Core2%/+60Raw/+1Catalyst, Void.5%/+180Raw/+2Catalyst. Rank1/2/4부터 독립 추첨하며 형태·Modifier와 분리됩니다. 사망 때 한 번만 드롭하고 Catalyst는 정산에서만 계정에 지급합니다.
+- **신규 도형:** Hex(Rank2+45킬)의 Ward, Reactor(Rank3+100킬)의 절반/사망 파동, Ancient(Rank4+200킬)의3단계 파편·파동과 최종Catalyst2. 같은 화면에 혼합 등장합니다. Shield Pocket과 안전한 Tether Pair도 사용합니다.
+- **신규8스킬:** Precision Fracture / Yield Stabilizer / Rare Separator / Fragment Relay / Kinetic Reach / Resonance Layer / Salvage Scanner / Catalyst Channel. Rank·선행·Photon·Catalyst를 동시에 만족해야 RESULT에서 구매할 수 있습니다. 정확한 수치와 비용은 [구현 보고서](docs/Shard_Storm_M5_M6_Implementation_Report.md)를 확인하세요.
+- **저장:** 동일 키 `shard-storm-v1`, schema4. v1/2/3/4를 읽고 정상적인 은행·구매레벨·환불권·기록·옵션을 보존합니다. 신규8노드만0으로 추가합니다. 확인 가능한 과거 기록과 정확한 lifetime은 별도로 유지합니다. 정산 중 새로고침·Skip·Replay·뒤로 가기로 Photon/Catalyst/누적이 중복 지급되지 않습니다.
+- **격리:** Fresh Lab, 가격×3/×6, Ore/Refinery OFF, 강제 생성과 테스트 지급은 실제 저장과 분리합니다. 실험 종료나 새로고침으로 기존 프로필에 돌아갑니다.
+
+실행: `npm start` → **http://127.0.0.1:4173**. 의존성 없는 HTML5 Canvas/Vanilla JS입니다. `D`로 개발자 패널을 열고 `Fresh Lab`에서 기존 세이브를 보존한 새 계정 테스트를 할 수 있습니다.
+
+```powershell
+npm test
+npm run benchmark
+npm run benchmark:balance
+npm run benchmark:m5-m6
+node tests/m5-m6-performance.js
+# 다른 터미널에서 npm start를 실행한 상태
+$env:PLAYWRIGHT_MODULE = Join-Path $env:TEMP 'shard-storm-qa/node_modules/playwright'
+$env:QA_BASE_URL = 'http://127.0.0.1:4173'
+npm run qa:m5-m6
+node tests/m5-m6-report.js
+```
+
+Playwright가 없으면 앱 외부의 위 QA 경로에 설치하세요: `npm install --prefix "$env:TEMP/shard-storm-qa" playwright`. Chrome 실행 파일은 `CHROME_PATH`로 지정할 수 있습니다. 자동 QA는 별도의 임시 브라우저 프로필에서 실행합니다. `tests/m5-m6-baseline.js`는 원본 소스를 사용하는 기준 커밋81559ce에서만 실행하며 현재 기준선을 덮어쓰지 않습니다.
+
+변경 전94개, 현재 **118 PASS / 0 FAIL**. 기존 테스트를 삭제하지 않았습니다. M5_ONLY750판·통합750판·Legacy50판 및 비교/재현성23판을 기록합니다. 기본 `.06` 변환율, 슬롯과 기존 가격/×1.6을 유지했습니다. **자동 입력에서50판 안에 모든 스킬이 소진되는 성장 목표 미달**과 후반 Catalyst 잉여를 [밸런스 보고서](docs/Shard_Storm_M5_M6_Balance_Report.md)에 명시합니다. 자동 통과를 사람의 재미 검증으로 간주하지 않습니다. 사람5~10판에서 타깃 우선순위·조건부 스킬·다음 목표 이해·재도전 의욕을 확인해야 합니다. M7 Prestige/Artifact/Relic은 범위 밖입니다.
+
+[Hex](artifacts/m5-m6-rank2-hex.png) · [Reactor](artifacts/m5-m6-rank3-reactor.png) · [Ancient](artifacts/m5-m6-rank4-ancient.png) · [Refinery 스킬](artifacts/m5-m6-skills-refinery.png) · [좁은창](artifacts/m5-m6-narrow-result.png)
+
+## v0.9 P0 기록 (이하 과거 기준)
+
+아래 미구현/P1/P2/94-test/schema3 표현은 v0.9 당시 기록이며, 현재 상태는 위 M5·M6와 최신 보고서를 기준으로 보세요.
 
 [v0.9 기획서](docs/Shard_Storm_v0.9_Short_Run_Deep_Progression_PRD.md)의 **P0**를 v0.8 완성본에 구현했습니다. HTML5 Canvas 2D + Vanilla JavaScript 구조와 기존 파괴감·콤보·11노드 트리를 유지합니다. 현재 수치·저장·충돌·경제·QA 결과는 [v0.9 P0 보고서](docs/Shard_Storm_v0.9_P0_Implementation_Report.md)에 있습니다. P1/P2의 광석·촉매·신규 노드·신규 도형은 아직 구현하지 않았습니다.
 
