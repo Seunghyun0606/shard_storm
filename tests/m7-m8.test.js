@@ -4,7 +4,7 @@ import{freshSave,loadSave,writeSave}from'../storage.js';import{stageSettlement,c
 import{blueprints,craftRelic,equipRelic}from'../relics.js';import{memoryStorage}from'./helpers.js';
 import{acceptContract,abandonContract,contractTerms,snapshotContracts,planContracts,applyContracts}from'../contracts.js';
 import{ensureOffer,selectAnomaly,consumeOffer,anomalyResult,modifierChances,specialChance}from'../anomalies.js';
-import{battle}from'./m7-m8-simulation.js';
+import{battle,growth}from'./m7-m8-simulation.js';
 const empty=(args={})=>{const g=new Game({...args,options:{motionEnabled:false,...args.options}});g.shapes=[];g.spawn=()=>null;return g;};
 const hit=(g,s,damage=99,source='direct',extra={})=>{const c={source,chainId:g.newChain(),depth:0,...extra};g.enqueue(s,damage,c);g.flush();return c;};
 const advance=(g,t)=>{while(t>1e-9){const dt=Math.min(C.step,t);g.update(dt);t-=dt;}};
@@ -93,4 +93,8 @@ for(const id of Object.keys(C.anomalies))test(`M8 ${id} real combat computes bot
 test('M7 Ancient auxiliary lineage cannot trigger additional Relics through native effects or HP stages',()=>{
  const g=empty({relicLoadout:['ancientResonator','reactorGovernor']}),r=g.addShape('reactor',400,300,0,false,0);hit(g,r,99,'relic-ancient',{small:true,relicId:'ancientResonator',noRelicProc:true});advance(g,.04);assert.equal(g.waves[0].damage,2);assert.equal(g.relicActivations.reactorGovernor||0,0);const a=g.addShape('ancient',650,300,0,false,0);hit(g,a,99,'relic-ancient',{small:true,noRelicProc:true});advance(g,.04);assert.equal(g.shards.filter(p=>p.source==='relic-ancient').length,0);
  const c=empty({relicLoadout:['waveCondenser','ancientResonator']}),s=c.addShape('square',400,300,0,false,0);hit(c,s,99,'relic-ancient',{small:true,noRelicProc:true});advance(c,.04);assert.equal(c.waves[0].maxRadius,90);assert.equal(c.waves[0].damage,2);assert.equal(c.relicActivations.waveCondenser||0,0);
+});
+test('M8 native wave owns its source shape ID and legacy M6 MAX fixture keeps fresh achievements',()=>{
+ const g=empty(),s=g.addShape('square',400,300,0,false,0);hit(g,s,99,'triangle',{originShapeId:123,small:false});advance(g,.04);assert.equal(g.waves[0].cause.originShapeId,s.id);
+ const data=growth({key:'legacy-test',seed:42,strategy:'Reactor',profile:'LegacyMax',mode:'OFF',timeMode:'Fixed20',count:1});assert.equal(data.firstMax,0);assert.equal(data.rows[0].levels,50);assert.equal(data.rows[0].rank,4);assert.deepEqual(data.rows[0].blueprints,[]);assert.equal(data.rows[0].catalyst,200+data.rows[0].catalystTotal);
 });

@@ -356,7 +356,7 @@ export class Game {
     }
     if (s.type === 'square' || s.type === 'star') {let radius=this.stats[`${s.type}Radius`] * (charged ? C.modifiers.chargedRadius : 1),damage=this.stats[`${s.type}Damage`],relicId;
       if(!cause.noRelicProc&&this.relicLoadout.includes('waveCondenser')){const r=C.relics.waveCondenser;radius=Math.round(radius*r.radiusMultiplier);damage+=r.damage;relicId='waveCondenser';}
-      const wave=this.area(s,radius,damage,{...cause,source:s.type,chargedOrigin:origin,relicId,nativeWave:true},C.shapes[s.type].color);if(wave&&relicId)this.relicActivations[relicId]=(this.relicActivations[relicId]||0)+1;
+      const wave=this.area(s,radius,damage,{...cause,source:s.type,originShapeId:s.id,chargedOrigin:origin,relicId,nativeWave:true},C.shapes[s.type].color);if(wave&&relicId)this.relicActivations[relicId]=(this.relicActivations[relicId]||0)+1;
     }
   }
   emitMain(s,angle,cause,origin){
