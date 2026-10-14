@@ -32,10 +32,10 @@ export function loadSave(storage) {
     if (data.saveVersion < 4) { save.discoveryRank = 0; updateDiscovery(save); }
     else save.discoveryRank = rankFor(save.lifetimeDestroyed);
     if(data.saveVersion===5){
-      save.relicOwned=[...new Set(Array.isArray(data.relicOwned)?data.relicOwned:[])].filter(id=>C.relics[id]);save.relicEquipped=normalizeLoadout(data.relicEquipped,save.relicOwned);
+      save.relicOwned=[...new Set(Array.isArray(data.relicOwned)?data.relicOwned:[])].filter(id=>Object.hasOwn(C.relics,id));save.relicEquipped=normalizeLoadout(data.relicEquipped,save.relicOwned);
       for(const k of Object.keys(save.relicAchievements))if(Number.isSafeInteger(data.relicAchievements?.[k])&&data.relicAchievements[k]>=0)save.relicAchievements[k]=data.relicAchievements[k];
       save.relicBlueprintUnlocked=blueprints(save);
-      save.contracts=normalizeContracts(data.contracts);save.contractMedals=Object.keys(C.contracts).filter(id=>save.contracts.records[id]?.maxCompletedStage===3);
+      save.contracts=normalizeContracts(data.contracts);save.contracts.active=save.contracts.active.filter(id=>Object.hasOwn(C.contracts,id));save.contractMedals=Object.keys(C.contracts).filter(id=>save.contracts.records[id]?.maxCompletedStage===3);
       if(typeof data.anomalySeed==='string'&&data.anomalySeed.length<=150)save.anomalySeed=data.anomalySeed;
       for(const k of ['anomalyOfferIndex','totalAnomalyWins'])if(Number.isSafeInteger(data[k])&&data[k]>=0)save[k]=data[k];
       const offer=data.anomalyOffer;if(offer&&typeof offer.offerId==='string'&&typeof offer.seedKey==='string'&&offer.eligibilityRank===save.discoveryRank&&Array.isArray(offer.offeredIds)&&offer.offeredIds.length<=3&&new Set(offer.offeredIds).size===offer.offeredIds.length&&offer.offeredIds.every(id=>C.anomalies[id]?.rank<=save.discoveryRank))save.anomalyOffer=offer;

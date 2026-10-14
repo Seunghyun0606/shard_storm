@@ -317,7 +317,7 @@ export class Game {
       this.unlock(); const child = { ...cause, depth: cause.depth + 1, chargedOrigin: Boolean(cause.chargedOrigin) || s.modifier === 'charged' }, inheritance = this.options.inheritance;
       this.scheduleEffect(() => {
         this.emitNative(s, child);
-        if (inheritance && s.type === 'square' && cause.source === 'triangle') this.emitShard(s.x, s.y, cause.angle, 'inherited', cause.chainId, child.depth, true, null, child.chargedOrigin);
+        if (inheritance && s.type === 'square' && cause.source === 'triangle') {const p=this.emitShard(s.x, s.y, cause.angle, 'inherited', cause.chainId, child.depth, true, null, child.chargedOrigin);if(p)p.noRelicProc=Boolean(cause.noRelicProc);}
         if (inheritance && s.type === 'triangle' && cause.source === 'square') this.area(s, C.inheritance.radius, this.stats.inheritanceDamage, { ...child, source: 'inherited' }, '#ffffff');
       }, child);
     }
@@ -355,18 +355,19 @@ export class Game {
       for (const a of angles) this.emitMain(s,s.angle+a,cause,origin);
     }
     if (s.type === 'square' || s.type === 'star') {let radius=this.stats[`${s.type}Radius`] * (charged ? C.modifiers.chargedRadius : 1),damage=this.stats[`${s.type}Damage`],relicId;
-      if(this.relicLoadout.includes('waveCondenser')){const r=C.relics.waveCondenser;radius=Math.round(radius*r.radiusMultiplier);damage+=r.damage;relicId='waveCondenser';}
+      if(!cause.noRelicProc&&this.relicLoadout.includes('waveCondenser')){const r=C.relics.waveCondenser;radius=Math.round(radius*r.radiusMultiplier);damage+=r.damage;relicId='waveCondenser';}
       const wave=this.area(s,radius,damage,{...cause,source:s.type,chargedOrigin:origin,relicId,nativeWave:true},C.shapes[s.type].color);if(wave&&relicId)this.relicActivations[relicId]=(this.relicActivations[relicId]||0)+1;
     }
   }
   emitMain(s,angle,cause,origin){
     const shard=this.emitShard(s.x,s.y,angle,s.type,cause.chainId,cause.depth,false,null,origin);
+    if(shard){shard.originShapeId=s.id;shard.noRelicProc=Boolean(cause.noRelicProc);if(cause.noRelicProc&&this.relicLoadout.includes('ricochetCoil'))shard.bounces=Math.max(0,shard.bounces-C.relics.ricochetCoil.bounces);}
     if(shard&&this.contentMode==='M5_M6_ON'&&this.levels.kineticReach&&this.options.motionEnabled&&s.motion?.rotationRate&&Number.isFinite(s.motion.startAt)&&s.motion.startAt<=this.simulationTime){shard.range+=30*this.levels.kineticReach;shard.life=shard.range/C.shard.speed+C.shard.lifePadding;this.skillActivations.kineticReach=(this.skillActivations.kineticReach||0)+1;}
-    if(shard&&this.relicLoadout.includes('ricochetCoil')){const r=C.relics.ricochetCoil;shard.range=Math.max(r.minRange,shard.range-r.rangePenalty);shard.life=shard.range/C.shard.speed+C.shard.lifePadding;shard.relicId='ricochetCoil';this.relicActivations.ricochetCoil=(this.relicActivations.ricochetCoil||0)+1;}return shard;
+    if(shard&&!cause.noRelicProc&&this.relicLoadout.includes('ricochetCoil')){const r=C.relics.ricochetCoil;shard.range=Math.max(r.minRange,shard.range-r.rangePenalty);shard.life=shard.range/C.shard.speed+C.shard.lifePadding;shard.relicId='ricochetCoil';this.relicActivations.ricochetCoil=(this.relicActivations.ricochetCoil||0)+1;}return shard;
   }
   emitAux(origin,angle,cause,source,damage,range){
     const shard=this.emitShard(origin.x,origin.y,angle,source,cause.chainId,cause.depth,true,origin.id);
-    if(shard){Object.assign(shard,{damage,range,life:range/C.shard.speed+C.shard.lifePadding,triggeredBySkill:cause.triggeredBySkill||null,originShapeId:cause.originShapeId,damageSource:source,generationDepth:cause.depth});}return shard;
+    if(shard){Object.assign(shard,{damage,range,life:range/C.shard.speed+C.shard.lifePadding,triggeredBySkill:cause.triggeredBySkill||null,originShapeId:cause.originShapeId,relicId:cause.relicId,noRelicProc:Boolean(cause.noRelicProc),damageSource:source,generationDepth:cause.depth});}return shard;
   }
   area(s, radius, damage, cause, color, exclude = null) {
     if (this.state !== 'PLAYING' || this.remaining <= 0) return;

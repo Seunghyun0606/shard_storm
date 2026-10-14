@@ -8,6 +8,6 @@ export function killMetrics(game,s,cause,wave){const direct=cause.source==='dire
 }
 export function releaseWard(game,target,origin,reason){if(target.destroyed||!target.wardSourceId)return false;delete target.wardSourceId;delete target.wardExpiresAt;delete target.wardDeathOrigin;
  if(origin?.destroyed&&!target.wardReleaseCounted){target.wardReleaseCounted=true;count(game,'wardReleasesFromHexDeath',1,{sourceShapeId:origin.id,targetShapeId:target.id,reason,eventType:'wardReleased'});}
- if(reason==='wave'&&origin&&!origin.siphonCredited&&game.relicLoadout.includes('hexSiphon')){origin.siphonCredited=true;const r=C.relics.hexSiphon;game.siphonCharges=game.siphonCharges.filter(t=>t>game.simulationTime);if(game.siphonCharges.length<r.chargeCap)game.siphonCharges.push(game.simulationTime+r.expires);}
+ if(reason==='wave'&&origin&&!origin.siphonBlocked&&!origin.siphonCredited&&game.relicLoadout.includes('hexSiphon')){origin.siphonCredited=true;const r=C.relics.hexSiphon;game.siphonCharges=game.siphonCharges.filter(t=>t>game.simulationTime);if(game.siphonCharges.length<r.chargeCap)game.siphonCharges.push(game.simulationTime+r.expires);}
  return true;
 }
