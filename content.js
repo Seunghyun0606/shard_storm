@@ -49,3 +49,21 @@ export function applyTether(game,plan,s,attempt) {
   plan.pair.push(s);s.motion.profile='tether';s.motion.startAt=Infinity;
   if(plan.pair.length===2){const [a,b]=plan.pair;for(const [i,t]of [a,b].entries())Object.assign(t.motion,{startAt:game.elapsed,ampX:C.motion.maxDrift/2,ampY:0,phaseX:i*Math.PI,phaseY:0,speedX:Math.PI*2/4,speedY:0});game.tetherPairs++;}
 }
+export function healthStages(game,s,previous,cause) {
+  if(!['reactor','ancient'].includes(s.type))return;
+  s.stages ||= new Set();
+  const thresholds=s.type==='reactor'?C.specialEffects.reactor.map(v=>v.hp):C.specialEffects.ancient.thresholds;
+  for(const [i,hp]of thresholds.entries())if(previous>hp&&s.hp<=hp&&!s.stages.has(i)){
+    s.stages.add(i);const at={...game.positionAt(s,game.simulationTime),id:s.id},child={...cause,depth:cause.depth+1,source:s.type,stageIndex:i+1,originShapeId:s.id};
+    const cfg=s.type==='reactor'?C.specialEffects.reactor[i]:C.specialEffects.ancient;
+    game.stageEvents.push({shapeId:s.id,type:s.type,stageIndex:i+1,at:game.simulationTime,scheduledAt:game.simulationTime+cfg.delay,chainId:cause.chainId});
+    game.scheduleEffect(()=>{
+      if(s.type==='ancient')for(let n=0;n<cfg.shards;n++)game.emitAux(at,at.angle+n*Math.PI,child,'ancient-fragment',cfg.shardDamage,cfg.shardRange);
+      game.area(at,cfg.radius,cfg.damage,child,C.shapes[s.type].color,s.id);
+    },child,cfg.delay);
+  }
+}
+export function ancientDeath(game,s,cause){
+ if(s.type!=='ancient'||s.ancientRewarded)return;s.ancientRewarded=true;game.pendingCatalyst+=C.specialEffects.ancient.catalyst;
+ game.rewardLog.push({at:game.simulationTime,shapeId:s.id,chainId:cause.chainId,damageSource:cause.source,kind:'catalyst:ancient',amount:C.specialEffects.ancient.catalyst});
+}

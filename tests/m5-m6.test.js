@@ -62,3 +62,11 @@ test('M6 Shield Pocket and Tether Pair share actual bounded opposed pose and pau
  for(let t=0;t<8;t+=.1){const p=poseAt(s1,t),q=poseAt(s2,t);assert.ok(Math.abs(p.x-s1.anchorX+q.x-s2.anchorX)<1e-9);assert.ok(Math.abs(p.x-s1.anchorX)<=6);assert.ok(Math.hypot(p.x-q.x,p.y-q.y)>s1.radius+s2.radius+C.spawnGap);}
  a.update(.1);assert.equal(a.attack(s1.x,s1.y),true);a.paused=true;const pos=poseAt(s2,a.elapsed);a.update(.1);assert.deepEqual(poseAt(s2,a.elapsed),pos);
 });
+test('M6 Reactor 12→6 once, 12→0 emits .03 and .11 sequential waves; deadline cancels late effects',()=>{
+ for(const lethal of [false,true]){const g=emptyGameM6(),s=g.addShape('reactor',400,300,0,false,0);hit(g,s,lethal?12:6);assert.equal(g.stageEvents.length,lethal?2:1);assert.equal(g.waves.length,0);step(g,.04);assert.equal(g.waves.length,1);assert.equal(g.waves[0].damage,2);assert.equal(g.waves[0].maxRadius,75);if(lethal){step(g,.08);assert.ok(g.waves.some(w=>w.damage===3&&w.maxRadius===110));}else{hit(g,s,1);assert.equal(g.stageEvents.length,1);}}
+ const g=emptyGameM6({duration:.02}),s=g.addShape('reactor',400,300,0,false,0);hit(g,s,99);g.update(.02);assert.equal(g.waves.length,0);assert.equal(g.queue.length,0);
+});
+test('M6 Ancient multi-threshold effects ordered once, no premature bonus, final Catalyst additive',()=>{
+ const g=emptyGameM6(),s=g.addShape('ancient',400,300,0,false,0);s.oreGrade='void';hit(g,s,23);assert.deepEqual(g.stageEvents.map(e=>e.stageIndex),[1,2,3]);assert.equal(s.hp,7);assert.equal(g.pendingCatalyst,0);assert.equal(g.rawBase,23);step(g,.04);assert.equal(g.shards.length,6);assert.equal(g.waves.length,3);assert.ok(g.shards.every(p=>p.small&&p.damage===1&&p.range===90));hit(g,s,99);assert.equal(g.pendingCatalyst,4);assert.equal(g.rawBase,150);assert.equal(g.rawOreBonus,180);assert.equal(g.stageEvents.length,3);
+ const a=new Game({discoveryRank:4});a.totalDestroyed=200;a.unlock();a.specialRng=()=>.095;assert.equal(specialType(a),'ancient');a.specialSpawns.ancient=2;assert.equal(specialType(a),null);
+});

@@ -9,13 +9,13 @@ import { spawnSettings } from './experiments.js';
 import { createMotion, poseAt, firstContact } from './motion.js';
 import { ensureRefinery } from './refinery.js';
 import { rollOre, oreChances, dropOre } from './ore.js';
-import { specialType, linkWards, shieldDamage, cleanupWards, hexDeath, specialPlan, applyTether } from './content.js';
+import { specialType, linkWards, shieldDamage, cleanupWards, hexDeath, specialPlan, applyTether, healthStages, ancientDeath } from './content.js';
 let nextRunId = 1;
 
 export class Game {
   constructor({ seed = C.seed, levels = emptyLevels(), options = C.options, duration, experiment = 'baseline', inputPolicy = 'human', sandbox = false, ruleset = 'v09', tierPreset = 'v09_short', runId, discoveryRank = 0, welcomeFlags = {}, contentMode = 'M5_M6_ON', oreEnabled = true } = {}) {
     this.discoveryRank = discoveryRank; this.contentMode = ruleset === 'legacy_v08' ? 'V09_ONLY' : contentMode; this.oreEnabled = oreEnabled && this.contentMode !== 'V09_ONLY'; this.welcomeFlags = {...welcomeFlags}; this.welcomeConsumed = [];
-    this.specialRng=seededRNG(seed^0x47bfee);this.patternRng=seededRNG(seed^0x841ac);this.specialSpawns={};this.tetherPairs=0;this.tetherAttempts=0;
+    this.specialRng=seededRNG(seed^0x47bfee);this.patternRng=seededRNG(seed^0x841ac);this.specialSpawns={};this.tetherPairs=0;this.tetherAttempts=0;this.stageEvents=[];
     this.oreRng = seededRNG(seed ^ 0xaec791); this.oreSpawnCounts={common:0,prism:0,core:0,void:0}; this.oreKills={common:0,prism:0,core:0,void:0}; this.pendingCatalyst=0; this.rawBase=0; this.rawOreBonus=0; this.rawSkillBonus=0; this.rewardLog=[];
     this.ruleset = ruleset; this.tierPreset = ruleset === 'legacy_v08' ? 'legacy_tiers' : tierPreset; this.tiers = this.tierPreset === 'legacy_tiers' ? C.legacyTiers : C.tiers; this.runId = runId || `run-${seed}-${nextRunId++}`; this.refinery = null;
     this.seed = seed >>> 0; this.rng = seededRNG(this.seed); this.vfxRng = seededRNG(this.seed ^ 0xabcdef);
@@ -129,6 +129,7 @@ export class Game {
     if (this.state !== 'PLAYING' || this.remaining <= 0) return null;
     this.spawnAttempts++; this.binAt().spawnAttempts++; this.binAt5().spawnAttempts++;
     const tier = this.tiers[tierFor(this.totalDestroyed, this.tiers)]; let type = forced;
+    if(C.shapes[type]?.special&&(this.alive.filter(s=>s.type===type).length>=C.shapes[type].cap||(this.specialSpawns[type]||0)>=(C.shapes[type].runCap||Infinity)))type=null;
     if(!type&&!this.initializing&&this.contentMode==='M5_M6_ON')type=specialType(this);
     if (!type) { let p = this.rng(); type = TYPES[TYPES.length - 1]; for (let i = 0; i < TYPES.length; i++) { p -= tier.weights[i]; if (p < 0) { type = TYPES[i]; break; } } }
     // Reserve identical motion-safe anchors in both v0.9 A/B modes. Only the
@@ -262,16 +263,18 @@ export class Game {
       if (wave?.dynamic) { const gap = this.waveGap(wave, s, this.simulationTime); this.physicsChecks.waveContactsChecked++; this.physicsChecks.maxWaveContactError = Math.max(this.physicsChecks.maxWaveContactError, Math.max(0, gap)); if (this.simulationTime > wave.bornAt + 1e-9 && gap < -.002) this.physicsChecks.lateWaveContacts++; }
       if (wave) this.knockback(s, wave);
       if(cause.wardRelease){if(s.wardSourceId===cause.wardRelease){delete s.wardSourceId;delete s.wardExpiresAt;}continue;}
-      const actual = Math.min(s.hp, this.contentMode==='M5_M6_ON'?shieldDamage(this,s,damage,cause):damage), chain = this.chains.get(cause.chainId);
+      const previous=s.hp,actual = Math.min(s.hp, this.contentMode==='M5_M6_ON'?shieldDamage(this,s,damage,cause):damage), chain = this.chains.get(cause.chainId);
       s.hp -= actual; this.runEarned += actual; this.rawBase += actual; chain.photons += actual; s.flash = C.visual.flash; s.flashUntil = this.simulationTime + C.visual.flash;
       this.binAt().earnedPhoton += actual; this.binAt5().earnedPhoton += actual;
       if (cause.chargedOrigin) { this.chargedContribution.damage += actual; this.chargedContribution.photons += actual; }
       if (this.options.damageVFX && cause.source !== 'direct') this.debris(s, 3);
+      if(this.contentMode==='M5_M6_ON')healthStages(this,s,previous,cause);
       if (s.hp > 0) continue;
       const bonus = Math.ceil(s.bonus * this.stats.bonusMultiplier * (s.modifier === 'charged' ? C.modifiers.chargedBonus : 1));
       s.destroyed = true; this.totalDestroyed++; this.runEarned += bonus; this.rawBase += bonus; chain.photons += bonus; chain.kills++; chain.lastKillAt = this.simulationTime;
       dropOre(this,s,cause);
       if(s.type==='hex')hexDeath(this,s,cause);delete s.wardSourceId;
+      ancientDeath(this,s,cause);
       const bin = this.binAt(); bin.earnedPhoton += bonus; bin.totalDestroyed++; bin.bestChain = Math.max(bin.bestChain, chain.kills); bin[cause.source === 'direct' ? 'directKills' : 'cascadeKills']++;
       if (cause.source === 'direct') this.directKills++; else { this.cascadeKills++; chain.cascadeKills++; this.firstCascadeTime ??= this.simulationTime; }
       const b5 = this.binAt5(); b5.earnedPhoton += bonus; b5.totalDestroyed++; b5.bestChain = Math.max(b5.bestChain, chain.kills); b5[cause.source === 'direct' ? 'directKills' : 'cascadeKills']++;
@@ -325,6 +328,10 @@ export class Game {
       for (const a of angles) this.emitShard(s.x, s.y, s.angle + a, s.type, cause.chainId, cause.depth, false, null, origin);
     }
     if (s.type === 'square' || s.type === 'star') this.area(s, this.stats[`${s.type}Radius`] * (charged ? C.modifiers.chargedRadius : 1), this.stats[`${s.type}Damage`], { ...cause, source: s.type, chargedOrigin: origin }, C.shapes[s.type].color);
+  }
+  emitAux(origin,angle,cause,source,damage,range){
+    const shard=this.emitShard(origin.x,origin.y,angle,source,cause.chainId,cause.depth,true,origin.id);
+    if(shard){Object.assign(shard,{damage,range,life:range/C.shard.speed+C.shard.lifePadding,triggeredBySkill:cause.triggeredBySkill||null,originShapeId:cause.originShapeId,damageSource:source,generationDepth:cause.depth});}return shard;
   }
   area(s, radius, damage, cause, color, exclude = null) {
     if (this.state !== 'PLAYING' || this.remaining <= 0) return;

@@ -45,8 +45,10 @@ export function draw(ctx, game, fps = 60) {
     }
     if(s.wardSourceId){ctx.strokeStyle='#90e3ab';ctx.setLineDash([2,3]);ctx.beginPath();ctx.arc(0,0,s.radius+5,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);}
     if(s.type==='hex'){polygon(ctx,s,.7,false);ctx.strokeStyle=s.shieldBroken?'#ffffff':'#90e3ab';ctx.lineWidth=s.shieldBroken?1:3;ctx.stroke();ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.fillStyle=cfg.color;ctx.fillText(s.shieldBroken?'⌁':'⬡',0,4);}
+    if(s.type==='reactor'){ctx.strokeStyle=cfg.color;ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,s.radius*.6,-Math.PI/2,-Math.PI/2+Math.PI*2*s.hp/s.maxHP);ctx.stroke();ctx.font='bold 10px Arial';ctx.textAlign='center';ctx.fillStyle=cfg.color;ctx.fillText(s.hp<=6?'Ⅱ':'Ⅰ',0,4);}
+    if(s.type==='ancient'){ctx.strokeStyle=cfg.color;for(const r of [.35,.6,.83]){ctx.beginPath();ctx.arc(0,0,s.radius*r,0,Math.PI*2);ctx.stroke();}ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.fillStyle=cfg.color;ctx.fillText(`${s.hp}`,0,4);}
     // Small HP ticks make multi-hit breakpoints easy to read.
-    ctx.fillStyle = cfg.color; for (let i = 0; i < s.hp; i++) ctx.fillRect((i - (s.hp - 1) / 2) * 4 - 1, s.radius + 8, 2, 2);
+    ctx.fillStyle = cfg.color; for (let i = 0; i < Math.min(12,s.hp); i++) ctx.fillRect((i - (Math.min(12,s.hp) - 1) / 2) * 4 - 1, s.radius + 8, 2, 2);
     ctx.restore();
   }
   for (const s of game.shards) { ctx.beginPath(); ctx.moveTo(s.x - Math.cos(s.angle) * (s.small ? 8 : 16), s.y - Math.sin(s.angle) * (s.small ? 8 : 16)); ctx.lineTo(s.x, s.y); ctx.strokeStyle = C.shapes[s.source]?.color || '#ffffff'; ctx.lineWidth = s.small ? 1.4 : 2.8; ctx.stroke(); }
