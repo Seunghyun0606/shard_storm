@@ -8,7 +8,7 @@ async function fixture(kind){await page.goto(base);await page.evaluate(async kin
  if(kind==='contract'){s.contracts.active=['preciseClicks'];s.contracts.records.preciseClicks={stage:1,progress:79,maxCompletedStage:0};}
  if(kind==='legacy'){s.saveVersion=4;s.relicOwned=[];}
  if(['success','failure'].includes(kind)){for(let i=0;i<100;i++){s.anomalyOffer=null;s.anomalySeed=`browser-${kind}-${i}`;if(ensureOffer(s).offeredIds.includes('fastOrbit'))break;}s.selectedAnomaly='fastOrbit';}
- localStorage.setItem(C.storageKey,JSON.stringify(s));},kind);await page.reload();}
+ localStorage.setItem(C.storageKey,JSON.stringify(s));},kind);await page.reload();if(kind!=='fresh')await page.locator('.edition').evaluate(el=>el.append(document.createTextNode(' · QA FIXTURE')));}
 async function play(kind){await fixture(kind);let before=await snap();assert.equal(before.saveVersion,5);
  if(kind==='relics'){await page.locator('#relic-start summary').click();await page.locator('#relic-start [data-relic-slot="0"]').selectOption('waveCondenser');await page.locator('#relic-start [data-relic-slot="1"]').selectOption('reactorGovernor');assert.equal((await snap()).relicEquipped.length,2);await page.screenshot({path:'artifacts/m7-m8-fixture-loadout-start.png',fullPage:true});}
  if(kind==='fresh'){await page.locator('#contracts-start summary').click();await page.locator('#contracts-start [data-contract="preciseClicks"] button').click();await page.locator('#contracts-start summary').click();const a=(await snap()).anomalyOffer;await page.reload();assert.deepEqual((await snap()).anomalyOffer,a);checks.push('fresh offer fixed across reload, real UI acceptance');}
