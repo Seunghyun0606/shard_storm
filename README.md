@@ -1,3 +1,15 @@
+# Shard Storm - M9 development checkpoint
+
+M9.0 is complete and pushed (`ab47fbc`). M9 has6 new shapes,4 secondary traits,4 formations and schema6 implemented; final growth validation is running. M10/M11 remain pending and are part of this same task. This is not an overall completion claim.
+
+- FOCUS toggles a viewport-sized field; logical coordinates remain960x540. Backing resolution follows CSS/DPR up to2. DEV options include Combat FX/Shake/Reduced Motion.
+- New shapes: Splitter/Fuse Bomb/Conductor/Mirror/Gravity Well/Repair Node. The collapsible Shape Ecology guide explains each mechanic. Echo contributes only to visible combos, with0Raw/no permanent or reward-objective progress.
+- `npm run qa:m9-0`, `npm run qa:m9`, `npm run benchmark:m9`. `CONTENT_WORKERS` sets benchmark processes. Per-path source-hashed gzip checkpoints support resume; short `CONTENT_RUNS` smoke data is never reported as full300Run validation.
+- Adaptive.18/.16 spawning is available only in isolated experiments. Normal spawning and prices remain unchanged.
+- [Resume work log](docs/Shard_Storm_M9_M11_Work_Log.md); [M9.0 report](docs/Shard_Storm_M9_0_Implementation_Report.md).
+
+## Historical M8 report below
+
 # Shard Storm — playable prototype M7 · M8
 
 현재 구현 기준은 [M7·M8 PRD](docs/Shard_Storm_M7_M8_Relic_Contract_Anomaly_PRD_v1.0.md)입니다. 기본20초, 기존7도형·19스킬/50Lv·순차 연쇄·Modifier·Refinery·콤보를 유지합니다.

@@ -22,7 +22,7 @@ export function traceShard(run, shard, budget) {
     const nx = p.x + ux * distance, ny = p.y + uy * distance;
     let hit = null, first = Infinity;
     for (const target of run.alive) {
-      if (target.id === shard.exclude) continue;
+      if (target.id === shard.exclude || shard.hitIds?.has(target.id)) continue;
       let t;
       if (run.options.motionEnabled && run.positionAt && (target.motion?.ampX || target.motion?.ampY)) {
         const start = run.elapsed + travelled / C.shard.speed, end = start + distance / C.shard.speed;

@@ -48,7 +48,7 @@ test('v0.8 economy: sandbox purchases enforce balance/MAX and support presets wi
 test('v0.8 economy: existing v2 history and owned levels preserved; new fields optional', () => {
   const source = freshSave(), storage = memoryStorage(); source.saveVersion = 2; source.bank = 789; source.levels.shardBloom = 2; source.lastRuns = [{ seed: 42, photonsEarned: 200 }];
   delete source.options.comboFeedback; delete source.options.modifiers; writeSave(storage, source);
-  const loaded = loadSave(storage); assert.equal(loaded.saveVersion, 5); assert.equal(loaded.bank, 789); assert.equal(loaded.levels.shardBloom, 2); assert.deepEqual(loaded.lastRuns, source.lastRuns); assert.equal(loaded.options.modifiers, true);
+  const loaded = loadSave(storage); assert.equal(loaded.saveVersion, 6); assert.equal(loaded.bank, 789); assert.equal(loaded.levels.shardBloom, 2); assert.deepEqual(loaded.lastRuns, source.lastRuns); assert.equal(loaded.options.modifiers, true);
 });
 test('v0.8 economy: every build and per-node experiment meets prerequisites; Extra Time isolated', () => {
   for (const levels of Object.values(buildPresets)) for (const node of C.skillDefinitions) if (levels[node.id]) for (const p of node.prerequisites) assert.ok(levels[p.id] >= p.minLevel);

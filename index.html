@@ -3,7 +3,7 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Shard Storm — Playtest</title><link rel="icon" href="data:,"><link rel="stylesheet" href="style.css"></head>
 <body>
 <main>
-  <header class="masthead"><a class="brand" href="./"><span class="brand-icon">◈</span> SHARD STORM</a><div class="edition"><span class="status-dot"></span> PROTOTYPE / M7 · M8</div></header>
+  <header class="masthead"><a class="brand" href="./"><span class="brand-icon">◈</span> SHARD STORM</a><div class="edition"><span class="status-dot"></span> PROTOTYPE / M9</div></header>
   <section class="game-shell" aria-label="Shard Storm 게임">
     <div class="toolbar"><span>BREAK. CASCADE. REPEAT.</span><div><button id="focus" class="quiet" aria-pressed="false">FOCUS</button><button id="sound" class="quiet">SOUND OFF</button><button id="pause" class="quiet" hidden>일시정지</button><button id="dev-toggle" class="quiet">DEV [D]</button></div></div>
     <div class="arena-wrap">
@@ -32,6 +32,14 @@
   </section>
   <section class="legend" aria-label="도형별 효과"><div><span class="shape-icon triangle">△</span><p><strong>TRIANGLE</strong><small>3방향 파편 · 연쇄의 시작</small></p></div><div><span class="shape-icon square">□</span><p><strong>SQUARE</strong><small>충격파 · 주변 도형 약화</small></p></div><div><span class="shape-icon pentagon">⬠</span><p><strong>PENTAGON</strong><small>분열 파편 · 분기 확산</small></p></div><div><span class="shape-icon star">☆</span><p><strong>STAR</strong><small>광역 폭발 · 한 번에 크게</small></p></div></section>
   <p class="modifier-legend">굵은 균열: CRACKED · 적은 HP로 빠른 연쇄 시작 / 점선 이중 링: CHARGED · 고유 파편·폭발 강화 / 갑옷 표식: ENHANCED · HP +2</p>
+  <details class="ecology-guide"><summary>SHAPE ECOLOGY · 신규 도형과 타깃 순서</summary><div class="meta-grid">
+    <p>⋈ SPLITTER · 파괴 뒤 Echo2. E 표식은 콤보에만 포함되며 Raw·영구 파괴·계약에는 포함되지 않습니다.</p>
+    <p>✹ FUSE BOMB · 첫 실제 피해 뒤 .70초, 먼저 파괴하면 .08초 뒤 한 번 폭발합니다.</p>
+    <p>ϟ CONDUCTOR · 연결선을 확인하세요. 파괴하면 최대2대상에 피해2를 전달합니다.</p>
+    <p>◇ MIRROR · 주 파편을 최대2회 다른 표적으로 돌립니다. 직접 공격으로 경로를 닫을 수도 있습니다.</p>
+    <p>⊙ GRAVITY WELL · 근처 주 파편 경로를 최대30° 휩니다. 주변 도형의 공격 순서를 바꾸세요.</p>
+    <p>+ REPAIR NODE · .85초마다 손상된 일반 도형2개를 치유합니다. 대상별 최대2HP입니다.</p>
+  </div><p>2차 표식: ▣ 첫 방어 / ✴ 파괴 폭발 / ↪ 주 파편 반사 / ◌ 직접 -1·주 파편 +1. 보상용 Chain10/15는 Echo를 제외한 일반 파괴 수로 계산합니다.</p></details>
   <div class="legend-special"><span>⬡ HEX · Rank2 / Run45킬 · 주변 Ward, 직접4로 장갑 파쇄</span><span>◉ REACTOR · Rank3 / Run100킬 · 절반·파괴 지연 파동</span><span>◎ ANCIENT · Rank4 / Run200킬 · 3단계 파편·파동, Catalyst +2</span><span>◇ Prism / ◈ Core / ✦ Void · 완전 파괴 시 희귀 보상</span></div>
   <div class="page-bottom"><span>AN EXPERIMENT IN SATISFYING DESTRUCTION</span><span>로컬 저장 · 영구 강화 · 반복 플레이</span></div>
   <div id="notice" role="status"></div>
@@ -42,7 +50,7 @@
   <strong id="sandbox-status">LIVE SAVE · 기본 가격 / 생성</strong>
   <label>Run 티어 (실험)<select id="tier-preset"><option value="v09_short">v0.9 · 15/45/100/200/400/750</option><option value="legacy_tiers">v0.8 · 12/30/55/90/140</option></select></label>
   <button id="fresh-lab">Fresh Lab · 새 계정 20초 (저장하지 않음)</button>
-  <label>생성 실험 (다음 실험 Run)<select id="spawn-preset"><option value="baseline">기본 .20s / 군집 .60</option><option value="spread">분산 .20s / 군집 .45</option><option value="fast">빠른 보충 .15s / 군집 .60</option><option value="fast_spread">빠른 분산 .15s / 군집 .45</option></select></label>
+  <label>생성 실험 (다음 실험 Run)<select id="spawn-preset"><option value="baseline">기본 .20s / 군집 .60</option><option value="spread">분산 .20s / 군집 .45</option><option value="fast">빠른 보충 .15s / 군집 .60</option><option value="m9_adaptive">M9 adaptive .18/.16 (sandbox)</option><option value="fast_spread">빠른 분산 .15s / 군집 .45</option></select></label>
   <label>가격 실험 (샌드박스 전용)<select id="economy-preset"><option value="baseline">기존 가격</option><option value="cost_x3">가격 ×3</option><option value="cost_x6">가격 ×6</option></select></label>
   <label>실험 빌드<select id="build-preset"><option>Baseline</option><option>Upgraded</option><option>Crusher</option><option>Cascade</option><option>Reactor</option><option>ExtraTime</option><option>PhotonBoost</option><option>UtilityMax</option></select></label>
   <button id="experiment-start">격리 실험 Run 시작</button><button id="experiment-end">실험 종료 · 기존 저장으로 복귀</button>

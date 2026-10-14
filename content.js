@@ -2,10 +2,10 @@ import { CONFIG as C } from './config.js';
 import { poseAt } from './motion.js';
 import { count,releaseWard } from './run-metrics.js';
 import { specialChance,motionAnomaly } from './anomalies.js';
-const normal = s => !C.shapes[s.type].special;
+const normal = s => !C.shapes[s.type].special && !s.echo;
 export function specialType(game) {
   const tier=game.highestTier,roll=game.specialRng();let cursor=0;
-  for(const [key,d] of Object.entries(C.shapes).filter(([,d])=>d.special)){
+  for(const [key,d] of Object.entries(C.shapes).filter(([,d])=>d.special&&!d.ecology)){
     if(game.discoveryRank<d.rank||tier<d.tier)continue;
     const eligible=game.alive.filter(s=>s.type===key).length<d.cap&&(game.specialSpawns[key]||0)<(d.runCap||Infinity);
     if(game.welcomeFlags[d.rank]&&eligible)return key;

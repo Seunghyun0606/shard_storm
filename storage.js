@@ -4,12 +4,13 @@ import { rankFor, updateDiscovery } from './discovery.js';
 import { emptyAchievements, normalizeLoadout, blueprints } from './relics.js';
 import { normalizeContracts } from './contracts.js';
 import { validMetaPending } from './settlement-validation.js';
-export function freshSave() { return { saveVersion: C.saveVersion, bank: 0, levels: emptyLevels(), bestStats: {}, lastRuns: [], options: { ...C.options }, catalystBalance: 0, discoveryRank: 0, lifetimeDestroyed: 0, knownHistoryKills: 0, totalRuns: 0, milestoneWelcomeFlags: {}, pendingSettlement: null, lastSettlementId: null, legacyExtraTimeLevel: 0, timeRespecUsed: false, relicOwned:[],relicEquipped:[],relicAchievements:emptyAchievements(),relicBlueprintUnlocked:[],contracts:{active:[],records:{}},contractMedals:[],anomalyOffer:null,anomalyOfferIndex:0,anomalySeed:null,selectedAnomaly:null,totalAnomalyWins:0 }; }
+import { ECOLOGY_SHAPES } from './ecology-defs.js';
+export function freshSave() { return { shapeIntroSeen:{}, saveVersion: C.saveVersion, bank: 0, levels: emptyLevels(), bestStats: {}, lastRuns: [], options: { ...C.options }, catalystBalance: 0, discoveryRank: 0, lifetimeDestroyed: 0, knownHistoryKills: 0, totalRuns: 0, milestoneWelcomeFlags: {}, pendingSettlement: null, lastSettlementId: null, legacyExtraTimeLevel: 0, timeRespecUsed: false, relicOwned:[],relicEquipped:[],relicAchievements:emptyAchievements(),relicBlueprintUnlocked:[],contracts:{active:[],records:{}},contractMedals:[],anomalyOffer:null,anomalyOfferIndex:0,anomalySeed:null,selectedAnomaly:null,totalAnomalyWins:0 }; }
 export function loadSave(storage) {
   const save = freshSave();
   try {
     const data = JSON.parse(storage.getItem(C.storageKey));
-    if (!data || ![1, 2, 3, 4, 5].includes(data.saveVersion) || !Number.isSafeInteger(data.bank) || data.bank < 0) return save;
+    if (!data || ![1, 2, 3, 4, 5, 6].includes(data.saveVersion) || !Number.isSafeInteger(data.bank) || data.bank < 0) return save;
     const legacyKeys = ['crushPower', 'shardPower', 'shardRange', 'chainAmplifier', 'extraTime'];
     if (!data.levels || typeof data.levels !== 'object') return save;
     for (const [key, u] of Object.entries(C.upgrades)) {
@@ -31,7 +32,7 @@ export function loadSave(storage) {
     if (data.saveVersion >= 4 && data.milestoneWelcomeFlags) for (let r=1;r<=4;r++) if (data.milestoneWelcomeFlags[r] === true) save.milestoneWelcomeFlags[r] = true;
     if (data.saveVersion < 4) { save.discoveryRank = 0; updateDiscovery(save); }
     else save.discoveryRank = rankFor(save.lifetimeDestroyed);
-    if(data.saveVersion===5){
+    if(data.saveVersion>=5){
       save.relicOwned=[...new Set(Array.isArray(data.relicOwned)?data.relicOwned:[])].filter(id=>Object.hasOwn(C.relics,id));save.relicEquipped=normalizeLoadout(data.relicEquipped,save.relicOwned);
       for(const k of Object.keys(save.relicAchievements))if(Number.isSafeInteger(data.relicAchievements?.[k])&&data.relicAchievements[k]>=0)save.relicAchievements[k]=data.relicAchievements[k];
       save.relicBlueprintUnlocked=blueprints(save);
@@ -42,6 +43,7 @@ export function loadSave(storage) {
       save.selectedAnomaly=save.anomalyOffer?.offeredIds.includes(data.selectedAnomaly)?data.selectedAnomaly:null;
     }
     for (const key of Object.keys(C.options)) if (typeof data.options?.[key] === 'boolean') save.options[key] = data.options[key];
+    for(const id of Object.keys(ECOLOGY_SHAPES))if(data.shapeIntroSeen?.[id]===true)save.shapeIntroSeen[id]=true;
   } catch { /* Invalid or inaccessible storage starts with a safe empty save. */ }
   return save;
 }

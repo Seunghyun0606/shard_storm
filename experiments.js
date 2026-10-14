@@ -4,7 +4,8 @@ export const spawnPresets = {
   baseline: { spawnInterval: .20, spawnBatch: 3, clusterChance: .60 },
   spread: { spawnInterval: .20, spawnBatch: 3, clusterChance: .45 },
   fast: { spawnInterval: .15, spawnBatch: 3, clusterChance: .60 },
-  fast_spread: { spawnInterval: .15, spawnBatch: 3, clusterChance: .45 }
+  fast_spread: { spawnInterval: .15, spawnBatch: 3, clusterChance: .45 },
+  m9_adaptive: { spawnInterval: .20, spawnBatch: 3, clusterChance: .60, adaptive: true }
 };
 export function spawnSettings(value = 'baseline') {
   const settings = typeof value === 'string' ? spawnPresets[value] : value;

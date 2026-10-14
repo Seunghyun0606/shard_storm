@@ -6,6 +6,7 @@ import { getDerivedStats } from './skill-tree.js';
 import { createAppearance, ClickVFXPool } from './visuals.js';
 import { ComboFeedback } from './combo.js';
 import { CombatPresentation } from './presentation.js';
+import { initEcology,ecologyType,ecologySpawn,ecologyDamage,ecologyDeath,traitDamage,repairTick,bendShards,reflectContact,ecologyFormation,ecologyLog } from './ecology.js';
 import { spawnSettings } from './experiments.js';
 import { createMotion, poseAt, firstContact } from './motion.js';
 import { ensureRefinery } from './refinery.js';
@@ -19,7 +20,7 @@ import { specialType, linkWards, shieldDamage, cleanupWards, hexDeath, specialPl
 let nextRunId = 1;
 
 export class Game {
-  constructor({ seed = C.seed, levels = emptyLevels(), options = C.options, duration, experiment = 'baseline', inputPolicy = 'human', sandbox = false, ruleset = 'v09', tierPreset = 'v09_short', runId, discoveryRank = 0, welcomeFlags = {}, contentMode = 'M5_M6_ON', oreEnabled = true,relicLoadout=[],relicEnabled=true,activeContracts=[],anomalyId=null,metaEnabled=true } = {}) {
+  constructor({ seed = C.seed, levels = emptyLevels(), options = C.options, duration, experiment = 'baseline', inputPolicy = 'human', sandbox = false, ruleset = 'v09', tierPreset = 'v09_short', runId, discoveryRank = 0, welcomeFlags = {}, contentMode = 'M5_M6_ON', oreEnabled = true,relicLoadout=[],relicEnabled=true,activeContracts=[],anomalyId=null,metaEnabled=true,ecologyEnabled=false,introSeen={} } = {}) {
     this.relicLoadout=Object.freeze(relicEnabled?normalizeLoadout(relicLoadout):[]);this.metaEnabled=metaEnabled;this.metaCounters=emptyCounters();this.causalLog=[];this.nextCausalEvent=0;this.relicActivations={};this.siphonCharges=[];this.siphonConsumed=0;this.anomalyId=metaEnabled&&C.anomalies[anomalyId]?.rank<=discoveryRank?anomalyId:null;this.contractSnapshot=Object.freeze(structuredClone(activeContracts).slice(0,3).filter(r=>C.contracts[r.id]?.rank<=discoveryRank).map(Object.freeze));this.metaResult=null;
     this.discoveryRank = discoveryRank; this.contentMode = ruleset === 'legacy_v08' ? 'V09_ONLY' : contentMode; this.oreEnabled = oreEnabled && options.oreEnabled!==false && this.contentMode !== 'V09_ONLY'; this.welcomeFlags = {...welcomeFlags}; this.welcomeConsumed = [];
     this.specialRng=seededRNG(seed^0x47bfee);this.patternRng=seededRNG(seed^0x841ac);this.specialSpawns={};this.tetherPairs=0;this.tetherAttempts=0;this.stageEvents=[];
@@ -44,7 +45,7 @@ export class Game {
     this.totalDestroyed = 0; this.directKills = 0; this.cascadeKills = 0; this.bestChain = 0; this.currentChain = 0; this.runEarned = 0;
     this.highestTier = 0; this.unlockTimes = {}; this.safetyCapsHit = 0; this.peakShards = 0; this.firstCascadeTime = null;
     this.held = false; this.pointer = null; this.attackClock = 0; this.onEvent = null;
-    this.nextEvent = 1; this.nextWave = 1; this.processingTime = null; this.cascadeDurations = []; this.variantCounts = {}; this.patternCounts = {}; this.patternPlan = null;
+    this.nextEvent = 1; this.nextWave = 1; this.nextShard = 1; this.processingTime = null; this.cascadeDurations = []; this.variantCounts = {}; this.patternCounts = {}; this.patternPlan = null;
     this.skippedSeconds = 0; this.skippedEvents = 0;
     this.presentation = new CombatPresentation(); this.combo = new ComboFeedback(); this.comboMilestones = { 5: 0, 10: 0, 20: 0 }; this.comboEvents = []; this.timeToFirstChain5 = null;
     // Separate mechanical lottery keeps Modifiers OFF on the exact v0.7 RNG path.
@@ -53,7 +54,7 @@ export class Game {
     this.modifierStats = Object.fromEntries(['normal', 'cracked', 'charged'].map(k => [k, { spawnCount: 0, clickedFirstCount: 0, directHitCount: 0, directKillCount: 0, cascadeKillCount: 0 }]));
     this.typeStats = Object.fromEntries(Object.keys(C.shapes).map(k => [k, { spawnCount: 0, directHitCount: 0, directKillCount: 0, cascadeKillCount: 0 }]));
     this.chargedContribution = { damage: 0, kills: 0, photons: 0 };
-    this.initializing = true; this.initialLayout(); this.initializing = false;
+    initEcology(this,ecologyEnabled&&ruleset!=='legacy_v08',introSeen);this.initializing = true; this.initialLayout(); this.initializing = false;
   }
   get alive() { return this.shapes.filter(s => !s.destroyed); }
   get target() { const base=this.tiers[tierFor(this.totalDestroyed, this.tiers)].target,a=C.anomalies[this.anomalyId];return a?.density?Math.min(a.aliveCap,Math.ceil(base*a.density)):base; }
@@ -110,14 +111,17 @@ export class Game {
     const rays = Array.from({ length: 3 }, (_, i) => { const a = t.angle + i * Math.PI * 2 / 3; return [t.x, t.y, t.x + Math.cos(a) * C.shard.range, t.y + Math.sin(a) * C.shard.range]; });
     for (let i = 0; i < 8; i++) this.spawn(null, 0, rays);
   }
-  addShape(type, x, y, angle = 0, enhanced = false, grace = C.spawnGrace, modifier = 'normal') {
+  addShape(type, x, y, angle = 0, enhanced = false, grace = C.spawnGrace, modifier = 'normal',flags={}) {
     if (this.state !== 'PLAYING' || this.remaining <= 0) return null;
     if (modifier === 'charged' && this.alive.filter(s => s.modifier === 'charged').length >= C.modifiers.chargedCap) modifier = 'normal';
     const s = createShape(this.nextId++, type, x, y, angle, enhanced, grace, modifier);
-    if(C.shapes[type].special){this.specialSpawns[type]=(this.specialSpawns[type]||0)+1;s.modifier='normal';s.enhanced=false;s.hp=s.maxHP=C.shapes[type].hp;s.bonus=C.shapes[type].bonus;}
+    s.echo=Boolean(flags.echo);
+    if(C.shapes[type].special){this.specialSpawns[type]=(this.specialSpawns[type]||0)+1;if(!C.shapes[type].ecology){s.modifier='normal';s.enhanced=false;s.hp=s.maxHP=C.shapes[type].hp;s.bonus=C.shapes[type].bonus;}}
     s.appearance = createAppearance(type, (this.seed ^ Math.imul(s.id, 0x9e3779b1)) >>> 0);
+    if(s.echo){s.hp=s.maxHP=1;s.bonus=0;s.appearance.localVertices=s.appearance.localVertices.map(v=>({x:v.x*16/s.appearance.baseRadius,y:v.y*16/s.appearance.baseRadius}));s.appearance.baseRadius=16;}
     const oreRoll=this.oreRng(); s.oreGrade=this.oreEnabled?rollOre(oreRoll,this.discoveryRank,this.levels.salvageScanner||0):'common';
-    if(this.oreEnabled && this.welcomeFlags[1] && !this.initializing) { s.oreGrade='prism'; delete this.welcomeFlags[1];this.welcomeConsumed.push(1); }
+    if(this.oreEnabled && this.welcomeFlags[1] && !this.initializing&&!s.echo) { s.oreGrade='prism'; delete this.welcomeFlags[1];this.welcomeConsumed.push(1); }
+    if(s.echo)s.oreGrade='common';
     this.oreSpawnCounts[s.oreGrade]++;
     s.radius = Math.max(C.variety.minHitRadius, s.appearance.baseRadius); s.recoil = 0; s.vulnerableAt = this.elapsed + grace;
     this.variantCounts[s.appearance.material] = (this.variantCounts[s.appearance.material] || 0) + 1;
@@ -131,15 +135,17 @@ export class Game {
     this.binMetric('typeStats', type, 'spawnCount'); this.binMetric('modifierStats', s.modifier, 'spawnCount');
     const bin = this.binAt(); bin.hpDistribution[s.hp] = (bin.hpDistribution[s.hp] || 0) + 1; bin.enhancedSpawns += Number(s.enhanced); const b5 = this.binAt5(); b5.hpDistribution[s.hp] = (b5.hpDistribution[s.hp] || 0) + 1; b5.enhancedSpawns += Number(s.enhanced);
     for (const wave of this.waves) this.registerWaveTarget(wave, s);
-    if(this.contentMode==='M5_M6_ON')linkWards(this);
+    ecologySpawn(this,s);if(this.contentMode==='M5_M6_ON')linkWards(this);
     return s;
   }
   spawn(forced = null, grace = C.spawnGrace, avoid = []) {
     if (this.state !== 'PLAYING' || this.remaining <= 0) return null;
     this.spawnAttempts++; this.binAt().spawnAttempts++; this.binAt5().spawnAttempts++;
     const tier = this.tiers[tierFor(this.totalDestroyed, this.tiers)]; let type = forced;
+    if(C.shapes[type]?.ecology&&this.alive.filter(s=>C.shapes[s.type].ecology).length>=7)type=null;
     if(C.shapes[type]?.special&&(this.alive.filter(s=>s.type===type).length>=C.shapes[type].cap||(this.specialSpawns[type]||0)>=(C.shapes[type].runCap||Infinity)))type=null;
     if(!type&&!this.initializing&&this.contentMode==='M5_M6_ON')type=specialType(this);
+    if(!type&&!this.initializing&&this.contentMode==='M5_M6_ON')type=ecologyType(this);
     if (!type) { let p = this.rng(); type = TYPES[TYPES.length - 1]; for (let i = 0; i < TYPES.length; i++) { p -= tier.weights[i]; if (p < 0) { type = TYPES[i]; break; } } }
     // Reserve identical motion-safe anchors in both v0.9 A/B modes. Only the
     // legacy ruleset retains v0.8 placement, avoiding a spacing confound.
@@ -165,7 +171,7 @@ export class Game {
       if (x < A.left + r || x > A.right - r || y < A.top + r || y > A.bottom - r || live.some(s => Math.hypot((specialSpacing?s.anchorX:s.x) - x, (specialSpacing?s.anchorY:s.y) - y) < s.radius + r + C.spawnGap + (specialSpacing?(C.shapes[s.type].drift??C.motion.maxDrift):margin))) continue;
       if (avoid.some(ray => pointSegmentDistance(x, y, ...ray) < r + C.trajectoryMargin)) continue;
       if (this.shards.some(s => !s.dead && pointSegmentDistance(x, y, s.x, s.y, s.x + Math.cos(s.angle) * (s.range - s.distance), s.y + Math.sin(s.angle) * (s.range - s.distance)) < r + C.trajectoryMargin)) continue;
-      if (plan) { plan.index++; if (attempt >= C.spawnAttempts / 2) usedPattern = 'scattered'; }
+      if (plan) { plan.index++; if (attempt >= C.spawnAttempts / 2 || (attempt>0&&['ringFormation','chainCorridor','shieldFortress','bombGarden'].includes(plan.kind))) usedPattern = 'scattered'; }
       if (!this.initializing) this.patternCounts[usedPattern] = (this.patternCounts[usedPattern] || 0) + 1;
       const shape = this.addShape(type, x, y, this.rng() * Math.PI * 2, enhanced, grace, modifier); shape.spawnPattern = usedPattern;
       applyTether(this,plan,shape,attempt);
@@ -185,6 +191,7 @@ export class Game {
     return 'normal';
   }
   createPatternPlan(forceCluster = false) {
+    const ecology=ecologyFormation(this);if(ecology)return ecology;
     const special=this.contentMode==='M5_M6_ON'&&specialPlan(this,forceCluster);if(special)return special;
     const live = this.alive, P = C.patterns, points = [], between = (a, b) => a + this.rng() * (b - a);
     let kind = 'scattered', anchor = null;
@@ -260,7 +267,7 @@ export class Game {
   }
   scheduleEffect(action, cause, delay = C.propagation.delay) {
     if (cause.depth > C.caps.depth) { this.cap('depth', cause); return; }
-    const extra=cause.triggeredBySkill||cause.relicId||['reactor','ancient','ward-release'].includes(cause.source),chain=this.chains.get(cause.chainId);
+    const extra=cause.triggeredBySkill||cause.relicId||['reactor','ancient','ward-release','splitter','fuse','conductor','volatile'].includes(cause.source),chain=this.chains.get(cause.chainId);
     if(extra&&chain?.events>=C.caps.events){this.cap('chainEvents',cause);return false;}
     const scheduled=this.scheduleEvent({ kind: 'effect', action, chainId: cause.chainId, sourceKind: cause.source, triggeredBySkill:cause.triggeredBySkill,chargedOrigin: cause.chargedOrigin, generation: cause.depth, scheduledTime: this.simulationTime + delay, priority: 1 });
     if(extra&&scheduled&&chain)chain.events++;return scheduled;
@@ -290,13 +297,16 @@ export class Game {
       if (wave) this.knockback(s, wave);
       if(cause.wardRelease){if(s.wardSourceId===cause.wardRelease)releaseWard(this,s,cause.wardOrigin,'wave');continue;}
       if(this.contentMode==='M5_M6_ON'&&wave)skillWaveContact(this,s,cause,wave);
-      const previous=s.hp,actual = Math.min(s.hp, this.contentMode==='M5_M6_ON'?shieldDamage(this,s,damage,cause):damage), chain = this.chains.get(cause.chainId);
-      s.hp -= actual; this.runEarned += actual; this.rawBase += actual; this.rawHP += actual; chain.photons += actual; s.flash = C.visual.flash; s.flashUntil = this.simulationTime + C.visual.flash;
-      this.binAt().earnedPhoton += actual; this.binAt5().earnedPhoton += actual;
-      if (cause.chargedOrigin) { this.chargedContribution.damage += actual; this.chargedContribution.photons += actual; }
+      const previous=s.hp,shielded=this.contentMode==='M5_M6_ON'?shieldDamage(this,s,damage,cause):damage;
+      const actual=Math.min(s.hp,Math.max(0,traitDamage(this,s,shielded,cause))),paid=s.echo?0:actual,chain = this.chains.get(cause.chainId);
+      s.hp -= actual; this.runEarned += paid; this.rawBase += paid; this.rawHP += paid; chain.photons += paid; s.flash = C.visual.flash; s.flashUntil = this.simulationTime + C.visual.flash;
+      this.binAt().earnedPhoton += paid; this.binAt5().earnedPhoton += paid;
+      ecologyDamage(this,s,actual,cause);
+      if (cause.chargedOrigin) { this.chargedContribution.damage += actual; this.chargedContribution.photons += paid; }
       if (this.options.damageVFX && cause.source !== 'direct') this.debris(s, 3);
       if(this.contentMode==='M5_M6_ON')healthStages(this,s,previous,cause);
       if (s.hp > 0) continue;
+      if(s.echo){s.destroyed=true;this.echoKills++;chain.kills++;chain.lastKillAt=this.simulationTime;this.bestChain=Math.max(this.bestChain,chain.kills);this.trackCombo(cause.chainId,s);ecologyLog(this,'echoDeath',s,cause,{parentId:s.parentSplitter,parentChain:s.parentChain});this.visual({kind:'death',x:s.x,y:s.y,shape:{...s},color:C.shapes.triangle.color,life:.15});if(!this.alive.length&&this.totalDestroyed)this.presentation.emit({kind:'fieldClear',at:this.simulationTime,x:s.x,y:s.y,color:'#91ded7'},this.options);continue;}
       const bonus = Math.ceil(s.bonus * this.stats.bonusMultiplier * (s.modifier === 'charged' ? C.modifiers.chargedBonus : 1));
       s.destroyed = true; this.totalDestroyed++; this.runEarned += bonus; this.rawBase += bonus; this.rawNativeBonus += bonus; chain.photons += bonus; chain.kills++; chain.lastKillAt = this.simulationTime;
       killMetrics(this,s,cause,wave);relicKill(this,s,cause);
@@ -304,6 +314,7 @@ export class Game {
       if(s.type==='hex')hexDeath(this,s,cause);delete s.wardSourceId;
       ancientDeath(this,s,cause);
       if(this.contentMode==='M5_M6_ON')skillKill(this,s,cause);
+      ecologyDeath(this,s,cause);
       const bin = this.binAt(); bin.earnedPhoton += bonus; bin.totalDestroyed++; bin.bestChain = Math.max(bin.bestChain, chain.kills); bin[cause.source === 'direct' ? 'directKills' : 'cascadeKills']++;
       if (cause.source === 'direct') this.directKills++; else { this.cascadeKills++; chain.cascadeKills++; this.firstCascadeTime ??= this.simulationTime; }
       const b5 = this.binAt5(); b5.earnedPhoton += bonus; b5.totalDestroyed++; b5.bestChain = Math.max(b5.bestChain, chain.kills); b5[cause.source === 'direct' ? 'directKills' : 'cascadeKills']++;
@@ -346,7 +357,7 @@ export class Game {
     if (this.state !== 'PLAYING' || this.remaining <= 0) return;
     if (depth > C.caps.depth) { this.cap('depth', { source, chargedOrigin }); return; }
     if (this.shards.filter(s => !s.dead).length >= C.caps.shards) { this.cap('shards', { source, chargedOrigin }); return; }
-    const shard = makeShard(this, x, y, angle, source, chainId, depth, small, exclude); shard.chargedOrigin = chargedOrigin; this.shards.push(shard); this.shardsEmitted++; this.peakShards = Math.max(this.peakShards, this.shards.filter(s => !s.dead).length); return shard;
+    const shard = makeShard(this, x, y, angle, source, chainId, depth, small, exclude); shard.id=this.nextShard++; shard.chargedOrigin = chargedOrigin; this.shards.push(shard); this.shardsEmitted++; this.peakShards = Math.max(this.peakShards, this.shards.filter(s => !s.dead).length); return shard;
   }
   emitNative(s, cause) {
     const charged = s.modifier === 'charged', origin = charged || Boolean(cause.chargedOrigin);
@@ -405,7 +416,7 @@ export class Game {
     for (const key of ['x', 'y', 'vx', 'vy', 'angle', 'bounces']) s[key] = path[key];
     s.distance += path.distance; s.age += dt;
     if (path.hit) {
-      s.dead = true; this.projectileHits++; const hitAt = this.elapsed + path.distance / C.shard.speed;
+      s.hitIds ||= new Set();s.hitIds.add(path.hit.id);s.dead = !reflectContact(this,s,path.hit); this.projectileHits++; const hitAt = this.elapsed + path.distance / C.shard.speed;
       const pos = this.positionAt(path.hit, hitAt); this.physicsChecks.projectileContactsChecked++; this.physicsChecks.maxProjectileContactError = Math.max(this.physicsChecks.maxProjectileContactError, Math.max(0, Math.hypot(s.x - pos.x, s.y - pos.y) - path.hit.radius - C.shard.radius));
       this.enqueue(path.hit, s.damage, s, hitAt);
       if (s.split) this.scheduleEvent({ kind: 'effect', chainId: s.chainId, sourceKind: s.source, generation: s.depth + 1, scheduledTime: hitAt, priority: 1, action: () => {
@@ -416,6 +427,8 @@ export class Game {
   }
   update(dt) {
     if (this.state !== 'PLAYING' || this.paused || dt <= 0) return;
+    // Curves are swept short linear segments. Legacy OFF retains its original stepping.
+    if(this.ecologyEnabled&&dt>C.step+1e-9){while(dt>C.step+1e-9&&this.state==='PLAYING'){this.update(C.step);dt-=C.step;}if(dt>0)this.update(dt);return;}
     // The endpoint frame never processes attacks, spawns or damage at/after zero.
     if (dt >= this.remaining - 1e-9) {
       // Legacy keeps its historical endpoint behavior for exact comparisons.
@@ -432,6 +445,7 @@ export class Game {
       return;
     }
     this.syncMotion();
+    if(this.ecologyEnabled){this.flush();repairTick(this);bendShards(this,dt);}
     const end = this.elapsed + dt;
     let iterations = 0;
     // Split a fixed tick at every scheduled event and earliest swept collision.
@@ -461,10 +475,11 @@ export class Game {
     this.waves = this.waves.filter(w => w.age < w.maxRadius / w.speed + C.propagation.tailLife);
     this.clickVFX.update(dt, this.elapsed);
     this.spawnClock += dt;
-    if (this.spawnClock >= this.experiment.spawnInterval - 1e-9) {
+    const interval=this.experiment.adaptive&&this.sandbox?(this.discoveryRank>=4&&this.highestTier>=5?.16:this.discoveryRank>=2&&this.highestTier>=3?.18:this.experiment.spawnInterval):this.experiment.spawnInterval;
+    if (this.spawnClock >= interval - 1e-9) {
       // Epsilon-triggered clocks may be just below the interval: modulo would
       // leave almost a full interval and accidentally spawn again next tick.
-      this.spawnClock = Math.max(0, this.spawnClock - this.experiment.spawnInterval);
+      this.spawnClock = Math.max(0, this.spawnClock - interval);
       for (let i = 0; i < this.experiment.spawnBatch && this.alive.length < this.target; i++) {
         const shape = this.spawn(this.pending[0] || null); if (!shape) break; if (this.pending.length) this.pending.shift();
       }
@@ -472,7 +487,9 @@ export class Game {
     for (const p of [...this.visuals, ...this.particles]) { const age = Math.max(0, this.elapsed - p.bornAt), delta = age - p.age; p.age = age; if (p.vx !== undefined) { p.x += p.vx * delta; p.y += p.vy * delta; } }
     this.visuals = this.visuals.filter(p => p.age < p.life); this.particles = this.particles.filter(p => p.age < p.life);
     // Discard chains with no live effect. IDs remain monotonically increasing.
-    const active = new Set([...this.shards, ...this.waves, ...this.queue].map(s => s.chainId)); for (const [id, chain] of this.chains) if (!active.has(id)) { this.finishChain(chain); this.chains.delete(id); }
+    const active = new Set([...this.shards, ...this.waves, ...this.queue].map(s => s.chainId));
+    for(const echo of this.alive.filter(s=>s.echo))active.add(echo.parentChain);
+    for (const [id, chain] of this.chains) if (!active.has(id)) { this.finishChain(chain); this.chains.delete(id); }
     this.currentChain = Math.max(0, ...Array.from(this.chains.values(), chain => chain.kills));
   }
   skipAhead(seconds) {
@@ -539,5 +556,5 @@ export class Game {
     if (!this.options.damageVFX) return;
     for (let i = 0; i < count && this.particles.length < C.caps.particles; i++) { const a = this.vfxRng() * Math.PI * 2, speed = 40 + this.vfxRng() * 130; this.particles.push({ x, y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, angle: a, color: C.shapes[s.type].color, age: 0, life, bornAt: this.simulationTime }); }
   }
-  record() { const durations = [...this.cascadeDurations, ...Array.from(this.chains.values()).filter(c => c.cascadeKills).map(c => (c.lastKillAt - c.startedAt) * 1000)]; return { metaCounters:{...(this.finalMetaCounters||this.metaCounters)},metaResult:this.metaResult,anomalyId:this.anomalyId,contractSnapshot:[...this.contractSnapshot],causalLog:[...this.causalLog],relicLoadout:[...this.relicLoadout],relicActivations:{...this.relicActivations},siphonUnused:this.siphonCharges.filter(t=>t>this.elapsed).length,siphonConsumed:this.siphonConsumed,offerId:this.offerId,metaVersion:C.meta.version,rawHP:this.rawHP,rawNativeBonus:this.rawNativeBonus,oreEnabled:this.oreEnabled,specialSpawns:{...this.specialSpawns},stageEvents:[...this.stageEvents],skillActivations:{...this.skillActivations},skillEvents:[...this.skillEvents],tetherPairs:this.tetherPairs,tetherAttempts:this.tetherAttempts, discoveryRankAtStart:this.discoveryRank,contentMode:this.contentMode,oreChances:oreChances(this.discoveryRank,this.levels.salvageScanner||0),oreSpawnCounts:{...this.oreSpawnCounts},oreKills:{...this.oreKills},pendingCatalyst:this.pendingCatalyst,rawBase:this.rawBase,rawOreBonus:this.rawOreBonus,rawSkillBonus:this.rawSkillBonus,rewardsBySource:[...this.rewardLog],welcomeConsumed:[...this.welcomeConsumed], motionMeasurements: { ...this.motionMeasurements }, refinerySkipped: this.refinerySkipped ?? null, resultWaitSeconds: this.resultWaitSeconds ?? null, physicsChecks: { ...this.physicsChecks }, ruleset: this.ruleset, tierPreset: this.tierPreset, runId: this.runId, runDurationConfigured: this.duration, runDurationActual: this.elapsed, rawEarned: this.runEarned, processedPhoton: this.metaResult?.totalPhoton ?? this.refinery?.payout ?? null, photonPayout: this.metaResult?.totalPhoton ?? this.refinery?.payout ?? null, refinery: this.refinery, motionEnabled: this.initialOptions.motionEnabled, motionProfiles: { ...this.motionProfiles }, missedClicks: this.missedClicks, movingHitAccuracy: this.successfulClicks / Math.max(1, this.successfulClicks + this.missedClicks), projectileHitRate: this.projectileHits / Math.max(1, this.shardsEmitted), projectileHits: this.projectileHits, waveContacts: this.waveContacts, maxMotionSpeed: this.maxMotionSpeed, bins5: this.ruleset === 'legacy_v08' ? [] : this.bins5.map(b => ({ ...structuredClone(b), rawEarned: b.earnedPhoton, averageAlive: b.sampledSeconds ? b.aliveIntegral / b.sampledSeconds : 0, averageTarget: b.sampledSeconds ? b.targetIntegral / b.sampledSeconds : 0 })), inputPolicy: this.inputPolicy, sandbox: this.sandbox, experiment: { ...this.experiment }, elapsed: this.elapsed, bins: this.bins.map(b => ({ ...structuredClone(b), averageAlive: b.sampledSeconds ? b.aliveIntegral / b.sampledSeconds : 0, averageTarget: b.sampledSeconds ? b.targetIntegral / b.sampledSeconds : 0, spawnSuccessRate: b.spawnAttempts ? b.spawnSuccesses / b.spawnAttempts : null, cascadeRatio: b.totalDestroyed ? b.cascadeKills / b.totalDestroyed : 0, avgCascadeDurationMs: b.completedCascadeChains ? b.cascadeDurationTotalMs / b.completedCascadeChains : 0 })), emptyArenaDuration: this.emptyArenaDuration, emptyEpisodesOverHalfSecond: this.emptyEpisodesOverHalfSecond, maxEmptyEpisode: this.maxEmptyEpisode, spawnAttempts: this.spawnAttempts, spawnSuccesses: this.spawnSuccesses, spawnFailures: this.spawnFailures, capCounts: { ...this.capCounts }, capSources: { ...this.capSources }, chargedCaps: this.chargedCaps, peakWaves: this.peakWaves, peakScheduled: this.peakScheduled, secondShardPeaks: [...this.secondShardPeaks], hpDistribution: { ...this.hpDistribution }, enhancedSpawnCount: this.enhancedSpawnCount, frameSampleCount: this.frameSamples.length, stepSampleCount: this.stepSamples.length, averageFPS: this.frameSamples.length ? this.frameSamples.reduce((a, b) => a + b, 0) / this.frameSamples.length : null, fixedStepP95ms: this.stepSamples.length ? [...this.stepSamples].sort((a,b) => a-b)[Math.floor(this.stepSamples.length * .95)] : null, modifiersEnabled: this.initialOptions.modifiers, modifierStats: Object.fromEntries(Object.entries(this.modifierStats).map(([k, v]) => [k, { ...v, selectionRate: v.spawnCount ? v.clickedFirstCount / v.spawnCount : 0 }])), typeStats: structuredClone(this.typeStats), chargedContribution: { ...this.chargedContribution }, modifierRngPolicy: "independent mechanical stream; one draw per spawn attempt including OFF and Enhanced", comboMilestones: { ...this.comboMilestones }, comboEvents: [...this.comboEvents], timeToFirstChain5: this.timeToFirstChain5, maxChain: this.bestChain, comboFeedbackEnabled: this.initialOptions.comboFeedback, durationSeconds: this.duration, seed: this.seed, levels: { ...this.levels }, totalDestroyed: this.totalDestroyed, directKills: this.directKills, cascadeKills: this.cascadeKills, bestChain: this.bestChain, photonsEarned: this.ruleset === 'legacy_v08' ? this.runEarned : this.metaResult?.totalPhoton ?? this.refinery?.payout ?? 0, highestTier: this.highestTier, unlockTimes: { ...this.unlockTimes }, firstCascadeTime: this.firstCascadeTime, inheritanceEnabled: this.initialOptions.inheritance, ricochetEnabled: this.initialOptions.ricochet, sequentialPropagationEnabled: this.initialOptions.sequentialPropagation, visualVarietyEnabled: this.initialOptions.visualVariety, avgCascadeDurationMs: durations.length ? durations.reduce((a, b) => a + b, 0) / durations.length : 0, variantCounts: { ...this.variantCounts }, patternCounts: { ...this.patternCounts }, optionChanges: [...this.optionChanges], safetyCapsHit: this.safetyCapsHit, skippedSeconds: this.skippedSeconds, skippedEvents: this.skippedEvents, peakShards: this.peakShards }; }
+  record() { const durations = [...this.cascadeDurations, ...Array.from(this.chains.values()).filter(c => c.cascadeKills).map(c => (c.lastKillAt - c.startedAt) * 1000)]; return { ecologyEnabled:this.ecologyEnabled,ecologyCounts:{...this.ecologyCounts},introConsumed:[...this.introConsumed],ecologyEvents:[...this.ecologyEvents],echoSpawned:this.echoSpawned,echoKills:this.echoKills,echoRaw:0,metaCounters:{...(this.finalMetaCounters||this.metaCounters)},metaResult:this.metaResult,anomalyId:this.anomalyId,contractSnapshot:[...this.contractSnapshot],causalLog:[...this.causalLog],relicLoadout:[...this.relicLoadout],relicActivations:{...this.relicActivations},siphonUnused:this.siphonCharges.filter(t=>t>this.elapsed).length,siphonConsumed:this.siphonConsumed,offerId:this.offerId,metaVersion:C.meta.version,rawHP:this.rawHP,rawNativeBonus:this.rawNativeBonus,oreEnabled:this.oreEnabled,specialSpawns:{...this.specialSpawns},stageEvents:[...this.stageEvents],skillActivations:{...this.skillActivations},skillEvents:[...this.skillEvents],tetherPairs:this.tetherPairs,tetherAttempts:this.tetherAttempts, discoveryRankAtStart:this.discoveryRank,contentMode:this.contentMode,oreChances:oreChances(this.discoveryRank,this.levels.salvageScanner||0),oreSpawnCounts:{...this.oreSpawnCounts},oreKills:{...this.oreKills},pendingCatalyst:this.pendingCatalyst,rawBase:this.rawBase,rawOreBonus:this.rawOreBonus,rawSkillBonus:this.rawSkillBonus,rewardsBySource:[...this.rewardLog],welcomeConsumed:[...this.welcomeConsumed], motionMeasurements: { ...this.motionMeasurements }, refinerySkipped: this.refinerySkipped ?? null, resultWaitSeconds: this.resultWaitSeconds ?? null, physicsChecks: { ...this.physicsChecks }, ruleset: this.ruleset, tierPreset: this.tierPreset, runId: this.runId, runDurationConfigured: this.duration, runDurationActual: this.elapsed, rawEarned: this.runEarned, processedPhoton: this.metaResult?.totalPhoton ?? this.refinery?.payout ?? null, photonPayout: this.metaResult?.totalPhoton ?? this.refinery?.payout ?? null, refinery: this.refinery, motionEnabled: this.initialOptions.motionEnabled, motionProfiles: { ...this.motionProfiles }, missedClicks: this.missedClicks, movingHitAccuracy: this.successfulClicks / Math.max(1, this.successfulClicks + this.missedClicks), projectileHitRate: this.projectileHits / Math.max(1, this.shardsEmitted), projectileHits: this.projectileHits, waveContacts: this.waveContacts, maxMotionSpeed: this.maxMotionSpeed, bins5: this.ruleset === 'legacy_v08' ? [] : this.bins5.map(b => ({ ...structuredClone(b), rawEarned: b.earnedPhoton, averageAlive: b.sampledSeconds ? b.aliveIntegral / b.sampledSeconds : 0, averageTarget: b.sampledSeconds ? b.targetIntegral / b.sampledSeconds : 0 })), inputPolicy: this.inputPolicy, sandbox: this.sandbox, experiment: { ...this.experiment }, elapsed: this.elapsed, bins: this.bins.map(b => ({ ...structuredClone(b), averageAlive: b.sampledSeconds ? b.aliveIntegral / b.sampledSeconds : 0, averageTarget: b.sampledSeconds ? b.targetIntegral / b.sampledSeconds : 0, spawnSuccessRate: b.spawnAttempts ? b.spawnSuccesses / b.spawnAttempts : null, cascadeRatio: b.totalDestroyed ? b.cascadeKills / b.totalDestroyed : 0, avgCascadeDurationMs: b.completedCascadeChains ? b.cascadeDurationTotalMs / b.completedCascadeChains : 0 })), emptyArenaDuration: this.emptyArenaDuration, emptyEpisodesOverHalfSecond: this.emptyEpisodesOverHalfSecond, maxEmptyEpisode: this.maxEmptyEpisode, spawnAttempts: this.spawnAttempts, spawnSuccesses: this.spawnSuccesses, spawnFailures: this.spawnFailures, capCounts: { ...this.capCounts }, capSources: { ...this.capSources }, chargedCaps: this.chargedCaps, peakWaves: this.peakWaves, peakScheduled: this.peakScheduled, secondShardPeaks: [...this.secondShardPeaks], hpDistribution: { ...this.hpDistribution }, enhancedSpawnCount: this.enhancedSpawnCount, frameSampleCount: this.frameSamples.length, stepSampleCount: this.stepSamples.length, averageFPS: this.frameSamples.length ? this.frameSamples.reduce((a, b) => a + b, 0) / this.frameSamples.length : null, fixedStepP95ms: this.stepSamples.length ? [...this.stepSamples].sort((a,b) => a-b)[Math.floor(this.stepSamples.length * .95)] : null, modifiersEnabled: this.initialOptions.modifiers, modifierStats: Object.fromEntries(Object.entries(this.modifierStats).map(([k, v]) => [k, { ...v, selectionRate: v.spawnCount ? v.clickedFirstCount / v.spawnCount : 0 }])), typeStats: structuredClone(this.typeStats), chargedContribution: { ...this.chargedContribution }, modifierRngPolicy: "independent mechanical stream; one draw per spawn attempt including OFF and Enhanced", comboMilestones: { ...this.comboMilestones }, comboEvents: [...this.comboEvents], timeToFirstChain5: this.timeToFirstChain5, maxChain: this.bestChain, comboFeedbackEnabled: this.initialOptions.comboFeedback, durationSeconds: this.duration, seed: this.seed, levels: { ...this.levels }, totalDestroyed: this.totalDestroyed, directKills: this.directKills, cascadeKills: this.cascadeKills, bestChain: this.bestChain, photonsEarned: this.ruleset === 'legacy_v08' ? this.runEarned : this.metaResult?.totalPhoton ?? this.refinery?.payout ?? 0, highestTier: this.highestTier, unlockTimes: { ...this.unlockTimes }, firstCascadeTime: this.firstCascadeTime, inheritanceEnabled: this.initialOptions.inheritance, ricochetEnabled: this.initialOptions.ricochet, sequentialPropagationEnabled: this.initialOptions.sequentialPropagation, visualVarietyEnabled: this.initialOptions.visualVariety, avgCascadeDurationMs: durations.length ? durations.reduce((a, b) => a + b, 0) / durations.length : 0, variantCounts: { ...this.variantCounts }, patternCounts: { ...this.patternCounts }, optionChanges: [...this.optionChanges], safetyCapsHit: this.safetyCapsHit, skippedSeconds: this.skippedSeconds, skippedEvents: this.skippedEvents, peakShards: this.peakShards }; }
 }

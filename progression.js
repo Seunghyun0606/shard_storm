@@ -5,6 +5,7 @@ import { updateDiscovery } from './discovery.js';
 import { blueprints,emptyAchievements } from './relics.js';
 import { applyContracts } from './contracts.js';
 import { validMetaPending } from './settlement-validation.js';
+import { ECOLOGY_SHAPES } from './ecology-defs.js';
 export const TYPES = Object.keys(C.shapes).filter(k=>!C.shapes[k].special);
 export const emptyLevels = () => Object.fromEntries(Object.keys(C.upgrades).map(k => [k, 0]));
 export function tierFor(kills, tiers = C.tiers) { let tier = 0; tiers.forEach((t, i) => { if (kills >= t.threshold) tier = i; }); return tier; }
@@ -54,6 +55,7 @@ export function completeSettlement(save) {
   save.relicBlueprintUnlocked=blueprints(save);
   if(pending.contractPlan)applyContracts(save,pending.contractPlan);
   if(pending.anomalySucceeded)save.totalAnomalyWins=(save.totalAnomalyWins||0)+1;
+  save.shapeIntroSeen ||= {};for(const id of pending.record.introConsumed||[])if(Object.hasOwn(ECOLOGY_SHAPES,id))save.shapeIntroSeen[id]=true;
   for (const rank of Array.isArray(pending.record.welcomeConsumed)?pending.record.welcomeConsumed:[]) delete save.milestoneWelcomeFlags[rank];
   save.lastRuns = [...save.lastRuns, pending.record].slice(-C.historyLimit);
   for (const key of ['totalDestroyed', 'bestChain', 'photonsEarned']) save.bestStats[key] = Math.max(save.bestStats[key] || 0, pending.record[key]);

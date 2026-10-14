@@ -1,4 +1,5 @@
 // v0.9 P0. Legacy settings remain explicit for regression and controlled A/B.
+import { ECOLOGY_SHAPES } from './ecology-defs.js';
 export const CONFIG = {
   width: 960, height: 540,
   arena: { left: 32, right: 928, top: 78, bottom: 512 },
@@ -42,7 +43,8 @@ export const CONFIG = {
     star: { hp: 9, bonus: 40, radius: 29, color: '#FFD884', hue: 42, sides: 10, innerRatio: .47, areaRadius: 145, areaDamage: 5 },
     hex: {hp:8,bonus:20,radius:25,color:'#90e3ab',hue:144,sides:6,special:true,rank:2,tier:2,chance:.06,cap:3,drift:4},
     reactor: {hp:12,bonus:35,radius:27,color:'#ffad73',hue:25,sides:8,special:true,rank:3,tier:3,chance:.03,cap:2},
-    ancient: {hp:30,bonus:120,radius:38,color:'#d7bdff',hue:265,sides:32,special:true,rank:4,tier:4,chance:.006,cap:1,runCap:2,drift:0}
+    ancient: {hp:30,bonus:120,radius:38,color:'#d7bdff',hue:265,sides:32,special:true,rank:4,tier:4,chance:.006,cap:1,runCap:2,drift:0},
+    ...Object.fromEntries(Object.entries(ECOLOGY_SHAPES).map(([id,d])=>[id,{...d,special:true,ecology:true}]))
   },
   specialEffects: { ward:{radius:85,targets:2,reduction:1,releaseDelay:.03,releaseSpeed:650,failsafe:.25},reactor:[{hp:6,delay:.03,radius:75,damage:2},{hp:0,delay:.11,radius:110,damage:3}],ancient:{thresholds:[22,15,7],delay:.03,shards:2,shardDamage:1,shardRange:90,radius:60,damage:1,catalyst:2},tetherChance:.08 },
   legacyTiers: [
@@ -143,7 +145,7 @@ export const CONFIG = {
     fortified:{name:'Fortified',rank:2,rate:.12,counter:'wardReleasesFromHexDeath',target:2,hexAdd:.04,wardReduction:2,description:'Hex 확률 +4%p · Ward 피해감소2 · Hex 사망 Ward2해제'},
     unstableCore:{name:'Unstable Core',rank:3,rate:.15,counter:'reactorStageWaveExecuted',target:3,alternateCounter:'ancientKills',alternateTarget:1,reactorMultiplier:1.5,ancientMultiplier:3,description:'Reactor ×1.5/Rank4 Ancient ×3 (상한 유지) · 실제 Reactor파동3 또는 Ancient1파괴'}
   },
-  costGrowth: 1.6, saveVersion: 5, storageKey: 'shard-storm-v1', historyLimit: 20,
+  costGrowth: 1.6, saveVersion: 6, storageKey: 'shard-storm-v1', historyLimit: 20,
   dev: { grant: 1000, minDuration: 1, maxDuration: 90 },
-  options: { combatFXEnabled:true,screenShakeEnabled:true,reducedMotionEnabled:false,oreEnabled:true,inheritance: true, ricochet: true, sequentialPropagation: true, visualVariety: true, damageVFX: true, sound: false, comboFeedback: true, modifiers: true, modifierVisuals: true, motionEnabled: true, refineryEnabled: true }
+  options: { secondaryTraitsEnabled:true,combatFXEnabled:true,screenShakeEnabled:true,reducedMotionEnabled:false,oreEnabled:true,inheritance: true, ricochet: true, sequentialPropagation: true, visualVariety: true, damageVFX: true, sound: false, comboFeedback: true, modifiers: true, modifierVisuals: true, motionEnabled: true, refineryEnabled: true }
 };

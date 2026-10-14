@@ -1,0 +1,763 @@
+{
+  "passed": true,
+  "signature": "1f860b1cd4c0ba5dcf4de35832c3ce0ff4e93d916e8cde2f1fe4ddbe80d426e0",
+  "sources": [
+    "game.js",
+    "config.js",
+    "content.js",
+    "ecology.js",
+    "ecology-defs.js",
+    "presentation.js",
+    "storage.js",
+    "progression.js",
+    "effects.js",
+    "entities.js",
+    "motion.js",
+    "skill-tree.js",
+    "refinery.js",
+    "ore.js",
+    "discovery.js",
+    "relics.js",
+    "contracts.js",
+    "anomalies.js",
+    "run-metrics.js",
+    "settlement-validation.js",
+    "combo.js",
+    "visuals.js",
+    "experiments.js",
+    "economy.js",
+    "tests/simulation.js",
+    "tests/m7-m8-simulation.js",
+    "tests/content-simulation.js",
+    "tests/m9-balance.js"
+  ],
+  "actualRuns": 300,
+  "paths": 150,
+  "cachedPaths": 0,
+  "sourceFiles": [
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Crusher-Fresh-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Crusher-Fresh-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Crusher-Fresh-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Crusher-Fresh-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Crusher-LegacyMax-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Crusher-LegacyMax-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Crusher-LegacyMax-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Crusher-LegacyMax-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Cascade-Fresh-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Cascade-Fresh-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Cascade-Fresh-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Cascade-Fresh-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Cascade-LegacyMax-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Cascade-LegacyMax-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Cascade-LegacyMax-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Cascade-LegacyMax-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Reactor-Fresh-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Reactor-Fresh-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Reactor-Fresh-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Reactor-Fresh-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Reactor-LegacyMax-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Reactor-LegacyMax-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Reactor-LegacyMax-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Reactor-LegacyMax-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Crusher-Fresh-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Crusher-Fresh-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Crusher-Fresh-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Crusher-Fresh-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Crusher-LegacyMax-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Crusher-LegacyMax-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Crusher-LegacyMax-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Crusher-LegacyMax-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Cascade-Fresh-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Cascade-Fresh-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Cascade-Fresh-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Cascade-Fresh-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Cascade-LegacyMax-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Cascade-LegacyMax-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Cascade-LegacyMax-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Cascade-LegacyMax-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Reactor-Fresh-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Reactor-Fresh-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Reactor-Fresh-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Reactor-Fresh-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Reactor-LegacyMax-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Reactor-LegacyMax-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Reactor-LegacyMax-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Reactor-LegacyMax-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Crusher-Fresh-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Crusher-Fresh-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Crusher-Fresh-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Crusher-Fresh-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Crusher-LegacyMax-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Crusher-LegacyMax-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Crusher-LegacyMax-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Crusher-LegacyMax-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Cascade-Fresh-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Cascade-Fresh-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Cascade-Fresh-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Cascade-Fresh-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Cascade-LegacyMax-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Cascade-LegacyMax-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Cascade-LegacyMax-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Cascade-LegacyMax-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Reactor-Fresh-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Reactor-Fresh-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Reactor-Fresh-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Reactor-Fresh-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Reactor-LegacyMax-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Reactor-LegacyMax-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Reactor-LegacyMax-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Reactor-LegacyMax-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Crusher-Fresh-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Crusher-Fresh-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Crusher-Fresh-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Crusher-Fresh-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Crusher-LegacyMax-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Crusher-LegacyMax-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Crusher-LegacyMax-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Crusher-LegacyMax-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Cascade-Fresh-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Cascade-Fresh-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Cascade-Fresh-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Cascade-Fresh-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Cascade-LegacyMax-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Cascade-LegacyMax-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Cascade-LegacyMax-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Cascade-LegacyMax-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Reactor-Fresh-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Reactor-Fresh-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Reactor-Fresh-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Reactor-Fresh-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Reactor-LegacyMax-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Reactor-LegacyMax-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Reactor-LegacyMax-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Reactor-LegacyMax-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Crusher-Fresh-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Crusher-Fresh-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Crusher-Fresh-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Crusher-Fresh-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Crusher-LegacyMax-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Crusher-LegacyMax-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Crusher-LegacyMax-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Crusher-LegacyMax-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Cascade-Fresh-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Cascade-Fresh-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Cascade-Fresh-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Cascade-Fresh-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Cascade-LegacyMax-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Cascade-LegacyMax-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Cascade-LegacyMax-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Cascade-LegacyMax-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Reactor-Fresh-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Reactor-Fresh-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Reactor-Fresh-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Reactor-Fresh-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Reactor-LegacyMax-Fixed20-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Reactor-LegacyMax-Fixed20-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Reactor-LegacyMax-ExtraTime-M8-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Reactor-LegacyMax-ExtraTime-M9-Normal-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Crusher-LegacyMax-Fixed20-M9-Adaptive-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Crusher-LegacyMax-Fixed20-M9-Anomaly-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Cascade-LegacyMax-Fixed20-M9-Adaptive-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Cascade-LegacyMax-Fixed20-M9-Anomaly-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Reactor-LegacyMax-Fixed20-M9-Adaptive-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-31415-Reactor-LegacyMax-Fixed20-M9-Anomaly-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Crusher-LegacyMax-Fixed20-M9-Adaptive-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Crusher-LegacyMax-Fixed20-M9-Anomaly-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Cascade-LegacyMax-Fixed20-M9-Adaptive-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Cascade-LegacyMax-Fixed20-M9-Anomaly-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Reactor-LegacyMax-Fixed20-M9-Adaptive-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-1-Reactor-LegacyMax-Fixed20-M9-Anomaly-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Crusher-LegacyMax-Fixed20-M9-Adaptive-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Crusher-LegacyMax-Fixed20-M9-Anomaly-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Cascade-LegacyMax-Fixed20-M9-Adaptive-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Cascade-LegacyMax-Fixed20-M9-Anomaly-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Reactor-LegacyMax-Fixed20-M9-Adaptive-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-7-Reactor-LegacyMax-Fixed20-M9-Anomaly-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Crusher-LegacyMax-Fixed20-M9-Adaptive-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Crusher-LegacyMax-Fixed20-M9-Anomaly-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Cascade-LegacyMax-Fixed20-M9-Adaptive-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Cascade-LegacyMax-Fixed20-M9-Anomaly-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Reactor-LegacyMax-Fixed20-M9-Adaptive-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-42-Reactor-LegacyMax-Fixed20-M9-Anomaly-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Crusher-LegacyMax-Fixed20-M9-Adaptive-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Crusher-LegacyMax-Fixed20-M9-Anomaly-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Cascade-LegacyMax-Fixed20-M9-Adaptive-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Cascade-LegacyMax-Fixed20-M9-Anomaly-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Reactor-LegacyMax-Fixed20-M9-Adaptive-2.json.gz",
+    "artifacts/m9-growth/1f860b1cd4c0-99-Reactor-LegacyMax-Fixed20-M9-Anomaly-2.json.gz"
+  ],
+  "summary": [
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 0,
+          "levels": 1,
+          "bank": 43,
+          "catalyst": 0,
+          "kills": 135,
+          "raw": 1641,
+          "photon": 103,
+          "chain": 7,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 0,
+          "levels": 1,
+          "bank": 56,
+          "catalyst": 0,
+          "kills": 129,
+          "raw": 1741,
+          "photon": 116,
+          "chain": 11,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 2
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 0,
+          "levels": 1,
+          "bank": 43,
+          "catalyst": 0,
+          "kills": 135,
+          "raw": 1641,
+          "photon": 103,
+          "chain": 7,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 0,
+          "levels": 1,
+          "bank": 56,
+          "catalyst": 0,
+          "kills": 129,
+          "raw": 1741,
+          "photon": 116,
+          "chain": 11,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 2
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 4,
+          "levels": 50,
+          "bank": 10668,
+          "catalyst": 212,
+          "kills": 304,
+          "raw": 8406,
+          "photon": 668,
+          "chain": 8,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 4,
+          "levels": 50,
+          "bank": 10690,
+          "catalyst": 211,
+          "kills": 303,
+          "raw": 8913,
+          "photon": 690,
+          "chain": 12,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 6
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 4,
+          "levels": 50,
+          "bank": 11208,
+          "catalyst": 222,
+          "kills": 483,
+          "raw": 14412,
+          "photon": 1208,
+          "chain": 11,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 4,
+          "levels": 50,
+          "bank": 11299,
+          "catalyst": 220,
+          "kills": 482,
+          "raw": 14890,
+          "photon": 1299,
+          "chain": 12,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 6
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 0,
+          "levels": 1,
+          "bank": 13,
+          "catalyst": 0,
+          "kills": 135,
+          "raw": 1641,
+          "photon": 103,
+          "chain": 7,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 0,
+          "levels": 1,
+          "bank": 26,
+          "catalyst": 0,
+          "kills": 129,
+          "raw": 1741,
+          "photon": 116,
+          "chain": 11,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 2
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 0,
+          "levels": 1,
+          "bank": 13,
+          "catalyst": 0,
+          "kills": 135,
+          "raw": 1641,
+          "photon": 103,
+          "chain": 7,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 0,
+          "levels": 1,
+          "bank": 26,
+          "catalyst": 0,
+          "kills": 129,
+          "raw": 1741,
+          "photon": 116,
+          "chain": 11,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 2
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 4,
+          "levels": 50,
+          "bank": 10668,
+          "catalyst": 212,
+          "kills": 304,
+          "raw": 8406,
+          "photon": 668,
+          "chain": 8,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 4,
+          "levels": 50,
+          "bank": 10690,
+          "catalyst": 211,
+          "kills": 303,
+          "raw": 8913,
+          "photon": 690,
+          "chain": 12,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 6
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 4,
+          "levels": 50,
+          "bank": 11208,
+          "catalyst": 222,
+          "kills": 483,
+          "raw": 14412,
+          "photon": 1208,
+          "chain": 11,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 4,
+          "levels": 50,
+          "bank": 11299,
+          "catalyst": 220,
+          "kills": 482,
+          "raw": 14890,
+          "photon": 1299,
+          "chain": 12,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 6
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 0,
+          "levels": 1,
+          "bank": 42,
+          "catalyst": 0,
+          "kills": 135,
+          "raw": 1641,
+          "photon": 103,
+          "chain": 7,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 0,
+          "levels": 1,
+          "bank": 42,
+          "catalyst": 0,
+          "kills": 129,
+          "raw": 1741,
+          "photon": 116,
+          "chain": 11,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 2
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 0,
+          "levels": 1,
+          "bank": 42,
+          "catalyst": 0,
+          "kills": 135,
+          "raw": 1641,
+          "photon": 103,
+          "chain": 7,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 0,
+          "levels": 1,
+          "bank": 42,
+          "catalyst": 0,
+          "kills": 129,
+          "raw": 1741,
+          "photon": 116,
+          "chain": 11,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 2
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 4,
+          "levels": 50,
+          "bank": 10668,
+          "catalyst": 212,
+          "kills": 304,
+          "raw": 8406,
+          "photon": 668,
+          "chain": 8,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 4,
+          "levels": 50,
+          "bank": 10690,
+          "catalyst": 211,
+          "kills": 303,
+          "raw": 8913,
+          "photon": 690,
+          "chain": 12,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 6
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 4,
+          "levels": 50,
+          "bank": 11208,
+          "catalyst": 222,
+          "kills": 483,
+          "raw": 14412,
+          "photon": 1208,
+          "chain": 11,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "rank": 4,
+          "levels": 50,
+          "bank": 11299,
+          "catalyst": 220,
+          "kills": 482,
+          "raw": 14890,
+          "photon": 1299,
+          "chain": 12,
+          "blank": 0,
+          "spawnFailures": 0,
+          "introduced": 6
+        }
+      ]
+    }
+  ],
+  "events": {
+    "introduction": 420,
+    "fuseArmed": 1401,
+    "fuseExploded": 1389,
+    "echoSpawn": 2830,
+    "echoDeath": 2797,
+    "reinforced": 822,
+    "reflection": 534,
+    "gravityBend": 10626,
+    "conductorDelivered": 117,
+    "repair": 9
+  },
+  "encounters": {
+    "triangle": 33357,
+    "square": 23503,
+    "pentagon": 13901,
+    "star": 8521,
+    "hex": 3765,
+    "reactor": 1605,
+    "ancient": 108,
+    "splitter": 1919,
+    "fuseBomb": 1441,
+    "conductor": 795,
+    "mirror": 798,
+    "gravityWell": 399,
+    "repairNode": 360
+  },
+  "patterns": {
+    "scattered": 43907,
+    "bridge": 8245,
+    "burst_cluster": 13261,
+    "arc": 11278,
+    "ringFormation": 433,
+    "bombGarden": 30,
+    "tether_pair": 1029,
+    "shield_pocket": 5658,
+    "chainCorridor": 153,
+    "shieldFortress": 48
+  },
+  "environment": {
+    "node": "v24.18.0",
+    "workers": 6
+  },
+  "humanFun": "not measured; exact automated density/HP aiming, zero UI dwell; distinct run seed shared across comparisons"
+}
