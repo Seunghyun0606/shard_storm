@@ -39,8 +39,12 @@ export const CONFIG = {
     triangle: { hp: 3, bonus: 5, radius: 22, color: '#6ADFEF', hue: 188, sides: 3, shardDamage: 3 },
     square: { hp: 4, bonus: 8, radius: 24, color: '#F4A6D2', hue: 326, sides: 4, areaRadius: 90, areaDamage: 2 },
     pentagon: { hp: 5, bonus: 12, radius: 25, color: '#C7ADFF', hue: 259, sides: 5, shardDamage: 3, splitAngle: Math.PI / 4 },
-    star: { hp: 9, bonus: 40, radius: 29, color: '#FFD884', hue: 42, sides: 10, innerRatio: .47, areaRadius: 145, areaDamage: 5 }
+    star: { hp: 9, bonus: 40, radius: 29, color: '#FFD884', hue: 42, sides: 10, innerRatio: .47, areaRadius: 145, areaDamage: 5 },
+    hex: {hp:8,bonus:20,radius:25,color:'#90e3ab',hue:144,sides:6,special:true,rank:2,tier:2,chance:.06,cap:3,drift:4},
+    reactor: {hp:12,bonus:35,radius:27,color:'#ffad73',hue:25,sides:8,special:true,rank:3,tier:3,chance:.03,cap:2},
+    ancient: {hp:30,bonus:120,radius:38,color:'#d7bdff',hue:265,sides:32,special:true,rank:4,tier:4,chance:.006,cap:1,runCap:2,drift:0}
   },
+  specialEffects: { ward:{radius:85,targets:2,reduction:1,releaseDelay:.03,releaseSpeed:650,failsafe:.25},reactor:[{hp:6,delay:.03,radius:75,damage:2},{hp:0,delay:.11,radius:110,damage:3}],ancient:{thresholds:[22,15,7],delay:.03,shards:2,shardDamage:1,shardRange:90,radius:60,damage:1,catalyst:2},tetherChance:.08 },
   legacyTiers: [
     { threshold: 0, target: 12, weights: [.65, .35, 0, 0], enhanced: 0 },
     { threshold: 12, target: 16, weights: [.45, .35, .2, 0], enhanced: 0 },

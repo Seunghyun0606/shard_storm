@@ -9,11 +9,13 @@ import { spawnSettings } from './experiments.js';
 import { createMotion, poseAt, firstContact } from './motion.js';
 import { ensureRefinery } from './refinery.js';
 import { rollOre, oreChances, dropOre } from './ore.js';
+import { specialType, linkWards, shieldDamage, cleanupWards, hexDeath, specialPlan, applyTether } from './content.js';
 let nextRunId = 1;
 
 export class Game {
   constructor({ seed = C.seed, levels = emptyLevels(), options = C.options, duration, experiment = 'baseline', inputPolicy = 'human', sandbox = false, ruleset = 'v09', tierPreset = 'v09_short', runId, discoveryRank = 0, welcomeFlags = {}, contentMode = 'M5_M6_ON', oreEnabled = true } = {}) {
     this.discoveryRank = discoveryRank; this.contentMode = ruleset === 'legacy_v08' ? 'V09_ONLY' : contentMode; this.oreEnabled = oreEnabled && this.contentMode !== 'V09_ONLY'; this.welcomeFlags = {...welcomeFlags}; this.welcomeConsumed = [];
+    this.specialRng=seededRNG(seed^0x47bfee);this.patternRng=seededRNG(seed^0x841ac);this.specialSpawns={};this.tetherPairs=0;this.tetherAttempts=0;
     this.oreRng = seededRNG(seed ^ 0xaec791); this.oreSpawnCounts={common:0,prism:0,core:0,void:0}; this.oreKills={common:0,prism:0,core:0,void:0}; this.pendingCatalyst=0; this.rawBase=0; this.rawOreBonus=0; this.rawSkillBonus=0; this.rewardLog=[];
     this.ruleset = ruleset; this.tierPreset = ruleset === 'legacy_v08' ? 'legacy_tiers' : tierPreset; this.tiers = this.tierPreset === 'legacy_tiers' ? C.legacyTiers : C.tiers; this.runId = runId || `run-${seed}-${nextRunId++}`; this.refinery = null;
     this.seed = seed >>> 0; this.rng = seededRNG(this.seed); this.vfxRng = seededRNG(this.seed ^ 0xabcdef);
@@ -41,7 +43,7 @@ export class Game {
     // One draw per spawn call, even OFF / Enhanced / failed placement; never reroll at cap.
     this.modifierRng = seededRNG(this.seed ^ 0x51a8c3);
     this.modifierStats = Object.fromEntries(['normal', 'cracked', 'charged'].map(k => [k, { spawnCount: 0, clickedFirstCount: 0, directHitCount: 0, directKillCount: 0, cascadeKillCount: 0 }]));
-    this.typeStats = Object.fromEntries(TYPES.map(k => [k, { spawnCount: 0, directHitCount: 0, directKillCount: 0, cascadeKillCount: 0 }]));
+    this.typeStats = Object.fromEntries(Object.keys(C.shapes).map(k => [k, { spawnCount: 0, directHitCount: 0, directKillCount: 0, cascadeKillCount: 0 }]));
     this.chargedContribution = { damage: 0, kills: 0, photons: 0 };
     this.initializing = true; this.initialLayout(); this.initializing = false;
   }
@@ -104,6 +106,7 @@ export class Game {
     if (this.state !== 'PLAYING' || this.remaining <= 0) return null;
     if (modifier === 'charged' && this.alive.filter(s => s.modifier === 'charged').length >= C.modifiers.chargedCap) modifier = 'normal';
     const s = createShape(this.nextId++, type, x, y, angle, enhanced, grace, modifier);
+    if(C.shapes[type].special){this.specialSpawns[type]=(this.specialSpawns[type]||0)+1;s.modifier='normal';s.enhanced=false;s.hp=s.maxHP=C.shapes[type].hp;s.bonus=C.shapes[type].bonus;}
     s.appearance = createAppearance(type, (this.seed ^ Math.imul(s.id, 0x9e3779b1)) >>> 0);
     const oreRoll=this.oreRng(); s.oreGrade=this.oreEnabled?rollOre(oreRoll,this.discoveryRank,this.levels.salvageScanner||0):'common';
     if(this.oreEnabled && this.welcomeFlags[1] && !this.initializing) { s.oreGrade='prism'; delete this.welcomeFlags[1];this.welcomeConsumed.push(1); }
@@ -119,12 +122,14 @@ export class Game {
     this.binMetric('typeStats', type, 'spawnCount'); this.binMetric('modifierStats', s.modifier, 'spawnCount');
     const bin = this.binAt(); bin.hpDistribution[s.hp] = (bin.hpDistribution[s.hp] || 0) + 1; bin.enhancedSpawns += Number(s.enhanced); const b5 = this.binAt5(); b5.hpDistribution[s.hp] = (b5.hpDistribution[s.hp] || 0) + 1; b5.enhancedSpawns += Number(s.enhanced);
     for (const wave of this.waves) this.registerWaveTarget(wave, s);
+    if(this.contentMode==='M5_M6_ON')linkWards(this);
     return s;
   }
   spawn(forced = null, grace = C.spawnGrace, avoid = []) {
     if (this.state !== 'PLAYING' || this.remaining <= 0) return null;
     this.spawnAttempts++; this.binAt().spawnAttempts++; this.binAt5().spawnAttempts++;
     const tier = this.tiers[tierFor(this.totalDestroyed, this.tiers)]; let type = forced;
+    if(!type&&!this.initializing&&this.contentMode==='M5_M6_ON')type=specialType(this);
     if (!type) { let p = this.rng(); type = TYPES[TYPES.length - 1]; for (let i = 0; i < TYPES.length; i++) { p -= tier.weights[i]; if (p < 0) { type = TYPES[i]; break; } } }
     // Reserve identical motion-safe anchors in both v0.9 A/B modes. Only the
     // legacy ruleset retains v0.8 placement, avoiding a spacing confound.
@@ -146,8 +151,11 @@ export class Game {
       if (plan) { plan.index++; if (attempt >= C.spawnAttempts / 2) usedPattern = 'scattered'; }
       if (!this.initializing) this.patternCounts[usedPattern] = (this.patternCounts[usedPattern] || 0) + 1;
       const shape = this.addShape(type, x, y, this.rng() * Math.PI * 2, enhanced, grace, modifier); shape.spawnPattern = usedPattern;
+      applyTether(this,plan,shape,attempt);
+      if(C.shapes[type].special&&this.welcomeFlags[C.shapes[type].rank]){const rank=C.shapes[type].rank;delete this.welcomeFlags[rank];this.welcomeConsumed.push(rank);}
       this.spawnSuccesses++; this.binAt().spawnSuccesses++; this.binAt5().spawnSuccesses++; return shape;
     }
+    if(plan?.pair?.length===1)plan.pair[0].motion.startAt=this.elapsed;
     this.spawnFailures++; this.binAt().spawnFailures++; this.binAt5().spawnFailures++; return null;
   }
   rollModifier(enhanced = false) {
@@ -159,6 +167,7 @@ export class Game {
     return 'normal';
   }
   createPatternPlan(forceCluster = false) {
+    const special=this.contentMode==='M5_M6_ON'&&specialPlan(this,forceCluster);if(special)return special;
     const live = this.alive, P = C.patterns, points = [], between = (a, b) => a + this.rng() * (b - a);
     let kind = 'scattered', anchor = null;
     if (live.length && (forceCluster || this.rng() < this.experiment.clusterChance)) {
@@ -252,7 +261,8 @@ export class Game {
       if (s.destroyed || event.scheduledTime + 1e-9 < (s.vulnerableAt || 0) || this.remaining <= 0) continue;
       if (wave?.dynamic) { const gap = this.waveGap(wave, s, this.simulationTime); this.physicsChecks.waveContactsChecked++; this.physicsChecks.maxWaveContactError = Math.max(this.physicsChecks.maxWaveContactError, Math.max(0, gap)); if (this.simulationTime > wave.bornAt + 1e-9 && gap < -.002) this.physicsChecks.lateWaveContacts++; }
       if (wave) this.knockback(s, wave);
-      const actual = Math.min(s.hp, damage), chain = this.chains.get(cause.chainId);
+      if(cause.wardRelease){if(s.wardSourceId===cause.wardRelease){delete s.wardSourceId;delete s.wardExpiresAt;}continue;}
+      const actual = Math.min(s.hp, this.contentMode==='M5_M6_ON'?shieldDamage(this,s,damage,cause):damage), chain = this.chains.get(cause.chainId);
       s.hp -= actual; this.runEarned += actual; this.rawBase += actual; chain.photons += actual; s.flash = C.visual.flash; s.flashUntil = this.simulationTime + C.visual.flash;
       this.binAt().earnedPhoton += actual; this.binAt5().earnedPhoton += actual;
       if (cause.chargedOrigin) { this.chargedContribution.damage += actual; this.chargedContribution.photons += actual; }
@@ -261,6 +271,7 @@ export class Game {
       const bonus = Math.ceil(s.bonus * this.stats.bonusMultiplier * (s.modifier === 'charged' ? C.modifiers.chargedBonus : 1));
       s.destroyed = true; this.totalDestroyed++; this.runEarned += bonus; this.rawBase += bonus; chain.photons += bonus; chain.kills++; chain.lastKillAt = this.simulationTime;
       dropOre(this,s,cause);
+      if(s.type==='hex')hexDeath(this,s,cause);delete s.wardSourceId;
       const bin = this.binAt(); bin.earnedPhoton += bonus; bin.totalDestroyed++; bin.bestChain = Math.max(bin.bestChain, chain.kills); bin[cause.source === 'direct' ? 'directKills' : 'cascadeKills']++;
       if (cause.source === 'direct') this.directKills++; else { this.cascadeKills++; chain.cascadeKills++; this.firstCascadeTime ??= this.simulationTime; }
       const b5 = this.binAt5(); b5.earnedPhoton += bonus; b5.totalDestroyed++; b5.bestChain = Math.max(b5.bestChain, chain.kills); b5[cause.source === 'direct' ? 'directKills' : 'cascadeKills']++;
@@ -363,6 +374,7 @@ export class Game {
       if (this.ruleset !== 'legacy_v08' && !this.suppressEndpointPhysics && this.remaining > 1e-8) this.update(this.remaining - 1e-8);
       this.sampleDensity(this.elapsed, this.remaining);
       this.elapsed = this.duration; this.remaining = 0; this.state = 'RESULT'; this.held = false;
+      cleanupWards(this,true);
       if (this.ruleset !== 'legacy_v08') ensureRefinery(this);
       for (const chain of this.chains.values()) this.finishChain(chain);
       this.queue.length = 0; this.shards.length = 0; this.waves.length = 0; this.visuals.length = 0; this.particles.length = 0; this.clickVFX.clear(); this.chains.clear(); this.currentChain = 0;
@@ -389,6 +401,7 @@ export class Game {
       this.elapsed += slice; this.updateMotion(this.elapsed); this.flush(); this.shards = this.shards.filter(s => !s.dead);
     }
     this.elapsed = end; this.updateMotion(this.elapsed); this.flush(); this.remaining = this.duration - this.elapsed;
+    cleanupWards(this);
     for (const s of this.shapes) { s.grace = Math.max(0, s.vulnerableAt - this.elapsed); s.flash = Math.max(0, (s.flashUntil || 0) - this.elapsed); s.recoil = Math.max(0, (s.recoilUntil || 0) - this.elapsed); s.knockTime = Math.max(0, s.knockTime - dt); }
     this.attackClock -= dt;
     if (this.held && this.pointer && this.attackClock <= 1e-9) { this.attack(this.pointer.x, this.pointer.y); this.attackClock += this.stats.attackInterval; }

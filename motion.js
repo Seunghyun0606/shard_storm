@@ -5,12 +5,12 @@ export function createMotion(shape, seed, now, tutorial = false) {
   const rng = seededRNG(seed ^ Math.imul(shape.id, 0x45d9f3b)), roll = rng();
   const profile = roll < .35 ? 'rotate' : roll < .60 ? 'drift' : roll < .90 ? 'both' : 'static';
   const star = shape.type === 'star', M = C.motion;
-  const amplitude = (star ? M.starDrift : M.maxDrift) / (2 * Math.SQRT2);
+  const amplitude = (C.shapes[shape.type].drift ?? (star ? M.starDrift : M.maxDrift)) / (2 * Math.SQRT2);
   return { profile, anchorX: shape.x, anchorY: shape.y, spawnAngle: shape.angle, startAt: tutorial ? Infinity : now,
     ampX: ['drift', 'both'].includes(profile) ? amplitude : 0, ampY: ['drift', 'both'].includes(profile) ? amplitude : 0,
     phaseX: rng() * Math.PI * 2, phaseY: rng() * Math.PI * 2,
     speedX: Math.PI * 2 / (M.periodMin + rng() * (M.periodMax - M.periodMin)), speedY: Math.PI * 2 / (M.periodMin + rng() * (M.periodMax - M.periodMin)),
-    rotationRate: ['rotate', 'both'].includes(profile) ? (rng() < .5 ? -1 : 1) * ((star ? M.starRotationMin : M.rotationMin) + rng() * ((star ? M.starRotationMax : M.rotationMax) - (star ? M.starRotationMin : M.rotationMin))) * Math.PI / 180 : 0 };
+    rotationRate: ['rotate', 'both'].includes(profile) || shape.type==='ancient' ? (rng() < .5 ? -1 : 1) * ((star || shape.type==='ancient' ? M.starRotationMin : M.rotationMin) + rng() * ((star || shape.type==='ancient' ? M.starRotationMax : M.rotationMax) - (star || shape.type==='ancient' ? M.starRotationMin : M.rotationMin))) * Math.PI / 180 : 0 };
 }
 export function poseAt(shape, time) {
   const m = shape.motion; if (!m || !Number.isFinite(m.startAt)) return { x: shape.x, y: shape.y, angle: shape.angle };

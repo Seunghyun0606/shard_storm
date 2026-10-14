@@ -43,6 +43,8 @@ export function draw(ctx, game, fps = 60) {
       const stage = Math.min(3, Math.ceil((1 - s.hp / s.maxHP) * 3)); ctx.save(); polygon(ctx, s, scale, game.options.visualVariety); ctx.clip(); ctx.strokeStyle = '#eefcff'; ctx.globalAlpha = .8; ctx.lineWidth = s.modifier === 'cracked' && game.options.modifierVisuals ? 2 : .9;
       for (const crack of s.appearance.cracks.slice(0, stage)) { const a = crack.angle + s.angle, r = s.appearance.baseRadius * crack.length; ctx.beginPath(); ctx.moveTo(Math.cos(a) * r, Math.sin(a) * r); ctx.lineTo(Math.cos(a + crack.bend) * r * .45, Math.sin(a + crack.bend) * r * .45); ctx.lineTo(-Math.sin(a) * 2, Math.cos(a) * 2); ctx.stroke(); } ctx.restore();
     }
+    if(s.wardSourceId){ctx.strokeStyle='#90e3ab';ctx.setLineDash([2,3]);ctx.beginPath();ctx.arc(0,0,s.radius+5,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);}
+    if(s.type==='hex'){polygon(ctx,s,.7,false);ctx.strokeStyle=s.shieldBroken?'#ffffff':'#90e3ab';ctx.lineWidth=s.shieldBroken?1:3;ctx.stroke();ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.fillStyle=cfg.color;ctx.fillText(s.shieldBroken?'⌁':'⬡',0,4);}
     // Small HP ticks make multi-hit breakpoints easy to read.
     ctx.fillStyle = cfg.color; for (let i = 0; i < s.hp; i++) ctx.fillRect((i - (s.hp - 1) / 2) * 4 - 1, s.radius + 8, 2, 2);
     ctx.restore();

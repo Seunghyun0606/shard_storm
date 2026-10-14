@@ -2,7 +2,7 @@ import { CONFIG as C } from './config.js';
 import { getDerivedStats, skillCost, skillState } from './skill-tree.js';
 import { ensureRefinery } from './refinery.js';
 import { updateDiscovery } from './discovery.js';
-export const TYPES = Object.keys(C.shapes);
+export const TYPES = Object.keys(C.shapes).filter(k=>!C.shapes[k].special);
 export const emptyLevels = () => Object.fromEntries(Object.keys(C.upgrades).map(k => [k, 0]));
 export function tierFor(kills, tiers = C.tiers) { let tier = 0; tiers.forEach((t, i) => { if (kills >= t.threshold) tier = i; }); return tier; }
 export function upgradeCost(key, level) { return skillCost(key, level); }
