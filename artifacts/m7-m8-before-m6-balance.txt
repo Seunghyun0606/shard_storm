@@ -1,0 +1,35 @@
+
+> benchmark:m5-m6
+> node tests/m5-m6-balance.js
+
+M5_ONLY Crusher 31415 50 runs complete
+M5_ONLY Crusher 1 50 runs complete
+M5_ONLY Crusher 7 50 runs complete
+M5_ONLY Crusher 42 50 runs complete
+M5_ONLY Crusher 99 50 runs complete
+M5_ONLY Cascade 31415 50 runs complete
+M5_ONLY Cascade 1 50 runs complete
+M5_ONLY Cascade 7 50 runs complete
+M5_ONLY Cascade 42 50 runs complete
+M5_ONLY Cascade 99 50 runs complete
+M5_ONLY Reactor 31415 50 runs complete
+M5_ONLY Reactor 1 50 runs complete
+M5_ONLY Reactor 7 50 runs complete
+M5_ONLY Reactor 42 50 runs complete
+M5_ONLY Reactor 99 50 runs complete
+M5_M6_ON Crusher 31415 50 runs complete
+M5_M6_ON Crusher 1 50 runs complete
+M5_M6_ON Crusher 7 50 runs complete
+M5_M6_ON Crusher 42 50 runs complete
+M5_M6_ON Crusher 99 50 runs complete
+M5_M6_ON Cascade 31415 50 runs complete
+M5_M6_ON Cascade 1 50 runs complete
+M5_M6_ON Cascade 7 50 runs complete
+M5_M6_ON Cascade 42 50 runs complete
+M5_M6_ON Cascade 99 50 runs complete
+M5_M6_ON Reactor 31415 50 runs complete
+M5_M6_ON Reactor 1 50 runs complete
+M5_M6_ON Reactor 7 50 runs complete
+M5_M6_ON Reactor 42 50 runs complete
+M5_M6_ON Reactor 99 50 runs complete
+M5 M6 balance PASS
