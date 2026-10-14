@@ -114,7 +114,36 @@ export const CONFIG = {
     { threshold: 8000, unlock: 'Void · Ancient (Run 200킬) · Catalyst Channel' }
   ],
   ore: { common: { rank: 0, chance: 0, raw: 0, catalyst: 0, symbol: '' }, prism: { rank: 1, chance: .08, raw: 15, catalyst: 0, symbol: '◇' }, core: { rank: 2, chance: .02, raw: 60, catalyst: 1, symbol: '◈' }, void: { rank: 4, chance: .005, raw: 180, catalyst: 2, symbol: '✦' } },
-  costGrowth: 1.6, saveVersion: 4, storageKey: 'shard-storm-v1', historyLimit: 20,
+  relics: {
+    ricochetCoil:{name:'Ricochet Coil',rank:1,counter:'mainShardWallBounces',target:30,photon:250,catalyst:4,bounces:1,rangePenalty:40,minRange:120,description:'주 파편 반사 +1 · 거리 -40px (최소120)'},
+    waveCondenser:{name:'Wave Condenser',rank:1,counter:'nativeWaveKills',target:50,photon:360,catalyst:6,damage:1,radiusMultiplier:.85,description:'Square/Star 고유 피해 +1 · 반경 ×.85 반올림'},
+    cracklingEdge:{name:'Crackling Edge',rank:1,counter:'directCrackedKills',target:30,photon:420,catalyst:10,directPenalty:1,delay:.03,radius:55,damage:1,description:'Cracked 직접 최종타 뒤 .03초 보조55px/1 · 직접 피해 -1 (최소1)'},
+    hexSiphon:{name:'Hex Siphon',rank:2,counter:'wardReleasesFromHexDeath',target:25,photon:700,catalyst:16,chargeCap:2,expires:4,consumptionCap:6,damage:1,description:'Hex 해제 충전 최대2 · 다음 성공 직접 피해 +1 · 4초 만료/Run6소비'},
+    reactorGovernor:{name:'Reactor Governor',rank:3,counter:'reactorStageWaveExecuted',target:40,photon:900,catalyst:18,damage:1,delayPenalty:.08,description:'Reactor 단계 피해 +1 · 지연 +.08초 (.11/.19초)'},
+    ancientResonator:{name:'Ancient Resonator',rank:4,counter:'ancientKills',target:4,photon:1600,catalyst:32,damage:1,range:75,description:'Ancient 각 단계 보조 파편1 / 피해1 / 75px · 다른 도형 미적용'}
+  },
+  meta: {version:1,eventLogCap:512,relicSlots:2,contractSlots:3,contractTargets:[1,2,4],contractPhoton:[1,1.5,2],contractCatalyst:[1,2,3],offerCount:3,anomalyPhotonCap:60},
+  contracts: {
+    preciseClicks:{name:'Precision Duty',rank:0,counter:'directKills',target:80,photon:75,catalyst:0},
+    chainHunter:{name:'Chain Hunter',rank:0,counter:'chain10',target:5,photon:100,catalyst:0},
+    fragmentRoute:{name:'Fragment Route',rank:1,counter:'primaryShardKills',target:90,photon:130,catalyst:0},
+    waveTactic:{name:'Wave Tactic',rank:1,counter:'nativeWaveKills',target:80,photon:120,catalyst:0},
+    crackedCleanup:{name:'Crackdown',rank:1,counter:'directCrackedKills',target:25,photon:110,catalyst:0},
+    hexLiberator:{name:'Hex Liberator',rank:2,counter:'wardReleasesFromHexDeath',target:18,photon:175,catalyst:2},
+    coreCollector:{name:'Core Collector',rank:2,counter:'coreOreKills',target:12,photon:145,catalyst:2},
+    reactorEngineer:{name:'Reactor Engineer',rank:3,counter:'reactorStageWaveExecuted',target:25,photon:200,catalyst:3},
+    anomalyPilot:{name:'Anomaly Pilot',rank:2,counter:'anomalyWins',target:4,photon:180,catalyst:2},
+    ancientHunter:{name:'Ancient Hunter',rank:4,counter:'ancientKills',target:3,photon:280,catalyst:6}
+  },
+  anomalies: {
+    fastOrbit:{name:'Fast Orbit',rank:0,rate:.10,counter:'movingDirectKills',target:12,motion:1.5,description:'드리프트/회전 속도 ×1.5 (기존 상한) · 움직이는 도형 직접12파괴'},
+    denseField:{name:'Dense Field',rank:0,rate:.08,counter:'chain15',target:1,density:1.2,aliveCap:32,description:'Tier 밀도 ×1.20 (최대32) · 한 Chain15 달성'},
+    fragileMatter:{name:'Fragile Matter',rank:1,rate:.10,counter:'directCrackedKills',target:6,crackedAdd:.08,description:'비Enhanced Cracked +8%p · Cracked 직접6파괴'},
+    overcharge:{name:'Overcharge',rank:1,rate:.11,counter:'chargedOrReactorKills',target:3,chargedMultiplier:1.75,reactorMultiplier:1.5,description:'Charged 확률 ×1.75/상한2 · Rank3 Reactor ×1.5 · Charged/Reactor3파괴'},
+    fortified:{name:'Fortified',rank:2,rate:.12,counter:'wardReleasesFromHexDeath',target:2,hexAdd:.04,wardReduction:2,description:'Hex 확률 +4%p · Ward 피해감소2 · Hex 사망 Ward2해제'},
+    unstableCore:{name:'Unstable Core',rank:3,rate:.15,counter:'reactorStageWaveExecuted',target:3,alternateCounter:'ancientKills',alternateTarget:1,reactorMultiplier:1.5,ancientMultiplier:3,description:'Reactor ×1.5/Rank4 Ancient ×3 (상한 유지) · 실제 Reactor파동3 또는 Ancient1파괴'}
+  },
+  costGrowth: 1.6, saveVersion: 5, storageKey: 'shard-storm-v1', historyLimit: 20,
   dev: { grant: 1000, minDuration: 1, maxDuration: 90 },
   options: { oreEnabled:true,inheritance: true, ricochet: true, sequentialPropagation: true, visualVariety: true, damageVFX: true, sound: false, comboFeedback: true, modifiers: true, modifierVisuals: true, motionEnabled: true, refineryEnabled: true }
 };

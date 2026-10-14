@@ -12,7 +12,7 @@ export function makeShard(run, x, y, angle, source, chainId, depth, small = fals
 // The game chooses the earliest collision/event boundary before advancing time.
 export function traceShard(run, shard, budget) {
   const A = C.arena, p = { x: shard.x, y: shard.y, vx: shard.vx, vy: shard.vy, angle: shard.angle, bounces: shard.bounces };
-  let remaining = budget, travelled = 0, firstLeg = true;
+  let remaining = budget, travelled = 0, firstLeg = true, wallBounces=0;
   while (remaining > 1e-9 || firstLeg) {
     firstLeg = false;
     const ux = p.vx / C.shard.speed, uy = p.vy / C.shard.speed;
@@ -31,15 +31,15 @@ export function traceShard(run, shard, budget) {
       } else t = segmentCircle(p.x, p.y, nx, ny, target.x, target.y, target.radius + C.shard.radius);
       if (t !== null && t < first && (target.vulnerableAt || 0) <= run.elapsed + (travelled + distance * t) / C.shard.speed + 1e-9) { first = t; hit = target; }
     }
-    if (hit) { p.x += ux * distance * first; p.y += uy * distance * first; return { ...p, distance: travelled + distance * first, hit, wallDead: false }; }
+    if (hit) { p.x += ux * distance * first; p.y += uy * distance * first; return { ...p, distance: travelled + distance * first, hit, wallDead: false,wallBounces }; }
     p.x = nx; p.y = ny; travelled += distance; remaining -= distance;
     if (wall <= distance + 1e-9) {
-      if (p.bounces <= 0 || !run.options.ricochet) return { ...p, distance: travelled, hit: null, wallDead: true };
-      p.bounces--;
+      if (p.bounces <= 0 || !run.options.ricochet) return { ...p, distance: travelled, hit: null, wallDead: true,wallBounces };
+      p.bounces--;wallBounces++;
       if (Math.abs(wallX - wall) < 1e-7) p.vx *= -1;
       if (Math.abs(wallY - wall) < 1e-7) p.vy *= -1;
       p.angle = Math.atan2(p.vy, p.vx);
     } else break;
   }
-  return { ...p, distance: travelled, hit: null, wallDead: false };
+  return { ...p, distance: travelled, hit: null, wallDead: false,wallBounces };
 }

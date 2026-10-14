@@ -9,6 +9,8 @@ import { drawRefinery } from './refinery.js';
 import { EconomySandbox, buildPresets } from './economy.js';
 import { emptyLevels } from './progression.js';
 import { discoveryView } from './discovery.js';
+import { craftRelic,equipRelic } from './relics.js';
+import { renderRelics } from './relic-ui.js';
 const $ = id => document.getElementById(id), canvas = $('game'), ctx = canvas.getContext('2d');
 let storage; try { storage = window.localStorage; } catch { storage = { getItem() { return null; }, setItem() { throw new Error('Unavailable'); } }; }
 let save = loadSave(storage), game = null, last = null, accumulator = 0, fps = 60, manualPause = false, previousBest = {}, audio = null, selectedSkill = 'crushPower', lastSoundAt = -Infinity, voices = 0;
@@ -43,7 +45,7 @@ function tone(type) {
 function start(seed = C.seed, duration) {
   if (game?.state === 'RESULT' && !game.settled) finishRefinery();
   if (resultEnteredAt !== null && save.lastRuns.at(-1)?.runId === game?.runId) { save.lastRuns.at(-1).resultScreenSeconds = (performance.now() - resultEnteredAt) / 1000; persist(); }
-  previousBest = { ...save.bestStats }; game = new Game({ seed, duration, runId: crypto.randomUUID(), levels: save.levels, options: save.options,discoveryRank:save.discoveryRank,welcomeFlags:save.milestoneWelcomeFlags,oreEnabled:save.options.oreEnabled,sandbox: Boolean(sandboxSession), tierPreset: sandboxSession ? $('tier-preset').value : 'v09_short', experiment: sandboxSession ? $('spawn-preset').value : 'baseline' }); game.onEvent = tone;
+  previousBest = { ...save.bestStats }; game = new Game({ seed, duration, runId: crypto.randomUUID(), levels: save.levels,relicLoadout:save.relicEquipped, options: save.options,discoveryRank:save.discoveryRank,welcomeFlags:save.milestoneWelcomeFlags,oreEnabled:save.options.oreEnabled,sandbox: Boolean(sandboxSession), tierPreset: sandboxSession ? $('tier-preset').value : 'v09_short', experiment: sandboxSession ? $('spawn-preset').value : 'baseline' }); game.onEvent = tone;
   refineryStartedAt = null; resultEnteredAt = null; $('rank-banner').hidden=true;rankBannerShownId=null;
   manualPause = false; accumulator = 0; last = null;
   $('title').hidden = true; $('result').hidden = true; $('paused').hidden = true; $('pause').hidden = false; $('pause').textContent = '일시정지';
@@ -73,6 +75,7 @@ function finishRefinery(skipped = false) {
   settle(save, game); persist(); if(save.discoveryRank>game.discoveryRank&&rankBannerShownId!==game.runId){rankBannerShownId=game.runId;$('rank-banner').textContent=`DISCOVERED · RANK ${save.discoveryRank} · 다음 Run부터 새 콘텐츠`;$('rank-banner').hidden=false;} $('result').classList.remove('processing'); $('refinery-canvas').hidden = true; $('refinery-skip').hidden = true; renderUpgrades();
 }
 function renderUpgrades() {
+  renderMeta();
   const discovery = discoveryView(save);
   $('discovery').textContent = `Discovery Rank ${discovery.rank} — ${discovery.destroyed.toLocaleString()}${discovery.next ? ` / ${discovery.next.threshold.toLocaleString()}` : ' · MAX RANK'} destroyed · Catalyst ${save.catalystBalance || 0}`;
   $('discovery-progress').value = discovery.progress;
@@ -82,6 +85,7 @@ function renderUpgrades() {
   $('time-note').textContent = save.legacyExtraTimeLevel && !save.timeRespecUsed ? `60~90초 → 20~32초. Extra Time은 Lv당 +2초이며 보유 Lv.${save.levels.extraTime}은 유지됩니다.` : `확인 가능한 과거 기록 ${save.knownHistoryKills || 0}킬 · 새 누적 파괴와 별도 보존`;
   $('time-refund').hidden = !save.legacyExtraTimeLevel || save.timeRespecUsed; $('time-refund').disabled = !game?.settled;
 }
+function renderMeta(){const state=game?.state||'TITLE';for(const id of ['relic-start','relic-result'])renderRelics($(id),save,{state,craft:key=>{if(game?.settled&&craftRelic(save,key,state)){persist();renderUpgrades();}},equip:(key,slot)=>{if(equipRelic(save,key,slot,state)){persist();renderMeta();}}});}
 function setOption(key, value) {
   if (key === 'refineryEnabled'||key==='oreEnabled') enterSandbox();
   save.options[key] = value;
@@ -91,6 +95,7 @@ function setOption(key, value) {
 function syncOptions() { for (const key of Object.keys(C.options)) $(`option-${key}`).checked = save.options[key]; $('sound').textContent = save.options.sound ? 'SOUND ON' : 'SOUND OFF'; }
 for (const [key, label] of Object.entries({ oreEnabled:'Ore · 희귀 원석 (실험)',motionEnabled: 'Motion · 회전 / 드리프트', refineryEnabled: 'Refinery · 슬롯 가공 (실험)', modifiers: 'Modifiers · 파손 / 충전', modifierVisuals: 'Modifier Marks · 변종 표식', comboFeedback: 'Combo Feedback · 연쇄 강조', sequentialPropagation: 'Sequential Propagation · 순차 전파', visualVariety: 'Visual Variety · 도형 다양성', inheritance: 'Inheritance · 효과 계승', ricochet: 'Ricochet · 벽 반사', damageVFX: 'Damage VFX · 손상 조각', sound: 'Sound · 합성 사운드' })) { const el = document.createElement('label'), input = document.createElement('input'); input.type = 'checkbox'; input.id = `option-${key}`; input.onchange = () => setOption(key, input.checked); el.append(input, document.createTextNode(label)); $('options').append(el); }
 syncOptions();
+renderMeta();
 persist(); // v1/v2 → v3 migration and pending settlement recovery.
 $('seed').value = C.seed; $('duration').min = C.dev.minDuration; $('duration').max = C.dev.maxDuration; $('grant').textContent = `테스트 Photon +${C.dev.grant}`;
 $('start').onclick = () => start(); $('again').onclick = () => start(); $('sound').onclick = () => setOption('sound', !save.options.sound);
@@ -119,7 +124,7 @@ $('grant').onclick = () => { enterSandbox(); save.bank += C.dev.grant; if (game?
 $('economy-preset').onchange = () => { if (sandboxSession) { sandboxSession.preset = $('economy-preset').value; if (game?.state === 'RESULT') renderUpgrades(); } };
 $('reset').onclick = () => { if (confirm('영구 강화, 광자, 플레이 기록을 모두 초기화할까요?')) { save = freshSave(); if (sandboxSession) { save.sandbox = true; sandboxSession.save = save; } else liveSave = save; persist(); syncOptions(); game = null; $('title').hidden = false; $('result').hidden = true; $('paused').hidden = true; $('pause').hidden = true; } };
 $('copy').onclick = async () => { const data = JSON.stringify({ current: game?.record() || null, lastRuns: save.lastRuns }, null, 2); try { await navigator.clipboard.writeText(data); $('notice').textContent = 'Run JSON을 복사했습니다.'; } catch { $('notice').textContent = '클립보드 접근이 제한되어 JSON 파일로 저장합니다.'; const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'application/json' })); a.download = 'shard-storm-runs.json'; a.click(); URL.revokeObjectURL(a.href); } };
-$('export-save').onclick = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(liveSave, null, 2)], { type: 'application/json' })); a.download = 'shard-storm-save-v4.json'; a.click(); URL.revokeObjectURL(a.href); };
+$('export-save').onclick = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(liveSave, null, 2)], { type: 'application/json' })); a.download = 'shard-storm-save-v5.json'; a.click(); URL.revokeObjectURL(a.href); };
 function frame(now) {
   if (last !== null) {
     const delta = Math.max(0, (now - last) / 1000); if (delta > 0 && delta < 1) fps = fps * .95 + Math.min(240, 1 / delta) * .05;
@@ -144,4 +149,4 @@ function frame(now) {
 }
 requestAnimationFrame(frame);
 // Read-only snapshot for browser QA; gameplay still runs through real pointer input.
-window.shardStorm = { snapshot: () => ({ state: game?.state || 'TITLE', paused: game?.paused || false, remaining: game?.remaining, elapsed: game?.elapsed, fps, record: game?.record(), combo: game?.options.comboFeedback ? game?.combo.visible(game.elapsed) : null, audioVoices: voices, shapes: game?.alive.map(s => ({ id: s.id, type: s.type,oreGrade:s.oreGrade,wardSourceId:s.wardSourceId,shieldBroken:s.shieldBroken,channelUntil:s.channelUntil,angle: s.angle, anchorX: s.anchorX, anchorY: s.anchorY, motionProfile: s.motion.profile, modifier: s.modifier, maxHP: s.maxHP, x: s.x, y: s.y, hp: s.hp, grace: s.grace, enhanced: s.enhanced, radius: s.radius, material: s.appearance.material, pattern: s.appearance.pattern })) || [], waves: game?.waves.map(w => ({ radius: w.radius, maxRadius: w.maxRadius, source: w.sourceKind })) || [], scheduled: game?.queue.length || 0, clickRings: game?.clickVFX.items.length || 0, bank: save.bank, levels: { ...save.levels }, derivedStats: getDerivedStats(save.levels), options: { ...save.options }, saveVersion: save.saveVersion, sandbox: Boolean(sandboxSession), sandboxEconomy: sandboxSession?.preset, refinery: game?.refinery, pendingSettlement: save.pendingSettlement, totalRuns: save.totalRuns, lifetimeDestroyed: save.lifetimeDestroyed,discoveryRank:save.discoveryRank,catalystBalance:save.catalystBalance,milestoneWelcomeFlags:save.milestoneWelcomeFlags,settled: game?.settled }) };
+window.shardStorm = { snapshot: () => ({ state: game?.state || 'TITLE', paused: game?.paused || false, remaining: game?.remaining, elapsed: game?.elapsed, fps, record: game?.record(), combo: game?.options.comboFeedback ? game?.combo.visible(game.elapsed) : null, audioVoices: voices, shapes: game?.alive.map(s => ({ id: s.id, type: s.type,oreGrade:s.oreGrade,wardSourceId:s.wardSourceId,shieldBroken:s.shieldBroken,channelUntil:s.channelUntil,angle: s.angle, anchorX: s.anchorX, anchorY: s.anchorY, motionProfile: s.motion.profile, modifier: s.modifier, maxHP: s.maxHP, x: s.x, y: s.y, hp: s.hp, grace: s.grace, enhanced: s.enhanced, radius: s.radius, material: s.appearance.material, pattern: s.appearance.pattern })) || [], waves: game?.waves.map(w => ({ radius: w.radius, maxRadius: w.maxRadius, source: w.sourceKind })) || [], scheduled: game?.queue.length || 0, clickRings: game?.clickVFX.items.length || 0, bank: save.bank, levels: { ...save.levels }, derivedStats: getDerivedStats(save.levels), options: { ...save.options }, saveVersion: save.saveVersion, relicOwned:[...save.relicOwned],relicEquipped:[...save.relicEquipped],relicAchievements:{...save.relicAchievements},relicBlueprintUnlocked:[...save.relicBlueprintUnlocked],sandbox: Boolean(sandboxSession), sandboxEconomy: sandboxSession?.preset, refinery: game?.refinery, pendingSettlement: save.pendingSettlement, totalRuns: save.totalRuns, lifetimeDestroyed: save.lifetimeDestroyed,discoveryRank:save.discoveryRank,catalystBalance:save.catalystBalance,milestoneWelcomeFlags:save.milestoneWelcomeFlags,settled: game?.settled }) };

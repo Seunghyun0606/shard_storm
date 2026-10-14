@@ -1,5 +1,6 @@
 import { CONFIG as C } from './config.js';
 import { poseAt } from './motion.js';
+import { count,releaseWard } from './run-metrics.js';
 const normal = s => !C.shapes[s.type].special;
 export function specialType(game) {
   const tier=game.highestTier,roll=game.specialRng();let cursor=0;
@@ -25,14 +26,14 @@ export function shieldDamage(game,s,damage,cause) {
   return damage;
 }
 export function cleanupWards(game,all=false) {
-  for(const s of game.shapes)if(all||s.destroyed||(s.wardExpiresAt!==undefined&&game.simulationTime>=s.wardExpiresAt-1e-9)){delete s.wardSourceId;delete s.wardExpiresAt;}
+  for(const s of game.shapes)if(all||s.destroyed||(s.wardExpiresAt!==undefined&&game.simulationTime>=s.wardExpiresAt-1e-9)){if(!all&&!s.destroyed&&s.wardDeathOrigin)releaseWard(game,s,s.wardDeathOrigin,'death-failsafe');else{delete s.wardSourceId;delete s.wardExpiresAt;delete s.wardDeathOrigin;}}
 }
 export function hexDeath(game,s,cause) {
   const W=C.specialEffects.ward,children=game.alive.filter(t=>t.wardSourceId===s.id);
-  for(const t of children)t.wardExpiresAt=game.simulationTime+W.failsafe;
-  const child={...cause,source:'ward-release',depth:cause.depth+1,wardRelease:s.id};
+  for(const t of children){t.wardExpiresAt=game.simulationTime+W.failsafe;t.wardDeathOrigin=s;}
+  const child={...cause,source:'ward-release',depth:cause.depth+1,wardRelease:s.id,wardOrigin:s};
   game.scheduleEffect(()=>game.area(s,W.radius,0,child,C.shapes.hex.color),child,W.releaseDelay);
-  game.scheduleEffect(()=>{for(const t of children)if(t.wardSourceId===s.id){delete t.wardSourceId;delete t.wardExpiresAt;}},child,W.failsafe);
+  game.scheduleEffect(()=>{for(const t of children)if(t.wardSourceId===s.id)releaseWard(game,t,s,'death-failsafe');},child,W.failsafe);
 }
 export function specialPlan(game,forceCluster) {
   if(game.discoveryRank<2||game.contentMode!=='M5_M6_ON'||!forceCluster)return null;
@@ -57,11 +58,14 @@ export function healthStages(game,s,previous,cause) {
   for(const [i,hp]of thresholds.entries())if(previous>hp&&s.hp<=hp&&!s.stages.has(i)){
     s.stages.add(i);const at={...game.positionAt(s,game.simulationTime),id:s.id},child={...cause,depth:cause.depth+1,source:s.type,stageIndex:i+1,originShapeId:s.id};
     const cfg=s.type==='reactor'?C.specialEffects.reactor[i]:C.specialEffects.ancient;
-    game.stageEvents.push({shapeId:s.id,type:s.type,stageIndex:i+1,at:game.simulationTime,scheduledAt:game.simulationTime+cfg.delay,chainId:cause.chainId});
+    const governor=s.type==='reactor'&&game.relicLoadout.includes('reactorGovernor'),delay=cfg.delay+(governor?C.relics.reactorGovernor.delayPenalty:0);
+    game.stageEvents.push({shapeId:s.id,type:s.type,stageIndex:i+1,at:game.simulationTime,scheduledAt:game.simulationTime+delay,chainId:cause.chainId});
     game.scheduleEffect(()=>{
       if(s.type==='ancient')for(let n=0;n<cfg.shards;n++)game.emitAux(at,at.angle+n*Math.PI,child,'ancient-fragment',cfg.shardDamage,cfg.shardRange);
-      game.area(at,cfg.radius,cfg.damage,child,C.shapes[s.type].color,s.id);
-    },child,cfg.delay);
+      if(s.type==='ancient'&&game.relicLoadout.includes('ancientResonator')){const r=C.relics.ancientResonator;const p=game.emitAux(at,at.angle+Math.PI/2,{...child,relicId:'ancientResonator'},'relic-ancient',r.damage,r.range);if(p){p.relicId='ancientResonator';game.relicActivations.ancientResonator=(game.relicActivations.ancientResonator||0)+1;}}
+      const wave=game.area(at,cfg.radius,cfg.damage+(governor?C.relics.reactorGovernor.damage:0),{...child,relicId:governor?'reactorGovernor':undefined},C.shapes[s.type].color,s.id);
+      if(wave&&s.type==='reactor'){count(game,'reactorStageWaveExecuted',1,{eventType:'stageWaveExecuted',sourceShapeId:s.id,stageIndex:i+1,chainId:cause.chainId});if(governor)game.relicActivations.reactorGovernor=(game.relicActivations.reactorGovernor||0)+1;}
+    },{...child,relicId:governor?'reactorGovernor':undefined},delay);
   }
 }
 export function ancientDeath(game,s,cause){
