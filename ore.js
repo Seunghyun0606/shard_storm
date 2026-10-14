@@ -11,5 +11,7 @@ export function dropOre(game, shape, cause) {
   if(shape.oreDropped)return;shape.oreDropped=true;
   const grade=shape.oreGrade||'common',ore=C.ore[grade];game.oreKills[grade]++;
   game.rewardExtra(ore.raw,'ore',shape,cause);game.pendingCatalyst+=ore.catalyst;
+  if(grade==='core'&&game.levels.rareSeparator){game.rewardExtra(40*game.levels.rareSeparator,'skill',shape,{...cause,triggeredBySkill:'rareSeparator'});game.skillActivations.rareSeparator=(game.skillActivations.rareSeparator||0)+1;
+    if(game.levels.rareSeparator>=2&&!game.firstCoreBonus){game.firstCoreBonus=true;game.pendingCatalyst++;game.rewardLog.push({at:game.simulationTime,shapeId:shape.id,chainId:cause.chainId,damageSource:cause.source,kind:'catalyst:rareSeparator',amount:1});}}
   if(ore.catalyst)game.rewardLog.push({at:game.simulationTime,shapeId:shape.id,chainId:cause.chainId,damageSource:cause.source,oreGrade:grade,kind:'catalyst:ore',amount:ore.catalyst});
 }

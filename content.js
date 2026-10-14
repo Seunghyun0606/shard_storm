@@ -67,3 +67,25 @@ export function ancientDeath(game,s,cause){
  if(s.type!=='ancient'||s.ancientRewarded)return;s.ancientRewarded=true;game.pendingCatalyst+=C.specialEffects.ancient.catalyst;
  game.rewardLog.push({at:game.simulationTime,shapeId:s.id,chainId:cause.chainId,damageSource:cause.source,kind:'catalyst:ancient',amount:C.specialEffects.ancient.catalyst});
 }
+export function skillKill(game,s,cause) {
+  const child={...cause,depth:cause.depth+1};
+  if(game.levels.precisionFracture&&s.modifier==='cracked'&&cause.source==='direct'){
+    const lv=game.levels.precisionFracture,skill='precisionFracture';game.rewardExtra(10*lv,'skill',s,{...cause,triggeredBySkill:skill});
+    game.skillEffect(skill,()=>{for(let i=0;i<lv+1;i++)game.emitAux(s,s.angle+i*Math.PI*2/(lv+1),{...child,triggeredBySkill:skill},skill,1,60);},child);
+  }
+  if(game.levels.fragmentRelay&&cause.small===false&&['triangle','pentagon'].includes(cause.source)){
+    const chain=game.chains.get(cause.chainId),lv=game.levels.fragmentRelay;
+    if((chain.relayCount||0)<4){chain.relayCount=(chain.relayCount||0)+1;game.skillEffect('fragmentRelay',()=>game.emitAux(s,cause.angle,{...child,triggeredBySkill:'fragmentRelay'},'relay',lv,lv===1?80:90),child);}
+  }
+  if(s.channelUntil>=game.simulationTime&&cause.source==='direct')game.skillEffect('catalystChannel',()=>{for(let i=0;i<2;i++)game.emitAux(s,s.angle+i*Math.PI,{...child,triggeredBySkill:'catalystChannel'},'channel-fragment',1,70);},child);
+}
+export function skillWaveContact(game,s,cause,wave) {
+  if(game.levels.resonanceLayer&&cause.source==='reactor'&&s.modifier==='charged'&&wave&&(wave.resonanceCount||0)<2){
+    wave.resonanceCount=(wave.resonanceCount||0)+1;const origin={...game.positionAt(s,game.simulationTime)},child={...cause,source:'resonance',depth:cause.depth+1,triggeredBySkill:'resonanceLayer'};
+    game.skillEffect('resonanceLayer',()=>game.area(origin,40+10*game.levels.resonanceLayer,1,child,'#ffad73'),child,.08);
+  }
+  if(game.levels.catalystChannel&&cause.source==='ancient'&&normal(s)){
+    const id=cause.originShapeId,count=game.channelCounts.get(id)||0,marked=game.channelTargets.get(id)||new Set();
+    if(count<2&&!marked.has(s.id)){marked.add(s.id);game.channelTargets.set(id,marked);game.channelCounts.set(id,count+1);s.channelUntil=game.simulationTime+1;s.channelOrigin=id;game.skillActivations.channelMarks=(game.skillActivations.channelMarks||0)+1;}
+  }
+}

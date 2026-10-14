@@ -10,6 +10,7 @@ import { skillDefinitions, skillState, skillCost } from '../skill-tree.js';
 import { planRefinery } from '../refinery.js';
 import { poseAt } from '../motion.js';
 import { specialType, specialPlan, applyTether } from '../content.js';
+import { skillWaveContact } from '../content.js';
 const emptyGameM6=(opts={})=>{const g=new Game({...opts,options:{motionEnabled:false,...opts.options}});g.shapes=[];g.spawn=()=>null;return g;};
 const hit=(g,s,damage,source='direct',extra={})=>{const c={source,chainId:g.newChain(),depth:0,...extra};g.enqueue(s,damage,c);g.flush();return c;};
 const step=(g,t)=>{for(let i=0;i<Math.ceil(t/C.step);i++)g.update(C.step);};
@@ -69,4 +70,33 @@ test('M6 Reactor 12→6 once, 12→0 emits .03 and .11 sequential waves; deadlin
 test('M6 Ancient multi-threshold effects ordered once, no premature bonus, final Catalyst additive',()=>{
  const g=emptyGameM6(),s=g.addShape('ancient',400,300,0,false,0);s.oreGrade='void';hit(g,s,23);assert.deepEqual(g.stageEvents.map(e=>e.stageIndex),[1,2,3]);assert.equal(s.hp,7);assert.equal(g.pendingCatalyst,0);assert.equal(g.rawBase,23);step(g,.04);assert.equal(g.shards.length,6);assert.equal(g.waves.length,3);assert.ok(g.shards.every(p=>p.small&&p.damage===1&&p.range===90));hit(g,s,99);assert.equal(g.pendingCatalyst,4);assert.equal(g.rawBase,150);assert.equal(g.rawOreBonus,180);assert.equal(g.stageEvents.length,3);
  const a=new Game({discoveryRank:4});a.totalDestroyed=200;a.unlock();a.specialRng=()=>.095;assert.equal(specialType(a),'ancient');a.specialSpawns.ancient=2;assert.equal(specialType(a),null);
+});
+test('M6 Precision direct-final Cracked only, lv1/2 exact nonrecursive shards and Raw',()=>{
+ for(const lv of [1,2])for(const source of ['direct','triangle']){const g=emptyGameM6({levels:{precisionFracture:lv}}),s=g.addShape('square',400,300,0,false,0,'cracked');hit(g,s,99,source);assert.equal(g.rawSkillBonus,source==='direct'?10*lv:0);step(g,.04);const p=g.shards.filter(s=>s.source==='precisionFracture');assert.equal(p.length,source==='direct'?lv+1:0);assert.ok(p.every(s=>s.small&&s.damage===1&&s.range===60&&s.bounces===0&&!s.split));}
+});
+test('M6 Rare Separator Core-only +40/80, first Core extra Catalyst once per Run',()=>{
+ for(const lv of [1,2]){const g=emptyGameM6({levels:{rareSeparator:lv}});for(let i=0;i<2;i++){const s=g.addShape('square',200+i*200,300,0,false,0);s.oreGrade='core';hit(g,s,99);}assert.equal(g.rawSkillBonus,80*lv);assert.equal(g.pendingCatalyst,lv===1?2:3);}
+});
+test('M6 Fragment Relay primary final kills only; four per chain; lv1/2 and auxiliaries cannot recur',()=>{
+ for(const lv of [1,2]){const g=emptyGameM6({levels:{fragmentRelay:lv}}),chainId=g.newChain();for(let i=0;i<6;i++){const s=g.addShape('square',200+i*70,300,0,false,0);hit(g,s,99,'triangle',{small:false,angle:0,chainId});}assert.equal(g.skillActivations.fragmentRelay,4);step(g,.04);const relay=g.shards.filter(s=>s.source==='relay');assert.equal(relay.length,4);assert.ok(relay.every(s=>s.damage===lv&&s.range===(lv===1?80:90)&&!s.split&&s.bounces===0));const n=g.addShape('square',300,450,0,false,0);hit(g,n,99,'relay',{small:true,chainId});assert.equal(g.skillActivations.fragmentRelay,4);const m=g.addShape('square',400,450,0,false,0);hit(g,m,99,'pentagon',{small:true});assert.equal(g.skillActivations.fragmentRelay,4);}
+});
+test('M6 Kinetic primary range uses original actual rotation, auxiliary/waves/static unaffected',()=>{
+ for(const lv of [1,2])for(const rotating of [true,false]){const g=emptyGameM6({levels:{kineticReach:lv},options:{motionEnabled:true}}),s=g.addShape('triangle',400,300,0,false,0);s.motion.rotationRate=rotating?.2:0;s.motion.startAt=0;g.emitNative(s,{chainId:g.newChain(),depth:0});assert.ok(g.shards.every(p=>p.range===180+(rotating?30*lv:0)));const aux=g.emitAux(s,0,{chainId:g.newChain(),depth:0},'relay',1,80);assert.equal(aux.range,80);}
+});
+test('M6 Resonance Reactor→Charged only, delay .08, 50/60px, max2 per wave and no recursive aftershocks',()=>{
+ for(const lv of [1,2]){const g=emptyGameM6({levels:{resonanceLayer:lv}}),wave={},cause={source:'reactor',depth:0,chainId:g.newChain()};for(let i=0;i<3;i++){const s=g.addShape('square',200+i*100,300,0,false,0);s.modifier='charged';skillWaveContact(g,s,cause,wave);}assert.equal(g.skillActivations.resonanceLayer,2);step(g,.066);assert.equal(g.waves.length,0);step(g,.017);assert.equal(g.waves.length,2);assert.ok(g.waves.every(w=>w.damage===1&&w.maxRadius===40+10*lv));skillWaveContact(g,g.alive[0],{...cause,source:'resonance'},{});assert.equal(g.skillActivations.resonanceLayer,2);}
+});
+test('M6 Salvage Scanner exact unlocked probabilities, cosmetic-independent and statistically sampled',()=>{
+ assert.deepEqual(oreChances(2,2),{prism:.08,core:.03,void:0});assert.deepEqual(oreChances(4,2),{prism:.08,core:.03,void:.007});
+ const a=new Game({seed:99,discoveryRank:4,levels:{salvageScanner:2}}),b=new Game({seed:99,discoveryRank:4,levels:{salvageScanner:2},options:{visualVariety:false,modifierVisuals:false}});assert.deepEqual(a.alive.map(s=>s.oreGrade),b.alive.map(s=>s.oreGrade));
+ const counts={common:0,prism:0,core:0,void:0};for(let i=0;i<100000;i++)counts[rollOre((i+.5)/100000,4,2)]++;assert.deepEqual(counts,{common:88300,prism:8000,core:3000,void:700});
+});
+test('M6 Channel max2 marks per Ancient across all stages, expires1s; direct kill releases2 once',()=>{
+ const g=emptyGameM6({levels:{catalystChannel:1}}),cause={source:'ancient',originShapeId:77,depth:0,chainId:g.newChain()},targets=[];
+ for(let i=0;i<3;i++){const s=g.addShape('square',200+i*100,300,0,false,0);targets.push(s);skillWaveContact(g,s,cause,{});}assert.equal(g.channelCounts.get(77),2);assert.equal(targets[0].channelUntil,1);assert.equal(targets[2].channelUntil,undefined);
+ hit(g,targets[0],99);step(g,.04);assert.equal(g.shards.filter(p=>p.source==='channel-fragment').length,2);assert.ok(g.shards.filter(p=>p.source==='channel-fragment').every(p=>p.range===70&&p.damage===1&&!p.split));step(g,1);hit(g,targets[1],99);assert.equal(g.skillActivations.catalystChannel,1);
+});
+test('M6 new stage/skill schedules respect chain events/depth/queue/shard caps and zero-time cleanup',()=>{
+ const g=emptyGameM6({levels:{precisionFracture:2}}),chainId=g.newChain();g.chains.get(chainId).events=C.caps.events;assert.equal(g.skillEffect('precisionFracture',()=>{}, {source:'direct',chainId,depth:1}),false);assert.equal(g.capCounts.chainEvents,1);
+ g.emitAux({x:300,y:300},0,{chainId,depth:11},'relay',1,80);assert.equal(g.shards.length,0);assert.equal(g.capCounts.depth,1);g.update(20);assert.equal(g.queue.length,0);assert.equal(g.shards.length,0);
 });

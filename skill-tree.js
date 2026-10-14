@@ -49,7 +49,15 @@ export function describeSkill(key, levels) {
     impactPulse: s.impactEnabled ? `반경 ${s.impactRadius}px · 피해 ${s.impactDamage}` : '직접 타격 추가 파동 없음',
     shardPower: `주 파편 피해 ${s.triangleDamage}`, shardRange: `최대 ${s.shardRange}px`, ricochetPlus: `벽 반사 ${s.bounces}회`,
     shardBloom: `삼각 ${s.triangleCount} / 오각 ${s.pentagonCount} 파편`, chainAmplifier: `사각 ${s.squareDamage} / ${s.squareRadius}px · 별 ${s.starDamage} / ${s.starRadius}px`,
-    echoCatalyst: `계승 피해 ${s.inheritanceDamage}`, extraTime: `${s.duration}초`, photonBoost: `파괴 보너스 ×${s.bonusMultiplier.toFixed(2)} (올림)`
+    echoCatalyst: `계승 피해 ${s.inheritanceDamage}`, extraTime: `${s.duration}초`, photonBoost: `파괴 보너스 ×${s.bonusMultiplier.toFixed(2)} (올림)`,
+    precisionFracture: `Cracked 직접 최종타: Raw +${10*(levels[key]||0)} · 파편 ${(levels[key]||0)?(levels[key]||0)+1:0}개 / 피해1 / 60px · 재유발 없음`,
+    yieldStabilizer: (levels[key]||0)>=2?'원래 ×.8→1 / ×1→1.1':levels[key]?'원래 ×.8→1':'슬롯 보정 없음',
+    rareSeparator: `Core Raw +${40*(levels[key]||0)} · 첫 Core 추가 Catalyst ${(levels[key]||0)>=2?1:0}/Run`,
+    fragmentRelay: `주 파편 최종타: 피해${levels[key]||0} / ${(levels[key]||0)===2?90:80}px · 최대4/Chain · 재귀/반사 없음`,
+    kineticReach: `회전 원본 주 파편 거리 +${30*(levels[key]||0)}px · 추적/파동 미적용`,
+    resonanceLayer: `Reactor→Charged: .08초 뒤 피해1 / ${40+10*(levels[key]||0)}px · 최대2/파동 · 재귀 없음`,
+    salvageScanner: `첫1초 희귀 강조 · Core +${.5*(levels[key]||0)}%p · Rank4 Void +${.1*(levels[key]||0)}%p`,
+    catalystChannel: levels[key]?'Ancient 단계당 최초2 일반 도형 표식1초 · 직접 파괴 파편2/피해1/70px · 재귀 없음':'Channel 표식 없음'
   };
   return descriptions[key] || '';
 }
