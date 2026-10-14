@@ -29,7 +29,7 @@ for(const build of ['Baseline','ExtraTime','PhotonBoost','UtilityMax']){
 console.log('20s mechanics and Utility comparisons complete.');
 const growth=[];
 for(const profile of ['fresh','legacy_max']) for(const strategy of ['Crusher','Cascade','Reactor']) for(const seed of seeds){
-  const source=freshSave();if(profile==='legacy_max'){source.bank=10000;source.levels=Object.fromEntries(Object.entries(C.upgrades).map(([k,v])=>[k,v.max]));source.knownHistoryKills=1000;}
+  const source=freshSave();if(profile==='legacy_max'){source.bank=10000;source.levels=Object.fromEntries(Object.entries(C.upgrades).map(([k,v])=>[k,v.rank?0:v.max]));source.knownHistoryKills=1000;}
   const save={...structuredClone(source),sandbox:true},runs=[];let purchases=0;
   for(let index=1;index<=10;index++){
     const before=save.bank,r=simulate({seed,levels:{...save.levels},duration:20+save.levels.extraTime*2,runId:`${profile}-${strategy}-${seed}-${index}`});

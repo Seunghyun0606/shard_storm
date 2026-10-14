@@ -57,13 +57,13 @@ export function describeSkill(key, levels) {
     kineticReach: `회전 원본 주 파편 거리 +${30*(levels[key]||0)}px · 추적/파동 미적용`,
     resonanceLayer: `Reactor→Charged: .08초 뒤 피해1 / ${40+10*(levels[key]||0)}px · 최대2/파동 · 재귀 없음`,
     salvageScanner: `첫1초 희귀 강조 · Core +${.5*(levels[key]||0)}%p · Rank4 Void +${.1*(levels[key]||0)}%p`,
-    catalystChannel: levels[key]?'Ancient 단계당 최초2 일반 도형 표식1초 · 직접 파괴 파편2/피해1/70px · 재귀 없음':'Channel 표식 없음'
+    catalystChannel: levels[key]?'Ancient당 최초2 일반 도형 표식1초 · 직접 파괴 파편2/피해1/70px · 재귀 없음':'Channel 표식 없음'
   };
   return descriptions[key] || '';
 }
 // The same definitions drive every node, edge, prerequisite label and purchase.
 export function renderSkillTree(container, info, save, selected, onSelect, onBuy, stateFor = skillState) {
-  const width = 896, rowHeight = 86, nodeWidth = 174, nodeHeight = 62;
+  const width = 1120, rowHeight = 86, nodeWidth = 174, nodeHeight = 62;
   const position = node => ({ x: 112 + node.position.col * 224, y: 126 + (node.position.row - 1) * rowHeight });
   const height = Math.max(...skillDefinitions.map(n => position(n).y)) + 58;
   const graph = document.createElement('div'); graph.className = 'skill-graph'; graph.style.width = `${width}px`; graph.style.height = `${height}px`;
@@ -84,19 +84,19 @@ export function renderSkillTree(container, info, save, selected, onSelect, onBuy
   }
   graph.append(svg);
   const root = document.createElement('div'); root.className = 'skill-root'; root.textContent = '◈ CORE / ROOT'; graph.append(root);
-  ['DESTROY', 'CASCADE', 'REACTION', 'UTILITY'].forEach((text, col) => { const label = document.createElement('div'); label.className = `branch-label branch-${col}`; label.style.left = `${112 + col * 224}px`; label.textContent = text; graph.append(label); });
+  ['DESTROY', 'CASCADE', 'REACTION', 'UTILITY','REFINERY / LEGACY'].forEach((text, col) => { const label = document.createElement('div'); label.className = `branch-label branch-${col}`; label.style.left = `${112 + col * 224}px`; label.textContent = text; graph.append(label); });
   for (const node of skillDefinitions) {
-    const state = stateFor(node.id, save.levels, save.bank), p = position(node), button = document.createElement('button');
+    const state = stateFor(node.id, save.levels, save.bank,save), p = position(node), button = document.createElement('button');
     button.type = 'button'; button.className = `skill-node ${state.state} ${node.id === selected ? 'selected' : ''}`; button.dataset.skill = node.id; button.dataset.state = state.state; button.setAttribute('aria-pressed', String(node.id === selected));
     button.style.left = `${p.x - nodeWidth / 2}px`; button.style.top = `${p.y - nodeHeight / 2}px`;
-    button.innerHTML = `<strong>${state.state === 'locked' ? '▣ ' : ''}${node.label}</strong><span>Lv.${state.level} / ${node.maxLevel}</span><small>${state.max ? 'MAX' : state.state === 'locked' ? 'LOCKED · 선행조건' : state.state === 'coming' ? 'COMING LATER' : `${state.cost} ◈`}</small>`;
+    button.innerHTML = `<strong>${state.state === 'locked' ? '▣ ' : ''}${node.label}</strong><span>Lv.${state.level} / ${node.maxLevel}</span><small>${state.max ? 'MAX' : state.state === 'locked' ? `LOCKED · Rank${state.requiredRank} / 선행` : state.state === 'coming' ? 'COMING LATER' : `${state.cost} ◈ + ${state.catalystCost} Catalyst`}</small>`;
     button.onclick = () => onSelect(node.id); graph.append(button);
   }
   const scroll = { left: container.scrollLeft, top: container.scrollTop }; container.replaceChildren(graph); container.scrollLeft = scroll.left; container.scrollTop = scroll.top;
-  const node = nodes.get(selected), state = stateFor(selected, save.levels, save.bank);
+  const node = nodes.get(selected), state = stateFor(selected, save.levels, save.bank,save);
   const prerequisites = node.prerequisites.map(p => `${nodes.get(p.id).label} Lv.${p.minLevel}${(save.levels[p.id] || 0) >= p.minLevel ? ' ✓' : ''}`).join(' · ') || '없음';
   const next = state.max ? '최대 레벨' : describeSkill(selected, { ...save.levels, [selected]: state.level + 1 });
-  info.innerHTML = `<div class="skill-info-text"><strong>${node.label} <span>Lv.${state.level} / ${node.maxLevel}</span></strong><p>현재: ${describeSkill(selected, save.levels)} → 다음: ${next}</p><small>선행: ${prerequisites}</small></div>`;
+  info.innerHTML = `<div class="skill-info-text"><strong>${node.label} <span>Lv.${state.level} / ${node.maxLevel}</span></strong><p>현재: ${describeSkill(selected, save.levels)} → 다음: ${next}</p><small>선행: ${prerequisites} · Rank ${state.requiredRank} · Photon ${state.cost} + Catalyst ${state.catalystCost}</small></div>`;
   const buy = document.createElement('button'); buy.id = 'skill-purchase'; buy.dataset.upgrade = selected; buy.disabled = !state.canBuy;
-  buy.textContent = state.max ? 'MAX' : !state.unlocked ? '선행 스킬 필요' : `강화 · ${state.cost} ◈`; buy.onclick = () => onBuy(selected); info.append(buy);
+  buy.textContent = state.max ? 'MAX' : !state.rankMet ? `Rank ${state.requiredRank} 필요` : !state.unlocked ? '선행 스킬 필요' : !state.catalystMet ? `Catalyst ${state.catalystCost} 필요` : `강화 · ${state.cost} ◈`; buy.onclick = () => onBuy(selected); info.append(buy);
 }

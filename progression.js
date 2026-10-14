@@ -38,11 +38,12 @@ export function stageSettlement(save, run) {
 export function completeSettlement(save) {
   const pending = save.pendingSettlement; if (!pending) return false;
   if (save.lastSettlementId === pending.id) { save.pendingSettlement = null; return false; }
+  if(![save.bank+pending.payout,(save.catalystBalance||0)+(pending.catalystPayout||0),(save.lifetimeDestroyed||0)+pending.record.totalDestroyed,(save.totalRuns||0)+1].every(Number.isSafeInteger)){save.pendingSettlement=null;return false;}
   save.bank += pending.payout; save.lastSettlementId = pending.id; save.pendingSettlement = null;
   save.totalRuns = (save.totalRuns || 0) + 1; save.lifetimeDestroyed = (save.lifetimeDestroyed || 0) + pending.record.totalDestroyed;
   save.catalystBalance = (save.catalystBalance || 0) + (pending.catalystPayout || 0);
   updateDiscovery(save);
-  for (const rank of pending.record.welcomeConsumed || []) delete save.milestoneWelcomeFlags[rank];
+  for (const rank of Array.isArray(pending.record.welcomeConsumed)?pending.record.welcomeConsumed:[]) delete save.milestoneWelcomeFlags[rank];
   save.lastRuns = [...save.lastRuns, pending.record].slice(-C.historyLimit);
   for (const key of ['totalDestroyed', 'bestChain', 'photonsEarned']) save.bestStats[key] = Math.max(save.bestStats[key] || 0, pending.record[key]);
   return true;

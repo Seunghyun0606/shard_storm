@@ -25,7 +25,7 @@ export class EconomySandbox {
   constructor(source, preset = 'baseline') { if (!economyPresets[preset]) throw new Error('Unknown economy preset'); this.preset = preset; this.save = { ...structuredClone(source), sandbox: true }; }
   state = (key, levels = this.save.levels, bank = this.save.bank) => economyState(key, levels, bank, this.preset,this.save);
   buy(key, state) {
-    if (state !== 'RESULT' || !C.upgrades[key] || !this.state(key).canBuy) return false;
+    if (state !== 'RESULT' || !C.upgrades[key] || !this.state(key).canBuy || this.save.pendingSettlement) return false;
     this.save.bank -= experimentCost(key, this.save.levels[key], this.preset); this.save.catalystBalance-=this.state(key).catalystCost;this.save.levels[key]++; return true;
   }
 }

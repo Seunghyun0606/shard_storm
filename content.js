@@ -45,7 +45,8 @@ export function specialPlan(game,forceCluster) {
   return{kind:'tether_pair',index:0,anchor:a,points:[{x:x-42,y},{x:x+42,y}],pair:[]};
 }
 export function applyTether(game,plan,s,attempt) {
-  if(plan?.kind!=='tether_pair'||attempt!==0||!normal(s))return;
+  if(plan?.kind!=='tether_pair')return;
+  if(attempt!==0||!normal(s)){if(plan.pair.length===1)plan.pair[0].motion.startAt=game.elapsed;return;}
   plan.pair.push(s);s.motion.profile='tether';s.motion.startAt=Infinity;
   if(plan.pair.length===2){const [a,b]=plan.pair;for(const [i,t]of [a,b].entries())Object.assign(t.motion,{startAt:game.elapsed,ampX:C.motion.maxDrift/2,ampY:0,phaseX:i*Math.PI,phaseY:0,speedX:Math.PI*2/4,speedY:0});game.tetherPairs++;}
 }

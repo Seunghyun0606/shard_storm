@@ -116,5 +116,5 @@ export const CONFIG = {
   ore: { common: { rank: 0, chance: 0, raw: 0, catalyst: 0, symbol: '' }, prism: { rank: 1, chance: .08, raw: 15, catalyst: 0, symbol: '◇' }, core: { rank: 2, chance: .02, raw: 60, catalyst: 1, symbol: '◈' }, void: { rank: 4, chance: .005, raw: 180, catalyst: 2, symbol: '✦' } },
   costGrowth: 1.6, saveVersion: 4, storageKey: 'shard-storm-v1', historyLimit: 20,
   dev: { grant: 1000, minDuration: 1, maxDuration: 90 },
-  options: { inheritance: true, ricochet: true, sequentialPropagation: true, visualVariety: true, damageVFX: true, sound: false, comboFeedback: true, modifiers: true, modifierVisuals: true, motionEnabled: true, refineryEnabled: true }
+  options: { oreEnabled:true,inheritance: true, ricochet: true, sequentialPropagation: true, visualVariety: true, damageVFX: true, sound: false, comboFeedback: true, modifiers: true, modifierVisuals: true, motionEnabled: true, refineryEnabled: true }
 };

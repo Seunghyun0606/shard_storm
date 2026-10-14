@@ -14,7 +14,7 @@ let nextRunId = 1;
 
 export class Game {
   constructor({ seed = C.seed, levels = emptyLevels(), options = C.options, duration, experiment = 'baseline', inputPolicy = 'human', sandbox = false, ruleset = 'v09', tierPreset = 'v09_short', runId, discoveryRank = 0, welcomeFlags = {}, contentMode = 'M5_M6_ON', oreEnabled = true } = {}) {
-    this.discoveryRank = discoveryRank; this.contentMode = ruleset === 'legacy_v08' ? 'V09_ONLY' : contentMode; this.oreEnabled = oreEnabled && this.contentMode !== 'V09_ONLY'; this.welcomeFlags = {...welcomeFlags}; this.welcomeConsumed = [];
+    this.discoveryRank = discoveryRank; this.contentMode = ruleset === 'legacy_v08' ? 'V09_ONLY' : contentMode; this.oreEnabled = oreEnabled && options.oreEnabled!==false && this.contentMode !== 'V09_ONLY'; this.welcomeFlags = {...welcomeFlags}; this.welcomeConsumed = [];
     this.specialRng=seededRNG(seed^0x47bfee);this.patternRng=seededRNG(seed^0x841ac);this.specialSpawns={};this.tetherPairs=0;this.tetherAttempts=0;this.stageEvents=[];
     this.skillActivations={};this.skillEvents=[];this.channelCounts=new Map();this.channelTargets=new Map();
     this.oreRng = seededRNG(seed ^ 0xaec791); this.oreSpawnCounts={common:0,prism:0,core:0,void:0}; this.oreKills={common:0,prism:0,core:0,void:0}; this.pendingCatalyst=0; this.rawBase=0; this.rawOreBonus=0; this.rawSkillBonus=0; this.rewardLog=[];
@@ -139,7 +139,7 @@ export class Game {
     const modifier = this.rollModifier(enhanced);
     const cluster = this.initializing ? this.rng() < this.experiment.clusterChance && live.length : false;
     const usePattern = !this.initializing && live.length && this.rng() < this.experiment.clusterChance;
-    if (usePattern && (!this.patternPlan || this.patternPlan.index >= this.patternPlan.points.length)) this.patternPlan = this.createPatternPlan(true);
+    if (usePattern && (!this.patternPlan || this.patternPlan.index >= this.patternPlan.points.length)) { if(this.patternPlan?.pair?.length===1)this.patternPlan.pair[0].motion.startAt=this.elapsed;this.patternPlan = this.createPatternPlan(true); }
     const plan = usePattern ? this.patternPlan : null;
     let usedPattern = plan?.kind || 'scattered';
     for (let attempt = 0; attempt < C.spawnAttempts; attempt++) {
@@ -341,7 +341,7 @@ export class Game {
   }
   emitMain(s,angle,cause,origin){
     const shard=this.emitShard(s.x,s.y,angle,s.type,cause.chainId,cause.depth,false,null,origin);
-    if(shard&&this.contentMode==='M5_M6_ON'&&this.levels.kineticReach&&this.options.motionEnabled&&s.motion?.rotationRate&&Number.isFinite(s.motion.startAt)&&s.motion.startAt<=this.simulationTime){shard.range+=30*this.levels.kineticReach;shard.life=Math.min(C.shard.maxLife,shard.range/C.shard.speed+C.shard.lifePadding);this.skillActivations.kineticReach=(this.skillActivations.kineticReach||0)+1;}return shard;
+    if(shard&&this.contentMode==='M5_M6_ON'&&this.levels.kineticReach&&this.options.motionEnabled&&s.motion?.rotationRate&&Number.isFinite(s.motion.startAt)&&s.motion.startAt<=this.simulationTime){shard.range+=30*this.levels.kineticReach;shard.life=shard.range/C.shard.speed+C.shard.lifePadding;this.skillActivations.kineticReach=(this.skillActivations.kineticReach||0)+1;}return shard;
   }
   emitAux(origin,angle,cause,source,damage,range){
     const shard=this.emitShard(origin.x,origin.y,angle,source,cause.chainId,cause.depth,true,origin.id);

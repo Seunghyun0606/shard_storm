@@ -3,7 +3,7 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Shard Storm — Playtest</title><link rel="icon" href="data:,"><link rel="stylesheet" href="style.css"></head>
 <body>
 <main>
-  <header class="masthead"><a class="brand" href="./"><span class="brand-icon">◈</span> SHARD STORM</a><div class="edition"><span class="status-dot"></span> PROTOTYPE / v0.9 P0</div></header>
+  <header class="masthead"><a class="brand" href="./"><span class="brand-icon">◈</span> SHARD STORM</a><div class="edition"><span class="status-dot"></span> PROTOTYPE / M5 · M6</div></header>
   <section class="game-shell" aria-label="Shard Storm 게임">
     <div class="toolbar"><span>BREAK. CASCADE. REPEAT.</span><div><button id="sound" class="quiet">SOUND OFF</button><button id="pause" class="quiet" hidden>일시정지</button><button id="dev-toggle" class="quiet">DEV [D]</button></div></div>
     <div class="arena-wrap">
@@ -19,7 +19,7 @@
       <div id="result" class="overlay result-overlay" hidden>
         <div class="result-top"><div><div class="eyebrow">RUN COMPLETE</div><h2>GAME OVER<span>.</span></h2></div><div class="bank-label">PHOTON BANK<strong id="bank">0</strong></div></div>
         <div id="stats" class="stats"></div><div id="comparison" class="comparison"></div>
-        <section class="discovery-card"><strong id="discovery"></strong><progress id="discovery-progress" max="1"></progress><small id="next-unlocks"></small></section>
+        <div id="rank-banner" hidden></div><section class="discovery-card"><strong id="discovery"></strong><progress id="discovery-progress" max="1"></progress><small id="next-unlocks"></small><small id="content-goal"></small></section>
         <section id="refinery-card" aria-label="Shard Refinery"><div class="refinery-heading"><strong>SHARD REFINERY</strong><button id="refinery-skip">SKIP · 즉시 정산</button></div><canvas id="refinery-canvas" width="800" height="132" aria-label="확정된 10개 토큰의 가공 슬롯"></canvas><span id="refinery-summary"></span></section>
         <div class="upgrade-heading"><span>PERMANENT SKILL TREE</span><small>노드 선택 → 강화 · 다음 Run부터 적용</small></div>
         <div id="upgrades" class="skill-tree-scroll" aria-label="영구 스킬 그래프"></div>
@@ -32,6 +32,7 @@
   </section>
   <section class="legend" aria-label="도형별 효과"><div><span class="shape-icon triangle">△</span><p><strong>TRIANGLE</strong><small>3방향 파편 · 연쇄의 시작</small></p></div><div><span class="shape-icon square">□</span><p><strong>SQUARE</strong><small>충격파 · 주변 도형 약화</small></p></div><div><span class="shape-icon pentagon">⬠</span><p><strong>PENTAGON</strong><small>분열 파편 · 분기 확산</small></p></div><div><span class="shape-icon star">☆</span><p><strong>STAR</strong><small>광역 폭발 · 한 번에 크게</small></p></div></section>
   <p class="modifier-legend">굵은 균열: CRACKED · 적은 HP로 빠른 연쇄 시작 / 점선 이중 링: CHARGED · 고유 파편·폭발 강화 / 갑옷 표식: ENHANCED · HP +2</p>
+  <div class="legend-special"><span>⬡ HEX · Rank2 / Run45킬 · 주변 Ward, 직접4로 장갑 파쇄</span><span>◉ REACTOR · Rank3 / Run100킬 · 절반·파괴 지연 파동</span><span>◎ ANCIENT · Rank4 / Run200킬 · 3단계 파편·파동, Catalyst +2</span><span>◇ Prism / ◈ Core / ✦ Void · 완전 파괴 시 희귀 보상</span></div>
   <div class="page-bottom"><span>AN EXPERIMENT IN SATISFYING DESTRUCTION</span><span>로컬 저장 · 영구 강화 · 반복 플레이</span></div>
   <div id="notice" role="status"></div>
 </main>

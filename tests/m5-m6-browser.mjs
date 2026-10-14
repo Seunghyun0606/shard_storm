@@ -1,0 +1,40 @@
+import { createRequire } from 'node:module';
+import { writeFileSync } from 'node:fs';
+import assert from 'node:assert/strict';
+const {chromium}=createRequire(import.meta.url)(process.env.PLAYWRIGHT_MODULE||'playwright');
+const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH||'C:/Program Files/Google/Chrome/Application/chrome.exe'});
+const base=process.env.QA_BASE_URL||'http://127.0.0.1:4174',errors=[],runs=[],checks=[];
+try{
+const context=await browser.newContext({viewport:{width:1200,height:1000}}),page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+const snap=()=>page.evaluate(()=>window.shardStorm.snapshot());
+const point=async s=>{const b=await page.locator('#game').boundingBox();return{x:b.x+s.x*b.width/960,y:b.y+s.y*b.height/540};};
+async function play(name,rank=0){
+ await page.goto(base);
+ if(rank){await page.evaluate(async rank=>{const {freshSave}=await import('./storage.js'),{CONFIG:C}=await import('./config.js');const s=freshSave();s.bank=10000;s.catalystBalance=100;s.lifetimeDestroyed=C.discovery[rank].threshold;s.discoveryRank=rank;s.milestoneWelcomeFlags=Object.fromEntries(Array.from({length:rank},(_,i)=>[i+1,true]));for(const[k,u]of Object.entries(C.upgrades))if(k!=='extraTime'&&(!u.rank||u.rank<=rank))s.levels[k]=u.max; s.levels.yieldStabilizer=0;localStorage.setItem(C.storageKey,JSON.stringify(s));},rank);await page.reload();}
+ const before=await snap();await page.locator('#start').click();assert.equal((await snap()).remaining,20);const first=await point({x:480,y:335});await page.mouse.click(first.x,first.y);await page.waitForTimeout(220);assert.ok((await snap()).record.bestChain>=4);const seen=new Set();let captured=false;
+ await page.mouse.down();let live;
+ while((live=await snap()).state==='PLAYING'){
+  const targets=live.shapes.filter(s=>s.grace<=0);targets.sort((a,b)=>Number(['hex','reactor','ancient'].includes(b.type))-Number(['hex','reactor','ancient'].includes(a.type))||a.hp-b.hp||a.id-b.id);
+  for(const s of targets)if(['hex','reactor','ancient'].includes(s.type)&&!seen.has(s.type)){seen.add(s.type);await page.screenshot({path:`artifacts/m5-m6-${name}-${s.type}.png`,fullPage:true});}
+  if(targets[0]){const p=await point(targets[0]);await page.mouse.move(p.x,p.y);}
+  if(!captured&&live.elapsed>5){await page.screenshot({path:`artifacts/m5-m6-${name}-playing.png`,fullPage:true});captured=true;}
+  await page.waitForTimeout(75);
+ }
+ await page.mouse.up();const pending=await snap();assert.equal(pending.bank,before.bank);assert.ok(pending.pendingSettlement);await page.screenshot({path:`artifacts/m5-m6-${name}-refinery.png`,fullPage:true});
+ if(rank===3){await page.reload();const saved=await snap();assert.equal(saved.bank,before.bank+pending.refinery.payout);assert.equal(saved.catalystBalance,before.catalystBalance+pending.record.pendingCatalyst);const copy=JSON.stringify([saved.bank,saved.catalystBalance,saved.totalRuns,saved.lifetimeDestroyed]);await page.reload();const again=await snap();assert.equal(JSON.stringify([again.bank,again.catalystBalance,again.totalRuns,again.lifetimeDestroyed]),copy);runs.push({name,fixture:true,rank,seen:[...seen],...pending.record,refreshRecovered:true});checks.push('actual Rank3 processing refresh restores Photon+Catalyst+Lifetime once');return;}
+ if(await page.locator('#refinery-skip').isVisible())await page.locator('#refinery-skip').click();await page.waitForFunction(()=>window.shardStorm.snapshot().settled);
+ const done=await snap();assert.equal(done.bank,before.bank+done.refinery.payout);assert.equal(done.catalystBalance,before.catalystBalance+done.record.pendingCatalyst);assert.equal(await page.locator('.skill-node').count(),19);assert.equal(await page.locator('.skill-edge').count(),20);
+ await page.screenshot({path:`artifacts/m5-m6-${name}-result.png`,fullPage:true});
+ const replay=await page.locator('#again').boundingBox(),result=await page.locator('#result').boundingBox();assert.ok(replay.y+replay.height<=result.y+result.height+1);assert.ok(done.record.averageFPS>=60);runs.push({name,fixture:rank>0,rank,seen:[...seen],...done.record});
+ if(rank===4){
+  await page.locator('[data-skill="yieldStabilizer"]').click();const bank=done.bank,cat=done.catalystBalance;await page.locator('#skill-purchase').click();assert.equal((await snap()).levels.yieldStabilizer,1);assert.equal((await snap()).bank,bank-220);assert.equal((await snap()).catalystBalance,cat);
+  await page.evaluate(async()=>{const{CONFIG:C}=await import('./config.js');const s=JSON.parse(localStorage.getItem(C.storageKey));s.levels.rareSeparator=0;localStorage.setItem(C.storageKey,JSON.stringify(s));});await page.reload();await page.keyboard.press('d');await page.locator('#duration').fill('1');await page.locator('#same-seed').click();await page.locator('#dev-close').click();await page.waitForFunction(()=>window.shardStorm.snapshot().settled);await page.locator('[data-skill="rareSeparator"]').click();const pre=await snap();await page.locator('#skill-purchase').click();assert.equal((await snap()).catalystBalance,pre.catalystBalance-2);assert.equal((await snap()).bank,pre.bank-350);assert.equal((await snap()).levels.rareSeparator,1);assert.equal((await snap()).sandbox,true);checks.push('real pointer Catalyst+Photon purchase in isolated lab');
+  await page.locator('#upgrades').evaluate(el=>{el.scrollLeft=el.scrollWidth;el.scrollTop=0;});await page.screenshot({path:'artifacts/m5-m6-skills-refinery.png',fullPage:true});await page.locator('#upgrades').evaluate(el=>{el.scrollLeft=0;el.scrollTop=el.scrollHeight;});await page.screenshot({path:'artifacts/m5-m6-skills-lower.png',fullPage:true});
+  await page.setViewportSize({width:620,height:1000});await page.screenshot({path:'artifacts/m5-m6-narrow-result.png',fullPage:true});assert.ok(await page.locator('#again').isVisible());await page.locator('#again').click();assert.equal((await snap()).state,'PLAYING');await page.setViewportSize({width:1200,height:1000});
+ }
+}
+await play('fresh',0);await play('rank2',2);assert.ok(runs.at(-1).seen.includes('hex'));await play('rank3',3);assert.ok(runs.at(-1).seen.includes('reactor'));await play('rank4',4);assert.ok(runs.find(r=>r.rank===4).seen.includes('ancient'));
+await page.reload();const preserved=await page.evaluate(()=>localStorage.getItem('shard-storm-v1'));await page.keyboard.press('d');await page.locator('#fresh-lab').click();await page.locator('#option-oreEnabled').uncheck();await page.locator('#option-refineryEnabled').uncheck();await page.locator('#grant').click();assert.equal(await page.evaluate(()=>localStorage.getItem('shard-storm-v1')),preserved);checks.push('Fresh Lab ore/refinery/grant cannot change isolated context live save');
+await page.reload();const beforeBack=await snap();await page.goto(`${base}/index.html?back-check=1`);await page.goBack();assert.equal((await snap()).bank,beforeBack.bank);assert.equal((await snap()).catalystBalance,beforeBack.catalystBalance);checks.push('Back and replay do not recredit');
+assert.deepEqual(errors,[]);writeFileSync('artifacts/m5-m6-browser-results.json',JSON.stringify({passed:true,browser:await browser.version(),viewport:'1200x1000 / logical960x540; narrow620x1000',fixtures:'rank2/3/4 seed31415, old levels max except Extra Time0, unlocked new skills max, bank10000 Catalyst100; temporary Playwright profile only',inputPolicy:'actual pointer click then held drag every75ms; specials first then low HP',runs,checks,errors},null,2));console.log('M5 M6 browser PASS');
+}catch(e){writeFileSync('artifacts/m5-m6-browser-results.json',JSON.stringify({passed:false,runs,checks,errors,failure:e.stack},null,2));throw e;}finally{await browser.close();}

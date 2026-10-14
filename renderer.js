@@ -18,7 +18,7 @@ export function draw(ctx, game, fps = 60) {
   ctx.strokeStyle = '#293b42'; ctx.lineWidth = 1; ctx.strokeRect(C.arena.left, C.arena.top, C.arena.right - C.arena.left, C.arena.bottom - C.arena.top);
   const hud = game ? [[`${game.remaining.toFixed(1)}s`, 'TIME LEFT'], [String(game.totalDestroyed), 'DESTROYED'], [`+${game.runEarned}`, 'RAW SHARDS'], [`${game.currentChain} / ${game.bestChain}`, 'CHAIN / BEST']] : [[`${C.duration.toFixed(1)}s`,'TIME LEFT'],['0','DESTROYED'],['+0','RAW SHARDS'],['0 / 0','CHAIN / BEST']];
   hud.forEach(([value, label], i) => { const x = 42 + i * 231; ctx.font = '9px Arial'; ctx.fillStyle = '#80999f'; ctx.fillText(label, x, 24); ctx.font = 'bold 22px Arial'; ctx.fillStyle = i === 2 ? C.shapes.triangle.color : '#e8f0ed'; if (i === 0 && game?.remaining <= 10) ctx.fillStyle = '#ff6eab'; ctx.fillText(value, x, 53); });
-  if (!game) return;
+  if (!game) return; ctx.fillStyle='#b8d9d4';ctx.font='10px Arial';ctx.fillText(`RANK ${game.discoveryRank} · PENDING CATALYST +${game.pendingCatalyst}`,C.width-250,72);
   ctx.save(); ctx.beginPath(); ctx.rect(C.arena.left, C.arena.top, C.arena.right - C.arena.left, C.arena.bottom - C.arena.top); ctx.clip();
   for (const s of game.alive) {
     const cfg = C.shapes[s.type], scale = (s.grace > 0 ? Math.max(.1, 1 - s.grace / C.spawnGrace) : 1) * (1 + (C.visual.recoilScale - 1) * s.recoil / C.visual.recoilLife);
@@ -47,6 +47,8 @@ export function draw(ctx, game, fps = 60) {
     if(s.type==='hex'){polygon(ctx,s,.7,false);ctx.strokeStyle=s.shieldBroken?'#ffffff':'#90e3ab';ctx.lineWidth=s.shieldBroken?1:3;ctx.stroke();ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.fillStyle=cfg.color;ctx.fillText(s.shieldBroken?'⌁':'⬡',0,4);}
     if(s.type==='reactor'){ctx.strokeStyle=cfg.color;ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,s.radius*.6,-Math.PI/2,-Math.PI/2+Math.PI*2*s.hp/s.maxHP);ctx.stroke();ctx.font='bold 10px Arial';ctx.textAlign='center';ctx.fillStyle=cfg.color;ctx.fillText(s.hp<=6?'Ⅱ':'Ⅰ',0,4);}
     if(s.type==='ancient'){ctx.strokeStyle=cfg.color;for(const r of [.35,.6,.83]){ctx.beginPath();ctx.arc(0,0,s.radius*r,0,Math.PI*2);ctx.stroke();}ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.fillStyle=cfg.color;ctx.fillText(`${s.hp}`,0,4);}
+    if(s.oreGrade&&s.oreGrade!=='common'){const color={prism:'#a9faff',core:'#fff6bc',void:'#e1b2ff'}[s.oreGrade];ctx.save();ctx.translate(s.radius*.4,-s.radius*.45);ctx.fillStyle='#0c1419';ctx.beginPath();ctx.arc(0,0,7,0,Math.PI*2);ctx.fill();ctx.strokeStyle=color;ctx.lineWidth=1.2;ctx.stroke();ctx.fillStyle=color;ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.fillText(C.ore[s.oreGrade].symbol,0,4);ctx.restore();if(game.levels.salvageScanner&&game.elapsed<1){ctx.strokeStyle=color;ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,s.radius+10,0,Math.PI*2);ctx.stroke();}}
+    if(s.channelUntil>=game.elapsed){ctx.strokeStyle='#d7bdff';ctx.lineWidth=2;ctx.setLineDash([4,2]);ctx.strokeRect(-s.radius-5,-s.radius-5,2*s.radius+10,2*s.radius+10);ctx.setLineDash([]);}
     // Small HP ticks make multi-hit breakpoints easy to read.
     ctx.fillStyle = cfg.color; for (let i = 0; i < Math.min(12,s.hp); i++) ctx.fillRect((i - (Math.min(12,s.hp) - 1) / 2) * 4 - 1, s.radius + 8, 2, 2);
     ctx.restore();

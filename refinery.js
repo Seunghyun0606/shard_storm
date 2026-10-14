@@ -13,7 +13,7 @@ export function planRefinery({ raw, seed, enabled = true, id = 'simulation', yie
   });
   const weighted = tokens.reduce((n, t) => n + t.raw * t.multiplier, 0);
   const payout = Math.floor(weighted * C.refinery.rate + 1e-9);
-  return { id, raw, rate: C.refinery.rate, multiplier: raw ? weighted / raw : 1, payout, enabled, tokens, confirmed: true };
+  return { id, raw, rate: C.refinery.rate, multiplier: raw ? weighted / raw : 1, payout, enabled, yieldLevel, tokens, confirmed: true };
 }
 export function ensureRefinery(run) {
   if (run.state !== 'RESULT') return null;
@@ -24,7 +24,7 @@ export function drawRefinery(canvas, plan, progress) {
   const ctx = canvas.getContext('2d'), w = canvas.width, h = canvas.height;
   ctx.clearRect(0, 0, w, h); ctx.fillStyle = '#0d1c23'; ctx.fillRect(0, 0, w, h);
   for (let row = 0; row < 3; row++) for (let col = 0; col < 9; col++) { ctx.beginPath(); ctx.arc(25 + col * (w - 50) / 8 + (row % 2 ? 10 : 0), 20 + row * 23, 2, 0, Math.PI * 2); ctx.fillStyle = '#395d64'; ctx.fill(); }
-  for (let i = 0; i < 5; i++) { ctx.fillStyle = i === 4 ? '#FFD884' : '#6ADFEF'; ctx.font = 'bold 12px Arial'; ctx.textAlign = 'center'; ctx.fillText(`×${C.refinery.slots[i].multiplier.toFixed(2)}`, (i + .5) * w / 5, h - 8); }
+  for (let i = 0; i < 5; i++) { ctx.fillStyle = i === 4 ? '#FFD884' : '#6ADFEF'; ctx.font = 'bold 12px Arial'; ctx.textAlign = 'center'; const original=C.refinery.slots[i].multiplier,effective=plan.enabled&&plan.yieldLevel>=1&&i===0?1:plan.enabled&&plan.yieldLevel>=2&&i===1?1.1:original;ctx.fillText(`×${original.toFixed(2)}${original!==effective?`→${effective.toFixed(2)}`:''}`, (i + .5) * w / 5, h - 8); }
   for (let i = 0; i < plan.tokens.length; i++) { const token = plan.tokens[i], t = Math.min(1, Math.max(0, progress * 1.35 - i * .035)), dest = (token.slot + .5) * w / 5;
     const x = w / 2 + (dest - w / 2) * t + Math.sin(t * Math.PI * 6 + i) * 12 * Math.sin(t * Math.PI), y = 8 + (h - 30) * t;
     ctx.fillStyle = '#d0fff4'; ctx.fillRect(x - 2, y - 2, 4, 4);

@@ -100,3 +100,11 @@ test('M6 new stage/skill schedules respect chain events/depth/queue/shard caps a
  const g=emptyGameM6({levels:{precisionFracture:2}}),chainId=g.newChain();g.chains.get(chainId).events=C.caps.events;assert.equal(g.skillEffect('precisionFracture',()=>{}, {source:'direct',chainId,depth:1}),false);assert.equal(g.capCounts.chainEvents,1);
  g.emitAux({x:300,y:300},0,{chainId,depth:11},'relay',1,80);assert.equal(g.shards.length,0);assert.equal(g.capCounts.depth,1);g.update(20);assert.equal(g.queue.length,0);assert.equal(g.shards.length,0);
 });
+test('M6 Kinetic full range3+reach2 flight lifetime covers390px; unsafe unpaired Tether falls back',()=>{
+ const g=emptyGameM6({levels:{shardRange:3,kineticReach:2},options:{motionEnabled:true}}),s=g.addShape('triangle',400,300,0,false,0);s.motion.rotationRate=.2;s.motion.startAt=0;const p=g.emitMain(s,0,{chainId:g.newChain(),depth:0});assert.equal(p.range,390);assert.ok(p.life>=390/700);
+ const plan={kind:'tether_pair',pair:[]},a=g.addShape('square',300,400,0,false,0),b=g.addShape('square',400,400,0,false,0);applyTether(g,plan,a,0);assert.equal(a.motion.startAt,Infinity);applyTether(g,plan,b,1);assert.ok(Number.isFinite(a.motion.startAt));
+});
+test('M6 complete dynamic battle deterministic and cosmetic-neutral at Rank4 with all new skills',async()=>{
+ const {simulate}=await import('./simulation.js'),levels=Object.fromEntries(Object.entries(C.upgrades).map(([k,u])=>[k,u.max]));const args={seed:42,levels,discoveryRank:4,welcomeFlags:{4:true},duration:20};const a=simulate(args),b=simulate({...args,options:{...C.options,visualVariety:false,modifierVisuals:false,damageVFX:false,comboFeedback:false,sound:false}});
+ for(const field of ['rawEarned','rawBase','rawOreBonus','rawSkillBonus','pendingCatalyst','totalDestroyed','photonsEarned','bestChain'])assert.equal(a[field],b[field]);assert.deepEqual(a.oreKills,b.oreKills);assert.deepEqual(a.skillActivations,b.skillActivations);
+});

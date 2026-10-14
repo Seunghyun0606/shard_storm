@@ -10,7 +10,7 @@ export function loadSave(storage) {
     const legacyKeys = ['crushPower', 'shardPower', 'shardRange', 'chainAmplifier', 'extraTime'];
     if (!data.levels || typeof data.levels !== 'object') return save;
     for (const [key, u] of Object.entries(C.upgrades)) {
-      const value = data.saveVersion === 1 && !legacyKeys.includes(key) ? 0 : data.levels[key] ?? (legacyKeys.includes(key) ? undefined : 0);
+      const value = (data.saveVersion < 4 && u.rank)||(data.saveVersion === 1 && !legacyKeys.includes(key)) ? 0 : data.levels[key] ?? (legacyKeys.includes(key) ? undefined : 0);
       if (!Number.isInteger(value) || value < 0 || value > u.max) continue;
       save.levels[key] = value;
     }
