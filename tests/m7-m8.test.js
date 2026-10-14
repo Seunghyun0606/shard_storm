@@ -98,3 +98,11 @@ test('M8 native wave owns its source shape ID and legacy M6 MAX fixture keeps fr
  const g=empty(),s=g.addShape('square',400,300,0,false,0);hit(g,s,99,'triangle',{originShapeId:123,small:false});advance(g,.04);assert.equal(g.waves[0].cause.originShapeId,s.id);
  const data=growth({key:'legacy-test',seed:42,strategy:'Reactor',profile:'LegacyMax',mode:'OFF',timeMode:'Fixed20',count:1});assert.equal(data.firstMax,0);assert.equal(data.rows[0].levels,50);assert.equal(data.rows[0].rank,4);assert.deepEqual(data.rows[0].blueprints,[]);assert.equal(data.rows[0].catalyst,200+data.rows[0].catalystTotal);
 });
+test('M8 Dense objective is a real fifteen-kill chain; zero bonus still completes Anomaly Pilot once',()=>{
+ const save=freshSave();save.discoveryRank=2;save.lifetimeDestroyed=1200;acceptContract(save,'anomalyPilot','RESULT');save.contracts.records.anomalyPilot.progress=3;
+ const g=empty({discoveryRank:2,oreEnabled:false,anomalyId:'denseField',activeContracts:snapshotContracts(save)}),star=g.addShape('star',400,300,0,false,0);
+ // Forced Star fixture at legal simultaneous field size; no counters injected.
+ for(let i=0;i<14;i++){const a=i*Math.PI*2/14;g.addShape('triangle',400+Math.cos(a)*144,300+Math.sin(a)*144,0,false,0);}
+ for(let i=0;i<3;i++){g.attack(star.x,star.y);if(i<2)advance(g,.2);}advance(g,.4);assert.equal(g.totalDestroyed,15);assert.equal(g.metaCounters.chain15,1);assert.equal(g.bestChain,15);g.update(20);
+ assert.equal(g.metaResult.anomaly.succeeded,true);assert.equal(g.metaResult.anomaly.photon,0);assert.equal(g.metaResult.contracts.photon,180);stageSettlement(save,g);assert.equal(completeSettlement(save),true);assert.equal(save.totalAnomalyWins,1);assert.equal(save.bank,g.refinery.payout+180);assert.equal(completeSettlement(save),false);
+});
