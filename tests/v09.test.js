@@ -87,7 +87,7 @@ test('v0.9 settlement: repeated completion/skip share plan; sandbox cannot credi
 });
 test('v0.9 save: v1/v2→v3 preserves bank/owned skills/history; no invented lifetime', () => {
   for(const version of [1,2]){const storage=memoryStorage(),old={...freshSave(),saveVersion:version,bank:12345,levels:{...freshSave().levels,extraTime:6,shardPower:2},lastRuns:[{photonsEarned:900,totalDestroyed:50}]};storage.setItem(C.storageKey,JSON.stringify(old));const saved=loadSave(storage);
-    assert.equal(saved.bank,12345);assert.equal(saved.levels.extraTime,6);assert.equal(saved.saveVersion,3);assert.deepEqual(saved.lastRuns,old.lastRuns);assert.equal(saved.lifetimeDestroyed,0);assert.equal(saved.knownHistoryKills,50);assert.equal(saved.legacyExtraTimeLevel,6);assert.equal(saved.discoveryRank,0);
+    assert.equal(saved.bank,12345);assert.equal(saved.levels.extraTime,6);assert.equal(saved.saveVersion,4);assert.deepEqual(saved.lastRuns,old.lastRuns);assert.equal(saved.lifetimeDestroyed,0);assert.equal(saved.knownHistoryKills,50);assert.equal(saved.legacyExtraTimeLevel,6);assert.equal(saved.discoveryRank,0);
   }
 });
 test('v0.9 save: optional once-only legacy Extra Time refund, no other level/bank reset', () => {

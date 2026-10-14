@@ -8,6 +8,7 @@ import { renderSkillTree, getDerivedStats, skillState } from './skill-tree.js';
 import { drawRefinery } from './refinery.js';
 import { EconomySandbox, buildPresets } from './economy.js';
 import { emptyLevels } from './progression.js';
+import { discoveryView } from './discovery.js';
 const $ = id => document.getElementById(id), canvas = $('game'), ctx = canvas.getContext('2d');
 let storage; try { storage = window.localStorage; } catch { storage = { getItem() { return null; }, setItem() { throw new Error('Unavailable'); } }; }
 let save = loadSave(storage), game = null, last = null, accumulator = 0, fps = 60, manualPause = false, previousBest = {}, audio = null, selectedSkill = 'crushPower', lastSoundAt = -Infinity, voices = 0;
@@ -72,9 +73,13 @@ function finishRefinery(skipped = false) {
   settle(save, game); persist(); $('result').classList.remove('processing'); $('refinery-canvas').hidden = true; $('refinery-skip').hidden = true; renderUpgrades();
 }
 function renderUpgrades() {
+  const discovery = discoveryView(save);
+  $('discovery').textContent = `Discovery Rank ${discovery.rank} — ${discovery.destroyed.toLocaleString()}${discovery.next ? ` / ${discovery.next.threshold.toLocaleString()}` : ' · MAX RANK'} destroyed · Catalyst ${save.catalystBalance || 0}`;
+  $('discovery-progress').value = discovery.progress;
+  $('next-unlocks').textContent = discovery.next ? `다음 목표: ${discovery.next.unlock}` : 'Rank4 콘텐츠 해금 · 스킬과 희귀 도형 기록을 이어가세요';
   const stats = getDerivedStats(save.levels); $('bank').textContent = save.bank.toLocaleString(); $('next-run').textContent = `NEXT RUN ${stats.duration}초 · 피해 ${stats.directDamage} · 반복 ${stats.attackInterval.toFixed(2)}초`;
   renderSkillTree($('upgrades'), $('skill-info'), save, selectedSkill, key => { selectedSkill = key; renderUpgrades(); }, key => { if (!game?.settled) return; if (sandboxSession ? sandboxSession.buy(key, game?.state) : buyUpgrade(save, key, game?.state)) { persist(); renderUpgrades(); } }, (key, levels, bank) => { const state = sandboxSession ? sandboxSession.state(key, levels, bank) : skillState(key, levels, bank); return { ...state, canBuy: Boolean(game?.settled) && state.canBuy }; });
-  $('time-note').textContent = save.legacyExtraTimeLevel && !save.timeRespecUsed ? `60~90초 → 20~32초. Extra Time은 Lv당 +2초이며 보유 Lv.${save.levels.extraTime}은 유지됩니다.` : '20초 파괴 → 빠른 정산 → 강화 · 추가 원석/노드는 P1 확장 예정';
+  $('time-note').textContent = save.legacyExtraTimeLevel && !save.timeRespecUsed ? `60~90초 → 20~32초. Extra Time은 Lv당 +2초이며 보유 Lv.${save.levels.extraTime}은 유지됩니다.` : `확인 가능한 과거 기록 ${save.knownHistoryKills || 0}킬 · 새 누적 파괴와 별도 보존`;
   $('time-refund').hidden = !save.legacyExtraTimeLevel || save.timeRespecUsed; $('time-refund').disabled = !game?.settled;
 }
 function setOption(key, value) {

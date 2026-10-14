@@ -1,16 +1,17 @@
 import { CONFIG as C } from './config.js';
 import { emptyLevels } from './progression.js';
-export function freshSave() { return { saveVersion: C.saveVersion, bank: 0, levels: emptyLevels(), bestStats: {}, lastRuns: [], options: { ...C.options }, catalystBalance: 0, discoveryRank: 0, lifetimeDestroyed: 0, knownHistoryKills: 0, totalRuns: 0, pendingSettlement: null, lastSettlementId: null, legacyExtraTimeLevel: 0, timeRespecUsed: false }; }
+import { rankFor, updateDiscovery } from './discovery.js';
+export function freshSave() { return { saveVersion: C.saveVersion, bank: 0, levels: emptyLevels(), bestStats: {}, lastRuns: [], options: { ...C.options }, catalystBalance: 0, discoveryRank: 0, lifetimeDestroyed: 0, knownHistoryKills: 0, totalRuns: 0, milestoneWelcomeFlags: {}, pendingSettlement: null, lastSettlementId: null, legacyExtraTimeLevel: 0, timeRespecUsed: false }; }
 export function loadSave(storage) {
   const save = freshSave();
   try {
     const data = JSON.parse(storage.getItem(C.storageKey));
-    if (!data || ![1, 2, C.saveVersion].includes(data.saveVersion) || !Number.isSafeInteger(data.bank) || data.bank < 0) return save;
+    if (!data || ![1, 2, 3, 4].includes(data.saveVersion) || !Number.isSafeInteger(data.bank) || data.bank < 0) return save;
     const legacyKeys = ['crushPower', 'shardPower', 'shardRange', 'chainAmplifier', 'extraTime'];
     if (!data.levels || typeof data.levels !== 'object') return save;
     for (const [key, u] of Object.entries(C.upgrades)) {
       const value = data.saveVersion === 1 && !legacyKeys.includes(key) ? 0 : data.levels[key] ?? (legacyKeys.includes(key) ? undefined : 0);
-      if (!Number.isInteger(value) || value < 0 || value > u.max) return freshSave();
+      if (!Number.isInteger(value) || value < 0 || value > u.max) continue;
       save.levels[key] = value;
     }
     save.bank = data.bank;
@@ -22,8 +23,11 @@ export function loadSave(storage) {
       save.timeRespecUsed = data.timeRespecUsed === true;
       if (typeof data.lastSettlementId === 'string') save.lastSettlementId = data.lastSettlementId;
       const pending = data.pendingSettlement;
-      if (pending && typeof pending.id === 'string' && Number.isSafeInteger(pending.payout) && pending.payout >= 0 && pending.record?.runId === pending.id && Number.isSafeInteger(pending.record.totalDestroyed) && pending.record.totalDestroyed >= 0 && pending.record.processedPhoton === pending.payout && pending.record.photonsEarned === pending.payout) save.pendingSettlement = pending;
+      if (pending && typeof pending.id === 'string' && Number.isSafeInteger(pending.payout) && pending.payout >= 0 && pending.record?.runId === pending.id && Number.isSafeInteger(pending.record.totalDestroyed) && pending.record.totalDestroyed >= 0 && pending.record.processedPhoton === pending.payout && pending.record.photonsEarned === pending.payout && (pending.catalystPayout === undefined || (Number.isSafeInteger(pending.catalystPayout) && pending.catalystPayout >= 0))) save.pendingSettlement = pending;
     }
+    if (data.saveVersion === 4 && data.milestoneWelcomeFlags) for (let r=1;r<=4;r++) if (data.milestoneWelcomeFlags[r] === true) save.milestoneWelcomeFlags[r] = true;
+    if (data.saveVersion < 4) { save.discoveryRank = 0; updateDiscovery(save); }
+    else save.discoveryRank = rankFor(save.lifetimeDestroyed);
     for (const key of Object.keys(C.options)) if (typeof data.options?.[key] === 'boolean') save.options[key] = data.options[key];
   } catch { /* Invalid or inaccessible storage starts with a safe empty save. */ }
   return save;

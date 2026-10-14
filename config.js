@@ -86,7 +86,15 @@ export const CONFIG = {
     { id: 'extraTime', branch: 'utility', position: { col: 3, row: 1 }, prerequisites: [] },
     { id: 'photonBoost', branch: 'utility', position: { col: 3, row: 2 }, prerequisites: [{ id: 'extraTime', minLevel: 1 }] }
   ],
-  costGrowth: 1.6, saveVersion: 3, storageKey: 'shard-storm-v1', historyLimit: 20,
+  discovery: [
+    { threshold: 0, unlock: '기본 4종 · 기존 11스킬' },
+    { threshold: 300, unlock: 'Prism · Precision Fracture · Yield Stabilizer' },
+    { threshold: 1200, unlock: 'Core · Catalyst · Hex (Run 45킬) · 신규 파편/가공' },
+    { threshold: 3500, unlock: 'Reactor (Run 100킬) · Resonance · Scanner' },
+    { threshold: 8000, unlock: 'Void · Ancient (Run 200킬) · Catalyst Channel' }
+  ],
+  ore: { common: { rank: 0, chance: 0, raw: 0, catalyst: 0, symbol: '' }, prism: { rank: 1, chance: .08, raw: 15, catalyst: 0, symbol: '◇' }, core: { rank: 2, chance: .02, raw: 60, catalyst: 1, symbol: '◈' }, void: { rank: 4, chance: .005, raw: 180, catalyst: 2, symbol: '✦' } },
+  costGrowth: 1.6, saveVersion: 4, storageKey: 'shard-storm-v1', historyLimit: 20,
   dev: { grant: 1000, minDuration: 1, maxDuration: 90 },
   options: { inheritance: true, ricochet: true, sequentialPropagation: true, visualVariety: true, damageVFX: true, sound: false, comboFeedback: true, modifiers: true, modifierVisuals: true, motionEnabled: true, refineryEnabled: true }
 };
