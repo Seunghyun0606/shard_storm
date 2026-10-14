@@ -16,25 +16,25 @@ try{
   while((live=await snap()).state==='PLAYING'){
    const targets=live.shapes.filter(s=>s.grace<=0),score=s=>live.shapes.filter(o=>o.id!==s.id&&Math.hypot(o.x-s.x,o.y-s.y)<180).length*3-Math.ceil(s.hp/live.derivedStats.directDamage)*2;
    targets.sort((a,b)=>score(b)-score(a)||a.id-b.id);if(targets[0]){const p=await pointer(targets[0]);await page.mouse.move(p.x,p.y);}
-   if(!captured&&live.elapsed>5){await page.screenshot({path:`artifacts/v09-${name}-playing.png`,fullPage:true});captured=true;}
+   if(!captured&&live.elapsed>5){await page.screenshot({path:`artifacts/m5-m6-v09-${name}-playing.png`,fullPage:true});captured=true;}
    await page.waitForTimeout(160);
   }
   await page.mouse.up();const processing=await snap();assert.equal(processing.remaining,0);assert.ok(processing.refinery);
   if(refresh){
-   assert.equal(processing.settled,false);assert.ok(processing.pendingSettlement);await page.screenshot({path:`artifacts/v09-${name}-refinery.png`,fullPage:true});
+   assert.equal(processing.settled,false);assert.ok(processing.pendingSettlement);await page.screenshot({path:`artifacts/m5-m6-v09-${name}-refinery.png`,fullPage:true});
    await page.reload();assert.equal((await snap()).bank,before.bank+processing.refinery.payout);const credited=(await snap()).bank;await page.reload();assert.equal((await snap()).bank,credited);
    const record=await page.evaluate(()=>JSON.parse(localStorage.getItem('shard-storm-v1')).lastRuns.at(-1));runs.push({name,...record,inputPolicy:'auto:browser-density-pointer',bankBefore:before.bank,bankAfter:credited,recoveredAfterRefresh:true});checks.push('actual 20s result refreshed during refinery, recovered once');return await snap();
   }
   if(await page.locator('#refinery-skip').isVisible()){
-   assert.equal(processing.bank,before.bank);assert.ok(processing.pendingSettlement);await page.screenshot({path:`artifacts/v09-${name}-refinery.png`,fullPage:true});
+   assert.equal(processing.bank,before.bank);assert.ok(processing.pendingSettlement);await page.screenshot({path:`artifacts/m5-m6-v09-${name}-refinery.png`,fullPage:true});
    if(skip&&await page.locator('#refinery-skip').isVisible())await page.locator('#refinery-skip').click();
   }
   await page.waitForFunction(()=>window.shardStorm.snapshot().settled===true);const finished=await snap();
   assert.equal(finished.bank,before.bank+finished.refinery.payout);await page.waitForTimeout(250);assert.equal((await snap()).bank,finished.bank);
-  assert.equal(await page.locator('.skill-node').count(),11);assert.equal(await page.locator('.skill-edge').count(),11);
+  assert.equal(await page.locator('.skill-node').count(),19);assert.equal(await page.locator('.skill-edge').count(),20);
   const b=await page.locator('#again').boundingBox(),result=await page.locator('#result').boundingBox();assert.ok(b.y+b.height<=result.y+result.height+1);
   assert.ok(finished.record.physicsChecks.maxWaveContactError<.002);assert.ok(finished.record.physicsChecks.maxProjectileContactError<.002);assert.equal(finished.record.physicsChecks.lateWaveContacts,0);
-  await page.screenshot({path:`artifacts/v09-${name}-result.png`,fullPage:true});runs.push({name,...finished.record,inputPolicy:'auto:browser-density-pointer',bankBefore:before.bank,bankAfter:finished.bank});console.log(name,finished.record.totalDestroyed,finished.record.rawEarned,finished.refinery.payout);
+  await page.screenshot({path:`artifacts/m5-m6-v09-${name}-result.png`,fullPage:true});runs.push({name,...finished.record,inputPolicy:'auto:browser-density-pointer',bankBefore:before.bank,bankAfter:finished.bank});console.log(name,finished.record.totalDestroyed,finished.record.rawEarned,finished.refinery.payout);
   return finished;
  }
  await page.goto(base);await page.locator('#start').click();
@@ -55,8 +55,8 @@ try{
  const pendingFixture=await page.evaluate(async()=>{const {Game}=await import('./game.js');const {stageSettlement}=await import('./progression.js');const save=JSON.parse(localStorage.getItem('shard-storm-v1')),g=new Game({runId:'browser-recovery'});g.runEarned=3000;g.update(20);stageSettlement(save,g);localStorage.setItem('shard-storm-v1',JSON.stringify(save));return{before:save.bank,payout:g.refinery.payout};});
  await page.reload();assert.equal((await snap()).bank,pendingFixture.before+pendingFixture.payout);const recovered=(await snap()).bank;await page.reload();assert.equal((await snap()).bank,recovered);checks.push('pending persisted result recovered exactly once without reroll');
  const legacy={saveVersion:2,bank:10000,levels:{crushPower:5,shardPower:5,shardRange:3,chainAmplifier:3,extraTime:6,crushSpeed:3,impactPulse:1,ricochetPlus:2,shardBloom:2,echoCatalyst:2,photonBoost:3},bestStats:{totalDestroyed:900,photonsEarned:19000},lastRuns:[{photonsEarned:19000,totalDestroyed:900}],options:{motionEnabled:true}};
- await page.evaluate(data=>localStorage.setItem('shard-storm-v1',JSON.stringify(data)),legacy);await page.reload();let l=await snap();assert.equal(l.saveVersion,3);assert.equal(l.bank,10000);assert.equal(l.levels.extraTime,6);assert.equal(l.derivedStats.duration,32);checks.push('v2 legacy bank/11 levels/history preserved, Extra Time32');
+ await page.evaluate(data=>localStorage.setItem('shard-storm-v1',JSON.stringify(data)),legacy);await page.reload();let l=await snap();assert.equal(l.saveVersion,4);assert.equal(l.bank,10000);assert.equal(l.levels.extraTime,6);assert.equal(l.derivedStats.duration,32);checks.push('v2 legacy bank/11 levels/history preserved, Extra Time32');
  await page.keyboard.press('d');await page.locator('#duration').fill('1');await page.locator('#same-seed').click();await page.locator('#dev-close').click();await page.waitForFunction(()=>window.shardStorm.snapshot().settled===true);
  await page.locator('#time-refund').click();assert.equal((await snap()).levels.extraTime,0);assert.equal(await page.locator('#time-refund').isVisible(),false);assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('shard-storm-v1')).levels.extraTime),6);checks.push('once-only optional time refund tested only in isolated lab');
- assert.deepEqual(errors,[]);writeFileSync('artifacts/v09-browser-results.json',JSON.stringify({passed:true,browser:await browser.version(),checks,runs,errors},null,2));console.log('v0.9 browser PASS');
-}catch(e){writeFileSync('artifacts/v09-browser-results.json',JSON.stringify({passed:false,runs,checks,errors,failure:e.message},null,2));throw e;}finally{await browser.close();}
+ assert.deepEqual(errors,[]);writeFileSync('artifacts/m5-m6-v09-browser-results.json',JSON.stringify({passed:true,browser:await browser.version(),checks,runs,errors},null,2));console.log('v0.9 browser PASS');
+}catch(e){writeFileSync('artifacts/m5-m6-v09-browser-results.json',JSON.stringify({passed:false,runs,checks,errors,failure:e.message},null,2));throw e;}finally{await browser.close();}

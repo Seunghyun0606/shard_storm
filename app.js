@@ -85,7 +85,7 @@ function renderUpgrades() {
 function setOption(key, value) {
   if (key === 'refineryEnabled'||key==='oreEnabled') enterSandbox();
   save.options[key] = value;
-  if (game) { if (key === 'motionEnabled') game.setMotionEnabled(value); else game.options[key] = value; if (game.state === 'PLAYING') game.optionChanges.push({ at: Number(game.elapsed.toFixed(3)), key, value }); }
+  if (game) { if (key === 'motionEnabled') game.setMotionEnabled(value); else {game.options[key] = value;if(key==='oreEnabled')game.oreEnabled=value&&game.contentMode!=='V09_ONLY';} if (game.state === 'PLAYING') game.optionChanges.push({ at: Number(game.elapsed.toFixed(3)), key, value }); }
   persist(); syncOptions();
 }
 function syncOptions() { for (const key of Object.keys(C.options)) $(`option-${key}`).checked = save.options[key]; $('sound').textContent = save.options.sound ? 'SOUND ON' : 'SOUND OFF'; }

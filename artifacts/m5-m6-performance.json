@@ -1,0 +1,246 @@
+{
+  "baseline": "f90d7de",
+  "workload": "rank0 / all levels0 / 20s / density-hp / same seeds / alternating3 repeats; g.update only, selection excluded",
+  "records": [
+    {
+      "version": "v09",
+      "seed": 31415,
+      "repetition": 0,
+      "physicsTickP95": 0.1816000000000031,
+      "kills": 164,
+      "raw": 2313
+    },
+    {
+      "version": "M5_M6",
+      "seed": 31415,
+      "repetition": 0,
+      "physicsTickP95": 0.16269999999997253,
+      "kills": 164,
+      "raw": 2313
+    },
+    {
+      "version": "v09",
+      "seed": 31415,
+      "repetition": 1,
+      "physicsTickP95": 0.11590000000001055,
+      "kills": 164,
+      "raw": 2313
+    },
+    {
+      "version": "M5_M6",
+      "seed": 31415,
+      "repetition": 1,
+      "physicsTickP95": 0.11979999999999791,
+      "kills": 164,
+      "raw": 2313
+    },
+    {
+      "version": "v09",
+      "seed": 31415,
+      "repetition": 2,
+      "physicsTickP95": 0.0886000000000422,
+      "kills": 164,
+      "raw": 2313
+    },
+    {
+      "version": "M5_M6",
+      "seed": 31415,
+      "repetition": 2,
+      "physicsTickP95": 0.0969000000000051,
+      "kills": 164,
+      "raw": 2313
+    },
+    {
+      "version": "v09",
+      "seed": 1,
+      "repetition": 0,
+      "physicsTickP95": 0.06460000000004129,
+      "kills": 151,
+      "raw": 1942
+    },
+    {
+      "version": "M5_M6",
+      "seed": 1,
+      "repetition": 0,
+      "physicsTickP95": 0.06979999999998654,
+      "kills": 151,
+      "raw": 1942
+    },
+    {
+      "version": "v09",
+      "seed": 1,
+      "repetition": 1,
+      "physicsTickP95": 0.06330000000002656,
+      "kills": 151,
+      "raw": 1942
+    },
+    {
+      "version": "M5_M6",
+      "seed": 1,
+      "repetition": 1,
+      "physicsTickP95": 0.05919999999991887,
+      "kills": 151,
+      "raw": 1942
+    },
+    {
+      "version": "v09",
+      "seed": 1,
+      "repetition": 2,
+      "physicsTickP95": 0.05410000000006221,
+      "kills": 151,
+      "raw": 1942
+    },
+    {
+      "version": "M5_M6",
+      "seed": 1,
+      "repetition": 2,
+      "physicsTickP95": 0.0563000000000784,
+      "kills": 151,
+      "raw": 1942
+    },
+    {
+      "version": "v09",
+      "seed": 7,
+      "repetition": 0,
+      "physicsTickP95": 0.04240000000004329,
+      "kills": 113,
+      "raw": 1384
+    },
+    {
+      "version": "M5_M6",
+      "seed": 7,
+      "repetition": 0,
+      "physicsTickP95": 0.04259999999999309,
+      "kills": 113,
+      "raw": 1384
+    },
+    {
+      "version": "v09",
+      "seed": 7,
+      "repetition": 1,
+      "physicsTickP95": 0.04980000000000473,
+      "kills": 113,
+      "raw": 1384
+    },
+    {
+      "version": "M5_M6",
+      "seed": 7,
+      "repetition": 1,
+      "physicsTickP95": 0.04570000000001073,
+      "kills": 113,
+      "raw": 1384
+    },
+    {
+      "version": "v09",
+      "seed": 7,
+      "repetition": 2,
+      "physicsTickP95": 0.03959999999995034,
+      "kills": 113,
+      "raw": 1384
+    },
+    {
+      "version": "M5_M6",
+      "seed": 7,
+      "repetition": 2,
+      "physicsTickP95": 0.053599999999960346,
+      "kills": 113,
+      "raw": 1384
+    },
+    {
+      "version": "v09",
+      "seed": 42,
+      "repetition": 0,
+      "physicsTickP95": 0.057900000000017826,
+      "kills": 133,
+      "raw": 1611
+    },
+    {
+      "version": "M5_M6",
+      "seed": 42,
+      "repetition": 0,
+      "physicsTickP95": 0.06529999999997926,
+      "kills": 133,
+      "raw": 1611
+    },
+    {
+      "version": "v09",
+      "seed": 42,
+      "repetition": 1,
+      "physicsTickP95": 0.05080000000009477,
+      "kills": 133,
+      "raw": 1611
+    },
+    {
+      "version": "M5_M6",
+      "seed": 42,
+      "repetition": 1,
+      "physicsTickP95": 0.050200000000131695,
+      "kills": 133,
+      "raw": 1611
+    },
+    {
+      "version": "v09",
+      "seed": 42,
+      "repetition": 2,
+      "physicsTickP95": 0.05510000000003856,
+      "kills": 133,
+      "raw": 1611
+    },
+    {
+      "version": "M5_M6",
+      "seed": 42,
+      "repetition": 2,
+      "physicsTickP95": 0.07559999999989486,
+      "kills": 133,
+      "raw": 1611
+    },
+    {
+      "version": "v09",
+      "seed": 99,
+      "repetition": 0,
+      "physicsTickP95": 0.07999999999992724,
+      "kills": 149,
+      "raw": 2062
+    },
+    {
+      "version": "M5_M6",
+      "seed": 99,
+      "repetition": 0,
+      "physicsTickP95": 0.07919999999990068,
+      "kills": 149,
+      "raw": 2062
+    },
+    {
+      "version": "v09",
+      "seed": 99,
+      "repetition": 1,
+      "physicsTickP95": 0.06289999999989959,
+      "kills": 149,
+      "raw": 2062
+    },
+    {
+      "version": "M5_M6",
+      "seed": 99,
+      "repetition": 1,
+      "physicsTickP95": 0.06349999999997635,
+      "kills": 149,
+      "raw": 2062
+    },
+    {
+      "version": "v09",
+      "seed": 99,
+      "repetition": 2,
+      "physicsTickP95": 0.06360000000017862,
+      "kills": 149,
+      "raw": 2062
+    },
+    {
+      "version": "M5_M6",
+      "seed": 99,
+      "repetition": 2,
+      "physicsTickP95": 0.060199999999895226,
+      "kills": 149,
+      "raw": 2062
+    }
+  ]
+}

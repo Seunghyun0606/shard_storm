@@ -1,0 +1,684 @@
+{
+  "summary": [
+    {
+      "mode": "M5_ONLY",
+      "strategy": "Crusher",
+      "milestones": [
+        {
+          "run": 1,
+          "levels": 1,
+          "bank": 60,
+          "catalyst": 0,
+          "rank": 0,
+          "lifetime": 149,
+          "photon": 122,
+          "remaining": 49
+        },
+        {
+          "run": 3,
+          "levels": 3,
+          "bank": 162,
+          "catalyst": 0,
+          "rank": 1,
+          "lifetime": 540,
+          "photon": 206,
+          "remaining": 47
+        },
+        {
+          "run": 5,
+          "levels": 4,
+          "bank": 196,
+          "catalyst": 0,
+          "rank": 1,
+          "lifetime": 923,
+          "photon": 190,
+          "remaining": 46
+        },
+        {
+          "run": 10,
+          "levels": 9,
+          "bank": 108,
+          "catalyst": 14,
+          "rank": 2,
+          "lifetime": 2048,
+          "photon": 273,
+          "remaining": 41
+        },
+        {
+          "run": 20,
+          "levels": 21,
+          "bank": 205,
+          "catalyst": 55,
+          "rank": 3,
+          "lifetime": 4709,
+          "photon": 395,
+          "remaining": 29
+        },
+        {
+          "run": 30,
+          "levels": 37,
+          "bank": 134,
+          "catalyst": 129,
+          "rank": 4,
+          "lifetime": 8669,
+          "photon": 694,
+          "remaining": 13
+        },
+        {
+          "run": 50,
+          "levels": 50,
+          "bank": 7950,
+          "catalyst": 413,
+          "rank": 4,
+          "lifetime": 18369,
+          "photon": 905,
+          "remaining": 0
+        }
+      ],
+      "rankReached": {
+        "1": [
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "2": [
+          6,
+          7,
+          7,
+          8,
+          7
+        ],
+        "3": [
+          15,
+          16,
+          16,
+          17,
+          15
+        ],
+        "4": [
+          28,
+          30,
+          29,
+          30,
+          29
+        ]
+      }
+    },
+    {
+      "mode": "M5_ONLY",
+      "strategy": "Cascade",
+      "milestones": [
+        {
+          "run": 1,
+          "levels": 1,
+          "bank": 32,
+          "catalyst": 0,
+          "rank": 0,
+          "lifetime": 149,
+          "photon": 122,
+          "remaining": 49
+        },
+        {
+          "run": 3,
+          "levels": 2,
+          "bank": 198,
+          "catalyst": 0,
+          "rank": 1,
+          "lifetime": 489,
+          "photon": 170,
+          "remaining": 48
+        },
+        {
+          "run": 5,
+          "levels": 3,
+          "bank": 332,
+          "catalyst": 0,
+          "rank": 1,
+          "lifetime": 850,
+          "photon": 174,
+          "remaining": 47
+        },
+        {
+          "run": 10,
+          "levels": 8,
+          "bank": 116,
+          "catalyst": 7,
+          "rank": 2,
+          "lifetime": 1841,
+          "photon": 240,
+          "remaining": 42
+        },
+        {
+          "run": 20,
+          "levels": 15,
+          "bank": 208,
+          "catalyst": 44,
+          "rank": 3,
+          "lifetime": 4710,
+          "photon": 353,
+          "remaining": 35
+        },
+        {
+          "run": 30,
+          "levels": 28,
+          "bank": 571,
+          "catalyst": 96,
+          "rank": 3,
+          "lifetime": 7854,
+          "photon": 484,
+          "remaining": 22
+        },
+        {
+          "run": 50,
+          "levels": 50,
+          "bank": 4260,
+          "catalyst": 338,
+          "rank": 4,
+          "lifetime": 17363,
+          "photon": 905,
+          "remaining": 0
+        }
+      ],
+      "rankReached": {
+        "1": [
+          2,
+          2,
+          3,
+          3,
+          2
+        ],
+        "2": [
+          7,
+          7,
+          8,
+          8,
+          7
+        ],
+        "3": [
+          16,
+          16,
+          18,
+          17,
+          16
+        ],
+        "4": [
+          30,
+          30,
+          32,
+          31,
+          31
+        ]
+      }
+    },
+    {
+      "mode": "M5_ONLY",
+      "strategy": "Reactor",
+      "milestones": [
+        {
+          "run": 1,
+          "levels": 0,
+          "bank": 94,
+          "catalyst": 0,
+          "rank": 0,
+          "lifetime": 149,
+          "photon": 122,
+          "remaining": 50
+        },
+        {
+          "run": 3,
+          "levels": 2,
+          "bank": 98,
+          "catalyst": 0,
+          "rank": 1,
+          "lifetime": 500,
+          "photon": 174,
+          "remaining": 48
+        },
+        {
+          "run": 5,
+          "levels": 4,
+          "bank": 127,
+          "catalyst": 0,
+          "rank": 1,
+          "lifetime": 994,
+          "photon": 290,
+          "remaining": 46
+        },
+        {
+          "run": 10,
+          "levels": 8,
+          "bank": 251,
+          "catalyst": 18,
+          "rank": 2,
+          "lifetime": 2404,
+          "photon": 345,
+          "remaining": 42
+        },
+        {
+          "run": 20,
+          "levels": 20,
+          "bank": 474,
+          "catalyst": 59,
+          "rank": 3,
+          "lifetime": 5407,
+          "photon": 413,
+          "remaining": 30
+        },
+        {
+          "run": 30,
+          "levels": 33,
+          "bank": 195,
+          "catalyst": 123,
+          "rank": 4,
+          "lifetime": 9425,
+          "photon": 641,
+          "remaining": 17
+        },
+        {
+          "run": 50,
+          "levels": 50,
+          "bank": 9717,
+          "catalyst": 442,
+          "rank": 4,
+          "lifetime": 19118,
+          "photon": 905,
+          "remaining": 0
+        }
+      ],
+      "rankReached": {
+        "1": [
+          2,
+          2,
+          3,
+          3,
+          2
+        ],
+        "2": [
+          6,
+          6,
+          7,
+          6,
+          6
+        ],
+        "3": [
+          14,
+          14,
+          15,
+          15,
+          14
+        ],
+        "4": [
+          27,
+          27,
+          28,
+          28,
+          28
+        ]
+      }
+    },
+    {
+      "mode": "M5_M6_ON",
+      "strategy": "Crusher",
+      "milestones": [
+        {
+          "run": 1,
+          "levels": 1,
+          "bank": 60,
+          "catalyst": 0,
+          "rank": 0,
+          "lifetime": 149,
+          "photon": 122,
+          "remaining": 49
+        },
+        {
+          "run": 3,
+          "levels": 3,
+          "bank": 162,
+          "catalyst": 0,
+          "rank": 1,
+          "lifetime": 540,
+          "photon": 206,
+          "remaining": 47
+        },
+        {
+          "run": 5,
+          "levels": 4,
+          "bank": 196,
+          "catalyst": 0,
+          "rank": 1,
+          "lifetime": 923,
+          "photon": 190,
+          "remaining": 46
+        },
+        {
+          "run": 10,
+          "levels": 9,
+          "bank": 83,
+          "catalyst": 11,
+          "rank": 2,
+          "lifetime": 1975,
+          "photon": 312,
+          "remaining": 41
+        },
+        {
+          "run": 20,
+          "levels": 23,
+          "bank": 191,
+          "catalyst": 54,
+          "rank": 3,
+          "lifetime": 4688,
+          "photon": 405,
+          "remaining": 27
+        },
+        {
+          "run": 30,
+          "levels": 38,
+          "bank": 132,
+          "catalyst": 140,
+          "rank": 4,
+          "lifetime": 8868,
+          "photon": 748,
+          "remaining": 12
+        },
+        {
+          "run": 50,
+          "levels": 50,
+          "bank": 9963,
+          "catalyst": 474,
+          "rank": 4,
+          "lifetime": 18497,
+          "photon": 969,
+          "remaining": 0
+        }
+      ],
+      "rankReached": {
+        "1": [
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "2": [
+          6,
+          7,
+          7,
+          8,
+          7
+        ],
+        "3": [
+          15,
+          16,
+          16,
+          17,
+          16
+        ],
+        "4": [
+          27,
+          29,
+          28,
+          30,
+          29
+        ]
+      }
+    },
+    {
+      "mode": "M5_M6_ON",
+      "strategy": "Cascade",
+      "milestones": [
+        {
+          "run": 1,
+          "levels": 1,
+          "bank": 32,
+          "catalyst": 0,
+          "rank": 0,
+          "lifetime": 149,
+          "photon": 122,
+          "remaining": 49
+        },
+        {
+          "run": 3,
+          "levels": 2,
+          "bank": 198,
+          "catalyst": 0,
+          "rank": 1,
+          "lifetime": 489,
+          "photon": 170,
+          "remaining": 48
+        },
+        {
+          "run": 5,
+          "levels": 3,
+          "bank": 332,
+          "catalyst": 0,
+          "rank": 1,
+          "lifetime": 850,
+          "photon": 174,
+          "remaining": 47
+        },
+        {
+          "run": 10,
+          "levels": 7,
+          "bank": 89,
+          "catalyst": 6,
+          "rank": 2,
+          "lifetime": 1714,
+          "photon": 193,
+          "remaining": 43
+        },
+        {
+          "run": 20,
+          "levels": 14,
+          "bank": 386,
+          "catalyst": 42,
+          "rank": 3,
+          "lifetime": 4439,
+          "photon": 374,
+          "remaining": 36
+        },
+        {
+          "run": 30,
+          "levels": 28,
+          "bank": 722,
+          "catalyst": 97,
+          "rank": 3,
+          "lifetime": 7653,
+          "photon": 553,
+          "remaining": 22
+        },
+        {
+          "run": 50,
+          "levels": 50,
+          "bank": 6651,
+          "catalyst": 393,
+          "rank": 4,
+          "lifetime": 17170,
+          "photon": 969,
+          "remaining": 0
+        }
+      ],
+      "rankReached": {
+        "1": [
+          2,
+          2,
+          3,
+          3,
+          2
+        ],
+        "2": [
+          7,
+          7,
+          8,
+          8,
+          7
+        ],
+        "3": [
+          17,
+          17,
+          18,
+          18,
+          17
+        ],
+        "4": [
+          30,
+          30,
+          32,
+          32,
+          31
+        ]
+      }
+    },
+    {
+      "mode": "M5_M6_ON",
+      "strategy": "Reactor",
+      "milestones": [
+        {
+          "run": 1,
+          "levels": 0,
+          "bank": 94,
+          "catalyst": 0,
+          "rank": 0,
+          "lifetime": 149,
+          "photon": 122,
+          "remaining": 50
+        },
+        {
+          "run": 3,
+          "levels": 2,
+          "bank": 98,
+          "catalyst": 0,
+          "rank": 1,
+          "lifetime": 500,
+          "photon": 174,
+          "remaining": 48
+        },
+        {
+          "run": 5,
+          "levels": 4,
+          "bank": 127,
+          "catalyst": 0,
+          "rank": 1,
+          "lifetime": 994,
+          "photon": 290,
+          "remaining": 46
+        },
+        {
+          "run": 10,
+          "levels": 8,
+          "bank": 346,
+          "catalyst": 17,
+          "rank": 2,
+          "lifetime": 2345,
+          "photon": 340,
+          "remaining": 42
+        },
+        {
+          "run": 20,
+          "levels": 20,
+          "bank": 313,
+          "catalyst": 58,
+          "rank": 3,
+          "lifetime": 5267,
+          "photon": 408,
+          "remaining": 30
+        },
+        {
+          "run": 30,
+          "levels": 33,
+          "bank": 192,
+          "catalyst": 128,
+          "rank": 4,
+          "lifetime": 9197,
+          "photon": 714,
+          "remaining": 17
+        },
+        {
+          "run": 50,
+          "levels": 50,
+          "bank": 11238,
+          "catalyst": 503,
+          "rank": 4,
+          "lifetime": 18891,
+          "photon": 969,
+          "remaining": 0
+        }
+      ],
+      "rankReached": {
+        "1": [
+          2,
+          2,
+          3,
+          3,
+          2
+        ],
+        "2": [
+          6,
+          6,
+          7,
+          6,
+          6
+        ],
+        "3": [
+          14,
+          15,
+          16,
+          15,
+          14
+        ],
+        "4": [
+          27,
+          28,
+          29,
+          28,
+          28
+        ]
+      }
+    }
+  ],
+  "warnings": [
+    "Crusher/31415: all max",
+    "M5_ONLY/Crusher/1: ore share exceeds15%",
+    "Crusher/1: all max",
+    "M5_ONLY/Crusher/7: ore share exceeds15%",
+    "Crusher/7: all max",
+    "Crusher/42: all max",
+    "Crusher/99: all max",
+    "Cascade/31415: all max",
+    "M5_ONLY/Cascade/1: ore share exceeds15%",
+    "Cascade/1: all max",
+    "M5_ONLY/Cascade/7: ore share exceeds15%",
+    "Cascade/7: all max",
+    "M5_ONLY/Cascade/42: ore share exceeds15%",
+    "Cascade/42: all max",
+    "Cascade/99: all max",
+    "M5_ONLY/Reactor/31415: ore share exceeds15%",
+    "Reactor/31415: all max",
+    "M5_ONLY/Reactor/1: ore share exceeds15%",
+    "Reactor/1: all max",
+    "M5_ONLY/Reactor/7: ore share exceeds15%",
+    "Reactor/7: all max",
+    "Reactor/42: all max",
+    "Reactor/99: all max",
+    "Crusher/31415: all max",
+    "Crusher/1: all max",
+    "M5_M6_ON/Crusher/7: ore share exceeds15%",
+    "Crusher/7: all max",
+    "Crusher/42: all max",
+    "Crusher/99: all max",
+    "Cascade/31415: all max",
+    "Cascade/1: all max",
+    "M5_M6_ON/Cascade/7: ore share exceeds15%",
+    "Cascade/7: all max",
+    "Cascade/42: all max",
+    "Cascade/99: all max",
+    "Reactor/31415: all max",
+    "M5_M6_ON/Reactor/1: ore share exceeds15%",
+    "Reactor/1: all max",
+    "M5_M6_ON/Reactor/7: ore share exceeds15%",
+    "Reactor/7: all max",
+    "Reactor/42: all max",
+    "Reactor/99: all max"
+  ]
+}
