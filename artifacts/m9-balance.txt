@@ -1,0 +1,59 @@
+
+> benchmark:m9
+> node tests/m9-balance.js
+
+M9 paths 1/165: f335fad554c6-31415-Crusher-Fresh-Fixed20-M8-Normal-300
+M9 paths 2/165: f335fad554c6-31415-Cascade-Fresh-Fixed20-M8-Normal-300
+M9 paths 3/165: f335fad554c6-31415-Crusher-LegacyMax-Fixed20-M8-Normal-300
+M9 paths 4/165: f335fad554c6-31415-Crusher-Fresh-Fixed20-M9-Normal-300
+M9 paths 5/165: f335fad554c6-31415-Crusher-LegacyMax-Fixed20-M9-Normal-300
+M9 paths 6/165: f335fad554c6-31415-Cascade-Fresh-Fixed20-M9-Normal-300
+M9 paths 7/165: f335fad554c6-31415-Crusher-Fresh-ExtraTime-M8-Normal-300
+M9 paths 8/165: f335fad554c6-31415-Crusher-LegacyMax-ExtraTime-M8-Normal-300
+M9 paths 9/165: f335fad554c6-31415-Cascade-Fresh-ExtraTime-M8-Normal-300
+M9 paths 10/165: f335fad554c6-31415-Crusher-Fresh-ExtraTime-M9-Normal-300
+M9 paths 11/165: f335fad554c6-31415-Cascade-Fresh-ExtraTime-M9-Normal-300
+M9 paths 12/165: f335fad554c6-31415-Crusher-LegacyMax-ExtraTime-M9-Normal-300
+M9 paths 13/165: f335fad554c6-31415-Cascade-LegacyMax-Fixed20-M8-Normal-300
+M9 paths 14/165: f335fad554c6-31415-Cascade-LegacyMax-Fixed20-M9-Normal-300
+M9 paths 15/165: f335fad554c6-31415-Reactor-Fresh-Fixed20-M8-Normal-300
+M9 paths 16/165: f335fad554c6-31415-Reactor-Fresh-Fixed20-M9-Normal-300
+M9 paths 17/165: f335fad554c6-31415-Cascade-LegacyMax-ExtraTime-M8-Normal-300
+M9 paths 18/165: f335fad554c6-31415-Reactor-LegacyMax-Fixed20-M8-Normal-300
+M9 paths 19/165: f335fad554c6-31415-Reactor-LegacyMax-Fixed20-M9-Normal-300
+M9 paths 20/165: f335fad554c6-31415-Cascade-LegacyMax-ExtraTime-M9-Normal-300
+M9 paths 21/165: f335fad554c6-31415-Reactor-Fresh-ExtraTime-M8-Normal-300
+M9 paths 22/165: f335fad554c6-31415-Reactor-LegacyMax-ExtraTime-M8-Normal-300
+M9 paths 23/165: f335fad554c6-31415-Reactor-Fresh-ExtraTime-M9-Normal-300
+M9 paths 24/165: f335fad554c6-31415-Reactor-LegacyMax-ExtraTime-M9-Normal-300
+M9 paths 25/165: f335fad554c6-1-Crusher-Fresh-Fixed20-M8-Normal-300
+M9 paths 26/165: f335fad554c6-1-Crusher-Fresh-Fixed20-M9-Normal-300
+M9 paths 27/165: f335fad554c6-1-Crusher-Fresh-ExtraTime-M8-Normal-300
+M9 paths 28/165: f335fad554c6-1-Crusher-Fresh-ExtraTime-M9-Normal-300
+M9 paths 29/165: f335fad554c6-1-Crusher-LegacyMax-Fixed20-M8-Normal-300
+M9 paths 30/165: f335fad554c6-1-Cascade-Fresh-Fixed20-M8-Normal-300
+M9 paths 31/165: f335fad554c6-1-Crusher-LegacyMax-Fixed20-M9-Normal-300
+M9 paths 32/165: f335fad554c6-1-Cascade-Fresh-Fixed20-M9-Normal-300
+M9 paths 33/165: f335fad554c6-1-Crusher-LegacyMax-ExtraTime-M8-Normal-300
+M9 paths 34/165: f335fad554c6-1-Cascade-Fresh-ExtraTime-M8-Normal-300
+M9 paths 35/165: f335fad554c6-1-Crusher-LegacyMax-ExtraTime-M9-Normal-300
+M9 paths 36/165: f335fad554c6-1-Cascade-Fresh-ExtraTime-M9-Normal-300
+M9 paths 37/165: f335fad554c6-1-Cascade-LegacyMax-Fixed20-M8-Normal-300
+M9 paths 38/165: f335fad554c6-1-Cascade-LegacyMax-Fixed20-M9-Normal-300
+M9 paths 39/165: f335fad554c6-1-Reactor-Fresh-Fixed20-M8-Normal-300
+M9 paths 40/165: f335fad554c6-1-Reactor-Fresh-Fixed20-M9-Normal-300
+M9 paths 41/165: f335fad554c6-1-Cascade-LegacyMax-ExtraTime-M8-Normal-300
+M9 paths 42/165: f335fad554c6-1-Reactor-Fresh-ExtraTime-M8-Normal-300
+M9 paths 43/165: f335fad554c6-1-Cascade-LegacyMax-ExtraTime-M9-Normal-300
+M9 paths 44/165: f335fad554c6-1-Reactor-Fresh-ExtraTime-M9-Normal-300
+M9 paths 45/165: f335fad554c6-1-Reactor-LegacyMax-Fixed20-M8-Normal-300
+file:///C:/Users/limse/Desktop/%ED%9A%8C%EC%82%AC/AI_PJT/shard_storm/tests/m9-balance.js:17
+await Promise.all(Array.from({length:Math.min(Number(process.env.CONTENT_WORKERS||6),availableParallelism())},async()=>{while(cursor<pending.length){const spec=pending[cursor++];await new Promise((resolve,reject)=>{const p=fork(fileURLToPath(import.meta.url),['--worker',JSON.stringify(spec)],{stdio:'inherit'});p.on('exit',code=>code===0?resolve():reject(Error(`${spec.key} exit${code}`)));});console.log(`M9 paths ${++done}/${pending.length}: ${spec.key}`);}}));
+                                                                                                                                                                                                                                                                                                                                                                    ^
+
+Error: f335fad554c6-7-Cascade-Fresh-Fixed20-M8-Normal-300 exit1073807364
+    at ChildProcess.<anonymous> (file:///C:/Users/limse/Desktop/%ED%9A%8C%EC%82%AC/AI_PJT/shard_storm/tests/m9-balance.js:17:357)
+    at ChildProcess.emit (node:events:509:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:295:12)
+
+Node.js v24.18.0

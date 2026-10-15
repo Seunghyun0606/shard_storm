@@ -1,12 +1,34 @@
-# Shard Storm - M9 development checkpoint
+# Shard Storm — M9 complete / M10 rule gate
 
-M9.0 is complete and pushed (`ab47fbc`). M9 has6 new shapes,4 secondary traits,4 formations and schema6 implemented; final growth validation is running. M10/M11 remain pending and are part of this same task. This is not an overall completion claim.
+M9.0과 M9 구현·자동 QA를 완료했습니다. 현재 실제 게임은 **13도형·secondary trait4·배치4·기존19스킬·schema6**입니다. M10은 연결 전 준비 코드이며 신규30스킬/Signature/Evolution은 아직 플레이에 활성화되지 않았습니다. M11도 미완료이며 같은 작업 범위로 남아 있습니다. [M10 지급 조건 선택](docs/Shard_Storm_M10_Rule_Decision.md)이 필요합니다.
 
 - FOCUS toggles a viewport-sized field; logical coordinates remain960x540. Backing resolution follows CSS/DPR up to2. DEV options include Combat FX/Shake/Reduced Motion.
 - New shapes: Splitter/Fuse Bomb/Conductor/Mirror/Gravity Well/Repair Node. The collapsible Shape Ecology guide explains each mechanic. Echo contributes only to visible combos, with0Raw/no permanent or reward-objective progress.
 - `npm run qa:m9-0`, `npm run qa:m9`, `npm run benchmark:m9`. `CONTENT_WORKERS` sets benchmark processes. Per-path source-hashed gzip checkpoints support resume; short `CONTENT_RUNS` smoke data is never reported as full300Run validation.
 - Adaptive.18/.16 spawning is available only in isolated experiments. Normal spawning and prices remain unchanged.
 - [Resume work log](docs/Shard_Storm_M9_M11_Work_Log.md); [M9.0 report](docs/Shard_Storm_M9_0_Implementation_Report.md).
+
+`npm test` **179PASS/0FAIL**, 기존 benchmark 및486Run balance,1573Run M5/M6,650Run M7/M8 smoke를 검증했습니다. M9 성장 실험은5seed·3build·Fresh/LegacyMax·20/ExtraTime·ON/OFF와 추가 비교를 포함한 **38,250실제Run/165경로**입니다. 단독 성능90Run, Chrome 포인터5Run 및 기존 M7/M8 포인터6Run 모두 PASS·콘솔 오류0입니다. 자동 입력은 사람의 재미 검증과 구분합니다.
+
+```powershell
+npm test
+npm run benchmark
+npm run benchmark:balance
+npm run benchmark:m5-m6
+$env:M7_RUNS = '1' # 회귀 smoke; 전체300Run과 구분
+npm run benchmark:m7-m8
+$env:CONTENT_WORKERS = '6'
+npm run benchmark:m9
+node tests/m9-performance.mjs # 성장 worker 종료 후 단독 실행
+# 별도 터미널에서 PORT=4174로 npm start
+$env:PLAYWRIGHT_MODULE = Join-Path $env:TEMP 'shard-storm-qa/node_modules/playwright'
+$env:QA_BASE_URL = 'http://127.0.0.1:4174'
+npm run qa:m9
+npm run qa:m7-m8
+node tests/m9-report.js
+```
+
+[M9 구현·알려진 제한](docs/Shard_Storm_M9_Implementation_Report.md) · [50~300Run 밸런스·상한·성능](docs/Shard_Storm_M9_Balance_Report.md) · [신규6도형](artifacts/m9-fixture-six-shapes.png) · [좁은 결과 화면](artifacts/m9-rank3-result.png). 기존512 iteration/tick 상한 도달과50Lv 이후 재화 잉여를 보고서에 공개했습니다. 기본.20×3/가격/Refinery.06은 유지합니다.
 
 ## Historical M8 report below
 

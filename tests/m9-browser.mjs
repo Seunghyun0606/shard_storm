@@ -13,10 +13,10 @@ try{
   await page.locator('#start').click();const p=await point({x:480,y:335});await page.mouse.click(p.x,p.y);await page.mouse.down();const seen=new Set();let captured=false;
   while((await snap()).state==='PLAYING'){
    const live=await snap();for(const s of live.shapes)seen.add(s.type);const target=live.shapes.filter(s=>s.grace<=0).sort((a,b)=>Number(Boolean(b.secondaryTrait))-Number(Boolean(a.secondaryTrait))||a.hp-b.hp||a.id-b.id)[0];
-   if(target){const p=await point(target);await page.mouse.move(p.x,p.y);}if(live.elapsed>9&&!captured){await page.screenshot({path:`artifacts/m9-rank${rank}-playing.png`,fullPage:true});captured=true;}
+   if(target){const p=await point(target);await page.mouse.move(p.x,p.y);if(!live.held){await page.mouse.up();await page.mouse.down();}}if(live.elapsed>9&&!captured){await page.screenshot({path:`artifacts/m9-rank${rank}-playing.png`,fullPage:true});captured=true;}
    await page.waitForTimeout(60);
   }
-  await page.mouse.up();const pending=await snap();assert.equal(pending.record.ecologyEnabled,true);assert.equal(pending.record.echoRaw,0);
+  await page.mouse.up();const pending=await snap();assert.equal(pending.record.ecologyEnabled,true);assert.equal(pending.record.echoRaw,0);assert.ok(pending.successfulClicks+pending.missedClicks>=70,'continuous pointer attack coverage');
   if(rank===2){await page.reload();assert.equal((await snap()).bank,before.bank+pending.pendingSettlement.payout);const seenIntro=await page.evaluate(()=>JSON.parse(localStorage.getItem('shard-storm-v1')).shapeIntroSeen);for(const id of pending.record.introConsumed)assert.equal(seenIntro[id],true);await page.reload();assert.equal((await snap()).bank,before.bank+pending.pendingSettlement.payout);}
   else{if(await page.locator('#refinery-skip').isVisible())await page.locator('#refinery-skip').click();await page.waitForFunction(()=>window.shardStorm.snapshot().settled);assert.equal((await snap()).bank,before.bank+pending.pendingSettlement.payout);await page.setViewportSize({width:620,height:800});await page.locator('#again').scrollIntoViewIfNeeded();await page.screenshot({path:`artifacts/m9-rank${rank}-result.png`,fullPage:true});await page.locator('#again').click();assert.equal((await snap()).state,'PLAYING');await page.setViewportSize({width:1560,height:1000});}
   runs.push({rank,fixture:rank!==0,record:pending.record,seen:[...seen]});
