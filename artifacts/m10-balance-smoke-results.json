@@ -1,0 +1,1301 @@
+{
+  "passed": true,
+  "signature": "1cfc05f8374dee65d8c31693719e34cb60170f3a9c352d06fa2a50f91da699ed",
+  "sources": [
+    "anomalies.js",
+    "builds.js",
+    "combo.js",
+    "config.js",
+    "content.js",
+    "contracts.js",
+    "discovery.js",
+    "ecology-defs.js",
+    "ecology.js",
+    "economy.js",
+    "effects.js",
+    "entities.js",
+    "expansion-defs.js",
+    "expansion.js",
+    "experiments.js",
+    "game.js",
+    "motion.js",
+    "ore.js",
+    "presentation.js",
+    "progression.js",
+    "refinery.js",
+    "relics.js",
+    "run-metrics.js",
+    "settlement-validation.js",
+    "skill-tree.js",
+    "storage.js",
+    "tests/content-simulation.js",
+    "tests/m10-balance.js",
+    "tests/m10-simulation.js",
+    "tests/simulation.js",
+    "visuals.js"
+  ],
+  "actualRuns": 240,
+  "sourceFiles": [
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-Fresh-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-Fresh-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-Fresh-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-Fresh-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-Fresh-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-Fresh-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-Fresh-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-Fresh-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-LegacyMax-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-LegacyMax-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-LegacyMax-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-LegacyMax-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-LegacyMax-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-LegacyMax-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-LegacyMax-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Crusher-LegacyMax-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-Fresh-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-Fresh-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-Fresh-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-Fresh-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-Fresh-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-Fresh-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-Fresh-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-Fresh-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-LegacyMax-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-LegacyMax-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-LegacyMax-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-LegacyMax-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-LegacyMax-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-LegacyMax-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-LegacyMax-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Cascade-LegacyMax-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-Fresh-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-Fresh-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-Fresh-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-Fresh-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-Fresh-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-Fresh-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-Fresh-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-Fresh-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-LegacyMax-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-LegacyMax-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-LegacyMax-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-LegacyMax-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-LegacyMax-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-LegacyMax-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-LegacyMax-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-31415-Reactor-LegacyMax-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-Fresh-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-Fresh-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-Fresh-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-Fresh-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-Fresh-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-Fresh-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-Fresh-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-Fresh-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-LegacyMax-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-LegacyMax-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-LegacyMax-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-LegacyMax-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-LegacyMax-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-LegacyMax-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-LegacyMax-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Crusher-LegacyMax-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-Fresh-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-Fresh-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-Fresh-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-Fresh-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-Fresh-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-Fresh-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-Fresh-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-Fresh-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-LegacyMax-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-LegacyMax-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-LegacyMax-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-LegacyMax-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-LegacyMax-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-LegacyMax-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-LegacyMax-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Cascade-LegacyMax-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-Fresh-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-Fresh-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-Fresh-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-Fresh-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-Fresh-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-Fresh-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-Fresh-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-Fresh-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-LegacyMax-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-LegacyMax-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-LegacyMax-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-LegacyMax-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-LegacyMax-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-LegacyMax-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-LegacyMax-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-1-Reactor-LegacyMax-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-Fresh-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-Fresh-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-Fresh-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-Fresh-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-Fresh-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-Fresh-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-Fresh-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-Fresh-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-LegacyMax-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-LegacyMax-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-LegacyMax-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-LegacyMax-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-LegacyMax-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-LegacyMax-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-LegacyMax-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Crusher-LegacyMax-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-Fresh-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-Fresh-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-Fresh-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-Fresh-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-Fresh-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-Fresh-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-Fresh-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-Fresh-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-LegacyMax-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-LegacyMax-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-LegacyMax-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-LegacyMax-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-LegacyMax-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-LegacyMax-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-LegacyMax-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Cascade-LegacyMax-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-Fresh-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-Fresh-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-Fresh-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-Fresh-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-Fresh-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-Fresh-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-Fresh-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-Fresh-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-LegacyMax-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-LegacyMax-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-LegacyMax-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-LegacyMax-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-LegacyMax-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-LegacyMax-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-LegacyMax-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-7-Reactor-LegacyMax-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-Fresh-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-Fresh-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-Fresh-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-Fresh-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-Fresh-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-Fresh-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-Fresh-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-Fresh-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-LegacyMax-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-LegacyMax-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-LegacyMax-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-LegacyMax-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-LegacyMax-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-LegacyMax-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-LegacyMax-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Crusher-LegacyMax-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-Fresh-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-Fresh-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-Fresh-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-Fresh-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-Fresh-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-Fresh-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-Fresh-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-Fresh-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-LegacyMax-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-LegacyMax-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-LegacyMax-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-LegacyMax-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-LegacyMax-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-LegacyMax-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-LegacyMax-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Cascade-LegacyMax-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-Fresh-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-Fresh-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-Fresh-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-Fresh-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-Fresh-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-Fresh-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-Fresh-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-Fresh-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-LegacyMax-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-LegacyMax-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-LegacyMax-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-LegacyMax-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-LegacyMax-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-LegacyMax-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-LegacyMax-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-42-Reactor-LegacyMax-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-Fresh-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-Fresh-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-Fresh-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-Fresh-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-Fresh-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-Fresh-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-Fresh-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-Fresh-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-LegacyMax-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-LegacyMax-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-LegacyMax-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-LegacyMax-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-LegacyMax-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-LegacyMax-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-LegacyMax-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Crusher-LegacyMax-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-Fresh-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-Fresh-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-Fresh-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-Fresh-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-Fresh-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-Fresh-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-Fresh-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-Fresh-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-LegacyMax-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-LegacyMax-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-LegacyMax-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-LegacyMax-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-LegacyMax-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-LegacyMax-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-LegacyMax-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Cascade-LegacyMax-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-Fresh-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-Fresh-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-Fresh-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-Fresh-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-Fresh-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-Fresh-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-Fresh-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-Fresh-ExtraTime-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-LegacyMax-Fixed20-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-LegacyMax-Fixed20-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-LegacyMax-Fixed20-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-LegacyMax-Fixed20-Evolution2-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-LegacyMax-ExtraTime-M9-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-LegacyMax-ExtraTime-PermOnly-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-LegacyMax-ExtraTime-Signature3-1.json.gz",
+    "artifacts/m10-growth/1cfc05f8374d-99-Reactor-LegacyMax-ExtraTime-Evolution2-1.json.gz"
+  ],
+  "summary": [
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 54,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "PermOnly",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 54,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "Signature3",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 54,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "Evolution2",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 54,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 54,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "PermOnly",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 54,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "Signature3",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 54,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "Evolution2",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 54,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 50,
+          "remainingNodes": 0,
+          "rank": 4,
+          "bank": 10694,
+          "catalyst": 211,
+          "kills": 302,
+          "photon": 694,
+          "chain": 12,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "PermOnly",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 66,
+          "remainingNodes": 21,
+          "rank": 4,
+          "bank": 323,
+          "catalyst": 147,
+          "kills": 302,
+          "photon": 694,
+          "chain": 12,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "Signature3",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 66,
+          "remainingNodes": 21,
+          "rank": 4,
+          "bank": 323,
+          "catalyst": 147,
+          "kills": 302,
+          "photon": 694,
+          "chain": 12,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "Evolution2",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 52,
+          "remainingNodes": 29,
+          "rank": 4,
+          "bank": 93,
+          "catalyst": 69,
+          "kills": 299,
+          "photon": 798,
+          "chain": 12,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 50,
+          "remainingNodes": 0,
+          "rank": 4,
+          "bank": 11260,
+          "catalyst": 222,
+          "kills": 484,
+          "photon": 1260,
+          "chain": 13,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "PermOnly",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 68,
+          "remainingNodes": 21,
+          "rank": 4,
+          "bank": 56,
+          "catalyst": 154,
+          "kills": 484,
+          "photon": 1260,
+          "chain": 13,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "Signature3",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 68,
+          "remainingNodes": 21,
+          "rank": 4,
+          "bank": 56,
+          "catalyst": 154,
+          "kills": 484,
+          "photon": 1260,
+          "chain": 13,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "Evolution2",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 53,
+          "remainingNodes": 29,
+          "rank": 4,
+          "bank": 211,
+          "catalyst": 78,
+          "kills": 483,
+          "photon": 1331,
+          "chain": 12,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 24,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "PermOnly",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 24,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "Signature3",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 24,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "Evolution2",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 24,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 24,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "PermOnly",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 24,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "Signature3",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 24,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "Evolution2",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 24,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 50,
+          "remainingNodes": 0,
+          "rank": 4,
+          "bank": 10694,
+          "catalyst": 211,
+          "kills": 302,
+          "photon": 694,
+          "chain": 12,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "PermOnly",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 66,
+          "remainingNodes": 21,
+          "rank": 4,
+          "bank": 46,
+          "catalyst": 144,
+          "kills": 302,
+          "photon": 694,
+          "chain": 12,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "Signature3",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 66,
+          "remainingNodes": 21,
+          "rank": 4,
+          "bank": 46,
+          "catalyst": 144,
+          "kills": 302,
+          "photon": 694,
+          "chain": 12,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "Evolution2",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 51,
+          "remainingNodes": 30,
+          "rank": 4,
+          "bank": 246,
+          "catalyst": 68,
+          "kills": 304,
+          "photon": 702,
+          "chain": 13,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 50,
+          "remainingNodes": 0,
+          "rank": 4,
+          "bank": 11260,
+          "catalyst": 222,
+          "kills": 484,
+          "photon": 1260,
+          "chain": 13,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "PermOnly",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 67,
+          "remainingNodes": 20,
+          "rank": 4,
+          "bank": 54,
+          "catalyst": 151,
+          "kills": 484,
+          "photon": 1260,
+          "chain": 13,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "Signature3",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 67,
+          "remainingNodes": 20,
+          "rank": 4,
+          "bank": 54,
+          "catalyst": 151,
+          "kills": 484,
+          "photon": 1260,
+          "chain": 13,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "Evolution2",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 51,
+          "remainingNodes": 29,
+          "rank": 4,
+          "bank": 270,
+          "catalyst": 74,
+          "kills": 485,
+          "photon": 1245,
+          "chain": 15,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 33,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "PermOnly",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 33,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "Signature3",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 33,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "Fixed20",
+      "feature": "Evolution2",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 33,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 33,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "PermOnly",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 33,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "Signature3",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 33,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "feature": "Evolution2",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 33,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 50,
+          "remainingNodes": 0,
+          "rank": 4,
+          "bank": 10694,
+          "catalyst": 211,
+          "kills": 302,
+          "photon": 694,
+          "chain": 12,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "PermOnly",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 65,
+          "remainingNodes": 21,
+          "rank": 4,
+          "bank": 146,
+          "catalyst": 139,
+          "kills": 302,
+          "photon": 694,
+          "chain": 12,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "Signature3",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 65,
+          "remainingNodes": 21,
+          "rank": 4,
+          "bank": 146,
+          "catalyst": 139,
+          "kills": 302,
+          "photon": 694,
+          "chain": 12,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "LegacyMax",
+      "time": "Fixed20",
+      "feature": "Evolution2",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 52,
+          "remainingNodes": 30,
+          "rank": 4,
+          "bank": 127,
+          "catalyst": 68,
+          "kills": 302,
+          "photon": 694,
+          "chain": 12,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 50,
+          "remainingNodes": 0,
+          "rank": 4,
+          "bank": 11260,
+          "catalyst": 222,
+          "kills": 484,
+          "photon": 1260,
+          "chain": 13,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "PermOnly",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 66,
+          "remainingNodes": 21,
+          "rank": 4,
+          "bank": 35,
+          "catalyst": 146,
+          "kills": 484,
+          "photon": 1260,
+          "chain": 13,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "Signature3",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 66,
+          "remainingNodes": 21,
+          "rank": 4,
+          "bank": 35,
+          "catalyst": 146,
+          "kills": 484,
+          "photon": 1260,
+          "chain": 13,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "LegacyMax",
+      "time": "ExtraTime",
+      "feature": "Evolution2",
+      "checkpoints": [
+        {
+          "run": 1,
+          "levels": 52,
+          "remainingNodes": 29,
+          "rank": 4,
+          "bank": 272,
+          "catalyst": 76,
+          "kills": 484,
+          "photon": 1260,
+          "chain": 13,
+          "blank": 0,
+          "calibrationPhoton": 0
+        }
+      ]
+    }
+  ],
+  "activations": {
+    "evolution:focusStrike": 1399,
+    "evolution:ricochet": 5295
+  },
+  "caps": {},
+  "lateContacts": 0,
+  "maxProjectileError": 9.99925390487988e-7,
+  "maxWaveError": 9.981428661376412e-7,
+  "node": "v24.18.0",
+  "workers": 8,
+  "method": "5seeds×3builds×Fresh/Legacy(old19MAX)×20/ExtraTime×M9/PermOnly/Signature3/Evolution2. Actual battle+settlement+affordable purchase; distinct seed+Run×7919. Signatures limited3, Evolution2 with Signature3. All49 owned is not injected into Fresh. Experiment history compacts per-event arrays only after counters recorded. No real storage. Auto-aim is not human enjoyment."
+}

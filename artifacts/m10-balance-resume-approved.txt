@@ -1,0 +1,26 @@
+
+> benchmark:m10
+> node tests/m10-balance.js
+
+M10 paths 1/155: 9bf0f4189a6e-1-Reactor-LegacyMax-Fixed20-M9-300
+M10 paths 2/155: 9bf0f4189a6e-1-Reactor-Fresh-ExtraTime-PermOnly-300
+M10 paths 3/155: 9bf0f4189a6e-1-Reactor-Fresh-ExtraTime-Signature3-300
+M10 paths 4/155: 9bf0f4189a6e-1-Reactor-LegacyMax-Fixed20-PermOnly-300
+M10 paths 5/155: 9bf0f4189a6e-1-Reactor-Fresh-ExtraTime-Evolution2-300
+M10 paths 6/155: 9bf0f4189a6e-1-Reactor-LegacyMax-ExtraTime-M9-300
+M10 paths 7/155: 9bf0f4189a6e-1-Reactor-LegacyMax-Fixed20-Evolution2-300
+M10 paths 8/155: 9bf0f4189a6e-1-Reactor-LegacyMax-Fixed20-Signature3-300
+M10 paths 9/155: 9bf0f4189a6e-7-Crusher-Fresh-Fixed20-M9-300
+M10 paths 10/155: 9bf0f4189a6e-1-Reactor-LegacyMax-ExtraTime-PermOnly-300
+M10 paths 11/155: 9bf0f4189a6e-1-Reactor-LegacyMax-ExtraTime-Signature3-300
+M10 paths 12/155: 9bf0f4189a6e-1-Reactor-LegacyMax-ExtraTime-Evolution2-300
+M10 paths 13/155: 9bf0f4189a6e-7-Crusher-Fresh-Fixed20-PermOnly-300
+M10 paths 14/155: 9bf0f4189a6e-7-Crusher-Fresh-Fixed20-Signature3-300
+M10 paths 15/155: 9bf0f4189a6e-7-Crusher-Fresh-ExtraTime-M9-300
+M10 paths 16/155: 9bf0f4189a6e-7-Crusher-LegacyMax-Fixed20-M9-300
+M10 paths 17/155: 9bf0f4189a6e-7-Crusher-Fresh-Fixed20-Evolution2-300
+M10 paths 18/155: 9bf0f4189a6e-7-Crusher-Fresh-ExtraTime-PermOnly-300
+M10 paths 19/155: 9bf0f4189a6e-7-Crusher-LegacyMax-Fixed20-Signature3-300
+M10 paths 20/155: 9bf0f4189a6e-7-Crusher-LegacyMax-Fixed20-PermOnly-300
+M10 paths 21/155: 9bf0f4189a6e-7-Crusher-Fresh-ExtraTime-Signature3-300
+M10 paths 22/155: 9bf0f4189a6e-7-Crusher-LegacyMax-ExtraTime-M9-300
