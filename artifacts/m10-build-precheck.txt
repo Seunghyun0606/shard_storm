@@ -1,0 +1,1 @@
+M10 preparatory build-state checks PASS:15 actual crafts, costs/ownership/duplicates/slots/presets/state locks; combat integration not yet verified

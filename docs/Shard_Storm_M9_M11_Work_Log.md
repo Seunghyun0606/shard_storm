@@ -32,6 +32,8 @@ Current full unit suite179PASS/0FAIL (`artifacts/m9-unit-final.txt`); two additi
 
 ## Final M9 verification and pending human gate
 
+M9 completion commit `17dcc954daeaaef1fbefb27ec7c3cab437452a80` is pushed to `origin/feat/m9-m11-content-expansion`. Subsequent WIP preservation is unconnected M10 preparation only; it does not upgrade schema or enable any new combat skill. The human rule decision remains required before M10 integration. All M11 scope remains pending.
+
 The above restart note is chronological. Growth completed:38,250 actual unique recorded Runs/165paths, same `f335fad554c6...` signature.15,160 saved rows reused,23,090 added. Both Normal and comparison modes use matching seeds; report tables compare the first50 Normal Runs to50 Adaptive/Anomaly Runs, not different index ranges. Full summary/sourceFiles are current; old300Run smoke is no longer used as `m9-balance-results.json`.
 
 Isolated90Run performance PASS; M8/OFF exact outcome parity. Final Chrome155 pointer5×20s PASS after adding read-only held/click-count diagnostics and restoring a real mouse hold after screenshot/scroll cancels it. Each normal QA Run asserts≥70 actual attack attempts. Natural Fresh146kills/139Photon, Rank1..3 fixtures303/298/301kills; fixture values are not human fun evidence. Old Relic/Contract/Anomaly browser6Runs PASS and650Run smoke PASS; fresh outputs under `artifacts/m9-regression`, new650 source files use prefix `62608cdf8e1c`. Existing benchmark18legacy+2short,486Run balance,1573Run M5/M6 pass. Reports disclose existing512 iteration cap and late currency surplus. No gameplay source changed during growth; app diagnostic fields and QA/report files are outside its dependency list.
