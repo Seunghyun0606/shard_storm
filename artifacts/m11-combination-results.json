@@ -1,0 +1,7141 @@
+{
+  "passed": true,
+  "actualRuns": 60,
+  "method": "5seeds x3 owned MAX build fixtures x20/32s xFX ON/OFF. Actual native battle, all insight fixture for Elite gates. No natural growth claim.",
+  "rows": [
+    {
+      "seed": 31415,
+      "strategy": "Crusher",
+      "duration": 20,
+      "fx": true,
+      "kills": 304,
+      "raw": 10776,
+      "photon": 783,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 2,
+        "fragmented": 8,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 3
+      },
+      "delta": {
+        "triangle": {
+          "kills": 86,
+          "techniques": 41
+        },
+        "square": {
+          "kills": 72,
+          "techniques": 0
+        },
+        "pentagon": {
+          "kills": 38,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 27,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 14,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 5,
+          "techniques": 6
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 11,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 4,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 4,
+          "techniques": 6
+        },
+        "repairNode": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 149,
+        "maxWaveContactError": 9.901091289066244e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 161,
+        "maxProjectileContactError": 9.862593515208573e-7
+      },
+      "peaks": {
+        "shards": 42,
+        "waves": 8,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 31415,
+      "strategy": "Crusher",
+      "duration": 20,
+      "fx": false,
+      "kills": 304,
+      "raw": 10776,
+      "photon": 783,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 2,
+        "fragmented": 8,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 3
+      },
+      "delta": {
+        "triangle": {
+          "kills": 86,
+          "techniques": 41
+        },
+        "square": {
+          "kills": 72,
+          "techniques": 0
+        },
+        "pentagon": {
+          "kills": 38,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 27,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 14,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 5,
+          "techniques": 6
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 11,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 4,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 4,
+          "techniques": 6
+        },
+        "repairNode": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 149,
+        "maxWaveContactError": 9.901091289066244e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 161,
+        "maxProjectileContactError": 9.862593515208573e-7
+      },
+      "peaks": {
+        "shards": 42,
+        "waves": 8,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 31415,
+      "strategy": "Crusher",
+      "duration": 32,
+      "fx": true,
+      "kills": 486,
+      "raw": 16837,
+      "photon": 1131,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 2,
+        "fragmented": 16,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 4,
+        "lensSector": 4,
+        "parasiteDelivered": 1,
+        "timeLocked": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 127,
+          "techniques": 51
+        },
+        "square": {
+          "kills": 111,
+          "techniques": 1
+        },
+        "pentagon": {
+          "kills": 66,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 44,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 29,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 11,
+          "techniques": 12
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 11,
+          "techniques": 4
+        },
+        "gravityWell": {
+          "kills": 7,
+          "techniques": 9
+        },
+        "repairNode": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 12,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 5,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 244,
+        "maxWaveContactError": 9.901091289066244e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 240,
+        "maxProjectileContactError": 9.862593515208573e-7
+      },
+      "peaks": {
+        "shards": 42,
+        "waves": 10,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 31415,
+      "strategy": "Crusher",
+      "duration": 32,
+      "fx": false,
+      "kills": 486,
+      "raw": 16837,
+      "photon": 1131,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 2,
+        "fragmented": 16,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 4,
+        "lensSector": 4,
+        "parasiteDelivered": 1,
+        "timeLocked": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 127,
+          "techniques": 51
+        },
+        "square": {
+          "kills": 111,
+          "techniques": 1
+        },
+        "pentagon": {
+          "kills": 66,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 44,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 29,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 11,
+          "techniques": 12
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 11,
+          "techniques": 4
+        },
+        "gravityWell": {
+          "kills": 7,
+          "techniques": 9
+        },
+        "repairNode": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 12,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 5,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 244,
+        "maxWaveContactError": 9.901091289066244e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 240,
+        "maxProjectileContactError": 9.862593515208573e-7
+      },
+      "peaks": {
+        "shards": 42,
+        "waves": 10,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 31415,
+      "strategy": "Cascade",
+      "duration": 20,
+      "fx": true,
+      "kills": 299,
+      "raw": 9823,
+      "photon": 686,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 4,
+        "portalUnlinked": 2,
+        "fragmented": 8,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 1,
+        "lensSector": 6,
+        "parasiteDelivered": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 93,
+          "techniques": 23
+        },
+        "square": {
+          "kills": 72,
+          "techniques": 4
+        },
+        "pentagon": {
+          "kills": 40,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 14,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 5,
+          "techniques": 5
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 11,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "gravityWell": {
+          "kills": 4,
+          "techniques": 5
+        },
+        "repairNode": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 2,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 159,
+        "maxWaveContactError": 9.744196916017245e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 123,
+        "maxProjectileContactError": 9.759584358448592e-7
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 10,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 31415,
+      "strategy": "Cascade",
+      "duration": 20,
+      "fx": false,
+      "kills": 299,
+      "raw": 9823,
+      "photon": 686,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 4,
+        "portalUnlinked": 2,
+        "fragmented": 8,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 1,
+        "lensSector": 6,
+        "parasiteDelivered": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 93,
+          "techniques": 23
+        },
+        "square": {
+          "kills": 72,
+          "techniques": 4
+        },
+        "pentagon": {
+          "kills": 40,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 14,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 5,
+          "techniques": 5
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 11,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "gravityWell": {
+          "kills": 4,
+          "techniques": 5
+        },
+        "repairNode": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 2,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 159,
+        "maxWaveContactError": 9.744196916017245e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 123,
+        "maxProjectileContactError": 9.759584358448592e-7
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 10,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 31415,
+      "strategy": "Cascade",
+      "duration": 32,
+      "fx": true,
+      "kills": 489,
+      "raw": 16120,
+      "photon": 1190,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 4,
+        "portalUnlinked": 3,
+        "fragmented": 18,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 1,
+        "lensSector": 10,
+        "parasiteDelivered": 1,
+        "shifterLeap": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 140,
+          "techniques": 32
+        },
+        "square": {
+          "kills": 110,
+          "techniques": 4
+        },
+        "pentagon": {
+          "kills": 66,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 32,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 33,
+          "techniques": 3
+        },
+        "reactor": {
+          "kills": 10,
+          "techniques": 11
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 11,
+          "techniques": 1
+        },
+        "gravityWell": {
+          "kills": 7,
+          "techniques": 9
+        },
+        "repairNode": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 5,
+          "techniques": 1
+        },
+        "prismLens": {
+          "kills": 3,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 263,
+        "maxWaveContactError": 9.915102765489792e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 204,
+        "maxProjectileContactError": 9.759584358448592e-7
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 10,
+        "scheduled": 13
+      }
+    },
+    {
+      "seed": 31415,
+      "strategy": "Cascade",
+      "duration": 32,
+      "fx": false,
+      "kills": 489,
+      "raw": 16120,
+      "photon": 1190,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 4,
+        "portalUnlinked": 3,
+        "fragmented": 18,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 1,
+        "lensSector": 10,
+        "parasiteDelivered": 1,
+        "shifterLeap": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 140,
+          "techniques": 32
+        },
+        "square": {
+          "kills": 110,
+          "techniques": 4
+        },
+        "pentagon": {
+          "kills": 66,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 32,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 33,
+          "techniques": 3
+        },
+        "reactor": {
+          "kills": 10,
+          "techniques": 11
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 11,
+          "techniques": 1
+        },
+        "gravityWell": {
+          "kills": 7,
+          "techniques": 9
+        },
+        "repairNode": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 5,
+          "techniques": 1
+        },
+        "prismLens": {
+          "kills": 3,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 263,
+        "maxWaveContactError": 9.915102765489792e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 204,
+        "maxProjectileContactError": 9.759584358448592e-7
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 10,
+        "scheduled": 13
+      }
+    },
+    {
+      "seed": 31415,
+      "strategy": "Reactor",
+      "duration": 20,
+      "fx": true,
+      "kills": 302,
+      "raw": 11200,
+      "photon": 846,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 10,
+        "portalUnlinked": 3,
+        "fragmented": 8,
+        "parasiteDelivered": 2,
+        "eliteSpawned": 1,
+        "lensMainRefraction": 2,
+        "eliteKilled": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 91,
+          "techniques": 21
+        },
+        "square": {
+          "kills": 61,
+          "techniques": 3
+        },
+        "pentagon": {
+          "kills": 35,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 36,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 14,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 5,
+          "techniques": 5
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 10,
+          "techniques": 1
+        },
+        "fuseBomb": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 4,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 4,
+          "techniques": 7
+        },
+        "repairNode": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "chainBeacon": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 161,
+        "maxWaveContactError": 9.369255593583148e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 133,
+        "maxProjectileContactError": 9.719578528688544e-7
+      },
+      "peaks": {
+        "shards": 56,
+        "waves": 9,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 31415,
+      "strategy": "Reactor",
+      "duration": 20,
+      "fx": false,
+      "kills": 302,
+      "raw": 11200,
+      "photon": 846,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 10,
+        "portalUnlinked": 3,
+        "fragmented": 8,
+        "parasiteDelivered": 2,
+        "eliteSpawned": 1,
+        "lensMainRefraction": 2,
+        "eliteKilled": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 91,
+          "techniques": 21
+        },
+        "square": {
+          "kills": 61,
+          "techniques": 3
+        },
+        "pentagon": {
+          "kills": 35,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 36,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 14,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 5,
+          "techniques": 5
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 10,
+          "techniques": 1
+        },
+        "fuseBomb": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 4,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 4,
+          "techniques": 7
+        },
+        "repairNode": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "chainBeacon": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 161,
+        "maxWaveContactError": 9.369255593583148e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 133,
+        "maxProjectileContactError": 9.719578528688544e-7
+      },
+      "peaks": {
+        "shards": 56,
+        "waves": 9,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 31415,
+      "strategy": "Reactor",
+      "duration": 32,
+      "fx": true,
+      "kills": 486,
+      "raw": 17556,
+      "photon": 1177,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 10,
+        "portalUnlinked": 3,
+        "fragmented": 16,
+        "parasiteDelivered": 2,
+        "eliteSpawned": 1,
+        "lensMainRefraction": 3,
+        "eliteKilled": 1,
+        "timeLocked": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 124,
+          "techniques": 34
+        },
+        "square": {
+          "kills": 108,
+          "techniques": 4
+        },
+        "pentagon": {
+          "kills": 57,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 56,
+          "techniques": 3
+        },
+        "hex": {
+          "kills": 33,
+          "techniques": 3
+        },
+        "reactor": {
+          "kills": 10,
+          "techniques": 11
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 14,
+          "techniques": 1
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 1
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 11,
+          "techniques": 4
+        },
+        "gravityWell": {
+          "kills": 7,
+          "techniques": 11
+        },
+        "repairNode": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "chainBeacon": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 4,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 278,
+        "maxWaveContactError": 9.952744335350872e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 202,
+        "maxProjectileContactError": 9.803797098584255e-7
+      },
+      "peaks": {
+        "shards": 56,
+        "waves": 11,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 31415,
+      "strategy": "Reactor",
+      "duration": 32,
+      "fx": false,
+      "kills": 486,
+      "raw": 17556,
+      "photon": 1177,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 10,
+        "portalUnlinked": 3,
+        "fragmented": 16,
+        "parasiteDelivered": 2,
+        "eliteSpawned": 1,
+        "lensMainRefraction": 3,
+        "eliteKilled": 1,
+        "timeLocked": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 124,
+          "techniques": 34
+        },
+        "square": {
+          "kills": 108,
+          "techniques": 4
+        },
+        "pentagon": {
+          "kills": 57,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 56,
+          "techniques": 3
+        },
+        "hex": {
+          "kills": 33,
+          "techniques": 3
+        },
+        "reactor": {
+          "kills": 10,
+          "techniques": 11
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 14,
+          "techniques": 1
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 1
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 11,
+          "techniques": 4
+        },
+        "gravityWell": {
+          "kills": 7,
+          "techniques": 11
+        },
+        "repairNode": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "chainBeacon": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 4,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 278,
+        "maxWaveContactError": 9.952744335350872e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 202,
+        "maxProjectileContactError": 9.803797098584255e-7
+      },
+      "peaks": {
+        "shards": 56,
+        "waves": 11,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 1,
+      "strategy": "Crusher",
+      "duration": 20,
+      "fx": true,
+      "kills": 301,
+      "raw": 10276,
+      "photon": 767,
+      "advanced": {
+        "fragmented": 12,
+        "introduction": 6,
+        "portalUnlinked": 3,
+        "timeLocked": 1,
+        "portalPass": 8,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "shifterLeap": 3,
+        "lensMainRefraction": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 90,
+          "techniques": 31
+        },
+        "square": {
+          "kills": 69,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 41,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 20,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 14,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 6,
+          "techniques": 7
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 11,
+          "techniques": 5
+        },
+        "gravityWell": {
+          "kills": 4,
+          "techniques": 2
+        },
+        "repairNode": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 3,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 138,
+        "maxWaveContactError": 9.446394955148207e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 145,
+        "maxProjectileContactError": 9.321261380534906e-7
+      },
+      "peaks": {
+        "shards": 50,
+        "waves": 9,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 1,
+      "strategy": "Crusher",
+      "duration": 20,
+      "fx": false,
+      "kills": 301,
+      "raw": 10276,
+      "photon": 767,
+      "advanced": {
+        "fragmented": 12,
+        "introduction": 6,
+        "portalUnlinked": 3,
+        "timeLocked": 1,
+        "portalPass": 8,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "shifterLeap": 3,
+        "lensMainRefraction": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 90,
+          "techniques": 31
+        },
+        "square": {
+          "kills": 69,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 41,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 20,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 14,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 6,
+          "techniques": 7
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 11,
+          "techniques": 5
+        },
+        "gravityWell": {
+          "kills": 4,
+          "techniques": 2
+        },
+        "repairNode": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 3,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 138,
+        "maxWaveContactError": 9.446394955148207e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 145,
+        "maxProjectileContactError": 9.321261380534906e-7
+      },
+      "peaks": {
+        "shards": 50,
+        "waves": 9,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 1,
+      "strategy": "Crusher",
+      "duration": 32,
+      "fx": true,
+      "kills": 481,
+      "raw": 15839,
+      "photon": 1056,
+      "advanced": {
+        "fragmented": 12,
+        "introduction": 6,
+        "portalUnlinked": 4,
+        "timeLocked": 1,
+        "portalPass": 8,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "shifterLeap": 3,
+        "lensMainRefraction": 4,
+        "lensSector": 2
+      },
+      "delta": {
+        "triangle": {
+          "kills": 136,
+          "techniques": 48
+        },
+        "square": {
+          "kills": 109,
+          "techniques": 4
+        },
+        "pentagon": {
+          "kills": 80,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 39,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 19,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 9,
+          "techniques": 10
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 12,
+          "techniques": 5
+        },
+        "gravityWell": {
+          "kills": 6,
+          "techniques": 3
+        },
+        "repairNode": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 4,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 6,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 215,
+        "maxWaveContactError": 9.893875301258959e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 234,
+        "maxProjectileContactError": 9.86226858401551e-7
+      },
+      "peaks": {
+        "shards": 50,
+        "waves": 9,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 1,
+      "strategy": "Crusher",
+      "duration": 32,
+      "fx": false,
+      "kills": 481,
+      "raw": 15839,
+      "photon": 1056,
+      "advanced": {
+        "fragmented": 12,
+        "introduction": 6,
+        "portalUnlinked": 4,
+        "timeLocked": 1,
+        "portalPass": 8,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "shifterLeap": 3,
+        "lensMainRefraction": 4,
+        "lensSector": 2
+      },
+      "delta": {
+        "triangle": {
+          "kills": 136,
+          "techniques": 48
+        },
+        "square": {
+          "kills": 109,
+          "techniques": 4
+        },
+        "pentagon": {
+          "kills": 80,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 39,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 19,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 9,
+          "techniques": 10
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 12,
+          "techniques": 5
+        },
+        "gravityWell": {
+          "kills": 6,
+          "techniques": 3
+        },
+        "repairNode": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 4,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 6,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 215,
+        "maxWaveContactError": 9.893875301258959e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 234,
+        "maxProjectileContactError": 9.86226858401551e-7
+      },
+      "peaks": {
+        "shards": 50,
+        "waves": 9,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 1,
+      "strategy": "Cascade",
+      "duration": 20,
+      "fx": true,
+      "kills": 302,
+      "raw": 10750,
+      "photon": 814,
+      "advanced": {
+        "fragmented": 12,
+        "introduction": 6,
+        "portalPass": 3,
+        "portalUnlinked": 2,
+        "timeLocked": 2,
+        "eliteSpawned": 1,
+        "shifterBlocked": 1,
+        "eliteKilled": 1,
+        "parasiteDelivered": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 83,
+          "techniques": 17
+        },
+        "square": {
+          "kills": 67,
+          "techniques": 5
+        },
+        "pentagon": {
+          "kills": 42,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 30,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 15,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 5,
+          "techniques": 6
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 10,
+          "techniques": 1
+        },
+        "gravityWell": {
+          "kills": 4,
+          "techniques": 5
+        },
+        "repairNode": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 159,
+        "maxWaveContactError": 9.959795619352008e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 115,
+        "maxProjectileContactError": 9.983639017718815e-7
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 10,
+        "scheduled": 13
+      }
+    },
+    {
+      "seed": 1,
+      "strategy": "Cascade",
+      "duration": 20,
+      "fx": false,
+      "kills": 302,
+      "raw": 10750,
+      "photon": 814,
+      "advanced": {
+        "fragmented": 12,
+        "introduction": 6,
+        "portalPass": 3,
+        "portalUnlinked": 2,
+        "timeLocked": 2,
+        "eliteSpawned": 1,
+        "shifterBlocked": 1,
+        "eliteKilled": 1,
+        "parasiteDelivered": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 83,
+          "techniques": 17
+        },
+        "square": {
+          "kills": 67,
+          "techniques": 5
+        },
+        "pentagon": {
+          "kills": 42,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 30,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 15,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 5,
+          "techniques": 6
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 10,
+          "techniques": 1
+        },
+        "gravityWell": {
+          "kills": 4,
+          "techniques": 5
+        },
+        "repairNode": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 159,
+        "maxWaveContactError": 9.959795619352008e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 115,
+        "maxProjectileContactError": 9.983639017718815e-7
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 10,
+        "scheduled": 13
+      }
+    },
+    {
+      "seed": 1,
+      "strategy": "Cascade",
+      "duration": 32,
+      "fx": true,
+      "kills": 486,
+      "raw": 16828,
+      "photon": 1140,
+      "advanced": {
+        "fragmented": 12,
+        "introduction": 6,
+        "portalPass": 5,
+        "portalUnlinked": 3,
+        "timeLocked": 2,
+        "eliteSpawned": 1,
+        "shifterBlocked": 1,
+        "eliteKilled": 1,
+        "parasiteDelivered": 1,
+        "shifterLeap": 2
+      },
+      "delta": {
+        "triangle": {
+          "kills": 135,
+          "techniques": 26
+        },
+        "square": {
+          "kills": 100,
+          "techniques": 5
+        },
+        "pentagon": {
+          "kills": 73,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 57,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 20,
+          "techniques": 3
+        },
+        "reactor": {
+          "kills": 9,
+          "techniques": 10
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 12,
+          "techniques": 1
+        },
+        "gravityWell": {
+          "kills": 6,
+          "techniques": 6
+        },
+        "repairNode": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 2
+        },
+        "parasiteLink": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 250,
+        "maxWaveContactError": 9.959795619352008e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 194,
+        "maxProjectileContactError": 9.983639017718815e-7
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 10,
+        "scheduled": 13
+      }
+    },
+    {
+      "seed": 1,
+      "strategy": "Cascade",
+      "duration": 32,
+      "fx": false,
+      "kills": 486,
+      "raw": 16828,
+      "photon": 1140,
+      "advanced": {
+        "fragmented": 12,
+        "introduction": 6,
+        "portalPass": 5,
+        "portalUnlinked": 3,
+        "timeLocked": 2,
+        "eliteSpawned": 1,
+        "shifterBlocked": 1,
+        "eliteKilled": 1,
+        "parasiteDelivered": 1,
+        "shifterLeap": 2
+      },
+      "delta": {
+        "triangle": {
+          "kills": 135,
+          "techniques": 26
+        },
+        "square": {
+          "kills": 100,
+          "techniques": 5
+        },
+        "pentagon": {
+          "kills": 73,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 57,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 20,
+          "techniques": 3
+        },
+        "reactor": {
+          "kills": 9,
+          "techniques": 10
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 12,
+          "techniques": 1
+        },
+        "gravityWell": {
+          "kills": 6,
+          "techniques": 6
+        },
+        "repairNode": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 2
+        },
+        "parasiteLink": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 250,
+        "maxWaveContactError": 9.959795619352008e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 194,
+        "maxProjectileContactError": 9.983639017718815e-7
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 10,
+        "scheduled": 13
+      }
+    },
+    {
+      "seed": 1,
+      "strategy": "Reactor",
+      "duration": 20,
+      "fx": true,
+      "kills": 307,
+      "raw": 10232,
+      "photon": 782,
+      "advanced": {
+        "fragmented": 12,
+        "introduction": 6,
+        "portalPass": 1,
+        "portalUnlinked": 2,
+        "timeLocked": 1,
+        "parasiteDelivered": 3,
+        "eliteSpawned": 1,
+        "eliteKilled": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 96,
+          "techniques": 27
+        },
+        "square": {
+          "kills": 61,
+          "techniques": 4
+        },
+        "pentagon": {
+          "kills": 46,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 21,
+          "techniques": 2
+        },
+        "hex": {
+          "kills": 15,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 6,
+          "techniques": 7
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 7,
+          "techniques": 1
+        },
+        "fuseBomb": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 10,
+          "techniques": 3
+        },
+        "gravityWell": {
+          "kills": 4,
+          "techniques": 3
+        },
+        "repairNode": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 4,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 156,
+        "maxWaveContactError": 9.886298357741907e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 118,
+        "maxProjectileContactError": 9.720647433653085e-7
+      },
+      "peaks": {
+        "shards": 60,
+        "waves": 11,
+        "scheduled": 14
+      }
+    },
+    {
+      "seed": 1,
+      "strategy": "Reactor",
+      "duration": 20,
+      "fx": false,
+      "kills": 307,
+      "raw": 10232,
+      "photon": 782,
+      "advanced": {
+        "fragmented": 12,
+        "introduction": 6,
+        "portalPass": 1,
+        "portalUnlinked": 2,
+        "timeLocked": 1,
+        "parasiteDelivered": 3,
+        "eliteSpawned": 1,
+        "eliteKilled": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 96,
+          "techniques": 27
+        },
+        "square": {
+          "kills": 61,
+          "techniques": 4
+        },
+        "pentagon": {
+          "kills": 46,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 21,
+          "techniques": 2
+        },
+        "hex": {
+          "kills": 15,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 6,
+          "techniques": 7
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 7,
+          "techniques": 1
+        },
+        "fuseBomb": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 10,
+          "techniques": 3
+        },
+        "gravityWell": {
+          "kills": 4,
+          "techniques": 3
+        },
+        "repairNode": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 4,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 156,
+        "maxWaveContactError": 9.886298357741907e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 118,
+        "maxProjectileContactError": 9.720647433653085e-7
+      },
+      "peaks": {
+        "shards": 60,
+        "waves": 11,
+        "scheduled": 14
+      }
+    },
+    {
+      "seed": 1,
+      "strategy": "Reactor",
+      "duration": 32,
+      "fx": true,
+      "kills": 488,
+      "raw": 16097,
+      "photon": 1141,
+      "advanced": {
+        "fragmented": 12,
+        "introduction": 6,
+        "portalPass": 1,
+        "portalUnlinked": 2,
+        "timeLocked": 1,
+        "parasiteDelivered": 4,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensSector": 2,
+        "lensMainRefraction": 3
+      },
+      "delta": {
+        "triangle": {
+          "kills": 153,
+          "techniques": 41
+        },
+        "square": {
+          "kills": 96,
+          "techniques": 5
+        },
+        "pentagon": {
+          "kills": 74,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 45,
+          "techniques": 2
+        },
+        "hex": {
+          "kills": 20,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 10,
+          "techniques": 11
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 15,
+          "techniques": 2
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 11,
+          "techniques": 4
+        },
+        "gravityWell": {
+          "kills": 6,
+          "techniques": 6
+        },
+        "repairNode": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 5,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 4,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 242,
+        "maxWaveContactError": 9.886298357741907e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 188,
+        "maxProjectileContactError": 9.720647433653085e-7
+      },
+      "peaks": {
+        "shards": 60,
+        "waves": 11,
+        "scheduled": 14
+      }
+    },
+    {
+      "seed": 1,
+      "strategy": "Reactor",
+      "duration": 32,
+      "fx": false,
+      "kills": 488,
+      "raw": 16097,
+      "photon": 1141,
+      "advanced": {
+        "fragmented": 12,
+        "introduction": 6,
+        "portalPass": 1,
+        "portalUnlinked": 2,
+        "timeLocked": 1,
+        "parasiteDelivered": 4,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensSector": 2,
+        "lensMainRefraction": 3
+      },
+      "delta": {
+        "triangle": {
+          "kills": 153,
+          "techniques": 41
+        },
+        "square": {
+          "kills": 96,
+          "techniques": 5
+        },
+        "pentagon": {
+          "kills": 74,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 45,
+          "techniques": 2
+        },
+        "hex": {
+          "kills": 20,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 10,
+          "techniques": 11
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 15,
+          "techniques": 2
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 11,
+          "techniques": 4
+        },
+        "gravityWell": {
+          "kills": 6,
+          "techniques": 6
+        },
+        "repairNode": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 5,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 4,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 242,
+        "maxWaveContactError": 9.886298357741907e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 188,
+        "maxProjectileContactError": 9.720647433653085e-7
+      },
+      "peaks": {
+        "shards": 60,
+        "waves": 11,
+        "scheduled": 14
+      }
+    },
+    {
+      "seed": 7,
+      "strategy": "Crusher",
+      "duration": 20,
+      "fx": true,
+      "kills": 289,
+      "raw": 10281,
+      "photon": 755,
+      "advanced": {
+        "introduction": 6,
+        "timeLocked": 1,
+        "portalUnlinked": 2,
+        "portalPass": 1,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "fragmented": 8,
+        "parasiteDelivered": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 90,
+          "techniques": 45
+        },
+        "square": {
+          "kills": 59,
+          "techniques": 1
+        },
+        "pentagon": {
+          "kills": 39,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 17,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 14,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 9,
+          "techniques": 10
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 11,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 1
+        },
+        "mirror": {
+          "kills": 3,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 3,
+          "techniques": 3
+        },
+        "repairNode": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 131,
+        "maxWaveContactError": 9.705402561621668e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 164,
+        "maxProjectileContactError": 9.875513775625677e-7
+      },
+      "peaks": {
+        "shards": 56,
+        "waves": 7,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 7,
+      "strategy": "Crusher",
+      "duration": 20,
+      "fx": false,
+      "kills": 289,
+      "raw": 10281,
+      "photon": 755,
+      "advanced": {
+        "introduction": 6,
+        "timeLocked": 1,
+        "portalUnlinked": 2,
+        "portalPass": 1,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "fragmented": 8,
+        "parasiteDelivered": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 90,
+          "techniques": 45
+        },
+        "square": {
+          "kills": 59,
+          "techniques": 1
+        },
+        "pentagon": {
+          "kills": 39,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 17,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 14,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 9,
+          "techniques": 10
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 11,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 1
+        },
+        "mirror": {
+          "kills": 3,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 3,
+          "techniques": 3
+        },
+        "repairNode": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 131,
+        "maxWaveContactError": 9.705402561621668e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 164,
+        "maxProjectileContactError": 9.875513775625677e-7
+      },
+      "peaks": {
+        "shards": 56,
+        "waves": 7,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 7,
+      "strategy": "Crusher",
+      "duration": 32,
+      "fx": true,
+      "kills": 481,
+      "raw": 17878,
+      "photon": 1230,
+      "advanced": {
+        "introduction": 6,
+        "timeLocked": 1,
+        "portalUnlinked": 3,
+        "portalPass": 2,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "fragmented": 14,
+        "parasiteDelivered": 1,
+        "lensMainRefraction": 2,
+        "resonant": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 140,
+          "techniques": 73
+        },
+        "square": {
+          "kills": 96,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 68,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 38,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 24,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 15,
+          "techniques": 16
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 18,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 16,
+          "techniques": 1
+        },
+        "mirror": {
+          "kills": 10,
+          "techniques": 6
+        },
+        "gravityWell": {
+          "kills": 8,
+          "techniques": 8
+        },
+        "repairNode": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 7,
+          "techniques": 5
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 3,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 222,
+        "maxWaveContactError": 9.909527847185018e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 275,
+        "maxProjectileContactError": 9.906034819096021e-7
+      },
+      "peaks": {
+        "shards": 56,
+        "waves": 8,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 7,
+      "strategy": "Crusher",
+      "duration": 32,
+      "fx": false,
+      "kills": 481,
+      "raw": 17878,
+      "photon": 1230,
+      "advanced": {
+        "introduction": 6,
+        "timeLocked": 1,
+        "portalUnlinked": 3,
+        "portalPass": 2,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "fragmented": 14,
+        "parasiteDelivered": 1,
+        "lensMainRefraction": 2,
+        "resonant": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 140,
+          "techniques": 73
+        },
+        "square": {
+          "kills": 96,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 68,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 38,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 24,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 15,
+          "techniques": 16
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 18,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 16,
+          "techniques": 1
+        },
+        "mirror": {
+          "kills": 10,
+          "techniques": 6
+        },
+        "gravityWell": {
+          "kills": 8,
+          "techniques": 8
+        },
+        "repairNode": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 7,
+          "techniques": 5
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 3,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 222,
+        "maxWaveContactError": 9.909527847185018e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 275,
+        "maxProjectileContactError": 9.906034819096021e-7
+      },
+      "peaks": {
+        "shards": 56,
+        "waves": 8,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 7,
+      "strategy": "Cascade",
+      "duration": 20,
+      "fx": true,
+      "kills": 308,
+      "raw": 10474,
+      "photon": 731,
+      "advanced": {
+        "timeLocked": 1,
+        "introduction": 6,
+        "portalUnlinked": 3,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensSector": 2,
+        "lensMainRefraction": 2,
+        "fragmented": 8
+      },
+      "delta": {
+        "triangle": {
+          "kills": 86,
+          "techniques": 20
+        },
+        "square": {
+          "kills": 80,
+          "techniques": 3
+        },
+        "pentagon": {
+          "kills": 31,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 24,
+          "techniques": 2
+        },
+        "hex": {
+          "kills": 15,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 10,
+          "techniques": 11
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "gravityWell": {
+          "kills": 3,
+          "techniques": 5
+        },
+        "repairNode": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 180,
+        "maxWaveContactError": 9.81709121106178e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 110,
+        "maxProjectileContactError": 9.977964516849624e-7
+      },
+      "peaks": {
+        "shards": 48,
+        "waves": 9,
+        "scheduled": 13
+      }
+    },
+    {
+      "seed": 7,
+      "strategy": "Cascade",
+      "duration": 20,
+      "fx": false,
+      "kills": 308,
+      "raw": 10474,
+      "photon": 731,
+      "advanced": {
+        "timeLocked": 1,
+        "introduction": 6,
+        "portalUnlinked": 3,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensSector": 2,
+        "lensMainRefraction": 2,
+        "fragmented": 8
+      },
+      "delta": {
+        "triangle": {
+          "kills": 86,
+          "techniques": 20
+        },
+        "square": {
+          "kills": 80,
+          "techniques": 3
+        },
+        "pentagon": {
+          "kills": 31,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 24,
+          "techniques": 2
+        },
+        "hex": {
+          "kills": 15,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 10,
+          "techniques": 11
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "gravityWell": {
+          "kills": 3,
+          "techniques": 5
+        },
+        "repairNode": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 180,
+        "maxWaveContactError": 9.81709121106178e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 110,
+        "maxProjectileContactError": 9.977964516849624e-7
+      },
+      "peaks": {
+        "shards": 48,
+        "waves": 9,
+        "scheduled": 13
+      }
+    },
+    {
+      "seed": 7,
+      "strategy": "Cascade",
+      "duration": 32,
+      "fx": true,
+      "kills": 489,
+      "raw": 17858,
+      "photon": 1229,
+      "advanced": {
+        "timeLocked": 1,
+        "introduction": 6,
+        "portalUnlinked": 5,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensSector": 4,
+        "lensMainRefraction": 3,
+        "fragmented": 12
+      },
+      "delta": {
+        "triangle": {
+          "kills": 137,
+          "techniques": 30
+        },
+        "square": {
+          "kills": 117,
+          "techniques": 5
+        },
+        "pentagon": {
+          "kills": 46,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 44,
+          "techniques": 2
+        },
+        "hex": {
+          "kills": 26,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 14,
+          "techniques": 15
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 17,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 16,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 10,
+          "techniques": 3
+        },
+        "gravityWell": {
+          "kills": 10,
+          "techniques": 10
+        },
+        "repairNode": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 6,
+          "techniques": 3
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 3,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 271,
+        "maxWaveContactError": 9.879067306428624e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 183,
+        "maxProjectileContactError": 9.977964516849624e-7
+      },
+      "peaks": {
+        "shards": 48,
+        "waves": 9,
+        "scheduled": 13
+      }
+    },
+    {
+      "seed": 7,
+      "strategy": "Cascade",
+      "duration": 32,
+      "fx": false,
+      "kills": 489,
+      "raw": 17858,
+      "photon": 1229,
+      "advanced": {
+        "timeLocked": 1,
+        "introduction": 6,
+        "portalUnlinked": 5,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensSector": 4,
+        "lensMainRefraction": 3,
+        "fragmented": 12
+      },
+      "delta": {
+        "triangle": {
+          "kills": 137,
+          "techniques": 30
+        },
+        "square": {
+          "kills": 117,
+          "techniques": 5
+        },
+        "pentagon": {
+          "kills": 46,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 44,
+          "techniques": 2
+        },
+        "hex": {
+          "kills": 26,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 14,
+          "techniques": 15
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 17,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 16,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 10,
+          "techniques": 3
+        },
+        "gravityWell": {
+          "kills": 10,
+          "techniques": 10
+        },
+        "repairNode": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 6,
+          "techniques": 3
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 3,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 271,
+        "maxWaveContactError": 9.879067306428624e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 183,
+        "maxProjectileContactError": 9.977964516849624e-7
+      },
+      "peaks": {
+        "shards": 48,
+        "waves": 9,
+        "scheduled": 13
+      }
+    },
+    {
+      "seed": 7,
+      "strategy": "Reactor",
+      "duration": 20,
+      "fx": true,
+      "kills": 307,
+      "raw": 11002,
+      "photon": 785,
+      "advanced": {
+        "timeLocked": 1,
+        "introduction": 6,
+        "portalPass": 1,
+        "portalUnlinked": 2,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensSector": 2,
+        "fragmented": 6
+      },
+      "delta": {
+        "triangle": {
+          "kills": 96,
+          "techniques": 30
+        },
+        "square": {
+          "kills": 61,
+          "techniques": 1
+        },
+        "pentagon": {
+          "kills": 39,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 24,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "reactor": {
+          "kills": 11,
+          "techniques": 12
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 11,
+          "techniques": 1
+        },
+        "fuseBomb": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 3,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 3,
+          "techniques": 3
+        },
+        "repairNode": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 143,
+        "maxWaveContactError": 9.862907361934958e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 129,
+        "maxProjectileContactError": 9.739127690977512e-7
+      },
+      "peaks": {
+        "shards": 43,
+        "waves": 12,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 7,
+      "strategy": "Reactor",
+      "duration": 20,
+      "fx": false,
+      "kills": 307,
+      "raw": 11002,
+      "photon": 785,
+      "advanced": {
+        "timeLocked": 1,
+        "introduction": 6,
+        "portalPass": 1,
+        "portalUnlinked": 2,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensSector": 2,
+        "fragmented": 6
+      },
+      "delta": {
+        "triangle": {
+          "kills": 96,
+          "techniques": 30
+        },
+        "square": {
+          "kills": 61,
+          "techniques": 1
+        },
+        "pentagon": {
+          "kills": 39,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 24,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "reactor": {
+          "kills": 11,
+          "techniques": 12
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 11,
+          "techniques": 1
+        },
+        "fuseBomb": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 3,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 3,
+          "techniques": 3
+        },
+        "repairNode": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 143,
+        "maxWaveContactError": 9.862907361934958e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 129,
+        "maxProjectileContactError": 9.739127690977512e-7
+      },
+      "peaks": {
+        "shards": 43,
+        "waves": 12,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 7,
+      "strategy": "Reactor",
+      "duration": 32,
+      "fx": true,
+      "kills": 490,
+      "raw": 18437,
+      "photon": 1312,
+      "advanced": {
+        "timeLocked": 1,
+        "introduction": 6,
+        "portalPass": 5,
+        "portalUnlinked": 4,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensSector": 4,
+        "fragmented": 10,
+        "lensMainRefraction": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 146,
+          "techniques": 45
+        },
+        "square": {
+          "kills": 92,
+          "techniques": 1
+        },
+        "pentagon": {
+          "kills": 64,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 44,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 26,
+          "techniques": 0
+        },
+        "reactor": {
+          "kills": 16,
+          "techniques": 17
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 18,
+          "techniques": 1
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 16,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 9,
+          "techniques": 5
+        },
+        "gravityWell": {
+          "kills": 9,
+          "techniques": 11
+        },
+        "repairNode": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 6,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 3,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 220,
+        "maxWaveContactError": 9.862907361934958e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 213,
+        "maxProjectileContactError": 9.739127690977512e-7
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 12,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 7,
+      "strategy": "Reactor",
+      "duration": 32,
+      "fx": false,
+      "kills": 490,
+      "raw": 18437,
+      "photon": 1312,
+      "advanced": {
+        "timeLocked": 1,
+        "introduction": 6,
+        "portalPass": 5,
+        "portalUnlinked": 4,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensSector": 4,
+        "fragmented": 10,
+        "lensMainRefraction": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 146,
+          "techniques": 45
+        },
+        "square": {
+          "kills": 92,
+          "techniques": 1
+        },
+        "pentagon": {
+          "kills": 64,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 44,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 26,
+          "techniques": 0
+        },
+        "reactor": {
+          "kills": 16,
+          "techniques": 17
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 18,
+          "techniques": 1
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 16,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 9,
+          "techniques": 5
+        },
+        "gravityWell": {
+          "kills": 9,
+          "techniques": 11
+        },
+        "repairNode": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 6,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 3,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 220,
+        "maxWaveContactError": 9.862907361934958e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 213,
+        "maxProjectileContactError": 9.739127690977512e-7
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 12,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 42,
+      "strategy": "Crusher",
+      "duration": 20,
+      "fx": true,
+      "kills": 305,
+      "raw": 10174,
+      "photon": 698,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 2,
+        "fragmented": 6,
+        "eliteSpawned": 1,
+        "eliteKilled": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 95,
+          "techniques": 42
+        },
+        "square": {
+          "kills": 69,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 31,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 29,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 13,
+          "techniques": 4
+        },
+        "reactor": {
+          "kills": 7,
+          "techniques": 8
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 6,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 5,
+          "techniques": 6
+        },
+        "repairNode": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 145,
+        "maxWaveContactError": 9.928726711905256e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 161,
+        "maxProjectileContactError": 9.99460073813907e-7
+      },
+      "peaks": {
+        "shards": 40,
+        "waves": 10,
+        "scheduled": 9
+      }
+    },
+    {
+      "seed": 42,
+      "strategy": "Crusher",
+      "duration": 20,
+      "fx": false,
+      "kills": 305,
+      "raw": 10174,
+      "photon": 698,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 2,
+        "fragmented": 6,
+        "eliteSpawned": 1,
+        "eliteKilled": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 95,
+          "techniques": 42
+        },
+        "square": {
+          "kills": 69,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 31,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 29,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 13,
+          "techniques": 4
+        },
+        "reactor": {
+          "kills": 7,
+          "techniques": 8
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 6,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 5,
+          "techniques": 6
+        },
+        "repairNode": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 145,
+        "maxWaveContactError": 9.928726711905256e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 161,
+        "maxProjectileContactError": 9.99460073813907e-7
+      },
+      "peaks": {
+        "shards": 40,
+        "waves": 10,
+        "scheduled": 9
+      }
+    },
+    {
+      "seed": 42,
+      "strategy": "Crusher",
+      "duration": 32,
+      "fx": true,
+      "kills": 485,
+      "raw": 16638,
+      "photon": 1118,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 3,
+        "fragmented": 12,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "parasiteDelivered": 2,
+        "portalPass": 6,
+        "timeLocked": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 140,
+          "techniques": 58
+        },
+        "square": {
+          "kills": 112,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 56,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 52,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 24,
+          "techniques": 5
+        },
+        "reactor": {
+          "kills": 12,
+          "techniques": 13
+        },
+        "ancient": {
+          "kills": 2,
+          "techniques": 2
+        },
+        "splitter": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 16,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 7,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 7,
+          "techniques": 7
+        },
+        "repairNode": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 1
+        },
+        "parasiteLink": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 2,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 233,
+        "maxWaveContactError": 9.928726711905256e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 239,
+        "maxProjectileContactError": 9.99460073813907e-7
+      },
+      "peaks": {
+        "shards": 41,
+        "waves": 10,
+        "scheduled": 9
+      }
+    },
+    {
+      "seed": 42,
+      "strategy": "Crusher",
+      "duration": 32,
+      "fx": false,
+      "kills": 485,
+      "raw": 16638,
+      "photon": 1118,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 3,
+        "fragmented": 12,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "parasiteDelivered": 2,
+        "portalPass": 6,
+        "timeLocked": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 140,
+          "techniques": 58
+        },
+        "square": {
+          "kills": 112,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 56,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 52,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 24,
+          "techniques": 5
+        },
+        "reactor": {
+          "kills": 12,
+          "techniques": 13
+        },
+        "ancient": {
+          "kills": 2,
+          "techniques": 2
+        },
+        "splitter": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 16,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 7,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 7,
+          "techniques": 7
+        },
+        "repairNode": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 1
+        },
+        "parasiteLink": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 2,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 233,
+        "maxWaveContactError": 9.928726711905256e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 239,
+        "maxProjectileContactError": 9.99460073813907e-7
+      },
+      "peaks": {
+        "shards": 41,
+        "waves": 10,
+        "scheduled": 9
+      }
+    },
+    {
+      "seed": 42,
+      "strategy": "Cascade",
+      "duration": 20,
+      "fx": true,
+      "kills": 298,
+      "raw": 9533,
+      "photon": 709,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 1,
+        "fragmented": 6,
+        "eliteSpawned": 1,
+        "shifterLeap": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 2
+      },
+      "delta": {
+        "triangle": {
+          "kills": 85,
+          "techniques": 16
+        },
+        "square": {
+          "kills": 75,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 44,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 21,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 13,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 4,
+          "techniques": 5
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 12,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 7,
+          "techniques": 5
+        },
+        "gravityWell": {
+          "kills": 5,
+          "techniques": 6
+        },
+        "repairNode": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 128,
+        "maxWaveContactError": 9.647342977814333e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 132,
+        "maxProjectileContactError": 9.89010931817802e-7
+      },
+      "peaks": {
+        "shards": 41,
+        "waves": 9,
+        "scheduled": 10
+      }
+    },
+    {
+      "seed": 42,
+      "strategy": "Cascade",
+      "duration": 20,
+      "fx": false,
+      "kills": 298,
+      "raw": 9533,
+      "photon": 709,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 1,
+        "fragmented": 6,
+        "eliteSpawned": 1,
+        "shifterLeap": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 2
+      },
+      "delta": {
+        "triangle": {
+          "kills": 85,
+          "techniques": 16
+        },
+        "square": {
+          "kills": 75,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 44,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 21,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 13,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 4,
+          "techniques": 5
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 12,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 7,
+          "techniques": 5
+        },
+        "gravityWell": {
+          "kills": 5,
+          "techniques": 6
+        },
+        "repairNode": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 128,
+        "maxWaveContactError": 9.647342977814333e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 132,
+        "maxProjectileContactError": 9.89010931817802e-7
+      },
+      "peaks": {
+        "shards": 41,
+        "waves": 9,
+        "scheduled": 10
+      }
+    },
+    {
+      "seed": 42,
+      "strategy": "Cascade",
+      "duration": 32,
+      "fx": true,
+      "kills": 487,
+      "raw": 15941,
+      "photon": 1082,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 2,
+        "fragmented": 12,
+        "eliteSpawned": 1,
+        "shifterLeap": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 2,
+        "lensSector": 4,
+        "parasiteDelivered": 1,
+        "timeLocked": 2,
+        "portalPass": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 140,
+          "techniques": 26
+        },
+        "square": {
+          "kills": 113,
+          "techniques": 4
+        },
+        "pentagon": {
+          "kills": 72,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 42,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 24,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 9,
+          "techniques": 10
+        },
+        "ancient": {
+          "kills": 2,
+          "techniques": 2
+        },
+        "splitter": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 12,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 17,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 7,
+          "techniques": 5
+        },
+        "gravityWell": {
+          "kills": 7,
+          "techniques": 6
+        },
+        "repairNode": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 2,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 3,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 238,
+        "maxWaveContactError": 9.783283871911408e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 181,
+        "maxProjectileContactError": 9.89010931817802e-7
+      },
+      "peaks": {
+        "shards": 41,
+        "waves": 9,
+        "scheduled": 10
+      }
+    },
+    {
+      "seed": 42,
+      "strategy": "Cascade",
+      "duration": 32,
+      "fx": false,
+      "kills": 487,
+      "raw": 15941,
+      "photon": 1082,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 2,
+        "fragmented": 12,
+        "eliteSpawned": 1,
+        "shifterLeap": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 2,
+        "lensSector": 4,
+        "parasiteDelivered": 1,
+        "timeLocked": 2,
+        "portalPass": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 140,
+          "techniques": 26
+        },
+        "square": {
+          "kills": 113,
+          "techniques": 4
+        },
+        "pentagon": {
+          "kills": 72,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 42,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 24,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 9,
+          "techniques": 10
+        },
+        "ancient": {
+          "kills": 2,
+          "techniques": 2
+        },
+        "splitter": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 12,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 17,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 7,
+          "techniques": 5
+        },
+        "gravityWell": {
+          "kills": 7,
+          "techniques": 6
+        },
+        "repairNode": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 2,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 3,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 238,
+        "maxWaveContactError": 9.783283871911408e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 181,
+        "maxProjectileContactError": 9.89010931817802e-7
+      },
+      "peaks": {
+        "shards": 41,
+        "waves": 9,
+        "scheduled": 10
+      }
+    },
+    {
+      "seed": 42,
+      "strategy": "Reactor",
+      "duration": 20,
+      "fx": true,
+      "kills": 309,
+      "raw": 10084,
+      "photon": 759,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 2,
+        "portalUnlinked": 2,
+        "fragmented": 4,
+        "parasiteDelivered": 1,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 2,
+        "timeLocked": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 86,
+          "techniques": 16
+        },
+        "square": {
+          "kills": 71,
+          "techniques": 1
+        },
+        "pentagon": {
+          "kills": 47,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 23,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 13,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 8,
+          "techniques": 9
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 7,
+          "techniques": 3
+        },
+        "gravityWell": {
+          "kills": 5,
+          "techniques": 8
+        },
+        "repairNode": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 136,
+        "maxWaveContactError": 9.928723727625766e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 133,
+        "maxProjectileContactError": 9.898842314726153e-7
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 9,
+        "scheduled": 14
+      }
+    },
+    {
+      "seed": 42,
+      "strategy": "Reactor",
+      "duration": 20,
+      "fx": false,
+      "kills": 309,
+      "raw": 10084,
+      "photon": 759,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 2,
+        "portalUnlinked": 2,
+        "fragmented": 4,
+        "parasiteDelivered": 1,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 2,
+        "timeLocked": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 86,
+          "techniques": 16
+        },
+        "square": {
+          "kills": 71,
+          "techniques": 1
+        },
+        "pentagon": {
+          "kills": 47,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 23,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 13,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 8,
+          "techniques": 9
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 7,
+          "techniques": 3
+        },
+        "gravityWell": {
+          "kills": 5,
+          "techniques": 8
+        },
+        "repairNode": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 136,
+        "maxWaveContactError": 9.928723727625766e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 133,
+        "maxProjectileContactError": 9.898842314726153e-7
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 9,
+        "scheduled": 14
+      }
+    },
+    {
+      "seed": 42,
+      "strategy": "Reactor",
+      "duration": 32,
+      "fx": true,
+      "kills": 486,
+      "raw": 16352,
+      "photon": 1207,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 2,
+        "portalUnlinked": 3,
+        "fragmented": 10,
+        "parasiteDelivered": 1,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 4,
+        "timeLocked": 2,
+        "lensSector": 2
+      },
+      "delta": {
+        "triangle": {
+          "kills": 135,
+          "techniques": 31
+        },
+        "square": {
+          "kills": 113,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 71,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 41,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 24,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 13,
+          "techniques": 14
+        },
+        "ancient": {
+          "kills": 2,
+          "techniques": 2
+        },
+        "splitter": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 12,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 16,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 8,
+          "techniques": 4
+        },
+        "gravityWell": {
+          "kills": 7,
+          "techniques": 11
+        },
+        "repairNode": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 2,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 3,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 223,
+        "maxWaveContactError": 9.928723727625766e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 204,
+        "maxProjectileContactError": 9.898842314726153e-7
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 9,
+        "scheduled": 14
+      }
+    },
+    {
+      "seed": 42,
+      "strategy": "Reactor",
+      "duration": 32,
+      "fx": false,
+      "kills": 486,
+      "raw": 16352,
+      "photon": 1207,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 2,
+        "portalUnlinked": 3,
+        "fragmented": 10,
+        "parasiteDelivered": 1,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensMainRefraction": 4,
+        "timeLocked": 2,
+        "lensSector": 2
+      },
+      "delta": {
+        "triangle": {
+          "kills": 135,
+          "techniques": 31
+        },
+        "square": {
+          "kills": 113,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 71,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 41,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 24,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 13,
+          "techniques": 14
+        },
+        "ancient": {
+          "kills": 2,
+          "techniques": 2
+        },
+        "splitter": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 12,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 16,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 8,
+          "techniques": 4
+        },
+        "gravityWell": {
+          "kills": 7,
+          "techniques": 11
+        },
+        "repairNode": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 2,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 3,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 223,
+        "maxWaveContactError": 9.928723727625766e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 204,
+        "maxProjectileContactError": 9.898842314726153e-7
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 9,
+        "scheduled": 14
+      }
+    },
+    {
+      "seed": 99,
+      "strategy": "Crusher",
+      "duration": 20,
+      "fx": true,
+      "kills": 298,
+      "raw": 9567,
+      "photon": 711,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 4,
+        "portalUnlinked": 3,
+        "fragmented": 6,
+        "eliteSpawned": 1,
+        "lensSector": 2,
+        "eliteKilled": 1,
+        "parasiteDelivered": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 88,
+          "techniques": 37
+        },
+        "square": {
+          "kills": 65,
+          "techniques": 1
+        },
+        "pentagon": {
+          "kills": 40,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 30,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 9,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 7,
+          "techniques": 8
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "gravityWell": {
+          "kills": 2,
+          "techniques": 3
+        },
+        "repairNode": {
+          "kills": 7,
+          "techniques": 1
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 1
+        },
+        "parasiteLink": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "chainBeacon": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 127,
+        "maxWaveContactError": 9.894101964391666e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 162,
+        "maxProjectileContactError": 9.99309094140699e-7
+      },
+      "peaks": {
+        "shards": 46,
+        "waves": 9,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 99,
+      "strategy": "Crusher",
+      "duration": 20,
+      "fx": false,
+      "kills": 298,
+      "raw": 9567,
+      "photon": 711,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 4,
+        "portalUnlinked": 3,
+        "fragmented": 6,
+        "eliteSpawned": 1,
+        "lensSector": 2,
+        "eliteKilled": 1,
+        "parasiteDelivered": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 88,
+          "techniques": 37
+        },
+        "square": {
+          "kills": 65,
+          "techniques": 1
+        },
+        "pentagon": {
+          "kills": 40,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 30,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 9,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 7,
+          "techniques": 8
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 8,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "gravityWell": {
+          "kills": 2,
+          "techniques": 3
+        },
+        "repairNode": {
+          "kills": 7,
+          "techniques": 1
+        },
+        "portalGate": {
+          "kills": 6,
+          "techniques": 1
+        },
+        "parasiteLink": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "chainBeacon": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 127,
+        "maxWaveContactError": 9.894101964391666e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 162,
+        "maxProjectileContactError": 9.99309094140699e-7
+      },
+      "peaks": {
+        "shards": 46,
+        "waves": 9,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 99,
+      "strategy": "Crusher",
+      "duration": 32,
+      "fx": true,
+      "kills": 487,
+      "raw": 16015,
+      "photon": 1087,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 6,
+        "portalUnlinked": 6,
+        "fragmented": 8,
+        "eliteSpawned": 1,
+        "lensSector": 4,
+        "eliteKilled": 1,
+        "parasiteDelivered": 3
+      },
+      "delta": {
+        "triangle": {
+          "kills": 129,
+          "techniques": 56
+        },
+        "square": {
+          "kills": 104,
+          "techniques": 3
+        },
+        "pentagon": {
+          "kills": 71,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 51,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 22,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 10,
+          "techniques": 11
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "gravityWell": {
+          "kills": 5,
+          "techniques": 9
+        },
+        "repairNode": {
+          "kills": 10,
+          "techniques": 1
+        },
+        "portalGate": {
+          "kills": 12,
+          "techniques": 1
+        },
+        "parasiteLink": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 5,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 215,
+        "maxWaveContactError": 9.894101964391666e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 264,
+        "maxProjectileContactError": 9.99309094140699e-7
+      },
+      "peaks": {
+        "shards": 46,
+        "waves": 11,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 99,
+      "strategy": "Crusher",
+      "duration": 32,
+      "fx": false,
+      "kills": 487,
+      "raw": 16015,
+      "photon": 1087,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 6,
+        "portalUnlinked": 6,
+        "fragmented": 8,
+        "eliteSpawned": 1,
+        "lensSector": 4,
+        "eliteKilled": 1,
+        "parasiteDelivered": 3
+      },
+      "delta": {
+        "triangle": {
+          "kills": 129,
+          "techniques": 56
+        },
+        "square": {
+          "kills": 104,
+          "techniques": 3
+        },
+        "pentagon": {
+          "kills": 71,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 51,
+          "techniques": 0
+        },
+        "hex": {
+          "kills": 22,
+          "techniques": 1
+        },
+        "reactor": {
+          "kills": 10,
+          "techniques": 11
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 1,
+          "techniques": 0
+        },
+        "gravityWell": {
+          "kills": 5,
+          "techniques": 9
+        },
+        "repairNode": {
+          "kills": 10,
+          "techniques": 1
+        },
+        "portalGate": {
+          "kills": 12,
+          "techniques": 1
+        },
+        "parasiteLink": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 5,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 215,
+        "maxWaveContactError": 9.894101964391666e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 264,
+        "maxProjectileContactError": 9.99309094140699e-7
+      },
+      "peaks": {
+        "shards": 46,
+        "waves": 11,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 99,
+      "strategy": "Cascade",
+      "duration": 20,
+      "fx": true,
+      "kills": 309,
+      "raw": 10106,
+      "photon": 767,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 5,
+        "fragmented": 6,
+        "portalPass": 2,
+        "eliteSpawned": 1,
+        "lensMainRefraction": 2,
+        "eliteKilled": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 90,
+          "techniques": 23
+        },
+        "square": {
+          "kills": 68,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 41,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 33,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "reactor": {
+          "kills": 6,
+          "techniques": 7
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 11,
+          "techniques": 1
+        },
+        "fuseBomb": {
+          "kills": 8,
+          "techniques": 1
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "gravityWell": {
+          "kills": 2,
+          "techniques": 3
+        },
+        "repairNode": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 165,
+        "maxWaveContactError": 9.789645645241762e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 109,
+        "maxProjectileContactError": 9.976074366591092e-7
+      },
+      "peaks": {
+        "shards": 45,
+        "waves": 9,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 99,
+      "strategy": "Cascade",
+      "duration": 20,
+      "fx": false,
+      "kills": 309,
+      "raw": 10106,
+      "photon": 767,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 5,
+        "fragmented": 6,
+        "portalPass": 2,
+        "eliteSpawned": 1,
+        "lensMainRefraction": 2,
+        "eliteKilled": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 90,
+          "techniques": 23
+        },
+        "square": {
+          "kills": 68,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 41,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 33,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "reactor": {
+          "kills": 6,
+          "techniques": 7
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 11,
+          "techniques": 1
+        },
+        "fuseBomb": {
+          "kills": 8,
+          "techniques": 1
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "gravityWell": {
+          "kills": 2,
+          "techniques": 3
+        },
+        "repairNode": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 9,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 165,
+        "maxWaveContactError": 9.789645645241762e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 109,
+        "maxProjectileContactError": 9.976074366591092e-7
+      },
+      "peaks": {
+        "shards": 45,
+        "waves": 9,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 99,
+      "strategy": "Cascade",
+      "duration": 32,
+      "fx": true,
+      "kills": 491,
+      "raw": 16651,
+      "photon": 1288,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 8,
+        "fragmented": 8,
+        "portalPass": 4,
+        "eliteSpawned": 1,
+        "lensMainRefraction": 2,
+        "eliteKilled": 1,
+        "shifterLeap": 1,
+        "polarized": 1,
+        "lensSector": 2
+      },
+      "delta": {
+        "triangle": {
+          "kills": 138,
+          "techniques": 36
+        },
+        "square": {
+          "kills": 102,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 60,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 58,
+          "techniques": 3
+        },
+        "hex": {
+          "kills": 21,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 9,
+          "techniques": 10
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 15,
+          "techniques": 1
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 1
+        },
+        "conductor": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "gravityWell": {
+          "kills": 5,
+          "techniques": 5
+        },
+        "repairNode": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 16,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 5,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 274,
+        "maxWaveContactError": 9.967292768919833e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 163,
+        "maxProjectileContactError": 9.976074366591092e-7
+      },
+      "peaks": {
+        "shards": 45,
+        "waves": 9,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 99,
+      "strategy": "Cascade",
+      "duration": 32,
+      "fx": false,
+      "kills": 491,
+      "raw": 16651,
+      "photon": 1288,
+      "advanced": {
+        "introduction": 6,
+        "portalUnlinked": 8,
+        "fragmented": 8,
+        "portalPass": 4,
+        "eliteSpawned": 1,
+        "lensMainRefraction": 2,
+        "eliteKilled": 1,
+        "shifterLeap": 1,
+        "polarized": 1,
+        "lensSector": 2
+      },
+      "delta": {
+        "triangle": {
+          "kills": 138,
+          "techniques": 36
+        },
+        "square": {
+          "kills": 102,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 60,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 58,
+          "techniques": 3
+        },
+        "hex": {
+          "kills": 21,
+          "techniques": 2
+        },
+        "reactor": {
+          "kills": 9,
+          "techniques": 10
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 15,
+          "techniques": 1
+        },
+        "fuseBomb": {
+          "kills": 14,
+          "techniques": 1
+        },
+        "conductor": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "gravityWell": {
+          "kills": 5,
+          "techniques": 5
+        },
+        "repairNode": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 16,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 5,
+          "techniques": 1
+        },
+        "chainBeacon": {
+          "kills": 5,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 274,
+        "maxWaveContactError": 9.967292768919833e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 163,
+        "maxProjectileContactError": 9.976074366591092e-7
+      },
+      "peaks": {
+        "shards": 45,
+        "waves": 9,
+        "scheduled": 12
+      }
+    },
+    {
+      "seed": 99,
+      "strategy": "Reactor",
+      "duration": 20,
+      "fx": true,
+      "kills": 310,
+      "raw": 9979,
+      "photon": 697,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 7,
+        "portalUnlinked": 5,
+        "fragmented": 6,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensSector": 4
+      },
+      "delta": {
+        "triangle": {
+          "kills": 84,
+          "techniques": 33
+        },
+        "square": {
+          "kills": 92,
+          "techniques": 1
+        },
+        "pentagon": {
+          "kills": 29,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 25,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 10,
+          "techniques": 3
+        },
+        "reactor": {
+          "kills": 7,
+          "techniques": 7
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 11,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 1,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 3,
+          "techniques": 4
+        },
+        "repairNode": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 0,
+          "kills": 0
+        },
+        "mirrorGravity": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 174,
+        "maxWaveContactError": 9.943510406174028e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 107,
+        "maxProjectileContactError": 9.978565351786983e-7
+      },
+      "peaks": {
+        "shards": 50,
+        "waves": 10,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 99,
+      "strategy": "Reactor",
+      "duration": 20,
+      "fx": false,
+      "kills": 310,
+      "raw": 9979,
+      "photon": 697,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 7,
+        "portalUnlinked": 5,
+        "fragmented": 6,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensSector": 4
+      },
+      "delta": {
+        "triangle": {
+          "kills": 84,
+          "techniques": 33
+        },
+        "square": {
+          "kills": 92,
+          "techniques": 1
+        },
+        "pentagon": {
+          "kills": 29,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 25,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 10,
+          "techniques": 3
+        },
+        "reactor": {
+          "kills": 7,
+          "techniques": 7
+        },
+        "ancient": {
+          "kills": 0,
+          "techniques": 0
+        },
+        "splitter": {
+          "kills": 11,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "mirror": {
+          "kills": 1,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 3,
+          "techniques": 4
+        },
+        "repairNode": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 3,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 3,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 2,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 1,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 0,
+          "kills": 0
+        },
+        "mirrorGravity": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 174,
+        "maxWaveContactError": 9.943510406174028e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 107,
+        "maxProjectileContactError": 9.978565351786983e-7
+      },
+      "peaks": {
+        "shards": 50,
+        "waves": 10,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 99,
+      "strategy": "Reactor",
+      "duration": 32,
+      "fx": true,
+      "kills": 492,
+      "raw": 16533,
+      "photon": 1190,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 8,
+        "portalUnlinked": 6,
+        "fragmented": 8,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensSector": 8,
+        "parasiteDelivered": 1,
+        "shifterLeap": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 122,
+          "techniques": 46
+        },
+        "square": {
+          "kills": 144,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 45,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 49,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 22,
+          "techniques": 4
+        },
+        "reactor": {
+          "kills": 10,
+          "techniques": 10
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 15,
+          "techniques": 1
+        },
+        "mirror": {
+          "kills": 1,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 6,
+          "techniques": 4
+        },
+        "repairNode": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 12,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 7,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 0,
+          "kills": 0
+        },
+        "mirrorGravity": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 283,
+        "maxWaveContactError": 9.943510406174028e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 161,
+        "maxProjectileContactError": 9.978565351786983e-7
+      },
+      "peaks": {
+        "shards": 50,
+        "waves": 10,
+        "scheduled": 11
+      }
+    },
+    {
+      "seed": 99,
+      "strategy": "Reactor",
+      "duration": 32,
+      "fx": false,
+      "kills": 492,
+      "raw": 16533,
+      "photon": 1190,
+      "advanced": {
+        "introduction": 6,
+        "portalPass": 8,
+        "portalUnlinked": 6,
+        "fragmented": 8,
+        "eliteSpawned": 1,
+        "eliteKilled": 1,
+        "lensSector": 8,
+        "parasiteDelivered": 1,
+        "shifterLeap": 1
+      },
+      "delta": {
+        "triangle": {
+          "kills": 122,
+          "techniques": 46
+        },
+        "square": {
+          "kills": 144,
+          "techniques": 2
+        },
+        "pentagon": {
+          "kills": 45,
+          "techniques": 0
+        },
+        "star": {
+          "kills": 49,
+          "techniques": 1
+        },
+        "hex": {
+          "kills": 22,
+          "techniques": 4
+        },
+        "reactor": {
+          "kills": 10,
+          "techniques": 10
+        },
+        "ancient": {
+          "kills": 1,
+          "techniques": 1
+        },
+        "splitter": {
+          "kills": 15,
+          "techniques": 0
+        },
+        "fuseBomb": {
+          "kills": 13,
+          "techniques": 0
+        },
+        "conductor": {
+          "kills": 15,
+          "techniques": 1
+        },
+        "mirror": {
+          "kills": 1,
+          "techniques": 2
+        },
+        "gravityWell": {
+          "kills": 6,
+          "techniques": 4
+        },
+        "repairNode": {
+          "kills": 10,
+          "techniques": 0
+        },
+        "portalGate": {
+          "kills": 12,
+          "techniques": 0
+        },
+        "parasiteLink": {
+          "kills": 6,
+          "techniques": 0
+        },
+        "phaseCrystal": {
+          "kills": 7,
+          "techniques": 2
+        },
+        "chainBeacon": {
+          "kills": 4,
+          "techniques": 0
+        },
+        "shifter": {
+          "kills": 7,
+          "techniques": 0
+        },
+        "prismLens": {
+          "kills": 2,
+          "techniques": 0
+        }
+      },
+      "elite": {
+        "bombReactor": {
+          "attempts": 1,
+          "spawned": 0,
+          "kills": 0
+        },
+        "mirrorGravity": {
+          "attempts": 1,
+          "spawned": 1,
+          "kills": 1
+        }
+      },
+      "caps": {},
+      "physics": {
+        "waveContactsChecked": 283,
+        "maxWaveContactError": 9.943510406174028e-7,
+        "lateWaveContacts": 0,
+        "duplicateWaveRejected": 0,
+        "projectileContactsChecked": 161,
+        "maxProjectileContactError": 9.978565351786983e-7
+      },
+      "peaks": {
+        "shards": 50,
+        "waves": 10,
+        "scheduled": 11
+      }
+    }
+  ]
+}

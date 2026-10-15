@@ -46,3 +46,19 @@ M10 unconnected preparation includes definitions/build-state/runtime/UI modules 
 ## M10 integration after approved option A
 
 2026-10-15: A approved and integrated. Schema7;49nodes/100levels;10 Signatures(3 active);15 Evolutions(2 families). All236 unit tests PASS,6 actual20s Chrome pointer Runs PASS with0 console errors,200 actual form comparison Runs PASS. Full240-path/300Run benchmark is in progress with source9bf0f4189a6e. Do not change its hashed files until completion. M11 preparation files are unconnected; further actual M11 integration and QA remain required. Older pending-gate notes above are historical.
+
+
+## M11 isolated integration while M10 growth is frozen
+
+M10 production integration2f75e4f pushed. Main source frozen for full72,000Run benchmark (hash9bf0f4189a6e,240paths) in artifacts/m10-growth;12workers. Do not edit hashed main files until this completes. M10 unit236PASS,6 Chrome20sPASS,200 form RunsPASS; old full benchmark/balance and M5/M6 plus M7/M8/M9 smoke regressionsPASS under artifacts/m10-regression.
+
+M11 actual integration exists in C:/Users/limse/AppData/Local/Temp/shard-storm-m11-integration, NOT yet copied to main. It is an isolated copy of2f75e4f WIP with integration-base.json hashes, no user storage. Core19shapes/schema8/new4traits/Codex19techniques+76stages/Elite6 and UI connected there. Current M11 cases61PASS; full suite previously292PASS before last5 additions. Initial180Run smokePASS (older bb865 source; not full growth). Combination60Run, actual Chrome QA and full54,000Run matrix remain to validate. Main untracked advanced-defs.js/advanced-shapes.js/codex.js/elites.js are earlier unconnected drafts; isolated versions are newer. Copy back only after main M10 hash benchmark completes, checking manifest hashes so existing edits are not overwritten. Do not claim M11 completion until browser/growth/regressions/reports/commit/push finish.
+
+
+## Save-capacity human decision checkpoint
+
+M11 isolated core currently has298/298 full unit PASS and7 actual20s Chrome pointer Runs PASS,0 console errors. New six before-action overview screenshots, Codex/Elite tabs,49-node result graph,Focus and620px Replay are under artifacts/m11-* (copied back to repo for review).60 combined FX parity Runs passed before the final copied-Hollow classification fix; explicit regression for that fix is included in298 tests. M11 growth hash a8e7cad93557,180paths x300Runs,6workers; M10 hash9bf0f4189a6e,240paths x300Runs,12workers resumed from16,420completedRuns. Both full matrices remain incomplete; inspect gzip checkpoints and source signatures before resuming.
+
+Safe storage stress test found a real production-format limit:20 actual M10 MAX/Relic/Signature/Evolution Run records serialize to7,826,742ASCII chars and Chrome155 throws QuotaExceededError on a QA-only key. Lossless gzip prototype793,093bytes/base64 wrapper1,057,532chars round-trips and stores successfully in another QA-only key. Existing shard-storm-v1 encoding and user data were not modified. User protocol requires a human choice between full lossless storage encoding and reduced diagnostic retention; see docs/Shard_Storm_Save_Capacity_Decision.md. Do not implement either before the answer.
+
+M11 exact current source is preserved both in C:/Users/limse/AppData/Local/Temp/shard-storm-m11-integration and artifacts/m11-integration-source.zip, with reviewable artifacts/m11-integration.patch and sourceSha256 manifest. Main production is still schema7; do not mistake the archive for a production integration. Copy back only after M10 frozen benchmark completes and main/base hashes are checked. README/worklog changed since the isolated base and must be merged, not overwritten. M10 report generator requires the full72,000Run evidence and intentionally refuses the existing240Run smoke summary. M11 implementation/balance reports and final regression/commit/push remain required. Human storage decision is the next action.

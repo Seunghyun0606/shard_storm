@@ -1,6 +1,6 @@
-# Shard Storm — M9 complete / M10 rule gate
+# Shard Storm - M10 integration / M11 in progress
 
-M9.0과 M9 구현·자동 QA를 완료했습니다. 현재 실제 게임은 **13도형·secondary trait4·배치4·기존19스킬·schema6**입니다. M10은 연결 전 준비 코드이며 신규30스킬/Signature/Evolution은 아직 플레이에 활성화되지 않았습니다. M11도 미완료이며 같은 작업 범위로 남아 있습니다. [M10 지급 조건 선택](docs/Shard_Storm_M10_Rule_Decision.md)이 필요합니다.
+M9.0/M9 complete. M10 now has49 skill nodes/100 purchase levels,10 Signatures(active3),15 Evolution forms(active2 families),schema7 and the user-approved same-Chain Catalyst Extraction rule.236 unit tests,6 actual20s Chrome pointer Runs and200 form comparison Runs PASS. Full300Run growth comparison is still running; M11 remains in progress. See docs/Shard_Storm_M9_M11_Work_Log.md for the resumable checkpoint. This is not a final M11 completion claim.
 
 - FOCUS toggles a viewport-sized field; logical coordinates remain960x540. Backing resolution follows CSS/DPR up to2. DEV options include Combat FX/Shake/Reduced Motion.
 - New shapes: Splitter/Fuse Bomb/Conductor/Mirror/Gravity Well/Repair Node. The collapsible Shape Ecology guide explains each mechanic. Echo contributes only to visible combos, with0Raw/no permanent or reward-objective progress.

@@ -1,0 +1,823 @@
+--- /dev/null
++++ b/advanced-defs.js
+@@ -0,0 +1,23 @@
++export const ADVANCED_SHAPES={
++ portalGate:{name:'Portal Pair',hp:6,bonus:16,radius:22,color:'#72cfff',hue:202,sides:12,rank:2,tier:2,chance:.012,cap:2,symbol:'◎'},
++ parasiteLink:{name:'Parasite Link',hp:8,bonus:22,radius:25,color:'#b4e87b',hue:91,sides:7,rank:2,tier:3,chance:.020,cap:2,symbol:'⌁'},
++ phaseCrystal:{name:'Phase Crystal',hp:9,bonus:30,radius:26,color:'#c4b2ff',hue:258,sides:6,rank:3,tier:3,chance:.015,cap:2,symbol:'◈'},
++ chainBeacon:{name:'Chain Beacon',hp:10,bonus:32,radius:28,color:'#ffd380',hue:39,sides:8,rank:3,tier:3,chance:.012,cap:2,symbol:'⚑'},
++ shifter:{name:'Shifter',hp:7,bonus:24,radius:24,color:'#ffb9dc',hue:327,sides:5,rank:3,tier:4,chance:.017,cap:2,symbol:'⇥',drift:0},
++ prismLens:{name:'Prism Lens',hp:9,bonus:40,radius:28,color:'#a8f1ef',hue:178,sides:10,rank:4,tier:4,chance:.009,cap:1,symbol:'⌘'}
++};
++export const ADVANCED_TRAITS={
++ polarized:{rank:2,chance:.015,symbol:'±',exclude:['gravityWell','portalGate']},
++ resonant:{rank:3,chance:.020,symbol:'≋',exclude:['reactor','ancient','prismLens']},
++ timeLocked:{rank:3,chance:.015,symbol:'◷',exclude:['phaseCrystal']},
++ fragmented:{rank:2,chance:.015,symbol:'⋰',exclude:['splitter','fuseBomb']}
++};
++export const ELITES={
++ bombReactor:{name:'Bomb Reactor',rank:3,insight:2,types:['reactor','fuseBomb','triangle']},
++ mirrorGravity:{name:'Mirror Gravity',rank:3,insight:4,types:['mirror','gravityWell']},
++ shieldConductor:{name:'Shield Conductor',rank:3,insight:6,types:['hex','conductor','square']},
++ phaseRepair:{name:'Phase Repair',rank:3,insight:8,types:['phaseCrystal','repairNode']},
++ portalBeacon:{name:'Portal Beacon',rank:4,insight:10,types:['portalGate','portalGate','chainBeacon']},
++ ancientPrism:{name:'Ancient Prism',rank:4,insight:12,types:['ancient','prismLens','square']}
++};
++export const TECHNIQUES={triangle:'Main-shard Chain: 5 normal deaths',square:'One native wave: 3 kills',pentagon:'One origin: 5 main-shard kills',star:'One native wave: 6 unique contacts',hex:'Release 2 wards from one Hex',reactor:'Both native stages execute',ancient:'All 3 stages execute and core dies',splitter:'Both Echo die in the same Chain',fuseBomb:'Two Fuse explosions in one Chain within 1s',conductor:'Deliver damage to 2 linked targets',mirror:'Reflected main shard kills',gravityWell:'Bent main shard kills',repairNode:'Heal 2 HP then destroy',portalGate:'Teleported main shard kills',parasiteLink:'Copied damage reaches 2 targets',phaseCrystal:'Direct final blow while vulnerable',chainBeacon:'Chain10 death wave executes',shifter:'Direct kill within 1s of a successful leap',prismLens:'Two sectors reach different normal targets'};
+--- /dev/null
++++ b/advanced-shapes.js
+@@ -0,0 +1,108 @@
++import {CONFIG as C} from './config.js';
++import {ADVANCED_SHAPES} from './advanced-defs.js';
++import {seededRNG} from './entities.js';
++import {safePoint,near,ordinary} from './ecology.js';
++import {level,expansionReflected,expansionUsed} from './expansion.js';
++import {initCodex,codexFeat,codexEvent,codexContact,codexDeath} from './codex.js';
++export function initAdvanced(g,enabled,intro={},insights=[],eliteHistory={}){
++ initCodex(g,Boolean(enabled)&&g.ecologyEnabled);g.advancedRng=seededRNG(g.seed^0x17eab2);g.advancedIntroFlags={...intro};g.advancedIntroConsumed=[];g.advancedCounts={};g.advancedEvents=[];g.portalSequence=1;g.advancedInsight=new Set(insights).size;g.eliteHistory=structuredClone(eliteHistory);g.eliteDelta={};g.eliteSpawned=false;g.eliteAttempted=new Set();g.advancedSpawned={};
++}
++export function advancedLog(g,kind,s,cause={},extra={}){g.advancedCounts[kind]=(g.advancedCounts[kind]||0)+1;if(g.advancedEvents.length<2048)g.advancedEvents.push({kind,sourceId:s.id,chainId:cause.chainId,attackEventId:cause.attackEventId,at:g.simulationTime,...extra});}
++export function advancedType(g){
++ if(!g.advancedEnabled)return null;
++ const rolls=Object.keys(ADVANCED_SHAPES).map(()=>g.advancedRng());
++ const eligible=Object.entries(ADVANCED_SHAPES).filter(([id,d])=>g.discoveryRank>=d.rank&&g.highestTier>=d.tier&&g.alive.filter(s=>s.type===id).length<d.cap);
++ const intro=eligible.find(([id])=>!g.advancedIntroFlags[id]&&!g.advancedIntroConsumed.includes(id));
++ return intro?.[0]||eligible.find(([id,d])=>rolls[Object.keys(ADVANCED_SHAPES).indexOf(id)]<d.chance)?.[0]||null;
++}
++export function advancedSpawn(g,s){
++ if(!g.advancedEnabled)return;
++ s.spawnAt=g.simulationTime;s.phaseOffset=seededRNG(g.seed^Math.imul(s.id,0x78a4e))()*1.4;
++ if(ADVANCED_SHAPES[s.type]){g.advancedSpawned[s.type]=(g.advancedSpawned[s.type]||0)+1;if(!g.advancedIntroFlags[s.type]&&!g.advancedIntroConsumed.includes(s.type)){g.advancedIntroConsumed.push(s.type);advancedLog(g,'introduction',s,{}, {type:s.type});}}
++ if(s.type==='parasiteLink')s.parasiteIds=near(g,s,100).slice(0,2).map(t=>t.id);
++ if(s.type==='shifter'){s.motion.ampX=s.motion.ampY=0;planLeap(g,s,g.simulationTime+1.3);}
++}
++function planLeap(g,s,at){
++ s.nextLeapAt=at;
++ // The queue boundary divides swept paths before and after the discontinuity.
++ g.scheduleEvent({kind:'effect',sourceKind:'shifter-leap',scheduledTime:at,priority:-1,action:()=>{
++  if(s.destroyed||!g.advancedEnabled)return;
++  let point=null;for(let i=0;i<16;i++){const angle=g.advancedRng()*Math.PI*2,d=25+g.advancedRng()*10,x=s.x+Math.cos(angle)*d,y=s.y+Math.sin(angle)*d;if(safePoint(g,x,y,s.radius,s.id)){point={x,y};break;}}
++  if(point){const old={x:s.x,y:s.y};Object.assign(s,point,{anchorX:point.x,anchorY:point.y,prevX:point.x,prevY:point.y,lastLeapAt:g.simulationTime});Object.assign(s.motion,{anchorX:point.x,anchorY:point.y});advancedLog(g,'shifterLeap',s,{}, {from:old,to:point});}
++  else advancedLog(g,'shifterBlocked',s);
++  planLeap(g,s,at+1.3);
++ }});
++}
++export function phaseVulnerable(g,s,time=g.simulationTime){const clock=Math.max(0,time-(s.spawnAt||0))+(s.phaseOffset||0),hitClock=Math.max(0,(s.motionSlowAt??-Infinity)-(s.spawnAt||0))+(s.phaseOffset||0),extension=Math.floor(clock/1.4)===Math.floor(hitClock/1.4)?(s.phaseExtension||0):0;return clock%1.4<Math.min(1.39,.9+extension);}
++export function advancedDefense(g,s,damage,cause){
++ if(!g.advancedEnabled)return damage;
++ if(s.type==='phaseCrystal'){s.phaseWasVulnerable=phaseVulnerable(g,s);if(!s.phaseWasVulnerable)damage=cause.source==='direct'?0:Math.min(1,damage);}
++ if(s.secondaryTrait==='timeLocked'&&cause.source==='direct'&&damage>0){const t=Math.max(0,g.simulationTime-(s.spawnAt||0))+(s.phaseOffset||0),cycle=Math.floor(t/1.4);if(t%1.4>=1&&s.timeGuardUsed!==cycle){s.timeGuardUsed=cycle;damage=Math.max(0,damage-1);advancedLog(g,'timeLocked',s,cause);}}
++ return damage;
++}
++const childCause=(s,cause,source)=>({...cause,source,small:undefined,originShapeId:s.id,nativeWave:false,stageIndex:undefined,depth:(cause.depth||0)+1});
++export function advancedContact(g,s,cause,wave){
++ if(!g.advancedEnabled)return;codexContact(g,s,cause,wave);
++ if(s.type!=='prismLens'||!wave||!cause.nativeWave||!['square','star'].includes(cause.source)||s.echo)return;
++ s.lensWaves||=new Set();if(s.lensWaves.has(wave.id)||s.lensWaves.size>=2)return;s.lensWaves.add(wave.id);
++ const angle=Math.atan2(s.y-wave.y,s.x-wave.x),origin={id:s.id,x:s.x,y:s.y},child=childCause(s,cause,'prismRefraction');
++ g.scheduleEffect(()=>{for(let i=0;i<2;i++){const dir=angle+(i===0?-1:1)*35*Math.PI/180,sector=g.area(origin,120,1,{...child,sectorIndex:i},C.shapes.prismLens.color,s.id,{angle:dir,halfAngle:12*Math.PI/180});if(sector)advancedLog(g,'lensSector',s,child,{waveId:sector.id,sectorIndex:i});}},child,.04);
++}
++export function advancedDamaged(g,s,actual,cause,wave){
++ if(!g.advancedEnabled||actual<=0||s.echo)return;
++ if(cause.source==='parasiteCopied'){codexEvent(g,'parasiteCopied',{id:cause.originShapeId},cause,{targetId:s.id});advancedLog(g,'parasiteDelivered',{id:cause.originShapeId},cause,{targetId:s.id,actual});return;}
++ if(s.type==='parasiteLink'){
++  const targets=(s.parasiteIds||[]).map(id=>g.alive.find(t=>t.id===id)).filter(t=>t&&ordinary(t)&&Math.hypot(t.x-s.x,t.y-s.y)<=100),child=childCause(s,cause,'parasiteCopied');
++  child.attackEventId=g.processingEventId;child.originalOriginShapeId=cause.originShapeId;child.originalTargetId=s.id;
++  if(targets.length)g.scheduleEffect(()=>{for(const target of targets)if(!target.destroyed&&Math.hypot(target.x-s.x,target.y-s.y)<=100)g.enqueue(target,Math.min(1,actual),child);},child,.04);
++ }
++ if(s.secondaryTrait==='resonant'&&wave&&!s.resonantUsed){
++  s.resonantHits=(s.resonantHits||[]).filter(e=>g.simulationTime-e.at<=1);if(!s.resonantHits.some(e=>e.wave===wave.id))s.resonantHits.push({wave:wave.id,chain:cause.chainId,at:g.simulationTime});
++  if(s.resonantHits.filter(e=>e.chain===cause.chainId).length>=2){const child=childCause(s,cause,'traitResonant');if(g.scheduleEffect(()=>{if(g.area(s,65,1,child,'#b4e4ff',s.id))advancedLog(g,'resonant',s,child);},child,.03))s.resonantUsed=true;}
++ }
++}
++export function advancedDeath(g,s,cause,wave){
++ if(!g.advancedEnabled)return;codexDeath(g,s,cause,wave);if(s.echo)return;
++ if(s.portalPartner){const other=g.shapes.find(t=>t.id===s.portalPartner);if(other){delete other.portalPartner;advancedLog(g,'portalUnlinked',other,cause);}delete s.portalPartner;}
++ if(s.type==='chainBeacon'&&(g.chains.get(cause.chainId)?.rewardedKills||0)>=10&&!s.beaconUsed){s.beaconUsed=true;const child=childCause(s,cause,'chainBeacon');g.scheduleEffect(()=>{const wave=g.area(s,130,2,child,C.shapes.chainBeacon.color,s.id);if(wave){advancedLog(g,'beaconWave',s,cause,{waveId:wave.id});codexFeat(g,'chainBeacon','death:'+s.id,cause,{sourceId:s.id,waveId:wave.id});}},child,.05);}
++ if(s.secondaryTrait==='fragmented'&&cause.source!=='traitFragmented'){
++  const child=childCause(s,cause,'traitFragmented');g.scheduleEffect(()=>{for(let i=0;i<2;i++)if(g.emitAux(s,s.angle+i*Math.PI,child,'traitFragmented',1,65))advancedLog(g,'fragmented',s,cause);},child,.03);
++ }
++ if(s.elitePrimary&&!s.elitePaid){s.elitePaid=true;g.pendingCatalyst+=3;(g.eliteDelta[s.eliteId]||={attempts:0,spawned:0,kills:0}).kills++;g.rewardLog.push({kind:'catalyst:elite',amount:3,shapeId:s.id,chainId:cause.chainId,at:g.simulationTime});advancedLog(g,'eliteKilled',s,cause,{eliteId:s.eliteId});}
++}
++export function portalContact(g,shard,target,time){
++ if(!g.advancedEnabled||shard.small||target.type!=='portalGate'||!target.portalPartner)return false;
++ const partner=g.alive.find(t=>t.id===target.portalPartner);if(!partner)return false;
++ shard.portalPairs||=new Set();if(shard.portalPairs.has(target.portalPairId))return false;
++ let angle=shard.angle;
++ if(level(g,'portalCalibration')){const next=near(g,partner,Infinity,t=>t.id!==target.id&&!shard.hitIds?.has(t.id)).sort((a,b)=>b.hp-a.hp||a.id-b.id)[0];if(next)angle=Math.atan2(next.y-partner.y,next.x-partner.x);}
++ const p=g.positionAt(partner,time),distance=partner.radius+C.shard.radius+.01,x=p.x+Math.cos(angle)*distance,y=p.y+Math.sin(angle)*distance,A=C.arena;
++ if(x<A.left+C.shard.radius||x>A.right-C.shard.radius||y<A.top+C.shard.radius||y>A.bottom-C.shard.radius||g.alive.some(t=>t.id!==partner.id&&Math.hypot(x-g.positionAt(t,time).x,y-g.positionAt(t,time).y)<t.radius+C.shard.radius+.001))return false;
++ shard.portalPairs.add(target.portalPairId);shard.portalPassed=target.id;shard.hitIds||=new Set();shard.hitIds.add(target.id);shard.hitIds.add(partner.id);Object.assign(shard,{x,y,prevX:x,prevY:y,angle,vx:Math.cos(angle)*C.shard.speed,vy:Math.sin(angle)*C.shard.speed,dead:false});
++ const old=g.processingTime;g.processingTime=time;expansionReflected(g,shard,'portal');if(level(g,'portalCalibration'))expansionUsed(g,'portalCalibration',shard,{portalId:target.id});advancedLog(g,'portalPass',target,shard,{shardId:shard.id,exitId:partner.id});g.processingTime=old;return true;
++}
++// Formal M11 main refraction: actual main contact at a Lens, at most2/Lens,
++// steers at most70deg toward a living unhit target. Sector waves never qualify.
++export function lensMainContact(g,shard,target){
++ if(!g.advancedEnabled||shard.small||target.type!=='prismLens'||(target.mainRefractions||0)>=2)return false;
++ const next=near(g,target,Infinity,t=>!shard.hitIds?.has(t.id))[0];if(!next)return false;
++ const aim=Math.atan2(next.y-shard.y,next.x-shard.x),diff=Math.atan2(Math.sin(aim-shard.angle),Math.cos(aim-shard.angle));shard.angle+=Math.sign(diff)*Math.min(Math.abs(diff),70*Math.PI/180);shard.vx=Math.cos(shard.angle)*C.shard.speed;shard.vy=Math.sin(shard.angle)*C.shard.speed;shard.reflectionKind='prism';shard.reflectionSource=target.id;target.mainRefractions=(target.mainRefractions||0)+1;advancedLog(g,'lensMainRefraction',target,shard,{shardId:shard.id});return true;
++}
++export function polarTick(g){
++ if(!g.advancedEnabled)return;
++ const nodes=g.alive.filter(s=>s.secondaryTrait==='polarized'&&!s.polarBroken);
++ for(const shard of g.shards.filter(s=>!s.small&&!s.dead))for(const a of nodes){const b=nodes.filter(t=>t.id!==a.id&&Math.hypot(t.x-a.x,t.y-a.y)<=105).sort((x,y)=>Math.hypot(x.x-a.x,x.y-a.y)-Math.hypot(y.x-a.x,y.y-a.y)||x.id-y.id)[0];if(!b||Math.hypot(shard.x-a.x,shard.y-a.y)>105)continue;const key=[a.id,b.id].sort((x,y)=>x-y).join(':');shard.polarPairs||=new Set();if(shard.polarPairs.has(key))continue;shard.polarPairs.add(key);shard.angle+=(a.id<b.id?1:-1)*10*Math.PI/180;shard.vx=Math.cos(shard.angle)*C.shard.speed;shard.vy=Math.sin(shard.angle)*C.shard.speed;advancedLog(g,'polarized',a,shard,{targetId:b.id,shardId:shard.id});}
++}
++export function safePortalPair(g,points=null){
++ if(g.alive.some(s=>s.type==='portalGate')||g.alive.length+2>g.target)return null;
++ let found=points;
++ if(!found)for(let i=0;i<96;i++){const A=C.arena,a={x:A.left+45+g.advancedRng()*(A.right-A.left-90),y:A.top+45+g.advancedRng()*(A.bottom-A.top-90)},b={x:A.left+45+g.advancedRng()*(A.right-A.left-90),y:A.top+45+g.advancedRng()*(A.bottom-A.top-90)};if(Math.hypot(a.x-b.x,a.y-b.y)>=180&&safePoint(g,a.x,a.y,22)&&safePoint(g,b.x,b.y,22)){found=[a,b];break;}}
++ if(!found||found.length!==2||Math.hypot(found[0].x-found[1].x,found[0].y-found[1].y)<180||!found.every(p=>safePoint(g,p.x,p.y,22)))return null;
++ const pair=found.map(p=>g.addShape('portalGate',p.x,p.y,0,false,C.spawnGrace,'normal'));
++ if(pair.some(s=>!s))throw Error('Atomic portal commit precondition violated');
++ const pairId=g.portalSequence++;for(let i=0;i<2;i++){pair[i].portalPairId=pairId;pair[i].portalPartner=pair[1-i].id;}
++ // Only one rare roll per pair; the second still consumes the independent RNG draw.
++ g.oreSpawnCounts[pair[1].oreGrade]--;pair[1].oreGrade='common';g.oreSpawnCounts.common++;return pair;
++}
++
++export function advancedSkipped(g){if(!g.advancedEnabled||g.state!=='PLAYING')return;for(const s of g.alive.filter(s=>s.type==='shifter'&&s.nextLeapAt<=g.elapsed+1e-9))planLeap(g,s,(s.spawnAt||0)+(Math.floor((g.elapsed-(s.spawnAt||0))/1.3)+1)*1.3);}
+--- a/app.js
++++ b/app.js
+@@ -0,0 +1 @@
++import {renderCodex,toggleCodexPin,pinnedText} from './codex-ui.js';
+@@ -62,2 +63,2 @@
+-  const offer=ensureOffer(save);previousBest = { ...save.bestStats }; game = new Game({ skillExpansionEnabled:true,signatureLoadout:save.signatureLoadout,evolutionOwned:save.evolutionOwned,evolutionActive:save.evolutionActive,ecologyEnabled:true,introSeen:save.shapeIntroSeen,seed, duration, runId: crypto.randomUUID(), levels: save.levels,relicLoadout:save.relicEquipped,activeContracts:snapshotContracts(save),anomalyId:save.selectedAnomaly, options: save.options,discoveryRank:save.discoveryRank,welcomeFlags:save.milestoneWelcomeFlags,oreEnabled:save.options.oreEnabled,sandbox: Boolean(sandboxSession), tierPreset: sandboxSession ? $('tier-preset').value : 'v09_short', experiment: sandboxSession ? $('spawn-preset').value : 'baseline' }); game.offerId=offer.offerId;consumeOffer(save);persist();game.onEvent = tone;renderMeta();
+-  refineryStartedAt = null; resultEnteredAt = null; $('rank-banner').hidden=true;rankBannerShownId=null;
++  const offer=ensureOffer(save);previousBest = { ...save.bestStats }; game = new Game({ advancedEnabled:true,advancedIntroFlags:save.advancedIntroFlags,insightUnlocked:save.insightUnlocked,eliteHistory:save.eliteHistory,codexPinnedIds:save.codexPinnedIds,shapeCodex:save.shapeCodex,skillExpansionEnabled:true,signatureLoadout:save.signatureLoadout,evolutionOwned:save.evolutionOwned,evolutionActive:save.evolutionActive,ecologyEnabled:true,introSeen:save.shapeIntroSeen,seed, duration, runId: crypto.randomUUID(), levels: save.levels,relicLoadout:save.relicEquipped,activeContracts:snapshotContracts(save),anomalyId:save.selectedAnomaly, options: save.options,discoveryRank:save.discoveryRank,welcomeFlags:save.milestoneWelcomeFlags,oreEnabled:save.options.oreEnabled,sandbox: Boolean(sandboxSession), tierPreset: sandboxSession ? $('tier-preset').value : 'v09_short', experiment: sandboxSession ? $('spawn-preset').value : 'baseline' }); game.offerId=offer.offerId;consumeOffer(save);persist();game.onEvent = tone;renderMeta();
++  refineryStartedAt = null; resultEnteredAt = null; $('rank-banner').hidden=true;$('rank-banner').textContent='';rankBannerShownId=null;
+@@ -89 +90 @@
+-  const priorBlueprints=blueprints(save);settle(save, game);ensureOffer(save); persist();const newBlueprints=blueprints(save).filter(id=>!priorBlueprints.includes(id)); if((save.discoveryRank>game.discoveryRank||newBlueprints.length)&&rankBannerShownId!==game.runId){rankBannerShownId=game.runId;$('rank-banner').textContent=`DISCOVERED · RANK ${save.discoveryRank}${newBlueprints.length?` · 설계도 ${newBlueprints.map(id=>C.relics[id].name).join(', ')}`:''} · 다음 Run부터 적용`;$('rank-banner').hidden=false;} $('result').classList.remove('processing'); $('refinery-canvas').hidden = true; $('refinery-skip').hidden = true; renderUpgrades();
++  const priorStages=Object.fromEntries(Object.entries(save.shapeCodex).map(([id,row])=>[id,row.stage]));const priorBlueprints=blueprints(save);settle(save, game);ensureOffer(save); persist();const newBlueprints=blueprints(save).filter(id=>!priorBlueprints.includes(id)); if((save.discoveryRank>game.discoveryRank||newBlueprints.length)&&rankBannerShownId!==game.runId){rankBannerShownId=game.runId;$('rank-banner').textContent=`DISCOVERED · RANK ${save.discoveryRank}${newBlueprints.length?` · 설계도 ${newBlueprints.map(id=>C.relics[id].name).join(', ')}`:''} · 다음 Run부터 적용`;$('rank-banner').hidden=false;} const discoveries=Object.entries(save.shapeCodex).filter(([id,row])=>row.stage>priorStages[id]).map(([id,row])=>`${C.shapes[id].name||id} ${['-','I','II','III','IV'][row.stage]}`);if(discoveries.length){$('rank-banner').textContent+=` | CODEX ${discoveries.join(', ')}`;$('rank-banner').hidden=false;} $('result').classList.remove('processing'); $('refinery-canvas').hidden = true; $('refinery-skip').hidden = true; renderUpgrades();
+@@ -102,0 +104 @@
++ renderCodex($(`codex-${suffix}`),save,{state,pin:id=>{if(toggleCodexPin(save,id,state)){persist();renderMeta();}}});
+@@ -166,0 +169 @@
++  $('codex-pins').textContent=pinnedText(save,game);
+@@ -173 +176 @@
+-window.shardStorm = { snapshot: () => ({ state: game?.state || 'TITLE', paused: game?.paused || false, held: game?.held || false, successfulClicks: game?.successfulClicks || 0, missedClicks: game?.missedClicks || 0, remaining: game?.remaining, elapsed: game?.elapsed, fps, record: game?.record(), combo: game?.options.comboFeedback ? game?.combo.visible(game.elapsed) : null, audioVoices: voices, shapes: game?.alive.map(s => ({ id: s.id, type: s.type,echo:s.echo,secondaryTrait:s.secondaryTrait,oreGrade:s.oreGrade,wardSourceId:s.wardSourceId,shieldBroken:s.shieldBroken,channelUntil:s.channelUntil,angle: s.angle, anchorX: s.anchorX, anchorY: s.anchorY, motionProfile: s.motion.profile, modifier: s.modifier, maxHP: s.maxHP, x: s.x, y: s.y, hp: s.hp, grace: s.grace, enhanced: s.enhanced, radius: s.radius, material: s.appearance.material, pattern: s.appearance.pattern })) || [], waves: game?.waves.map(w => ({ radius: w.radius, maxRadius: w.maxRadius, source: w.sourceKind })) || [], scheduled: game?.queue.length || 0, clickRings: game?.clickVFX.items.length || 0, bank: save.bank, levels: { ...save.levels }, derivedStats: previewStats(relicStats(getDerivedStats(save.levels),save.relicEquipped),save.evolutionActive), options: { ...save.options }, saveVersion: save.saveVersion,signatureLoadout:[...save.signatureLoadout],evolutionOwned:structuredClone(save.evolutionOwned),evolutionActive:structuredClone(save.evolutionActive),shapeIntroSeen:{...save.shapeIntroSeen},contracts:structuredClone(save.contracts),contractMedals:[...save.contractMedals],anomalyOffer:structuredClone(save.anomalyOffer),selectedAnomaly:save.selectedAnomaly,anomalyOfferIndex:save.anomalyOfferIndex,totalAnomalyWins:save.totalAnomalyWins, relicOwned:[...save.relicOwned],relicEquipped:[...save.relicEquipped],relicAchievements:{...save.relicAchievements},relicBlueprintUnlocked:[...save.relicBlueprintUnlocked],sandbox: Boolean(sandboxSession), sandboxEconomy: sandboxSession?.preset, refinery: game?.refinery, pendingSettlement: save.pendingSettlement, totalRuns: save.totalRuns, lifetimeDestroyed: save.lifetimeDestroyed,discoveryRank:save.discoveryRank,catalystBalance:save.catalystBalance,milestoneWelcomeFlags:save.milestoneWelcomeFlags,settled: game?.settled }) };
++window.shardStorm = { snapshot: () => ({ state: game?.state || 'TITLE', paused: game?.paused || false, held: game?.held || false, successfulClicks: game?.successfulClicks || 0, missedClicks: game?.missedClicks || 0, remaining: game?.remaining, elapsed: game?.elapsed, fps, record: game?.record(), combo: game?.options.comboFeedback ? game?.combo.visible(game.elapsed) : null, audioVoices: voices, shapes: game?.alive.map(s => ({ id: s.id, type: s.type,echo:s.echo,secondaryTrait:s.secondaryTrait,oreGrade:s.oreGrade,wardSourceId:s.wardSourceId,shieldBroken:s.shieldBroken,channelUntil:s.channelUntil,angle: s.angle, anchorX: s.anchorX, anchorY: s.anchorY, motionProfile: s.motion.profile, modifier: s.modifier, maxHP: s.maxHP, x: s.x, y: s.y, hp: s.hp, grace: s.grace, enhanced: s.enhanced, radius: s.radius, material: s.appearance.material, pattern: s.appearance.pattern })) || [], waves: game?.waves.map(w => ({ radius: w.radius, maxRadius: w.maxRadius, source: w.sourceKind })) || [], scheduled: game?.queue.length || 0, clickRings: game?.clickVFX.items.length || 0, bank: save.bank, levels: { ...save.levels }, derivedStats: previewStats(relicStats(getDerivedStats(save.levels),save.relicEquipped),save.evolutionActive), options: { ...save.options }, saveVersion: save.saveVersion,shapeCodex:structuredClone(save.shapeCodex),codexPinnedIds:[...save.codexPinnedIds],insightUnlocked:[...save.insightUnlocked],eliteHistory:structuredClone(save.eliteHistory),advancedIntroFlags:{...save.advancedIntroFlags},signatureLoadout:[...save.signatureLoadout],evolutionOwned:structuredClone(save.evolutionOwned),evolutionActive:structuredClone(save.evolutionActive),shapeIntroSeen:{...save.shapeIntroSeen},contracts:structuredClone(save.contracts),contractMedals:[...save.contractMedals],anomalyOffer:structuredClone(save.anomalyOffer),selectedAnomaly:save.selectedAnomaly,anomalyOfferIndex:save.anomalyOfferIndex,totalAnomalyWins:save.totalAnomalyWins, relicOwned:[...save.relicOwned],relicEquipped:[...save.relicEquipped],relicAchievements:{...save.relicAchievements},relicBlueprintUnlocked:[...save.relicBlueprintUnlocked],sandbox: Boolean(sandboxSession), sandboxEconomy: sandboxSession?.preset, refinery: game?.refinery, pendingSettlement: save.pendingSettlement, totalRuns: save.totalRuns, lifetimeDestroyed: save.lifetimeDestroyed,discoveryRank:save.discoveryRank,catalystBalance:save.catalystBalance,milestoneWelcomeFlags:save.milestoneWelcomeFlags,settled: game?.settled }) };
+--- /dev/null
++++ b/codex-ui.js
+@@ -0,0 +1,24 @@
++import {CONFIG as C} from './config.js';
++import {CODEX_IDS,normalizeCodex,codexInsights} from './codex.js';
++import {ELITES,TECHNIQUES,ADVANCED_SHAPES} from './advanced-defs.js';
++export function toggleCodexPin(save,id,state){if(!['TITLE','RESULT'].includes(state)||!CODEX_IDS.includes(id))return false;save.codexPinnedIds||=[];if(save.codexPinnedIds.includes(id))save.codexPinnedIds=save.codexPinnedIds.filter(k=>k!==id);else if(save.codexPinnedIds.length<2)save.codexPinnedIds.push(id);else return false;return true;}
++const node=(tag,text,cls)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;};
++export function renderCodex(root,save,{state,pin}){
++ if(!root)return;const open=root.firstElementChild?.open,tab=root.dataset.tab||'codex',codex=normalizeCodex(save.shapeCodex),insights=codexInsights(codex),details=node('details',undefined,'codex-panel');details.open=Boolean(open);
++ details.append(node('summary',`CODEX ${Object.values(codex).filter(r=>r.stage>0).length}/19 | INSIGHT ${insights.length}/19 | PIN ${save.codexPinnedIds.length}/2`));
++ const tabs=node('div',undefined,'codex-tabs');tabs.setAttribute('role','tablist');
++ for(const id of ['codex','elites']){const button=node('button',id.toUpperCase());button.setAttribute('role','tab');button.setAttribute('aria-selected',String(tab===id));button.onclick=()=>{root.dataset.tab=id;renderCodex(root,save,{state,pin});root.firstElementChild.open=true;};tabs.append(button);}details.append(tabs);
++ const grid=node('div',undefined,'codex-grid');grid.setAttribute('role','tabpanel');
++ if(tab==='codex')for(const id of CODEX_IDS){
++  const row=codex[id],d=C.shapes[id],card=node('article',undefined,'codex-card');card.dataset.codex=id;card.classList.toggle('undiscovered',row.stage===0);card.append(node('strong',`${row.stage?d.symbol||'?':'?'} ${row.stage?d.name||id:'Undiscovered'} | ${['-','I','II','III','IV'][row.stage]}`));
++  card.append(node('small',`I:1 death | II:${id==='ancient'?5:30} deaths | III:technique1 | IV:${id==='ancient'?20:150} deaths + technique3`));
++  card.append(node('span',`${row.kills} deaths | ${row.techniques} techniques${row.stage>=3?' | INSIGHT':''}${row.stage===4?' | MASTERED':''}`));
++  card.append(node('p',TECHNIQUES[id]));
++  if(ADVANCED_SHAPES[id]){const descriptions={portalGate:'Main shards teleport once/pair. Destroy either gate to unlink.',parasiteLink:'Actual damage copies up to1 HP to2 links after .04s; copied hits never recurse.',phaseCrystal:'1.4s cycle: .9s vulnerable/.5s guarded. Guarded direct=0, shard/wave<=1.',chainBeacon:'Death in its own Chain10+ creates130px/2damage wave after .05s.',shifter:'Safe25-35px leap every1.3s; .2s warning. Aim at its new position.',prismLens:'Native Square/Star contact emits2 narrow120px sectors at +/-35deg. Actual main contact refracts at most70deg,2/Lens.'};card.append(node('small',`Rank${d.rank} / Run${C.tiers[d.tier].threshold} | HP${d.hp} | Raw${d.bonus} | ${descriptions[id]}`));}
++  const button=node('button',save.codexPinnedIds.includes(id)?'UNPIN':'PIN');button.dataset.codexPin=id;button.disabled=!['TITLE','RESULT'].includes(state)||(!save.codexPinnedIds.includes(id)&&save.codexPinnedIds.length>=2);button.onclick=()=>pin(id);card.append(button);grid.append(card);
++ }
++ else for(const[id,d]of Object.entries(ELITES)){const row=save.eliteHistory[id]||{},card=node('article',undefined,'codex-card');card.dataset.elite=id;card.append(node('strong',d.name),node('p',`Rank${d.rank} + ${d.insight} unique insights + Run200 deaths. ${d.types.join(' + ')}`),node('small',`Primary HP x1.5 (ceil), native Raw+50, Catalyst+3 once. Max1 encounter/Run. ${save.discoveryRank>=d.rank&&insights.length>=d.insight?'UNLOCKED':'LOCKED'}`),node('span',`Attempts ${row.attempts||0} | Spawns ${row.spawned||0} | Primary kills ${row.kills||0}`));grid.append(card);}
++ details.append(grid,node('small','Collection starts with M11. Earlier currency, skills and records are preserved; historical Codex counts are not invented. Techniques can be recorded early; stages unlock in order at settlement. No Photon/Catalyst reward from Codex.'));
++ root.replaceChildren(details);
++}
++export function pinnedText(save,g){return (g?.codexPinnedIds||save.codexPinnedIds).slice(0,2).map(id=>{const row=(g?.codexAtStart||save.shapeCodex)[id]||{},delta=g?.codexDelta[id]||{};return `${C.shapes[id].name||id}: ${(row.kills||0)+(delta.kills||0)} deaths / ${(row.techniques||0)+(delta.techniques||0)} techniques${g?.state==='PLAYING'?' (pending)':''}`;}).join(' | ');}
+--- /dev/null
++++ b/codex.js
+@@ -0,0 +1,43 @@
++import {TECHNIQUES,ELITES,ADVANCED_SHAPES} from './advanced-defs.js';
++export const CODEX_IDS=Object.keys(TECHNIQUES);
++const integer=n=>Number.isSafeInteger(n)&&n>=0?Math.min(n,1e9):0;
++export function codexStage(id,kills,techniques){return kills<1?0:kills<(id==='ancient'?5:30)?1:techniques<1?2:kills<(id==='ancient'?20:150)||techniques<3?3:4;}
++export function normalizeCodex(value={}){return Object.fromEntries(CODEX_IDS.map(id=>{const kills=integer(value?.[id]?.kills),techniques=integer(value?.[id]?.techniques),stage=codexStage(id,kills,techniques);return[id,{kills,techniques,stage,discovered:stage>0}];}));}
++export function codexInsights(codex){return CODEX_IDS.filter(id=>codex?.[id]?.stage>=3);}
++export function initCodex(g,enabled){g.advancedEnabled=enabled;g.codexDelta=Object.fromEntries(CODEX_IDS.map(id=>[id,{kills:0,techniques:0}]));g.codexKeys=new Set();g.codexSets=new Map();g.codexEvents=[];g.codexSequence=0;}
++function set(g,key,item){const values=g.codexSets.get(key)||new Set();values.add(item);g.codexSets.set(key,values);return values;}
++export function codexFeat(g,id,key,cause={},extra={}){
++ if(!g.advancedEnabled||g.shapes.some(s=>s.id===extra.sourceId&&s.fixture)||!g.codexDelta[id]||g.codexKeys.has(id+':'+key)||g.state!=='PLAYING'||g.remaining<=0)return false;
++ g.codexKeys.add(id+':'+key);g.codexDelta[id].techniques++;
++ if(g.codexEvents.length<2048)g.codexEvents.push({id,sourceId:extra.sourceId,chainId:cause.chainId,at:g.simulationTime,targetId:extra.targetId,eventId:++g.codexSequence,...extra});return true;
++}
++export function codexEvent(g,kind,s,cause={},extra={}){
++ if(!g.advancedEnabled||s.fixture)return;
++ const origin=extra.sourceId??s.id,key=kind+':'+origin;
++ if(kind==='stage'){const stages=set(g,key,extra.stageIndex);s.codexStages=stages;if(s.type==='reactor'&&stages.size>=2)codexFeat(g,'reactor',key,cause,{sourceId:origin});if(s.type==='ancient'&&stages.size>=3&&s.destroyed)codexFeat(g,'ancient',key,cause,{sourceId:origin});}
++ if(kind==='ward'&&set(g,key,extra.targetId).size>=2)codexFeat(g,'hex',key,cause,{sourceId:origin,targetId:extra.targetId});
++ if(kind==='conductorDelivered'&&set(g,key,extra.targetId).size>=2)codexFeat(g,'conductor',key,cause,{sourceId:origin,targetId:extra.targetId});
++ if(kind==='parasiteCopied'&&set(g,key,extra.targetId).size>=2)codexFeat(g,'parasiteLink',key,cause,{sourceId:origin,targetId:extra.targetId});
++ if(kind==='fuseExploded'){const key='fuse:'+cause.chainId,list=g.codexSets.get(key)||[];list.push({id:s.id,at:g.simulationTime});g.codexSets.set(key,list);if(list.some(e=>e.id!==s.id&&g.simulationTime-e.at<=1+1e-9))codexFeat(g,'fuseBomb',key+':'+s.id,cause,{sourceId:s.id});}
++}
++export function codexContact(g,s,cause,wave){
++ if(!g.advancedEnabled||s.echo||s.fixture)return;
++ if(wave&&cause.nativeWave&&cause.source==='star'&&set(g,'starwave:'+wave.id,s.id).size>=6)codexFeat(g,'star','wave:'+wave.id,cause,{sourceId:cause.originShapeId,targetId:s.id,waveId:wave.id});
++ if(wave?.cause.source==='prismRefraction'&&!s.elitePrimary){const key='lens:'+cause.originShapeId;const hits=g.codexSets.get(key)||new Map();hits.set(cause.sectorIndex,s.id);g.codexSets.set(key,hits);if(hits.size>=2&&new Set(hits.values()).size>=2)codexFeat(g,'prismLens',key,cause,{sourceId:cause.originShapeId,targetId:s.id,waveId:wave.id});}
++}
++export function codexDeath(g,s,cause,wave){
++ if(!g.advancedEnabled||s.fixture)return;
++ if(s.echo){if(s.parentChain===cause.chainId&&set(g,'echo:'+s.parentSplitter+':'+cause.chainId,s.id).size>=2)codexFeat(g,'splitter','parent:'+s.parentSplitter,cause,{sourceId:s.parentSplitter,targetId:s.id});return;}
++ if(!s.elitePrimary&&g.codexDelta[s.type])g.codexDelta[s.type].kills++;
++ const chain=g.chains.get(cause.chainId);if(chain){chain.codexDead||=new Set();chain.codexDead.add(s.id);if(cause.small===false&&cause.source==='triangle'){chain.codexTriangleOrigins||=new Set();chain.codexTriangleOrigins.add(cause.originShapeId);}if(chain.codexDead.size>=5)for(const id of chain.codexTriangleOrigins||[])codexFeat(g,'triangle','chain:'+cause.chainId+':'+id,cause,{sourceId:id,targetId:s.id});}
++ if(cause.small===false&&cause.source==='pentagon'&&set(g,'pentagon:'+cause.originShapeId,s.id).size>=5)codexFeat(g,'pentagon','origin:'+cause.originShapeId,cause,{sourceId:cause.originShapeId,targetId:s.id});
++ if(wave&&cause.nativeWave&&cause.source==='square'&&set(g,'squarewave:'+wave.id,s.id).size>=3)codexFeat(g,'square','wave:'+wave.id,cause,{sourceId:cause.originShapeId,targetId:s.id,waveId:wave.id});
++ if(cause.small===false){if(cause.reflectionKind==='mirror')codexFeat(g,'mirror','shard:'+cause.id,cause,{sourceId:cause.reflectionSource,targetId:s.id,shardId:cause.id});if(cause.gravitySource)codexFeat(g,'gravityWell','shard:'+cause.id,cause,{sourceId:cause.gravitySource,targetId:s.id,shardId:cause.id});if(cause.portalPassed)codexFeat(g,'portalGate','shard:'+cause.id,cause,{sourceId:cause.portalPassed,targetId:s.id,shardId:cause.id});}
++ if(s.type==='ancient'&&s.codexStages?.size>=3)codexFeat(g,'ancient','stage:'+s.id,cause,{sourceId:s.id});
++ if(s.type==='repairNode'&&s.healedHP>=2)codexFeat(g,'repairNode','heal:'+s.id,cause,{sourceId:s.id});
++ if(s.type==='phaseCrystal'&&cause.source==='direct'&&s.phaseWasVulnerable)codexFeat(g,'phaseCrystal','death:'+s.id,cause,{sourceId:s.id});
++ if(s.type==='shifter'&&cause.source==='direct'&&g.simulationTime-(s.lastLeapAt??-Infinity)<=1+1e-9)codexFeat(g,'shifter','death:'+s.id,cause,{sourceId:s.id});
++}
++export function codexSnapshot(g){return g.advancedEnabled?{version:8,runId:g.runId,delta:structuredClone(g.codexDelta),elite:structuredClone(g.eliteDelta||{}),intro:[...(g.advancedIntroConsumed||[])]}:null;}
++export function validCodexSnapshot(value,runId){return value?.version===8&&value.runId===runId&&value.delta&&CODEX_IDS.every(id=>['kills','techniques'].every(k=>Number.isSafeInteger(value.delta[id]?.[k])&&value.delta[id][k]>=0&&value.delta[id][k]<=100000))&&Object.keys(value.delta).every(id=>CODEX_IDS.includes(id))&&Array.isArray(value.intro)&&value.intro.every(id=>Object.hasOwn(ADVANCED_SHAPES,id))&&value.elite&&Object.entries(value.elite).every(([id,row])=>Object.hasOwn(ELITES,id)&&['attempts','spawned','kills'].every(k=>Number.isSafeInteger(row[k])&&row[k]>=0&&row[k]<=(k==='attempts'?100000:1)));}
++export function applyCodex(save,snapshot){if(!validCodexSnapshot(snapshot,snapshot?.runId))return;save.advancedIntroFlags||={};save.eliteHistory||={};save.shapeCodex=normalizeCodex(save.shapeCodex);for(const id of CODEX_IDS){const row=save.shapeCodex[id],delta=snapshot.delta[id];row.kills+=delta.kills;row.techniques+=delta.techniques;row.stage=codexStage(id,row.kills,row.techniques);row.discovered=row.stage>0;}save.insightUnlocked=codexInsights(save.shapeCodex);for(const id of snapshot.intro||[])if(CODEX_IDS.includes(id))save.advancedIntroFlags[id]=true;for(const[id,row]of Object.entries(snapshot.elite||{})){save.eliteHistory[id]||={attempts:0,spawned:0,kills:0};for(const k of ['attempts','spawned','kills'])save.eliteHistory[id][k]+=integer(row[k]);}}
+--- a/config.js
++++ b/config.js
+@@ -2,0 +3 @@
++import {ADVANCED_SHAPES} from './advanced-defs.js';
+@@ -47,0 +49 @@
++    ...Object.fromEntries(Object.entries(ADVANCED_SHAPES).map(([id,d])=>[id,{...d,special:true,ecology:true,advanced:true}])),
+@@ -149 +151 @@
+-  costGrowth: 1.6, saveVersion: 7, storageKey: 'shard-storm-v1', historyLimit: 20,
++  costGrowth: 1.6, saveVersion: 8, storageKey: 'shard-storm-v1', historyLimit: 20,
+--- a/content.js
++++ b/content.js
+@@ -0,0 +1 @@
++import {codexEvent} from './codex.js';
+@@ -68,0 +70 @@
++      if(wave)codexEvent(game,'stage',s,child,{stageIndex:i+1});
+--- a/ecology.js
++++ b/ecology.js
+@@ -0,0 +1,2 @@
++import {ADVANCED_TRAITS} from './advanced-defs.js';
++import {codexEvent} from './codex.js';
+@@ -13 +15 @@
+-  const eventId=g.nextEcologyEvent++;if(g.ecologyEvents.length<2048)g.ecologyEvents.push({eventId,kind,sourceId:s.id,chainId:cause.chainId,at:g.simulationTime,...extra});
++  codexEvent(g,kind,s,cause,extra);const eventId=g.nextEcologyEvent++;if(g.ecologyEvents.length<2048)g.ecologyEvents.push({eventId,kind,sourceId:s.id,chainId:cause.chainId,at:g.simulationTime,...extra});
+@@ -23 +25 @@
+-  if(g.alive.filter(s=>C.shapes[s.type].ecology).length>=7)return null;
++  if(g.alive.filter(s=>C.shapes[s.type].ecology&&!C.shapes[s.type].advanced).length>=7)return null;
+@@ -32 +34 @@
+-  for(const [id,d]of Object.entries(TRAITS)){
++  for(const [id,d]of Object.entries(g.advancedEnabled?{...TRAITS,...ADVANCED_TRAITS}:TRAITS)){
+@@ -41 +43 @@
+-  if(C.shapes[s.type].ecology&&!g.introConsumed.includes(s.type)&&!g.introSeen[s.type]){g.introConsumed.push(s.type);g.introFormationQueue.push(s);ecologyLog(g,'introduction',s,{}, {type:s.type});}
++  if(C.shapes[s.type].ecology&&!C.shapes[s.type].advanced&&!g.introConsumed.includes(s.type)&&!g.introSeen[s.type]){g.introConsumed.push(s.type);g.introFormationQueue.push(s);ecologyLog(g,'introduction',s,{}, {type:s.type});}
+--- a/effects.js
++++ b/effects.js
+@@ -27,2 +27,2 @@
+-      if (run.options.motionEnabled && run.positionAt && (target.motion?.ampX || target.motion?.ampY)) {
+-        const start = run.elapsed + travelled / C.shard.speed, end = start + distance / C.shard.speed;
++      if (run.positionAt && ((run.options.motionEnabled && (target.motion?.ampX || target.motion?.ampY))||(run.advancedEnabled&&target.type==='shifter'))) {
++        const start = run.elapsed + travelled / C.shard.speed, end = Math.min(start + distance / C.shard.speed,run.advancedEnabled&&target.type==='shifter'?(target.nextLeapAt??Infinity)-1e-9:Infinity);
+--- /dev/null
++++ b/elites.js
+@@ -0,0 +1,30 @@
++import {CONFIG as C} from './config.js';
++import {ELITES} from './advanced-defs.js';
++import {safePoint,near} from './ecology.js';
++import {advancedLog,safePortalPair} from './advanced-shapes.js';
++export function eligibleElites(g){return Object.entries(ELITES).filter(([,d])=>g.discoveryRank>=d.rank&&g.advancedInsight>=d.insight&&g.highestTier>=4).map(([id])=>id);}
++export function tryElite(g,forced=null){
++ if(!g.advancedEnabled||g.eliteSpawned||g.state!=='PLAYING'||g.remaining<=0)return null;
++ const eligible=eligibleElites(g);if(!eligible.length||forced&&!eligible.includes(forced))return null;
++ const introduction=eligible.find(id=>!(g.eliteHistory[id]?.spawned>0)&&!g.eliteAttempted.has(id));
++ const id=forced&&eligible.includes(forced)?forced:introduction|| (g.advancedRng()<.03?eligible[Math.floor(g.advancedRng()*eligible.length)]:null);if(!id)return null;
++ const d=ELITES[id];g.eliteAttempted.add(id);const delta=g.eliteDelta[id]||={attempts:0,spawned:0,kills:0};delta.attempts++;
++ if(g.alive.length+d.types.length>g.target)return null;
++ if(d.types.some(type=>C.shapes[type].special&&g.alive.filter(s=>s.type===type).length+d.types.filter(t=>t===type).length>C.shapes[type].cap||(g.specialSpawns[type]||0)+d.types.filter(t=>t===type).length>(C.shapes[type].runCap||Infinity)))return null;
++ if(g.alive.filter(s=>C.shapes[s.type].ecology&&!C.shapes[s.type].advanced).length+d.types.filter(type=>C.shapes[type].ecology&&!C.shapes[type].advanced).length>7)return null;
++ let points=null;
++ for(let attempt=0;attempt<96;attempt++){
++  const A=C.arena,x=A.left+100+g.advancedRng()*(A.right-A.left-200),y=A.top+100+g.advancedRng()*(A.bottom-A.top-200);
++  const offsets=id==='portalBeacon'?[[0,0],[210,0],[0,85]]:id==='ancientPrism'?[[0,0],[100,0],[135,70]]:id==='mirrorGravity'?[[0,0],[100,0]]:id==='shieldConductor'?[[0,0],[80,40],[0,76]]:[[0,0],[80,0],[0,90]];
++  const candidate=d.types.map((type,i)=>({x:x+offsets[i][0],y:y+offsets[i][1],radius:C.shapes[type].radius,type}));
++  if(candidate.every((p,i)=>safePoint(g,p.x,p.y,p.radius)&&candidate.every((q,j)=>i===j||Math.hypot(p.x-q.x,p.y-q.y)>=p.radius+q.radius+C.spawnGap+(C.shapes[p.type].drift??C.motion.maxDrift)+(C.shapes[q.type].drift??C.motion.maxDrift)))){points=candidate;break;}
++ }
++ if(!points){advancedLog(g,'elitePlacementFailed',{id:0},{},{eliteId:id});return null;}
++ const shapes=[];if(id==='portalBeacon'){const pair=safePortalPair(g,points.slice(0,2));if(!pair)return null;shapes.push(...pair);}
++ for(let i=shapes.length;i<points.length;i++){const p=points[i];shapes.push(g.addShape(p.type,p.x,p.y,0,false,C.spawnGrace,'normal'));}
++ if(shapes.some(s=>!s))throw Error('Atomic Elite commit precondition violated');
++ const primary=shapes[0];primary.hp=primary.maxHP=Math.ceil(C.shapes[primary.type].hp*1.5);primary.bonus=C.shapes[primary.type].bonus+50;primary.elitePrimary=true;primary.eliteId=id;for(const s of shapes)s.eliteEncounter=id;
++ for(const s of shapes.filter(s=>s.type==='conductor'))s.linkIds=near(g,s,115+(g.expansionLevels.conductiveSurge>=2?15:0)).slice(0,2).map(t=>t.id);
++ if(id==='bombReactor')shapes[2].secondaryTrait='volatile';
++ g.eliteSpawned=true;delta.spawned++;advancedLog(g,'eliteSpawned',primary,{}, {eliteId:id,targetIds:shapes.map(s=>s.id)});return shapes;
++}
+--- a/game.js
++++ b/game.js
+@@ -0,0 +1,3 @@
++import {initAdvanced,advancedType,advancedSpawn,advancedDefense,advancedContact,advancedDamaged,advancedDeath,portalContact,lensMainContact,polarTick,safePortalPair,advancedSkipped} from './advanced-shapes.js';
++import {tryElite} from './elites.js';
++import {codexSnapshot} from './codex.js';
+@@ -24 +27 @@
+-  constructor({ seed = C.seed, levels = emptyLevels(), options = C.options, duration, experiment = 'baseline', inputPolicy = 'human', sandbox = false, ruleset = 'v09', tierPreset = 'v09_short', runId, discoveryRank = 0, welcomeFlags = {}, contentMode = 'M5_M6_ON', oreEnabled = true,relicLoadout=[],relicEnabled=true,activeContracts=[],anomalyId=null,metaEnabled=true,ecologyEnabled=false,introSeen={},skillExpansionEnabled=false,signatureLoadout=[],evolutionActive=[],evolutionOwned={} } = {}) {
++  constructor({ seed = C.seed, levels = emptyLevels(), options = C.options, duration, experiment = 'baseline', inputPolicy = 'human', sandbox = false, ruleset = 'v09', tierPreset = 'v09_short', runId, discoveryRank = 0, welcomeFlags = {}, contentMode = 'M5_M6_ON', oreEnabled = true,relicLoadout=[],relicEnabled=true,activeContracts=[],anomalyId=null,metaEnabled=true,ecologyEnabled=false,introSeen={},advancedEnabled=false,advancedIntroFlags={},insightUnlocked=[],eliteHistory={},codexPinnedIds=[],shapeCodex={},skillExpansionEnabled=false,signatureLoadout=[],evolutionActive=[],evolutionOwned={} } = {}) {
+@@ -59 +62 @@
+-    initEcology(this,ecologyEnabled&&ruleset!=='legacy_v08',introSeen);this.initializing = true; this.initialLayout(); this.initializing = false;
++    initEcology(this,ecologyEnabled&&ruleset!=='legacy_v08',introSeen);initAdvanced(this,advancedEnabled,advancedIntroFlags,insightUnlocked,eliteHistory);this.codexPinnedIds=[...codexPinnedIds].slice(0,2);this.codexAtStart=structuredClone(shapeCodex);this.initializing = true; this.initialLayout(); this.initializing = false;
+@@ -92 +95,2 @@
+-  waveGap(wave, target, time) { const p = this.positionAt(target, time); return Math.hypot(p.x - wave.x, p.y - wave.y) - target.radius - Math.min(wave.maxRadius, Math.max(0, wave.speed * (time - wave.bornAt))); }
++  waveSectorContains(wave,target,time){if(!wave.sector)return true;const p=this.positionAt(target,time),a=Math.atan2(p.y-wave.y,p.x-wave.x),delta=Math.atan2(Math.sin(a-wave.sector.angle),Math.cos(a-wave.sector.angle));return Math.abs(delta)<=wave.sector.halfAngle+Math.asin(Math.min(1,target.radius/Math.max(target.radius,Math.hypot(p.x-wave.x,p.y-wave.y))))+1e-9;}
++  waveGap(wave,target,time){const p=this.positionAt(target,time),r=Math.min(wave.maxRadius,Math.max(0,wave.speed*(time-wave.bornAt)));if(!wave.sector)return Math.hypot(p.x-wave.x,p.y-wave.y)-target.radius-r;const angle=Math.atan2(p.y-wave.y,p.x-wave.x),delta=Math.atan2(Math.sin(angle-wave.sector.angle),Math.cos(angle-wave.sector.angle)),at=wave.sector.angle+Math.max(-wave.sector.halfAngle,Math.min(wave.sector.halfAngle,delta));return Math.hypot(p.x-wave.x-Math.cos(at)*r,p.y-wave.y-Math.sin(at)*r)-target.radius;}
+@@ -103,2 +107,2 @@
+-        const time = firstContact(t => this.waveGap(wave, target, t), start, last, wave.speed + C.motion.maxSpeed);
+-        if (time !== null) hits.push({ wave, target, time });
++        const time = firstContact(t => this.waveGap(wave, target, t), start, Math.min(last,this.advancedEnabled&&target.type==='shifter'?(target.nextLeapAt??Infinity)-1e-9:Infinity), wave.speed + C.motion.maxSpeed);
++        if (time !== null&&this.waveSectorContains(wave,target,time)) hits.push({ wave, target, time });
+@@ -140 +144 @@
+-    ecologySpawn(this,s);if(this.contentMode==='M5_M6_ON')linkWards(this);
++    ecologySpawn(this,s);s.fixture=Boolean(flags.fixture||flags.debug);advancedSpawn(this,s);if(this.contentMode==='M5_M6_ON')linkWards(this);
+@@ -147 +151 @@
+-    if(C.shapes[type]?.ecology&&this.alive.filter(s=>C.shapes[s.type].ecology).length>=7)type=null;
++    if(C.shapes[type]?.ecology&&!C.shapes[type].advanced&&this.alive.filter(s=>C.shapes[s.type].ecology&&!C.shapes[s.type].advanced).length>=7)type=null;
+@@ -148,0 +153,3 @@
++    if(!type&&!this.initializing&&this.contentMode==='M5_M6_ON'&&this.advancedEnabled){
++      const encounter=tryElite(this);if(encounter){this.spawnSuccesses+=encounter.length;this.binAt().spawnSuccesses+=encounter.length;this.binAt5().spawnSuccesses+=encounter.length;return encounter[0];}
++    }
+@@ -150,0 +158,4 @@
++    if(!type&&!this.initializing&&this.contentMode==='M5_M6_ON')type=advancedType(this);
++    if(type==='portalGate'){
++      const pair=safePortalPair(this);if(pair){this.spawnSuccesses+=2;this.binAt().spawnSuccesses+=2;this.binAt5().spawnSuccesses+=2;return pair[0];}type=null;
++    }
+@@ -272 +283 @@
+-    const extra=cause.triggeredBySkill||cause.relicId||['reactor','ancient','ward-release','splitter','fuse','conductor','volatile'].includes(cause.source),chain=this.chains.get(cause.chainId);
++    const extra=cause.triggeredBySkill||cause.relicId||['reactor','ancient','ward-release','splitter','fuse','conductor','volatile','parasiteCopied','chainBeacon','prismRefraction','traitResonant','traitFragmented'].includes(cause.source),chain=this.chains.get(cause.chainId);
+@@ -292 +303 @@
+-      const event = this.queue.shift(); this.processingTime = event.scheduledTime;
++      const event = this.queue.shift(); this.processingTime = event.scheduledTime;this.processingEventId=event.eventId;
+@@ -298,0 +310 @@
++      if(wave?.sector&&!this.waveSectorContains(wave,s,this.simulationTime))continue;
+@@ -302 +314 @@
+-      damage=expansionBeforeDamage(this,s,damage,cause,wave);
++      advancedContact(this,s,cause,wave);damage=expansionBeforeDamage(this,s,damage,cause,wave);
+@@ -304 +316 @@
+-      const actual=Math.min(s.hp,Math.max(0,expansionAfterDefense(this,traitDamage(this,s,shielded,cause),cause))),paid=s.echo?0:actual,chain = this.chains.get(cause.chainId);
++      const actual=Math.min(s.hp,Math.max(0,advancedDefense(this,s,expansionAfterDefense(this,traitDamage(this,s,shielded,cause),cause),cause))),paid=s.echo?0:actual,chain = this.chains.get(cause.chainId);
+@@ -307 +319 @@
+-      ecologyDamage(this,s,actual,cause);expansionDamaged(this,s,actual,cause,wave);
++      advancedDamaged(this,s,actual,cause,wave);ecologyDamage(this,s,actual,cause);expansionDamaged(this,s,actual,cause,wave);
+@@ -312 +324 @@
+-      if(s.echo){s.destroyed=true;expansionKilled(this,s,cause,wave);this.echoKills++;chain.kills++;chain.lastKillAt=this.simulationTime;this.bestChain=Math.max(this.bestChain,chain.kills);this.trackCombo(cause.chainId,s);ecologyLog(this,'echoDeath',s,cause,{parentId:s.parentSplitter,parentChain:s.parentChain});this.visual({kind:'death',x:s.x,y:s.y,shape:{...s},color:C.shapes.triangle.color,life:.15});if(!this.alive.length&&this.totalDestroyed)this.presentation.emit({kind:'fieldClear',at:this.simulationTime,x:s.x,y:s.y,color:'#91ded7'},this.options);continue;}
++      if(s.echo){s.destroyed=true;advancedDeath(this,s,cause,wave);expansionKilled(this,s,cause,wave);this.echoKills++;chain.kills++;chain.lastKillAt=this.simulationTime;this.bestChain=Math.max(this.bestChain,chain.kills);this.trackCombo(cause.chainId,s);ecologyLog(this,'echoDeath',s,cause,{parentId:s.parentSplitter,parentChain:s.parentChain});this.visual({kind:'death',x:s.x,y:s.y,shape:{...s},color:C.shapes.triangle.color,life:.15});if(!this.alive.length&&this.totalDestroyed)this.presentation.emit({kind:'fieldClear',at:this.simulationTime,x:s.x,y:s.y,color:'#91ded7'},this.options);continue;}
+@@ -316 +328 @@
+-      dropOre(this,s,cause);
++      advancedDeath(this,s,cause,wave);dropOre(this,s,cause);
+@@ -391 +403 @@
+-  area(s, radius, damage, cause, color, exclude = null) {
++  area(s, radius, damage, cause, color, exclude = null, sector = null) {
+@@ -396 +408 @@
+-      const wave = { id: this.nextWave++, x: s.x, y: s.y, radius: 0, maxRadius: radius, damage, speed: cause.source === 'star' ? C.propagation.starSpeed : C.propagation.squareSpeed, bornAt: this.simulationTime, age: 0, color, cause, chainId: cause.chainId, sourceKind: cause.source, generation: cause.depth, exclude, dynamic: this.options.motionEnabled, hitIds: new Set(), registeredIds: new Set() };
++      const wave = { id: this.nextWave++, x: s.x, y: s.y, radius: 0, maxRadius: radius, damage, speed: cause.source === 'star' ? C.propagation.starSpeed : C.propagation.squareSpeed, bornAt: this.simulationTime, age: 0, color, cause, chainId: cause.chainId, sourceKind: cause.source, generation: cause.depth, exclude, sector, dynamic: this.options.motionEnabled||this.advancedEnabled||Boolean(sector), hitIds: new Set(), registeredIds: new Set() };
+@@ -400 +412 @@
+-    for (const other of this.alive) if (other.id !== exclude && Math.hypot(other.x - s.x, other.y - s.y) - other.radius <= radius) {
++    for (const other of this.alive) if (other.id !== exclude && Math.hypot(other.x - s.x, other.y - s.y) - other.radius <= radius&&this.waveSectorContains({x:s.x,y:s.y,sector},other,this.simulationTime)) {
+@@ -407,0 +420 @@
++    if(!this.waveSectorContains(wave,target,this.simulationTime))return;
+@@ -424 +437,3 @@
+-      s.hitIds ||= new Set();s.hitIds.add(path.hit.id);const reflected=reflectContact(this,s,path.hit);s.dead=!reflected;
++      const contactAt=this.elapsed+path.distance/C.shard.speed;
++      if(portalContact(this,s,path.hit,contactAt))return;
++      s.hitIds ||= new Set();s.hitIds.add(path.hit.id);const reflected=lensMainContact(this,s,path.hit)||reflectContact(this,s,path.hit);s.dead=!reflected;
+@@ -455 +470 @@
+-    if(this.ecologyEnabled){this.flush();repairTick(this);bendShards(this,dt);}
++    if(this.ecologyEnabled){this.flush();repairTick(this);bendShards(this,dt);polarTick(this);}
+@@ -518 +533 @@
+-    this.skippedEvents += this.queue.length - pending.length; this.queue = pending;
++    this.skippedEvents += this.queue.length - pending.length; this.queue = pending;advancedSkipped(this);
+@@ -566 +581 @@
+-  record() { const durations = [...this.cascadeDurations, ...Array.from(this.chains.values()).filter(c => c.cascadeKills).map(c => (c.lastKillAt - c.startedAt) * 1000)]; return { skillExpansionEnabled:this.skillExpansionEnabled,signatureLoadout:[...this.signatureLoadout],evolutionActive:this.evolutionActive.map(r=>({...r})),expansionExecuted:{...this.expansionExecuted},expansionImpact:structuredClone(this.expansionImpact),expansionEvents:[...this.expansionEvents],calibrationPhoton:this.calibrationPhoton,ecologyEnabled:this.ecologyEnabled,ecologyCounts:{...this.ecologyCounts},introConsumed:[...this.introConsumed],ecologyEvents:[...this.ecologyEvents],echoSpawned:this.echoSpawned,echoKills:this.echoKills,echoRaw:0,metaCounters:{...(this.finalMetaCounters||this.metaCounters)},metaResult:this.metaResult,anomalyId:this.anomalyId,contractSnapshot:[...this.contractSnapshot],causalLog:[...this.causalLog],relicLoadout:[...this.relicLoadout],relicActivations:{...this.relicActivations},siphonUnused:this.siphonCharges.filter(t=>t>this.elapsed).length,siphonConsumed:this.siphonConsumed,offerId:this.offerId,metaVersion:C.meta.version,rawHP:this.rawHP,rawNativeBonus:this.rawNativeBonus,oreEnabled:this.oreEnabled,specialSpawns:{...this.specialSpawns},stageEvents:[...this.stageEvents],skillActivations:{...this.skillActivations},skillEvents:[...this.skillEvents],tetherPairs:this.tetherPairs,tetherAttempts:this.tetherAttempts, discoveryRankAtStart:this.discoveryRank,contentMode:this.contentMode,oreChances:oreChances(this.discoveryRank,this.levels.salvageScanner||0),oreSpawnCounts:{...this.oreSpawnCounts},oreKills:{...this.oreKills},pendingCatalyst:this.pendingCatalyst,rawBase:this.rawBase,rawOreBonus:this.rawOreBonus,rawSkillBonus:this.rawSkillBonus,rewardsBySource:[...this.rewardLog],welcomeConsumed:[...this.welcomeConsumed], motionMeasurements: { ...this.motionMeasurements }, refinerySkipped: this.refinerySkipped ?? null, resultWaitSeconds: this.resultWaitSeconds ?? null, physicsChecks: { ...this.physicsChecks }, ruleset: this.ruleset, tierPreset: this.tierPreset, runId: this.runId, runDurationConfigured: this.duration, runDurationActual: this.elapsed, rawEarned: this.runEarned, processedPhoton: this.metaResult?.totalPhoton ?? (this.refinery?this.refinery.payout+this.calibrationPhoton:null), photonPayout: this.metaResult?.totalPhoton ?? (this.refinery?this.refinery.payout+this.calibrationPhoton:null), refinery: this.refinery, motionEnabled: this.initialOptions.motionEnabled, motionProfiles: { ...this.motionProfiles }, missedClicks: this.missedClicks, movingHitAccuracy: this.successfulClicks / Math.max(1, this.successfulClicks + this.missedClicks), projectileHitRate: this.projectileHits / Math.max(1, this.shardsEmitted), projectileHits: this.projectileHits, waveContacts: this.waveContacts, maxMotionSpeed: this.maxMotionSpeed, bins5: this.ruleset === 'legacy_v08' ? [] : this.bins5.map(b => ({ ...structuredClone(b), rawEarned: b.earnedPhoton, averageAlive: b.sampledSeconds ? b.aliveIntegral / b.sampledSeconds : 0, averageTarget: b.sampledSeconds ? b.targetIntegral / b.sampledSeconds : 0 })), inputPolicy: this.inputPolicy, sandbox: this.sandbox, experiment: { ...this.experiment }, elapsed: this.elapsed, bins: this.bins.map(b => ({ ...structuredClone(b), averageAlive: b.sampledSeconds ? b.aliveIntegral / b.sampledSeconds : 0, averageTarget: b.sampledSeconds ? b.targetIntegral / b.sampledSeconds : 0, spawnSuccessRate: b.spawnAttempts ? b.spawnSuccesses / b.spawnAttempts : null, cascadeRatio: b.totalDestroyed ? b.cascadeKills / b.totalDestroyed : 0, avgCascadeDurationMs: b.completedCascadeChains ? b.cascadeDurationTotalMs / b.completedCascadeChains : 0 })), emptyArenaDuration: this.emptyArenaDuration, emptyEpisodesOverHalfSecond: this.emptyEpisodesOverHalfSecond, maxEmptyEpisode: this.maxEmptyEpisode, spawnAttempts: this.spawnAttempts, spawnSuccesses: this.spawnSuccesses, spawnFailures: this.spawnFailures, capCounts: { ...this.capCounts }, capSources: { ...this.capSources }, chargedCaps: this.chargedCaps, peakWaves: this.peakWaves, peakScheduled: this.peakScheduled, secondShardPeaks: [...this.secondShardPeaks], hpDistribution: { ...this.hpDistribution }, enhancedSpawnCount: this.enhancedSpawnCount, frameSampleCount: this.frameSamples.length, stepSampleCount: this.stepSamples.length, averageFPS: this.frameSamples.length ? this.frameSamples.reduce((a, b) => a + b, 0) / this.frameSamples.length : null, fixedStepP95ms: this.stepSamples.length ? [...this.stepSamples].sort((a,b) => a-b)[Math.floor(this.stepSamples.length * .95)] : null, modifiersEnabled: this.initialOptions.modifiers, modifierStats: Object.fromEntries(Object.entries(this.modifierStats).map(([k, v]) => [k, { ...v, selectionRate: v.spawnCount ? v.clickedFirstCount / v.spawnCount : 0 }])), typeStats: structuredClone(this.typeStats), chargedContribution: { ...this.chargedContribution }, modifierRngPolicy: "independent mechanical stream; one draw per spawn attempt including OFF and Enhanced", comboMilestones: { ...this.comboMilestones }, comboEvents: [...this.comboEvents], timeToFirstChain5: this.timeToFirstChain5, maxChain: this.bestChain, comboFeedbackEnabled: this.initialOptions.comboFeedback, durationSeconds: this.duration, seed: this.seed, levels: { ...this.levels }, totalDestroyed: this.totalDestroyed, directKills: this.directKills, cascadeKills: this.cascadeKills, bestChain: this.bestChain, photonsEarned: this.ruleset === 'legacy_v08' ? this.runEarned : this.metaResult?.totalPhoton ?? (this.refinery?this.refinery.payout+this.calibrationPhoton:0), highestTier: this.highestTier, unlockTimes: { ...this.unlockTimes }, firstCascadeTime: this.firstCascadeTime, inheritanceEnabled: this.initialOptions.inheritance, ricochetEnabled: this.initialOptions.ricochet, sequentialPropagationEnabled: this.initialOptions.sequentialPropagation, visualVarietyEnabled: this.initialOptions.visualVariety, avgCascadeDurationMs: durations.length ? durations.reduce((a, b) => a + b, 0) / durations.length : 0, variantCounts: { ...this.variantCounts }, patternCounts: { ...this.patternCounts }, optionChanges: [...this.optionChanges], safetyCapsHit: this.safetyCapsHit, skippedSeconds: this.skippedSeconds, skippedEvents: this.skippedEvents, peakShards: this.peakShards }; }
++  record() { const durations = [...this.cascadeDurations, ...Array.from(this.chains.values()).filter(c => c.cascadeKills).map(c => (c.lastKillAt - c.startedAt) * 1000)]; return { advancedEnabled:this.advancedEnabled,codexSnapshot:codexSnapshot(this),codexDelta:structuredClone(this.codexDelta),codexEvents:[...this.codexEvents],advancedCounts:{...this.advancedCounts},advancedEvents:[...this.advancedEvents],advancedSpawned:{...this.advancedSpawned},eliteDelta:structuredClone(this.eliteDelta),skillExpansionEnabled:this.skillExpansionEnabled,signatureLoadout:[...this.signatureLoadout],evolutionActive:this.evolutionActive.map(r=>({...r})),expansionExecuted:{...this.expansionExecuted},expansionImpact:structuredClone(this.expansionImpact),expansionEvents:[...this.expansionEvents],calibrationPhoton:this.calibrationPhoton,ecologyEnabled:this.ecologyEnabled,ecologyCounts:{...this.ecologyCounts},introConsumed:[...this.introConsumed],ecologyEvents:[...this.ecologyEvents],echoSpawned:this.echoSpawned,echoKills:this.echoKills,echoRaw:0,metaCounters:{...(this.finalMetaCounters||this.metaCounters)},metaResult:this.metaResult,anomalyId:this.anomalyId,contractSnapshot:[...this.contractSnapshot],causalLog:[...this.causalLog],relicLoadout:[...this.relicLoadout],relicActivations:{...this.relicActivations},siphonUnused:this.siphonCharges.filter(t=>t>this.elapsed).length,siphonConsumed:this.siphonConsumed,offerId:this.offerId,metaVersion:C.meta.version,rawHP:this.rawHP,rawNativeBonus:this.rawNativeBonus,oreEnabled:this.oreEnabled,specialSpawns:{...this.specialSpawns},stageEvents:[...this.stageEvents],skillActivations:{...this.skillActivations},skillEvents:[...this.skillEvents],tetherPairs:this.tetherPairs,tetherAttempts:this.tetherAttempts, discoveryRankAtStart:this.discoveryRank,contentMode:this.contentMode,oreChances:oreChances(this.discoveryRank,this.levels.salvageScanner||0),oreSpawnCounts:{...this.oreSpawnCounts},oreKills:{...this.oreKills},pendingCatalyst:this.pendingCatalyst,rawBase:this.rawBase,rawOreBonus:this.rawOreBonus,rawSkillBonus:this.rawSkillBonus,rewardsBySource:[...this.rewardLog],welcomeConsumed:[...this.welcomeConsumed], motionMeasurements: { ...this.motionMeasurements }, refinerySkipped: this.refinerySkipped ?? null, resultWaitSeconds: this.resultWaitSeconds ?? null, physicsChecks: { ...this.physicsChecks }, ruleset: this.ruleset, tierPreset: this.tierPreset, runId: this.runId, runDurationConfigured: this.duration, runDurationActual: this.elapsed, rawEarned: this.runEarned, processedPhoton: this.metaResult?.totalPhoton ?? (this.refinery?this.refinery.payout+this.calibrationPhoton:null), photonPayout: this.metaResult?.totalPhoton ?? (this.refinery?this.refinery.payout+this.calibrationPhoton:null), refinery: this.refinery, motionEnabled: this.initialOptions.motionEnabled, motionProfiles: { ...this.motionProfiles }, missedClicks: this.missedClicks, movingHitAccuracy: this.successfulClicks / Math.max(1, this.successfulClicks + this.missedClicks), projectileHitRate: this.projectileHits / Math.max(1, this.shardsEmitted), projectileHits: this.projectileHits, waveContacts: this.waveContacts, maxMotionSpeed: this.maxMotionSpeed, bins5: this.ruleset === 'legacy_v08' ? [] : this.bins5.map(b => ({ ...structuredClone(b), rawEarned: b.earnedPhoton, averageAlive: b.sampledSeconds ? b.aliveIntegral / b.sampledSeconds : 0, averageTarget: b.sampledSeconds ? b.targetIntegral / b.sampledSeconds : 0 })), inputPolicy: this.inputPolicy, sandbox: this.sandbox, experiment: { ...this.experiment }, elapsed: this.elapsed, bins: this.bins.map(b => ({ ...structuredClone(b), averageAlive: b.sampledSeconds ? b.aliveIntegral / b.sampledSeconds : 0, averageTarget: b.sampledSeconds ? b.targetIntegral / b.sampledSeconds : 0, spawnSuccessRate: b.spawnAttempts ? b.spawnSuccesses / b.spawnAttempts : null, cascadeRatio: b.totalDestroyed ? b.cascadeKills / b.totalDestroyed : 0, avgCascadeDurationMs: b.completedCascadeChains ? b.cascadeDurationTotalMs / b.completedCascadeChains : 0 })), emptyArenaDuration: this.emptyArenaDuration, emptyEpisodesOverHalfSecond: this.emptyEpisodesOverHalfSecond, maxEmptyEpisode: this.maxEmptyEpisode, spawnAttempts: this.spawnAttempts, spawnSuccesses: this.spawnSuccesses, spawnFailures: this.spawnFailures, capCounts: { ...this.capCounts }, capSources: { ...this.capSources }, chargedCaps: this.chargedCaps, peakWaves: this.peakWaves, peakScheduled: this.peakScheduled, secondShardPeaks: [...this.secondShardPeaks], hpDistribution: { ...this.hpDistribution }, enhancedSpawnCount: this.enhancedSpawnCount, frameSampleCount: this.frameSamples.length, stepSampleCount: this.stepSamples.length, averageFPS: this.frameSamples.length ? this.frameSamples.reduce((a, b) => a + b, 0) / this.frameSamples.length : null, fixedStepP95ms: this.stepSamples.length ? [...this.stepSamples].sort((a,b) => a-b)[Math.floor(this.stepSamples.length * .95)] : null, modifiersEnabled: this.initialOptions.modifiers, modifierStats: Object.fromEntries(Object.entries(this.modifierStats).map(([k, v]) => [k, { ...v, selectionRate: v.spawnCount ? v.clickedFirstCount / v.spawnCount : 0 }])), typeStats: structuredClone(this.typeStats), chargedContribution: { ...this.chargedContribution }, modifierRngPolicy: "independent mechanical stream; one draw per spawn attempt including OFF and Enhanced", comboMilestones: { ...this.comboMilestones }, comboEvents: [...this.comboEvents], timeToFirstChain5: this.timeToFirstChain5, maxChain: this.bestChain, comboFeedbackEnabled: this.initialOptions.comboFeedback, durationSeconds: this.duration, seed: this.seed, levels: { ...this.levels }, totalDestroyed: this.totalDestroyed, directKills: this.directKills, cascadeKills: this.cascadeKills, bestChain: this.bestChain, photonsEarned: this.ruleset === 'legacy_v08' ? this.runEarned : this.metaResult?.totalPhoton ?? (this.refinery?this.refinery.payout+this.calibrationPhoton:0), highestTier: this.highestTier, unlockTimes: { ...this.unlockTimes }, firstCascadeTime: this.firstCascadeTime, inheritanceEnabled: this.initialOptions.inheritance, ricochetEnabled: this.initialOptions.ricochet, sequentialPropagationEnabled: this.initialOptions.sequentialPropagation, visualVarietyEnabled: this.initialOptions.visualVariety, avgCascadeDurationMs: durations.length ? durations.reduce((a, b) => a + b, 0) / durations.length : 0, variantCounts: { ...this.variantCounts }, patternCounts: { ...this.patternCounts }, optionChanges: [...this.optionChanges], safetyCapsHit: this.safetyCapsHit, skippedSeconds: this.skippedSeconds, skippedEvents: this.skippedEvents, peakShards: this.peakShards }; }
+--- a/index.html
++++ b/index.html
+@@ -6 +6 @@
+-  <header class="masthead"><a class="brand" href="./"><span class="brand-icon">◈</span> SHARD STORM</a><div class="edition"><span class="status-dot"></span> PROTOTYPE / M10</div></header>
++  <header class="masthead"><a class="brand" href="./"><span class="brand-icon">◈</span> SHARD STORM</a><div class="edition"><span class="status-dot"></span> PROTOTYPE / M11</div></header>
+@@ -9 +9 @@
+-    <div class="arena-wrap">
++    <div id="codex-pins" aria-live="off"></div><div class="arena-wrap">
+@@ -16 +16 @@
+-        <small>마우스 클릭 · 누른 채 드래그 / 첫 판 20초 · Raw → Refinery → Photon</small><div class="start-meta"><div id="build-start"></div><div id="relic-start"></div><div id="contracts-start"></div><div id="anomaly-start"></div></div>
++        <small>마우스 클릭 · 누른 채 드래그 / 첫 판 20초 · Raw → Refinery → Photon</small><div class="start-meta"><div id="codex-start"></div><div id="build-start"></div><div id="relic-start"></div><div id="contracts-start"></div><div id="anomaly-start"></div></div>
+@@ -28 +28 @@
+-        <div class="time-policy"><span id="time-note"></span><button id="time-refund" hidden>기존 시간 스킬 비용 반환 · 1회</button></div><div id="build-result"></div><div id="relic-result"></div><div id="contracts-result"></div><div id="anomaly-result"></div>
++        <div class="time-policy"><span id="time-note"></span><button id="time-refund" hidden>기존 시간 스킬 비용 반환 · 1회</button></div><div id="codex-result"></div><div id="build-result"></div><div id="relic-result"></div><div id="contracts-result"></div><div id="anomaly-result"></div>
+--- a/package.json
++++ b/package.json
+@@ -19 +19,3 @@
+-    "qa:m10": "node tests/m10-browser.mjs"
++    "qa:m10": "node tests/m10-browser.mjs",
++    "benchmark:m11": "node tests/m11-benchmark.js",
++    "qa:m11": "node tests/m11-browser.mjs"
+--- a/progression.js
++++ b/progression.js
+@@ -0,0 +1 @@
++import {codexSnapshot,validCodexSnapshot,applyCodex} from './codex.js';
+@@ -42 +43 @@
+-  save.pendingSettlement ||= { id: plan.id, runId: plan.id, saveSchema: C.saveVersion,relicAchievementDeltas:deltas,contractPlan,contractsCompleted:contractPlan.completed,contractPhoton:contractPlan.photon,contractCatalyst:contractPlan.catalyst,anomalyId:anomaly.id,anomalySucceeded:anomaly.succeeded,anomalyPhoton:anomaly.photon,payoutBreakdown:{refineryPhoton:plan.payout,calibrationPhoton,contractPhoton:contractPlan.photon,anomalyPhoton:anomaly.photon,baseCatalyst,contractCatalyst:contractPlan.catalyst},payout,catalystPayout, rawBase:run.rawBase||0,rawOreBonus:run.rawOreBonus||0,skillRawBonus:run.rawSkillBonus||0,totalDestroyed:run.totalDestroyed||record.totalDestroyed,oreKills:run.oreKills||{}, milestoneProgress:run.discoveryRank||0,shapeUnlockEvents:run.welcomeConsumed||[],record: { ...record, photonsEarned:payout,processedPhoton:payout,photonPayout:payout,refineryPayout:plan.payout,payoutBreakdown:{refineryPhoton:plan.payout,calibrationPhoton,contractPhoton:contractPlan.photon,anomalyPhoton:anomaly.photon,baseCatalyst,contractCatalyst:contractPlan.catalyst},bankBefore:save.bank,bankAfter:save.bank+payout } };
++  save.pendingSettlement ||= { id: plan.id, runId: plan.id, saveSchema: C.saveVersion,codexSnapshot:codexSnapshot(run),relicAchievementDeltas:deltas,contractPlan,contractsCompleted:contractPlan.completed,contractPhoton:contractPlan.photon,contractCatalyst:contractPlan.catalyst,anomalyId:anomaly.id,anomalySucceeded:anomaly.succeeded,anomalyPhoton:anomaly.photon,payoutBreakdown:{refineryPhoton:plan.payout,calibrationPhoton,contractPhoton:contractPlan.photon,anomalyPhoton:anomaly.photon,baseCatalyst,contractCatalyst:contractPlan.catalyst},payout,catalystPayout, rawBase:run.rawBase||0,rawOreBonus:run.rawOreBonus||0,skillRawBonus:run.rawSkillBonus||0,totalDestroyed:run.totalDestroyed||record.totalDestroyed,oreKills:run.oreKills||{}, milestoneProgress:run.discoveryRank||0,shapeUnlockEvents:run.welcomeConsumed||[],record: { ...record, photonsEarned:payout,processedPhoton:payout,photonPayout:payout,refineryPayout:plan.payout,payoutBreakdown:{refineryPhoton:plan.payout,calibrationPhoton,contractPhoton:contractPlan.photon,anomalyPhoton:anomaly.photon,baseCatalyst,contractCatalyst:contractPlan.catalyst},bankBefore:save.bank,bankAfter:save.bank+payout } };
+@@ -55,0 +57 @@
++  if(validCodexSnapshot(pending.codexSnapshot,pending.id))applyCodex(save,pending.codexSnapshot);
+--- a/renderer.js
++++ b/renderer.js
+@@ -0,0 +1,2 @@
++import {ADVANCED_TRAITS} from './advanced-defs.js';
++import {phaseVulnerable} from './advanced-shapes.js';
+@@ -38,0 +41,2 @@
++  for(const s of game.alive){const ids=s.parasiteIds||(s.portalPartner?[s.portalPartner]:[]);for(const id of ids){const target=game.alive.find(t=>t.id===id);if(!target||links>=3||s.id>target.id&&s.portalPartner)continue;if(!s.portalPartner&&Math.hypot(target.x-s.x,target.y-s.y)>100)continue;ctx.strokeStyle=s.portalPartner?'#72cfff55':'#b4e87b55';ctx.lineWidth=1;ctx.setLineDash([3,6]);ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(target.x,target.y);ctx.stroke();ctx.setLineDash([]);links++;}}
++  for(const a of game.alive.filter(s=>s.secondaryTrait==='polarized'&&!s.polarBroken)){if(links>=3)break;const b=game.alive.filter(s=>s.id!==a.id&&s.secondaryTrait==='polarized'&&!s.polarBroken&&Math.hypot(s.x-a.x,s.y-a.y)<=105).sort((s,t)=>Math.hypot(s.x-a.x,s.y-a.y)-Math.hypot(t.x-a.x,t.y-a.y))[0];if(!b||a.id>b.id)continue;ctx.strokeStyle='#a8d5ff55';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();links++;}
+@@ -71 +75,5 @@
+-    if(s.secondaryTrait&&game.options.modifierVisuals){ctx.strokeStyle='#e7efee';ctx.lineWidth=1;ctx.strokeRect(-s.radius-4,-s.radius-4,9,9);ctx.fillStyle='#fff';ctx.font='8px Arial';ctx.textAlign='center';const marks={reinforced:s.armorUsed?'':'▣',volatile:'✴',reflective:'↪',hollow:'◌'};ctx.fillText(marks[s.secondaryTrait]||'',-s.radius+.5,-s.radius+3);}
++    if(s.elitePrimary){ctx.strokeStyle='#fff2b5';ctx.lineWidth=2;ctx.setLineDash([6,3]);ctx.strokeRect(-s.radius-9,-s.radius-9,2*s.radius+18,2*s.radius+18);ctx.setLineDash([]);ctx.font='8px Arial';ctx.textAlign='center';ctx.fillStyle='#fff2b5';ctx.fillText('ELITE',0,-s.radius-13);}
++    if(s.type==='portalGate'){ctx.strokeStyle=s.portalPartner?'#72cfff':'#50697b';ctx.lineWidth=2;for(const r of [.5,1]){ctx.beginPath();ctx.arc(0,0,s.radius*r,0,Math.PI*2);ctx.stroke();}}
++    if(s.type==='phaseCrystal'){ctx.strokeStyle=phaseVulnerable(game,s)?'#f3edff':'#807099';ctx.lineWidth=phaseVulnerable(game,s)?1:3;ctx.setLineDash(phaseVulnerable(game,s)?[]:[4,3]);polygon(ctx,s,.8,false);ctx.stroke();ctx.setLineDash([]);ctx.font='8px Arial';ctx.textAlign='center';ctx.fillStyle=ctx.strokeStyle;ctx.fillText(phaseVulnerable(game,s)?'OPEN':'GUARD',0,-s.radius-7);}
++    if(s.type==='shifter'&&s.nextLeapAt-game.elapsed<=.2){ctx.strokeStyle='#ffb9dc';ctx.lineWidth=1;ctx.setLineDash([2,3]);polygon(ctx,s,1.2,false);ctx.stroke();ctx.setLineDash([]);}
++    if(s.secondaryTrait&&game.options.modifierVisuals){ctx.strokeStyle='#e7efee';ctx.lineWidth=1;ctx.strokeRect(-s.radius-4,-s.radius-4,9,9);ctx.fillStyle='#fff';ctx.font='8px Arial';ctx.textAlign='center';const marks={reinforced:s.armorUsed?'':'▣',volatile:'✴',reflective:'↪',hollow:'◌',...Object.fromEntries(Object.entries(ADVANCED_TRAITS).map(([id,d])=>[id,d.symbol]))};ctx.fillText(marks[s.secondaryTrait]||'',-s.radius+.5,-s.radius+3);}
+@@ -86 +94 @@
+-    for (const scale of rings) { ctx.beginPath(); ctx.arc(wave.x, wave.y, wave.radius * scale, 0, Math.PI * 2); ctx.stroke(); }
++    for (const scale of rings) { ctx.beginPath(); ctx.arc(wave.x, wave.y, wave.radius * scale, wave.sector?wave.sector.angle-wave.sector.halfAngle:0, wave.sector?wave.sector.angle+wave.sector.halfAngle:Math.PI * 2); ctx.stroke(); }
+--- a/run-metrics.js
++++ b/run-metrics.js
+@@ -0,0 +1 @@
++import {codexEvent} from './codex.js';
+@@ -13 +14 @@
+- if(origin?.destroyed&&!target.wardReleaseCounted){target.wardReleaseCounted=true;if(origin.wardCause)expansionWardReleased(game,origin,origin.wardCause);count(game,'wardReleasesFromHexDeath',1,{sourceShapeId:origin.id,targetShapeId:target.id,reason,eventType:'wardReleased'});}
++ if(origin?.destroyed&&!target.wardReleaseCounted){target.wardReleaseCounted=true;codexEvent(game,'ward',origin,origin.wardCause||{},{targetId:target.id});if(origin.wardCause)expansionWardReleased(game,origin,origin.wardCause);count(game,'wardReleasesFromHexDeath',1,{sourceShapeId:origin.id,targetShapeId:target.id,reason,eventType:'wardReleased'});}
+--- a/storage.js
++++ b/storage.js
+@@ -0,0 +1,2 @@
++import {normalizeCodex,codexInsights,CODEX_IDS} from './codex.js';
++import {ELITES,ADVANCED_SHAPES} from './advanced-defs.js';
+@@ -9 +11 @@
+-export function freshSave() { return { signatureLoadout:[],evolutionOwned:normalizeEvolutionOwned({}),evolutionActive:[],shapeIntroSeen:{}, saveVersion: C.saveVersion, bank: 0, levels: emptyLevels(), bestStats: {}, lastRuns: [], options: { ...C.options }, catalystBalance: 0, discoveryRank: 0, lifetimeDestroyed: 0, knownHistoryKills: 0, totalRuns: 0, milestoneWelcomeFlags: {}, pendingSettlement: null, lastSettlementId: null, legacyExtraTimeLevel: 0, timeRespecUsed: false, relicOwned:[],relicEquipped:[],relicAchievements:emptyAchievements(),relicBlueprintUnlocked:[],contracts:{active:[],records:{}},contractMedals:[],anomalyOffer:null,anomalyOfferIndex:0,anomalySeed:null,selectedAnomaly:null,totalAnomalyWins:0 }; }
++export function freshSave() { return { shapeCodex:normalizeCodex(),codexPinnedIds:[],insightUnlocked:[],eliteHistory:{},advancedIntroFlags:{},signatureLoadout:[],evolutionOwned:normalizeEvolutionOwned({}),evolutionActive:[],shapeIntroSeen:{}, saveVersion: C.saveVersion, bank: 0, levels: emptyLevels(), bestStats: {}, lastRuns: [], options: { ...C.options }, catalystBalance: 0, discoveryRank: 0, lifetimeDestroyed: 0, knownHistoryKills: 0, totalRuns: 0, milestoneWelcomeFlags: {}, pendingSettlement: null, lastSettlementId: null, legacyExtraTimeLevel: 0, timeRespecUsed: false, relicOwned:[],relicEquipped:[],relicAchievements:emptyAchievements(),relicBlueprintUnlocked:[],contracts:{active:[],records:{}},contractMedals:[],anomalyOffer:null,anomalyOfferIndex:0,anomalySeed:null,selectedAnomaly:null,totalAnomalyWins:0 }; }
+@@ -14 +16 @@
+-    if (!data || ![1, 2, 3, 4, 5, 6, 7].includes(data.saveVersion) || !Number.isSafeInteger(data.bank) || data.bank < 0) return save;
++    if (!data || ![1, 2, 3, 4, 5, 6, 7, 8].includes(data.saveVersion) || !Number.isSafeInteger(data.bank) || data.bank < 0) return save;
+@@ -45,0 +48,6 @@
++    if(data.saveVersion>=8){
++      save.shapeCodex=normalizeCodex(data.shapeCodex);save.insightUnlocked=codexInsights(save.shapeCodex);
++      save.codexPinnedIds=[...new Set(Array.isArray(data.codexPinnedIds)?data.codexPinnedIds:[])].filter(id=>CODEX_IDS.includes(id)).slice(0,2);
++      for(const id of Object.keys(ADVANCED_SHAPES))if(data.advancedIntroFlags?.[id]===true)save.advancedIntroFlags[id]=true;
++      for(const id of Object.keys(ELITES)){const row=data.eliteHistory?.[id];if(row)save.eliteHistory[id]=Object.fromEntries(['attempts','spawned','kills'].map(k=>[k,Number.isSafeInteger(row[k])&&row[k]>=0?Math.min(row[k],1e9):0]));}
++    }
+--- a/style.css
++++ b/style.css
+@@ -23,0 +24,2 @@
++
++.codex-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;max-height:360px;overflow:auto;margin:8px 0}.codex-card{border:1px solid #31505a;border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:6px}.codex-card p{font-size:12px;margin:2px 0}.codex-card small{font-size:10px;line-height:1.5}.codex-card.undiscovered strong{color:#81969c}.codex-tabs{display:flex;gap:8px;margin-top:8px}.codex-tabs [aria-selected=true]{border-color:#39edce;color:#39edce}#codex-pins{font-size:11px;color:#abd8d2;padding:4px 18px;min-height:21px;pointer-events:none;background:#0c181d}#codex-pins:empty{display:none}
+--- a/tests/m10-cases.js
++++ b/tests/m10-cases.js
+@@ -152 +152 @@
+-   const loaded=loadSave({getItem:()=>JSON.stringify(save)});assert.equal(loaded.saveVersion,7);assert.equal(loaded.bank,123456);assert.equal(loaded.levels.crushPower,2);assert.equal(loaded.levels.extraTime,1);
++   const loaded=loadSave({getItem:()=>JSON.stringify(save)});assert.equal(loaded.saveVersion,C.saveVersion);assert.equal(loaded.bank,123456);assert.equal(loaded.levels.crushPower,2);assert.equal(loaded.levels.extraTime,1);
+--- /dev/null
++++ b/tests/m11-benchmark.js
+@@ -0,0 +1,52 @@
++import {readFileSync,writeFileSync,renameSync,existsSync,mkdirSync} from 'node:fs';
++import {createHash} from 'node:crypto';
++import {gzipSync,gunzipSync} from 'node:zlib';
++import {fork} from 'node:child_process';
++import {availableParallelism} from 'node:os';
++import {fileURLToPath} from 'node:url';
++import {resolve,dirname,relative} from 'node:path';
++import {advancedGrowth} from './m11-simulation.js';
++
++const sources=new Set();
++function collect(file) {
++ file=relative('.',resolve(file)).replaceAll('\\','/');if(sources.has(file))return;
++ sources.add(file);const text=readFileSync(file,'utf8');
++ for(const match of text.matchAll(/from\s*['"]([^'"]+)['"]/g))if(match[1].startsWith('.'))collect(resolve(dirname(file),match[1]));
++}
++collect('tests/m11-benchmark.js');
++function signature(){const hash=createHash('sha256');for(const file of [...sources].sort())hash.update(file+'\0'+readFileSync(file,'utf8').replaceAll('\r\n','\n')+'\0');return hash.digest('hex');}
++const atomic=(path,data)=>{const temp=`${path}.tmp-${process.pid}`;writeFileSync(temp,gzipSync(JSON.stringify(data),{level:1}));renameSync(temp,path);};
++if(process.argv[2]==='--worker') {
++ const spec=JSON.parse(process.argv[3]);if(signature()!==spec.signature)throw Error('M11 source changed during benchmark');
++ const old=existsSync(spec.file)?JSON.parse(gunzipSync(readFileSync(spec.file))):null;
++ if(old&&(old.spec.signature!==spec.signature||old.rows.length>spec.count))throw Error('Invalid M11 checkpoint');
++ advancedGrowth(spec,old,data=>atomic(spec.file,data));process.exit(0);
++}
++const hash=signature(),directory='artifacts/m11-growth',count=Number(process.env.M11_RUNS||300);mkdirSync(directory,{recursive:true});
++if(!Number.isInteger(count)||count<1)throw Error('M11_RUNS must be a positive integer');
++const specs=[];
++for(const seed of [31415,1,7,42,99])for(const strategy of ['Crusher','Cascade','Reactor'])for(const profile of ['Fresh'])for(const time of ['ExtraTime'])for(const mode of ['Normal','Adaptive','Anomaly'])for(const feature of ['M8','M9','M10','M11']) {
++ const key=[hash.slice(0,12),seed,strategy,profile,time,mode,feature,count].join('-');specs.push({signature:hash,key,file:`${directory}/${key}.json.gz`,seed,strategy,profile,time,mode,feature,count});
++}
++const pending=specs.filter(s=>!existsSync(s.file)||JSON.parse(gunzipSync(readFileSync(s.file))).rows.length<s.count);
++let cursor=0,done=0;
++const workers=Math.max(1,Math.min(Number(process.env.CONTENT_WORKERS||6),availableParallelism()));
++await Promise.all(Array.from({length:workers},async()=>{
++ while(cursor<pending.length){const spec=pending[cursor++];await new Promise((resolve,reject)=>{const child=fork(fileURLToPath(import.meta.url),['--worker',JSON.stringify(spec)],{stdio:'inherit'});child.on('error',reject);child.on('exit',code=>code===0?resolve():reject(Error(`${spec.key}: exit${code}`)));});console.log(`M11 paths ${++done}/${pending.length}: ${spec.key}`);}
++}));
++const paths=specs.map(s=>JSON.parse(gunzipSync(readFileSync(s.file)))),checkpoints=[1,5,10,20,30,50,100,200,300],median=xs=>[...xs].sort((a,b)=>a-b)[Math.floor(xs.length/2)],summary=[];
++for(const strategy of ['Crusher','Cascade','Reactor'])for(const profile of ['Fresh'])for(const time of ['ExtraTime'])for(const mode of ['Normal','Adaptive','Anomaly'])for(const feature of ['M8','M9','M10','M11']) {
++ const set=paths.filter(p=>p.spec.strategy===strategy&&p.spec.profile===profile&&p.spec.time===time&&p.spec.mode===mode&&p.spec.feature===feature);
++ summary.push({strategy,profile,time,mode,feature,checkpoints:checkpoints.filter(n=>n<=count).map(run=>({run,uniqueEncounters:median(set.map(p=>new Set(p.rows.slice(0,run).flatMap(r=>r.encounters)).size)),codexStages:[1,2,3,4].map(stage=>median(set.map(p=>Object.values(p.rows[run-1].codex).filter(r=>r.stage>=stage).length))),eliteSpawns:median(set.map(p=>p.rows.slice(0,run).reduce((n,r)=>n+Object.values(r.elite).reduce((n,e)=>n+e.spawned,0),0))),...Object.fromEntries(['levels','remainingNodes','rank','bank','catalyst','kills','photon','chain','blank','calibrationPhoton','insight'].map(key=>[key,median(set.map(p=>p.rows[run-1][key]))]))}))});
++}
++const activations={},caps={},advancedActivations={},eliteTotals={};let lateContacts=0,maxProjectileError=0,maxWaveError=0;
++for(const path of paths)for(const row of path.rows) {
++ for(const[id,n]of Object.entries(row.advancedCounts))advancedActivations[id]=(advancedActivations[id]||0)+n;
++ for(const[id,entry]of Object.entries(row.elite)){const total=eliteTotals[id]||={attempts:0,spawned:0,kills:0};for(const k of ['attempts','spawned','kills'])total[k]+=entry[k];}
++ for(const[id,n]of Object.entries(row.expansionExecuted))activations[id]=(activations[id]||0)+n;
++ for(const[id,n]of Object.entries(row.caps))caps[id]=(caps[id]||0)+n;
++ lateContacts+=row.physics.lateWaveContacts;maxProjectileError=Math.max(maxProjectileError,row.physics.maxProjectileContactError);maxWaveError=Math.max(maxWaveError,row.physics.maxWaveContactError);
++}
++const result={passed:true,signature:hash,sources:[...sources].sort(),actualRuns:paths.reduce((n,p)=>n+p.rows.length,0),sourceFiles:specs.map(s=>s.file),summary,activations,advancedActivations,eliteTotals,caps,lateContacts,maxProjectileError,maxWaveError,node:process.version,workers,
++ method:'5seeds x3builds xNormal/Adaptive/Anomaly xM8/M9/M10/M11;300 actual Runs per path, same seeds+input and real affordable growth. Fresh profiles, 20-32s based on purchased Extra Time. M10/11 activate up to3 owned Signatures+2 owned Evolutions. Codex/Elite credited only to isolated sandbox save. No user storage. Auto-input is not human enjoyment.'};
++writeFileSync('artifacts/m11-balance-results.json',JSON.stringify(result,null,2));console.log(`M11 benchmark PASS: ${result.actualRuns} actual Runs/${specs.length} paths`);
+--- /dev/null
++++ b/tests/m11-combination.js
+@@ -0,0 +1,13 @@
++import assert from 'node:assert/strict';
++import {writeFileSync} from 'node:fs';
++import {CONFIG as C} from '../config.js';
++import {EVOLUTION_FAMILIES as F,BUILD_PRESETS} from '../expansion-defs.js';
++import {CODEX_IDS} from '../codex.js';
++import {contentBattle} from './content-simulation.js';
++const rows=[],levels=Object.fromEntries(Object.entries(C.upgrades).map(([id,u])=>[id,u.max])),owned=Object.fromEntries(Object.entries(F).map(([id,d])=>[id,Object.keys(d.forms)]));
++for(const seed of [31415,1,7,42,99])for(const strategy of ['Crusher','Cascade','Reactor'])for(const duration of [20,32])for(const fx of [true,false]){
++ const preset=BUILD_PRESETS[strategy],g=contentBattle({seed,levels,duration,ecologyEnabled:true,advancedEnabled:true,skillExpansionEnabled:true,discoveryRank:4,signatureLoadout:preset.signatures,evolutionOwned:owned,evolutionActive:preset.evolutions,insightUnlocked:CODEX_IDS,relicLoadout:strategy==='Reactor'?['reactorGovernor','ancientResonator']:['ricochetCoil','waveCondenser'],options:{combatFXEnabled:fx,damageVFX:fx,modifierVisuals:fx,reducedMotionEnabled:!fx}}),r=g.record();
++ rows.push({seed,strategy,duration,fx,kills:g.totalDestroyed,raw:g.runEarned,photon:r.processedPhoton,advanced:r.advancedCounts,delta:r.codexDelta,elite:r.eliteDelta,caps:r.capCounts,physics:r.physicsChecks,peaks:{shards:r.peakShards,waves:r.peakWaves,scheduled:r.peakScheduled}});
++}
++for(const row of rows.filter(r=>r.fx)){const other=rows.find(r=>!r.fx&&r.seed===row.seed&&r.strategy===row.strategy&&r.duration===row.duration);for(const key of ['kills','raw','photon','advanced','delta','elite'])assert.deepEqual(other[key],row[key]);}
++writeFileSync('artifacts/m11-combination-results.json',JSON.stringify({passed:true,actualRuns:rows.length,method:'5seeds x3 owned MAX build fixtures x20/32s xFX ON/OFF. Actual native battle, all insight fixture for Elite gates. No natural growth claim.',rows},null,2));console.log(`M11 combined battle and FX parity PASS:${rows.length} actual Runs`);
+--- /dev/null
++++ b/tests/m11-simulation.js
+@@ -0,0 +1,59 @@
++import assert from 'node:assert/strict';
++import {CONFIG as C} from '../config.js';
++import {freshSave} from '../storage.js';
++import {settle,buyUpgrade} from '../progression.js';
++import {skillState} from '../skill-tree.js';
++import {craftRelic,equipRelic} from '../relics.js';
++import {acceptContract,snapshotContracts} from '../contracts.js';
++import {ensureOffer,selectAnomaly,consumeOffer} from '../anomalies.js';
++import {EXPANSION_SKILLS,EVOLUTION_FAMILIES,BUILD_PRESETS} from '../expansion-defs.js';
++import {craftEvolution,applyBuildPreset} from '../builds.js';
++import {codexInsights} from '../codex.js';
++import {contentBattle} from './content-simulation.js';
++
++const priorities={
++ Crusher:['crushPower','crushSpeed','impactPulse','precisionFracture','weakpointScanner','armorShatter','markedTarget','chainStarter','executionPulse','targetIntercept','precisionSalvage'],
++ Cascade:['shardPower','shardRange','shardBloom','ricochetPlus','fragmentRelay','piercingShard','angularSplit','mirrorReturn','ricochetBloom','portalMomentum','prismaticCascade'],
++ Reactor:['chainAmplifier','echoCatalyst','yieldStabilizer','resonanceLayer','fuseAccelerator','conductiveSurge','delayedEcho','resonanceBurst','chainOverdrive','fuseSymphony']
++};
++export function advancedGrowth(spec,checkpoint=null,onCheckpoint=()=>{}) {
++ const save=checkpoint?.save||freshSave(),rows=checkpoint?.rows||[];save.sandbox=true;
++ const enabled=['M10','M11'].includes(spec.feature),withSignatures=enabled,withEvolution=enabled;
++ if(!checkpoint) {
++  save.anomalySeed=`m11-${spec.seed}`;
++  if(spec.profile==='LegacyMax') {
++   save.bank=10000;save.catalystBalance=200;save.lifetimeDestroyed=8000;save.discoveryRank=4;
++   for(const[k,u]of Object.entries(C.upgrades))if(!EXPANSION_SKILLS[k])save.levels[k]=u.max;
++  }
++ }
++ const allowed=Object.keys(C.upgrades).filter(id=>enabled||!EXPANSION_SKILLS[id]),priority=[...priorities[spec.strategy],...allowed].filter(id=>allowed.includes(id));
++ for(let run=rows.length+1;run<=spec.count;run++) {
++  for(const id of Object.keys(C.relics))craftRelic(save,id,'RESULT');save.relicEquipped=[];
++  const owned=[...save.relicOwned];if(spec.strategy==='Reactor')owned.sort((a,b)=>Number(b==='reactorGovernor')-Number(a==='reactorGovernor'));
++  for(const[slot,id]of owned.slice(0,2).entries())equipRelic(save,id,slot,'RESULT');
++  for(const id of Object.keys(C.contracts))acceptContract(save,id,'RESULT');
++  const offers=ensureOffer(save).offeredIds,anomalyId=spec.mode==='Anomaly'?(offers.find(id=>['unstableCore','fastOrbit'].includes(id))||offers[0]||null):null;selectAnomaly(save,anomalyId,'RESULT');consumeOffer(save);
++  if(withEvolution)for(const[family,d]of Object.entries(EVOLUTION_FAMILIES))for(const form of Object.keys(d.forms))craftEvolution(save,family,form,'RESULT');
++  applyBuildPreset(save,spec.strategy,'RESULT');
++  if(!withSignatures)save.signatureLoadout=[];if(!withEvolution)save.evolutionActive=[];
++  const signatureSnapshot=[...save.signatureLoadout],evolutionSnapshot=structuredClone(save.evolutionActive);
++  const g=contentBattle({seed:spec.seed+run*7919,runId:`${spec.key}-${run}`,levels:save.levels,discoveryRank:save.discoveryRank,duration:spec.time==='Fixed20'?20:undefined,
++   ecologyEnabled:spec.feature!=='M8',advancedEnabled:spec.feature==='M11',advancedIntroFlags:save.advancedIntroFlags,insightUnlocked:codexInsights(save.shapeCodex),eliteHistory:save.eliteHistory,shapeCodex:save.shapeCodex,anomalyId,experiment:spec.mode==='Adaptive'?'m9_adaptive':'baseline',skillExpansionEnabled:enabled,signatureLoadout:signatureSnapshot,evolutionOwned:save.evolutionOwned,evolutionActive:evolutionSnapshot,
++   introSeen:save.shapeIntroSeen,welcomeFlags:save.milestoneWelcomeFlags,relicLoadout:save.relicEquipped,activeContracts:snapshotContracts(save)});
++  assert.equal(settle(save,g),true);assert.equal(settle(save,g),false);
++  for(let n=0;n<100;n++){const id=priority.find(id=>skillState(id,save.levels,save.bank,save).canBuy);if(!id||!buyUpgrade(save,id,'RESULT'))break;}
++  const record=g.record();
++  rows.push({run,rank:save.discoveryRank,seed:g.seed,kills:g.totalDestroyed,raw:g.runEarned,photon:record.processedPhoton,bank:save.bank,catalyst:save.catalystBalance,
++   levels:Object.values(save.levels).reduce((a,b)=>a+b,0),remainingNodes:allowed.filter(id=>save.levels[id]<C.upgrades[id].max).length,
++   signatureLoadout:signatureSnapshot,evolutionActive:evolutionSnapshot,evolutionOwned:structuredClone(save.evolutionOwned),duration:g.duration,
++   expansionExecuted:{...g.expansionExecuted},expansionImpact:structuredClone(g.expansionImpact),skillActivations:record.skillActivations,ecologyCounts:record.ecologyCounts,chain:g.bestChain,calibrationPhoton:g.calibrationPhoton,
++   encounters:Object.keys(record.typeStats).filter(id=>record.typeStats[id].spawnCount>0),codex:structuredClone(save.shapeCodex),insight:save.insightUnlocked.length,elite:structuredClone(record.eliteDelta),advancedCounts:record.advancedCounts,blank:record.emptyArenaDuration,tickP95ms:record.fixedStepP95ms,caps:record.capCounts,physics:record.physicsChecks,peaks:{shards:record.peakShards,waves:record.peakWaves,scheduled:record.peakScheduled}});
++  // Experiment checkpoints retain the actual20 recent settlement summaries but
++  // omit large per-event/render/bin arrays. Aggregate causal counters above are
++  // measured before compaction. This never touches production storage or Game.
++  for(const history of save.lastRuns)for(const field of ['causalLog','ecologyEvents','expansionEvents','skillEvents','rewardsBySource','bins','bins5','comboEvents','stageEvents','secondShardPeaks','codexEvents','advancedEvents'])delete history[field];
++  assert.equal(save.totalRuns,run);assert.ok(save.bank>=0&&save.catalystBalance>=0);
++  if(run%10===0||run===spec.count)onCheckpoint({spec,save,rows});
++ }
++ return {spec,save,rows};
++}
+--- /dev/null
++++ b/tests/m11.test.js
+@@ -0,0 +1,132 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {Game} from '../game.js';
++import {CONFIG as C} from '../config.js';
++import {ADVANCED_SHAPES,ADVANCED_TRAITS,ELITES} from '../advanced-defs.js';
++import {advancedType,safePortalPair,phaseVulnerable,portalContact,polarTick} from '../advanced-shapes.js';
++import {CODEX_IDS,codexStage,normalizeCodex,codexSnapshot,applyCodex,codexInsights} from '../codex.js';
++import {eligibleElites,tryElite} from '../elites.js';
++import {rollTrait} from '../ecology.js';
++import {freshSave,loadSave,writeSave} from '../storage.js';
++import {stageSettlement,completeSettlement,settle} from '../progression.js';
++const advance=(g,t)=>{while(t>1e-9){const step=Math.min(t,C.step);g.update(step);t-=step;}};
++function arena(extra={}){const g=new Game({advancedEnabled:true,ecologyEnabled:true,skillExpansionEnabled:true,discoveryRank:4,sandbox:true,options:{motionEnabled:false},...extra});g.shapes=[];g.shards=[];g.queue=[];g.spawnClock=-Infinity;return g;}
++function add(g,type,x=450,y=270){const s=g.addShape(type,x,y,0,false,0);s.secondaryTrait=null;return s;}
++function hit(g,s,n,source='direct',chain=g.newChain(),extra={}){g.enqueue(s,n,{source,chainId:chain,depth:0,...extra});g.flush();return chain;}
++function main(g,x,y,angle=0,extra={}){const p=g.emitShard(x,y,angle,'triangle',g.newChain(),0);p.range=450;p.life=1;Object.assign(p,extra);return p;}
++function wave(g,s,source='square',chain=g.newChain(),extra={}){return g.area({x:s.x-60,y:s.y,id:-1},150,1,{source,nativeWave:true,chainId:chain,depth:0,originShapeId:-1,...extra},'#fff');}
++test('M11 exact19 shapes/8 secondary traits/schema8; all rank AND tier and alive caps',()=>{
++ assert.equal(Object.keys(C.shapes).length,19);assert.equal(Object.keys(ADVANCED_SHAPES).length,6);assert.equal(Object.keys(ADVANCED_TRAITS).length,4);assert.equal(C.saveVersion,8);
++ for(const[id,d]of Object.entries(ADVANCED_SHAPES)){const g=arena({discoveryRank:d.rank});g.advancedIntroFlags=Object.fromEntries(Object.keys(ADVANCED_SHAPES).filter(k=>k!==id).map(k=>[k,true]));g.highestTier=d.tier-1;assert.notEqual(advancedType(g),id);g.highestTier=d.tier;assert.equal(advancedType(g),id);for(let i=0;i<d.cap;i++)add(g,id,100+i*90,200);assert.notEqual(advancedType(g),id);g.discoveryRank=d.rank-1;g.shapes=[];assert.notEqual(advancedType(g),id);}
++});
++test('M11 Portal atomic pair, >=180 spacing, one rare lottery, actual trace keeps path/life and one passage',()=>{
++ const g=arena(),pair=safePortalPair(g,[{x:250,y:270},{x:650,y:270}]);assert.equal(pair.length,2);assert.equal(pair[1].oreGrade,'common');assert.equal(pair[0].portalPartner,pair[1].id);assert.equal(safePortalPair(g),null);advance(g,.16);
++ const target=add(g,'square',750,270),p=main(g,100,270);advance(g,.31);assert.ok(p.portalPassed);assert.equal(g.advancedCounts.portalPass,1);assert.equal(target.hp,1);assert.equal(pair[0].hp,6);assert.equal(pair[1].hp,6);assert.ok(p.distance<250&&p.age<.4);assert.equal(p.portalPairs.size,1);
++ const before=g.alive.length;assert.equal(safePortalPair(g,[{x:200,y:270},{x:280,y:270}]),null);assert.equal(g.alive.length,before);
++});
++test('M11 Portal unsafe exit cancels, auxiliary excluded, death unlinks immediately',()=>{
++ const g=arena(),pair=safePortalPair(g,[{x:250,y:270},{x:650,y:270}]);advance(g,.16);add(g,'square',678,270);const p=main(g,225,270);assert.equal(portalContact(g,p,pair[0],g.elapsed),false);p.small=true;assert.equal(portalContact(g,p,pair[0],g.elapsed),false);hit(g,pair[0],99);assert.equal(pair[1].portalPartner,undefined);assert.equal(pair[1].destroyed,false);
++});
++test('M11 Parasite copies <=1HP to two original living links after.04s and never recurses',()=>{
++ const g=arena(),a=add(g,'square',390),b=add(g,'square',510),s=add(g,'parasiteLink');hit(g,s,3);assert.equal(a.hp,4);advance(g,.039);assert.equal(a.hp,4);advance(g,.002);assert.equal(a.hp,3);assert.equal(b.hp,3);assert.equal(g.codexDelta.parasiteLink.techniques,1);advance(g,.2);assert.equal(g.advancedCounts.parasiteDelivered,2);
++ const h=arena(),t=add(h,'square',390),p=add(h,'parasiteLink');hit(h,p,3,'parasiteCopied');advance(h,.1);assert.equal(t.hp,4);assert.equal(h.codexDelta.parasiteLink.techniques,0);
++});
++test('M11 Phase actual game timestamp, guarded direct0/shard<=1, pause and Disruptor extension',()=>{
++ const g=arena({levels:{phaseDisruptor:2}}),s=add(g,'phaseCrystal');s.phaseOffset=1.0;assert.equal(phaseVulnerable(g,s),false);hit(g,s,8);assert.equal(s.hp,9);hit(g,s,8,'triangle');assert.equal(s.hp,8);g.paused=true;advance(g,1);assert.equal(g.elapsed,0);g.paused=false;advance(g,.41);assert.equal(phaseVulnerable(g,s),true);hit(g,s,1);assert.equal(s.phaseExtension,.2);s.phaseOffset=.95;assert.equal(phaseVulnerable(g,s,s.spawnAt),true);
++});
++test('M11 Beacon own normal Chain10 threshold, once, foreign Chain/Echo/deadline do not qualify',()=>{
++ for(const qualifying of [false,true]){const g=arena(),beacon=add(g,'chainBeacon'),chain=g.newChain();g.chains.get(chain).rewardedKills=qualifying?9:0;const other=g.newChain();g.chains.get(other).rewardedKills=20;hit(g,beacon,99,'triangle',chain);advance(g,.06);assert.equal(g.advancedCounts.beaconWave||0,qualifying?1:0);assert.equal(g.codexDelta.chainBeacon.techniques,qualifying?1:0);advance(g,.5);assert.equal(g.advancedCounts.beaconWave||0,qualifying?1:0);}
++ const g=arena({duration:.04});hit(g,add(g,'chainBeacon'),99);advance(g,.1);assert.equal(g.advancedCounts.beaconWave||0,0);
++});
++test('M11 Shifter scheduled discontinuity25..35, real pointer uses new pose, no ghost old target',()=>{
++ const g=arena(),s=add(g,'shifter'),old={x:s.x,y:s.y};advance(g,1.31);assert.equal(g.advancedCounts.shifterLeap,1);const distance=Math.hypot(s.x-old.x,s.y-old.y);assert.ok(distance>=25-1e-9&&distance<=35+1e-9);assert.deepEqual(g.positionAt(s,g.elapsed),{x:s.x,y:s.y,angle:s.angle});assert.equal(g.attack(old.x,old.y),false);assert.equal(g.attack(s.x,s.y),true);assert.equal(s.hp,4);hit(g,s,4);assert.equal(g.codexDelta.shifter.techniques,1);
++ const h=arena(),t=add(h,'shifter');for(let i=0;i<32;i++){const a=i*Math.PI/16;add(h,'star',450+Math.cos(a)*40,270+Math.sin(a)*40);}advance(h,1.31);assert.equal(t.x,450);assert.equal(t.y,270);assert.equal(h.advancedCounts.shifterBlocked,1);
++});
++test('M11 Lens actual native contact makes2 sectors +/-35deg120px damage1, same wave once cap2',()=>{
++ const g=arena(),lens=add(g,'prismLens');const w=wave(g,lens);advance(g,.1);const sectors=g.waves.filter(w=>w.sourceKind==='prismRefraction');assert.equal(sectors.length,2);assert.ok(sectors.every(w=>w.damage===1&&w.maxRadius===120&&!w.cause.nativeWave));assert.ok(Math.abs(sectors[0].sector.angle+35*Math.PI/180)<1e-9);assert.ok(Math.abs(sectors[1].sector.angle-35*Math.PI/180)<1e-9);advance(g,.2);assert.equal(g.advancedCounts.lensSector,2);wave(g,lens);advance(g,.1);wave(g,lens);advance(g,.1);assert.equal(lens.lensWaves.size,2);assert.equal(g.advancedCounts.lensSector,4);
++});
++test('M11 formal Lens main refraction alone enables Prismatic Cascade; sector alone cannot',()=>{
++ const g=arena({levels:{prismaticCascade:1},signatureLoadout:['prismaticCascade']}),lens=add(g,'prismLens',350),target=add(g,'triangle',440);target.hp=1;const p=main(g,270,270);advance(g,.3);assert.equal(p.reflectionKind,'prism');assert.equal(target.destroyed,true);assert.ok(g.expansionExecuted.prismaticCascade>=1);
++ const h=arena({levels:{prismaticCascade:1},signatureLoadout:['prismaticCascade']}),t=add(h,'triangle',450);t.hp=1;h.area({x:400,y:270},100,1,{source:'prismRefraction',originShapeId:1,chainId:h.newChain(),depth:0,sectorIndex:0},'#fff',null,{angle:0,halfAngle:.2});advance(h,.2);assert.equal(t.destroyed,true);assert.equal(h.expansionExecuted.prismaticCascade||0,0);
++});
++test('M11 polarized once per pair/main only, resonant sameChain distinct2waves, timeLocked guard once/cycle, fragmented budget',()=>{
++ const g=arena(),a=add(g,'square',400),b=add(g,'square',490);a.secondaryTrait=b.secondaryTrait='polarized';const p=main(g,350,270);polarTick(g);const angle=p.angle;assert.ok(Math.abs(angle)>0);polarTick(g);assert.equal(p.angle,angle);p.small=true;polarTick(g);assert.equal(p.angle,angle);
++ const h=arena(),s=add(h,'star');s.secondaryTrait='resonant';const chain=h.newChain();wave(h,s,'square',chain);advance(h,.1);wave(h,s,'square',h.newChain());advance(h,.1);assert.equal(h.advancedCounts.resonant||0,0);wave(h,s,'square',chain);advance(h,.12);assert.equal(h.advancedCounts.resonant,1);
++ const t=arena(),r=add(t,'star');r.secondaryTrait='timeLocked';r.phaseOffset=1.1;hit(t,r,1);assert.equal(r.hp,9);hit(t,r,1);assert.equal(r.hp,8);
++ const f=arena(),v=add(f,'square');v.secondaryTrait='fragmented';hit(f,v,99);advance(f,.04);assert.equal(f.advancedCounts.fragmented,2);assert.ok(f.shards.every(p=>p.small&&p.damage===1&&p.range===65));
++});
++test('M11 traits total14.5% independent lottery, incompatibility falls back none, next-spawn toggle only',()=>{
++ const g=arena();g.initializing=false;
++ for(const[id,d]of Object.entries(ADVANCED_TRAITS)){const eligible=add(g,'square');let seen=false;for(let i=0;i<10000;i++){eligible.secondaryTrait=rollTrait(g,eligible);seen||=eligible.secondaryTrait===id;}assert.ok(seen);for(const type of d.exclude){const s=add(g,type);for(let i=0;i<2000;i++)assert.notEqual(rollTrait(g,s),id);}}
++ const s=add(g,'triangle');s.secondaryTrait='polarized';g.options.modifiers=false;assert.equal(rollTrait(g,s),null);assert.equal(s.secondaryTrait,'polarized');
++});
++for(const id of CODEX_IDS)test(`M11 Codex stages I..IV and early technique order: ${id}`,()=>{
++ const s=freshSave(),delta=Object.fromEntries(CODEX_IDS.map(id=>[id,{kills:0,techniques:0}])),snapshot={version:8,runId:'isolated',delta,elite:{},intro:[]};delta[id]={kills:0,techniques:3};applyCodex(s,snapshot);assert.equal(s.shapeCodex[id].stage,0);assert.equal(s.insightUnlocked.length,0);delta[id]={kills:1,techniques:0};applyCodex(s,snapshot);assert.equal(s.shapeCodex[id].stage,1);delta[id]={kills:(id==='ancient'?5:30)-1,techniques:0};applyCodex(s,snapshot);assert.equal(s.shapeCodex[id].stage,3);assert.deepEqual(s.insightUnlocked,[id]);delta[id]={kills:(id==='ancient'?20:150)-(id==='ancient'?5:30),techniques:0};applyCodex(s,snapshot);assert.equal(s.shapeCodex[id].stage,4);assert.equal(s.bank,0);assert.equal(s.catalystBalance,0);
++});
++for(const[id,d]of Object.entries(ELITES))test(`M11 Elite ${id}: exact gate, atomic safety, one/Run, primary +50Raw/+3Cat once`,()=>{
++ const g=arena({insightUnlocked:CODEX_IDS.slice(0,d.insight),discoveryRank:d.rank});assert.deepEqual(eligibleElites(g),[]);g.highestTier=4;assert.ok(eligibleElites(g).includes(id));g.advancedInsight=d.insight-1;assert.ok(!eligibleElites(g).includes(id));g.advancedInsight=d.insight;
++ const rows=tryElite(g,id);assert.ok(rows&&rows.length===d.types.length);const p=rows[0];assert.equal(p.maxHP,Math.ceil(C.shapes[p.type].hp*1.5));assert.equal(p.bonus,C.shapes[p.type].bonus+50);assert.equal(tryElite(g,id),null);advance(g,.16);const before=g.pendingCatalyst;hit(g,p,999);assert.equal(g.pendingCatalyst,before+3+(p.type==='ancient'?2:0));assert.equal(g.codexDelta[p.type].kills,0);hit(g,p,999);assert.equal(g.eliteDelta[id].kills,1);
++ const h=arena({insightUnlocked:CODEX_IDS,discoveryRank:4});h.highestTier=4;for(let y=110;y<500;y+=50)for(let x=70;x<900;x+=50)add(h,'star',x,y);const n=h.shapes.length;assert.equal(tryElite(h,id),null);assert.equal(h.shapes.length,n);
++});
++test('M11 schema1..7 preservation, schema8 normalization, old pending no retrocredit, new pending once/refresh',()=>{
++ for(let version=1;version<=7;version++){const source=freshSave();source.saveVersion=version;source.bank=777;source.catalystBalance=21;source.levels.crushPower=2;source.levels.extraTime=3;source.levels.weakpointScanner=2;source.relicOwned=['ricochetCoil'];source.relicEquipped=['ricochetCoil'];source.shapeCodex.triangle={kills:999,techniques:9,stage:4};const loaded=loadSave({getItem:()=>JSON.stringify(source)});assert.equal(loaded.bank,777);assert.equal(loaded.levels.extraTime,3);assert.equal(loaded.levels.crushPower,2);assert.equal(loaded.levels.weakpointScanner,version<7?0:2);assert.equal(loaded.shapeCodex.triangle.kills,0);assert.equal(loaded.saveVersion,8);}
++ const save=freshSave();save.sandbox=true;const g=arena({runId:'codex-once',duration:.2});hit(g,add(g,'triangle'),3);advance(g,.3);assert.equal(stageSettlement(save,g),true);const pending=structuredClone(save.pendingSettlement);assert.equal(save.shapeCodex.triangle.kills,0);assert.equal(completeSettlement(save),true);assert.equal(save.shapeCodex.triangle.kills,1);const bank=save.bank;save.pendingSettlement=pending;assert.equal(completeSettlement(save),false);assert.equal(save.bank,bank);assert.equal(save.shapeCodex.triangle.kills,1);assert.equal(settle(freshSave(),g),false);
++ const invalid={...freshSave(),bank:888,shapeCodex:{triangle:{kills:-2,techniques:'bad'},constructor:{kills:999}},codexPinnedIds:['triangle','triangle','unknown','square','star'],insightUnlocked:CODEX_IDS};const normalized=loadSave({getItem:()=>JSON.stringify(invalid)});assert.equal(normalized.bank,888);assert.equal(normalized.shapeCodex.triangle.kills,0);assert.deepEqual(normalized.insightUnlocked,[]);assert.deepEqual(normalized.codexPinnedIds,['triangle','square']);
++});
++
++function technique(id,yes){
++ const g=arena();
++ if(id==='triangle'){
++  // Native main rays plus one purchased piercing level, no auxiliary attribution.
++  const h=arena({levels:{piercingShard:1},signatureLoadout:['piercingShard']}),root=add(h,'triangle');
++  for(let i=0;i<(yes?6:3);i++){const ray=i%3,a=ray*Math.PI*2/3,r=i<3?60:120,t=add(h,'square',450+Math.cos(a)*r,270+Math.sin(a)*r);t.hp=1;}
++  hit(h,root,3);advance(h,.7);return h;
++ }
++ if(id==='square'){const root=add(g,'square');for(let i=0;i<(yes?3:2);i++){const a=i*Math.PI*2/3,t=add(g,'repairNode',450+Math.cos(a)*70,270+Math.sin(a)*70);t.hp=1;}hit(g,root,4);advance(g,.3);}
++ if(id==='pentagon'){const h=arena({levels:{shardBloom:2,piercingShard:1},signatureLoadout:['piercingShard']}),root=add(h,'pentagon');root.modifier='charged';const angles=[-Math.PI/4,-Math.PI/12,Math.PI/12,Math.PI/4,-Math.PI/6];for(const a of angles.slice(0,yes?5:4)){const t=add(h,'parasiteLink',450+Math.cos(a)*100,270+Math.sin(a)*100);t.hp=1;}hit(h,root,5);advance(h,.6);return h;}
++ if(id==='star'){const root=add(g,'star');for(let i=0;i<(yes?6:5);i++){const a=i*Math.PI/3;add(g,'star',450+Math.cos(a)*100,270+Math.sin(a)*100);}hit(g,root,9);advance(g,.3);}
++ if(id==='hex'){add(g,'square',380);if(yes)add(g,'square',520);const root=add(g,'hex');hit(g,root,8);advance(g,.3);}
++ if(id==='reactor'){const root=add(g,'reactor');hit(g,root,yes?12:7);advance(g,.2);}
++ if(id==='ancient'){const root=add(g,'ancient');hit(g,root,yes?30:23);advance(g,.2);}
++ if(id==='splitter'){const root=add(g,'splitter'),chain=hit(g,root,5);advance(g,.23);const children=g.alive.filter(s=>s.echo);assert.equal(children.length,2);for(const child of children)hit(g,child,1,'triangle',yes?chain:g.newChain());}
++ if(id==='fuseBomb'){const a=add(g,'fuseBomb',350),b=add(g,'fuseBomb',450),chain=hit(g,a,6);hit(g,b,6,'triangle',yes?chain:g.newChain());advance(g,.12);}
++ if(id==='conductor'){add(g,'square',390);if(yes)add(g,'square',510);const c=add(g,'conductor');hit(g,c,6);advance(g,.05);}
++ if(id==='mirror'){const m=add(g,'mirror',350,250),t=add(g,'square',420,310);t.hp=1;main(g,250,250,0,{small:!yes});advance(g,.4);}
++ if(id==='gravityWell'){const well=add(g,'gravityWell',350,340),t=add(g,'square',430,327);t.hp=1;if(!yes)well.destroyed=true;main(g,240,250);advance(g,.5);}
++ if(id==='repairNode'){const t=add(g,'star',510);t.hp=5;const n=add(g,'repairNode');advance(g,yes?1.8:.9);hit(g,n,9);advance(g,.1);}
++ if(id==='portalGate'){const pair=safePortalPair(g,[{x:250,y:270},{x:650,y:270}]);advance(g,.16);const t=add(g,'square',750,270);t.hp=1;if(!yes){delete pair[0].portalPartner;delete pair[1].portalPartner;}main(g,100,270);advance(g,.5);}
++ if(id==='parasiteLink'){add(g,'square',390);if(yes)add(g,'square',510);const p=add(g,'parasiteLink');hit(g,p,1);advance(g,.05);}
++ if(id==='phaseCrystal'){const p=add(g,'phaseCrystal');p.phaseOffset=yes?0:1;hit(g,p,9);}
++ if(id==='chainBeacon'){const b=add(g,'chainBeacon'),chain=g.newChain();for(let i=0;i<(yes?9:8);i++)hit(g,add(g,'repairNode',100+i*70,430),9,'triangle',chain);hit(g,b,10,'triangle',chain);advance(g,.06);}
++ if(id==='shifter'){const s=add(g,'shifter');advance(g,yes?1.31:2.4);hit(g,s,7);}
++ if(id==='prismLens'){const l=add(g,'prismLens');for(const a of (yes?[-35,35]:[-35]))add(g,'square',450+Math.cos(a*Math.PI/180)*80,270+Math.sin(a*Math.PI/180)*80);wave(g,l);advance(g,.3);}
++ return g;
++}
++for(const id of CODEX_IDS)test(`M11 actual technique predicate true AND false: ${id}`,()=>{const yes=technique(id,true),no=technique(id,false);assert.ok(yes.codexDelta[id].techniques>=1,JSON.stringify({id,delta:yes.codexDelta[id],events:yes.advancedCounts,ecology:yes.ecologyCounts}));assert.equal(no.codexDelta[id].techniques,0);assert.ok(yes.codexEvents.filter(e=>e.id===id).every(e=>e.sourceId!==undefined&&e.at<yes.duration));});
++
++test('M11 skipped Shifter keeps a future boundary and no retroactive leap, phase extension is current cycle only',()=>{
++ const g=arena(),s=add(g,'shifter');g.skipAhead(1.5);assert.equal(g.advancedCounts.shifterLeap||0,0);assert.ok(s.nextLeapAt>g.elapsed);const p=main(g,350,270);advance(g,.15);assert.ok(s.hp<7);advance(g,1.0);assert.ok(g.advancedCounts.shifterLeap>=1);
++ const h=arena({levels:{phaseDisruptor:2}}),crystal=add(h,'phaseCrystal');crystal.phaseOffset=.1;hit(h,crystal,1);assert.equal(phaseVulnerable(h,crystal,.9),true);assert.equal(phaseVulnerable(h,crystal,2.3),false);
++});
++test('M11 excluded fixture and Echo never grant normal Codex kills or live collection; old pending stays old',()=>{
++ const g=arena({duration:.3}),s=g.addShape('reactor',400,270,0,false,0,'normal',{fixture:true});s.secondaryTrait=null;hit(g,s,12);advance(g,.2);assert.equal(g.codexDelta.reactor.kills,0);assert.equal(g.codexDelta.reactor.techniques,0);
++ const echo=g.addShape('triangle',650,270,0,false,0,'normal',{echo:true});hit(g,echo,1);assert.equal(g.codexDelta.triangle.kills,0);advance(g,.2);const live=freshSave();assert.equal(stageSettlement(live,g),false);const mem={setItem(){throw Error('sandbox tried to write');}};assert.equal(writeSave(mem,{...freshSave(),sandbox:true}),false);
++ const save=freshSave();save.sandbox=true;assert.equal(stageSettlement(save,g),true);delete save.pendingSettlement.codexSnapshot;assert.equal(completeSettlement(save),true);assert.equal(Object.values(save.shapeCodex).reduce((n,r)=>n+r.kills,0),0);
++});
++
++test('M11 portal Momentum+Calibration composes on actual passage once, pending schema8 survives reload once',()=>{
++ const g=arena({levels:{portalMomentum:2,portalCalibration:1},signatureLoadout:['portalCalibration'],duration:1}),pair=safePortalPair(g,[{x:250,y:270},{x:650,y:270}]);advance(g,.16);const high=add(g,'star',780,320),low=add(g,'square',750,270),p=main(g,100,270);advance(g,.4);assert.equal(p.portalPassed,pair[0].id);assert.equal(p.range,500);assert.ok(p.angle>0);assert.ok(high.hp<9);assert.equal(low.hp,4);assert.equal(g.expansionExecuted.portalMomentum,1);assert.equal(g.expansionExecuted.portalCalibration,1);
++ advance(g,1);const save=freshSave();save.sandbox=true;assert.equal(stageSettlement(save,g),true);save.sandbox=false;const raw=JSON.stringify(save),loaded=loadSave({getItem:()=>raw});assert.ok(loaded.pendingSettlement);assert.equal(completeSettlement(loaded),true);const bank=loaded.bank,codex=structuredClone(loaded.shapeCodex);assert.equal(completeSettlement(loaded),false);assert.equal(loaded.bank,bank);assert.deepEqual(loaded.shapeCodex,codex);
++});
++test('M11 all19 insights unique, no monetary Codex reward and malformed delta cannot corrupt bank',()=>{
++ const save=freshSave(),delta=Object.fromEntries(CODEX_IDS.map(id=>[id,{kills:150,techniques:3}])),snapshot={version:8,runId:'all',delta,elite:{},intro:[]};applyCodex(save,snapshot);applyCodex(save,snapshot);assert.equal(new Set(save.insightUnlocked).size,19);assert.ok(Object.values(save.shapeCodex).every(r=>r.stage===4));assert.equal(save.bank,0);assert.equal(save.catalystBalance,0);const original=structuredClone(save.shapeCodex);snapshot.delta.triangle.kills=-1;applyCodex(save,snapshot);assert.deepEqual(save.shapeCodex,original);
++});
++test('M11 actual auxiliary recursion and scheduled/depth limits cannot manufacture feats or rewards',()=>{
++ const g=arena(),s=add(g,'parasiteLink');add(g,'square',390);add(g,'square',510);const chain=g.newChain();g.chains.get(chain).events=C.caps.events;hit(g,s,1,'direct',chain);advance(g,.2);assert.equal(g.codexDelta.parasiteLink.techniques,0);assert.equal(g.advancedCounts.parasiteDelivered||0,0);
++ const h=arena({duration:.02}),lens=add(h,'prismLens');wave(h,lens);advance(h,.1);assert.equal(h.advancedCounts.lensSector||0,0);assert.equal(h.state,'RESULT');assert.equal(h.codexDelta.prismLens.techniques,0);
++});
++
++test('M11 copied damage never inherits main-shard Hollow amplification; Resonant propagates within once/target budget',()=>{
++ const g=arena(),a=add(g,'square',390),b=add(g,'square',510),s=add(g,'parasiteLink');a.secondaryTrait=b.secondaryTrait='hollow';hit(g,s,3,'triangle',g.newChain(),{small:false,id:123});advance(g,.05);assert.equal(a.hp,3);assert.equal(b.hp,3);assert.equal(g.advancedCounts.parasiteDelivered,2);
++ const h=arena(),t=add(h,'star');t.secondaryTrait='resonant';const chain=h.newChain();wave(h,t,'square',chain);advance(h,.1);wave(h,t,'traitResonant',chain,{nativeWave:false});advance(h,.15);assert.equal(h.advancedCounts.resonant,1);advance(h,.2);assert.equal(h.advancedCounts.resonant,1);
++});
+--- a/tests/m5-m6.test.js
++++ b/tests/m5-m6.test.js
+@@ -32 +32 @@
+-  for(const version of [1,2,3,4]){const mem=memoryStorage(),old={...freshSave(),saveVersion:version,bank:999,levels:{...freshSave().levels,extraTime:6},lifetimeDestroyed:1570,totalRuns:9,lastRuns:[{totalDestroyed:60,photonsEarned:10}]};mem.setItem(C.storageKey,JSON.stringify(old));const s=loadSave(mem);assert.equal(s.saveVersion,7);assert.equal(s.bank,999);assert.equal(s.levels.extraTime,6);assert.deepEqual(s.lastRuns,old.lastRuns);assert.equal(s.lifetimeDestroyed,version<3?0:1570);assert.equal(s.discoveryRank,version<3?0:2);assert.equal(writeSave(mem,{...s,sandbox:true}),false);}
++  for(const version of [1,2,3,4]){const mem=memoryStorage(),old={...freshSave(),saveVersion:version,bank:999,levels:{...freshSave().levels,extraTime:6},lifetimeDestroyed:1570,totalRuns:9,lastRuns:[{totalDestroyed:60,photonsEarned:10}]};mem.setItem(C.storageKey,JSON.stringify(old));const s=loadSave(mem);assert.equal(s.saveVersion,C.saveVersion);assert.equal(s.bank,999);assert.equal(s.levels.extraTime,6);assert.deepEqual(s.lastRuns,old.lastRuns);assert.equal(s.lifetimeDestroyed,version<3?0:1570);assert.equal(s.discoveryRank,version<3?0:2);assert.equal(writeSave(mem,{...s,sandbox:true}),false);}
+--- a/tests/m7-m8.test.js
++++ b/tests/m7-m8.test.js
+@@ -19 +19 @@
+- for(const version of [1,2,3,4,5]){const m=memoryStorage(),s={...freshSave(),saveVersion:version,bank:12345,catalystBalance:19,lifetimeDestroyed:8001,levels:{...freshSave().levels,extraTime:6}};s.relicOwned=['unknown','constructor','ricochetCoil','ricochetCoil'];s.relicEquipped=['unknown','constructor','ricochetCoil','ricochetCoil'];s.relicAchievements.mainShardWallBounces=30;m.setItem(C.storageKey,JSON.stringify(s));const v=loadSave(m);assert.equal(v.saveVersion,7);assert.equal(v.bank,12345);assert.equal(v.levels.extraTime,6);assert.deepEqual(v.relicOwned,version===5?['ricochetCoil']:[]);assert.equal(v.relicAchievements.mainShardWallBounces,version===5?30:0);}
++ for(const version of [1,2,3,4,5]){const m=memoryStorage(),s={...freshSave(),saveVersion:version,bank:12345,catalystBalance:19,lifetimeDestroyed:8001,levels:{...freshSave().levels,extraTime:6}};s.relicOwned=['unknown','constructor','ricochetCoil','ricochetCoil'];s.relicEquipped=['unknown','constructor','ricochetCoil','ricochetCoil'];s.relicAchievements.mainShardWallBounces=30;m.setItem(C.storageKey,JSON.stringify(s));const v=loadSave(m);assert.equal(v.saveVersion,C.saveVersion);assert.equal(v.bank,12345);assert.equal(v.levels.extraTime,6);assert.deepEqual(v.relicOwned,version===5?['ricochetCoil']:[]);assert.equal(v.relicAchievements.mainShardWallBounces,version===5?30:0);}
+--- a/tests/m9.test.js
++++ b/tests/m9.test.js
+@@ -12 +12 @@
+- assert.equal(Object.keys(C.shapes).length,13);assert.equal(Object.keys(ECOLOGY_SHAPES).length,6);assert.equal(Object.keys(TRAITS).length,4);
++ assert.equal(Object.values(C.shapes).filter(d=>!d.advanced).length,13);assert.equal(Object.keys(ECOLOGY_SHAPES).length,6);assert.equal(Object.keys(TRAITS).length,4);
+--- a/tests/m10-browser.mjs
++++ b/tests/m10-browser.mjs
+@@ -28 +28 @@
+-  assert.equal((await snapshot()).saveVersion,7);
++  assert.equal((await snapshot()).saveVersion,8);
+--- /dev/null
++++ b/tests/m11-browser.mjs
+@@ -0,0 +1,54 @@
++import {createRequire} from 'node:module';
++import {writeFileSync} from 'node:fs';
++import assert from 'node:assert/strict';
++const {chromium}=createRequire(import.meta.url)(process.env.PLAYWRIGHT_MODULE||'playwright');
++const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH||'C:/Program Files/Google/Chrome/Application/chrome.exe'}),runs=[],errors=[],base=process.env.QA_BASE_URL||'http://127.0.0.1:4174';
++try{
++ const context=await browser.newContext({viewport:{width:1560,height:1000},deviceScaleFactor:2}),page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
++ const point=async s=>{const b=await page.locator('#game').boundingBox();return{x:b.x+s.x*b.width/960,y:b.y+s.y*b.height/540};};
++ await page.goto(base);await page.locator('#codex-start summary').click();assert.equal(await page.locator('#codex-start [data-codex]').count(),19);await page.locator('#codex-start [data-codex-pin="triangle"]').click();await page.locator('#codex-start [data-codex-pin="square"]').click();assert.equal(await page.locator('#codex-start [data-codex-pin="star"]').isDisabled(),true);await page.locator('#codex-start summary').click();
++ const snap=()=>page.evaluate(()=>window.shardStorm.snapshot());const before=await snap();await page.locator('#start').click();let p=await point({x:480,y:335});await page.mouse.click(p.x,p.y);await page.mouse.down();let freshCaptured=false;
++ while((await snap()).state==='PLAYING'){const state=await snap(),s=state.shapes.filter(s=>s.grace<=0).sort((a,b)=>a.hp-b.hp||a.id-b.id)[0];if(s){p=await point(s);await page.mouse.move(p.x,p.y);if(!state.held){await page.mouse.up();await page.mouse.down();}}if(!freshCaptured&&state.elapsed>8){await page.screenshot({path:'artifacts/m11-fresh-production-playing.png',fullPage:true});freshCaptured=true;await page.mouse.up();await page.mouse.down();}await page.waitForTimeout(65);}
++ await page.mouse.up();const pending=await snap();assert.equal(pending.record.runDurationActual,20);assert.ok(pending.pendingSettlement.codexSnapshot);await page.reload();let saved=await snap();assert.equal(saved.bank,before.bank+pending.pendingSettlement.payout);const codex=structuredClone(saved.shapeCodex);await page.reload();saved=await snap();assert.deepEqual(saved.shapeCodex,codex);assert.deepEqual(saved.codexPinnedIds,['triangle','square']);assert.equal(saved.bank,before.bank+pending.pendingSettlement.payout);runs.push({kind:'Fresh production',fixture:false,record:pending.record});
++ for(const kind of ['portalGate','parasiteLink','phaseCrystal','chainBeacon','shifter','prismLens']){
++  await page.goto(base);if(kind==='portalGate'){await page.locator('#focus').click();assert.equal(await page.locator('#focus').getAttribute('aria-pressed'),'true');}await page.evaluate(()=>{window.__qaRAF=window.requestAnimationFrame;window.requestAnimationFrame=()=>0;});await page.waitForTimeout(80);
++  await page.evaluate(async kind=>{
++   const {Game}=await import('./game.js'),{draw}=await import('./renderer.js'),{CONFIG:C}=await import('./config.js'),{logicalPoint}=await import('./entities.js'),{safePortalPair}=await import('./advanced-shapes.js'),{CODEX_IDS,normalizeCodex}=await import('./codex.js'),{tryElite}=await import('./elites.js'),{freshSave}=await import('./storage.js'),{EVOLUTION_FAMILIES:F}=await import('./expansion-defs.js');
++   document.querySelectorAll('.overlay').forEach(e=>e.hidden=true);document.querySelector('.edition').textContent=`QA FIXTURE / M11 / ${kind}`;
++   const save=freshSave();save.sandbox=true;save.bank=100000;save.catalystBalance=1000;save.discoveryRank=4;save.lifetimeDestroyed=8000;for(const id of CODEX_IDS.slice(0,12))save.shapeCodex[id]={kills:30,techniques:1,stage:3,discovered:true};save.shapeCodex=normalizeCodex(save.shapeCodex);save.insightUnlocked=CODEX_IDS.slice(0,12);save.codexPinnedIds=[kind];
++   const levels=Object.fromEntries(Object.entries(C.upgrades).map(([id,u])=>[id,u.max]));levels.extraTime=0;levels.crushPower=kind==='parasiteLink'||kind==='phaseCrystal'?0:2;
++   const owned=Object.fromEntries(Object.entries(F).map(([id,d])=>[id,Object.keys(d.forms)]));
++   const g=new Game({seed:31415,levels,advancedEnabled:true,ecologyEnabled:true,skillExpansionEnabled:true,signatureLoadout:['prismaticCascade','portalCalibration','magneticPolarity'],evolutionOwned:owned,evolutionActive:[{family:'shard',form:'ricochet'},{family:'reactor',form:'delayed'}],discoveryRank:4,sandbox:true,insightUnlocked:save.insightUnlocked,shapeCodex:save.shapeCodex,codexPinnedIds:save.codexPinnedIds,relicLoadout:['ricochetCoil','reactorGovernor'],options:{motionEnabled:kind==='shifter'}});g.shapes=[];g.queue=[];g.shards=[];g.highestTier=4;
++   const add=(type,x,y,hp)=>{const s=g.addShape(type,x,y,0,false,0);s.secondaryTrait=null;if(hp!==undefined)s.hp=hp;return s;};
++   if(kind==='portalGate'){safePortalPair(g,[{x:250,y:200},{x:650,y:320}]);add('star',780,320);add('triangle',150,200);}
++   if(kind==='parasiteLink'){add('square',360,270);add('square',480,270);add(kind,420,270);}
++   if(kind==='phaseCrystal'){const s=add(kind,450,270);s.phaseOffset=1.0;add('square',550,270);}
++   if(kind==='chainBeacon'){add('square',420,270);for(let i=0;i<9;i++){const a=i*Math.PI*2/9;add('triangle',420+Math.cos(a)*70,270+Math.sin(a)*70,1);}add(kind,510,270);}
++   if(kind==='shifter'){add(kind,450,270);tryElite(g,'bombReactor');}
++   if(kind==='prismLens'){add('square',370,270);add(kind,450,270);for(const a of [-35,35])add('star',450+Math.cos(a*Math.PI/180)*80,270+Math.sin(a*Math.PI/180)*80);add('triangle',250,270);}
++   save.levels={...levels};save.signatureLoadout=[...g.signatureLoadout];save.evolutionOwned=owned;save.evolutionActive=g.evolutionActive.map(r=>({...r}));
++   const {pinnedText}=await import('./codex-ui.js');
++   const canvas=document.querySelector('#game');let held=false,pointer=null,clock=0;
++   canvas.addEventListener('pointerdown',e=>{pointer=logicalPoint(e.clientX,e.clientY,canvas.getBoundingClientRect());held=true;g.attack(pointer.x,pointer.y);clock=g.stats.attackInterval;});canvas.addEventListener('pointermove',e=>{pointer=logicalPoint(e.clientX,e.clientY,canvas.getBoundingClientRect());});window.addEventListener('pointerup',()=>held=false);
++   window.__m11={g,save};window.__m11Timer=setInterval(()=>{if(g.state==='PLAYING'){clock-=1/60;if(held&&pointer&&clock<=0){g.attack(pointer.x,pointer.y);clock=g.stats.attackInterval;}g.update(1/60);}document.querySelector('#codex-pins').textContent='QA FIXTURE | '+pinnedText(save,g);draw(canvas.getContext('2d'),g);},1000/60);
++  },kind);
++  await page.waitForTimeout(180);await page.screenshot({path:`artifacts/m11-${kind}-overview.png`,fullPage:true});
++  if(['portalGate','chainBeacon','prismLens'].includes(kind)){const q=kind==='portalGate'?{x:150,y:200}:kind==='chainBeacon'?{x:420,y:270}:{x:370,y:270};p=await point(q);await page.mouse.click(p.x,p.y);await page.waitForTimeout(500);}
++  else if(kind==='shifter')await page.waitForTimeout(1400);
++  else if(kind==='parasiteLink'){p=await point({x:420,y:270});await page.mouse.click(p.x,p.y);await page.waitForTimeout(120);}
++  await page.screenshot({path:`artifacts/m11-${kind}-fixture.png`,fullPage:true});
++  await page.mouse.down();let capture=false;
++  while(await page.evaluate(()=>window.__m11.g.state)==='PLAYING'){
++   const s=await page.evaluate(kind=>window.__m11.g.alive.filter(s=>s.grace<=0).sort((a,b)=>Number(b.type===kind)-Number(a.type===kind)||a.hp-b.hp||a.id-b.id)[0],kind);if(s){p=await point(s);await page.mouse.move(p.x,p.y);}if(!capture&&await page.evaluate(()=>window.__m11.g.elapsed)>9){await page.screenshot({path:`artifacts/m11-${kind}-playing.png`,fullPage:true});capture=true;await page.mouse.up();await page.mouse.down();}await page.waitForTimeout(65);
++  }
++  await page.mouse.up();const record=await page.evaluate(()=>{clearInterval(window.__m11Timer);return window.__m11.g.record();});assert.equal(record.runDurationActual,20);assert.ok(record.physicsChecks.maxProjectileContactError<.002&&record.physicsChecks.maxWaveContactError<.002);assert.equal(record.physicsChecks.lateWaveContacts,0);assert.ok(record.advancedSpawned[kind]>=1);
++  if(kind==='portalGate')assert.ok(record.advancedCounts.portalPass>=1);if(kind==='parasiteLink')assert.ok(record.advancedCounts.parasiteDelivered>=2);if(kind==='shifter')assert.ok(record.advancedCounts.shifterLeap>=1);if(kind==='prismLens')assert.ok(record.advancedCounts.lensSector>=2);
++  await page.evaluate(async()=>{
++   const {settle}=await import('./progression.js'),{renderCodex,toggleCodexPin}=await import('./codex-ui.js'),{renderSkillTree,skillState}=await import('./skill-tree.js'),{renderBuilds}=await import('./build-ui.js'),{resultMetaText}=await import('./meta-ui.js');const{g,save}=window.__m11;settle(save,g);document.querySelector('#result').hidden=false;document.querySelector('#refinery-canvas').hidden=true;document.querySelector('#refinery-skip').hidden=true;document.querySelector('#bank').textContent=save.bank.toLocaleString();document.querySelector('#comparison').textContent=`QA FIXTURE | ${g.totalDestroyed} deaths | Chain ${g.bestChain} | ${g.duration}s`;document.querySelector('#refinery-summary').textContent=resultMetaText(g);renderSkillTree(document.querySelector('#upgrades'),document.querySelector('#skill-info'),save,'crushPower',()=>{},()=>{},(id,levels,bank)=>({...skillState(id,levels,bank,save),canBuy:false}));renderBuilds(document.querySelector('#build-result'),save,{state:'RESULT',signature:()=>{},craft:()=>{},activate:()=>{},preset:()=>{}});const root=document.querySelector('#codex-result');renderCodex(root,save,{state:'RESULT',pin:id=>{toggleCodexPin(save,id,'RESULT');}});root.firstElementChild.open=true;
++  });
++  await page.locator('#codex-result').scrollIntoViewIfNeeded();assert.equal(await page.locator('#codex-result [data-codex]').count(),19);assert.equal(await page.locator('.skill-node').count(),49);await page.screenshot({path:`artifacts/m11-${kind}-codex.png`,fullPage:true});
++  if(kind==='shifter'){await page.locator('#codex-result [role="tab"]').filter({hasText:'ELITES'}).click();assert.equal(await page.locator('#codex-result [data-elite]').count(),6);await page.screenshot({path:'artifacts/m11-elite-collection.png',fullPage:true});}
++  await page.setViewportSize({width:620,height:800});await page.locator('#again').scrollIntoViewIfNeeded();await page.screenshot({path:`artifacts/m11-${kind}-narrow-result.png`,fullPage:true});await page.locator('#again').click();assert.equal((await snap()).state,'PLAYING');await page.setViewportSize({width:1560,height:1000});runs.push({kind,fixture:true,record});
++ }
++ assert.deepEqual(errors,[]);writeFileSync('artifacts/m11-browser-results.json',JSON.stringify({passed:true,browser:await browser.version(),runs,errors,humanFun:'Not measured. One natural fresh production Run plus6 explicitly labeled isolated advanced fixtures. Real mouse click/hold/drag, no injected attack calls.'},null,2));console.log('M11 Chrome pointer QA PASS:7 actual20s Runs');
++}catch(e){writeFileSync('artifacts/m11-browser-results.json',JSON.stringify({passed:false,runs,errors,failure:e.stack},null,2));throw e;}finally{await browser.close();}
+--- a/tests/m7-m8-browser.mjs
++++ b/tests/m7-m8-browser.mjs
+@@ -12 +12 @@
+-async function play(kind){await fixture(kind);let before=await snap();assert.equal(before.saveVersion,7);
++async function play(kind){await fixture(kind);let before=await snap();assert.equal(before.saveVersion,8);
+--- a/tests/m9-browser.mjs
++++ b/tests/m9-browser.mjs
+@@ -12 +12 @@
+-  if(rank===2)await page.locator('#focus').click();const before=await snap();assert.equal(before.saveVersion,7);
++  if(rank===2)await page.locator('#focus').click();const before=await snap();assert.equal(before.saveVersion,8);
