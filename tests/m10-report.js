@@ -2,8 +2,9 @@ import assert from 'node:assert/strict';
 import {readFileSync,writeFileSync} from 'node:fs';
 import {gunzipSync} from 'node:zlib';
 const read=p=>JSON.parse(readFileSync(p,'utf8'));
-const data=read('artifacts/m10-balance-results.json'),browser=read('artifacts/m10-browser-results.json'),forms=read('artifacts/m10-form-comparison.json');
+const data=read('artifacts/m10-balance-results.json'),browser=read('artifacts/m10-browser-results.json'),forms=read('artifacts/m10-form-comparison.json'),perf=read('artifacts/m10-performance.json');
 assert.equal(data.passed,true);assert.equal(data.actualRuns,72000);assert.equal(data.sourceFiles.length,240);assert.equal(browser.passed,true);assert.equal(browser.runs.length,6);assert.equal(forms.actualRuns,200);
+assert.equal(perf.passed,true);assert.equal(perf.isolated,true);assert.equal(perf.records.length,90);
 const median=xs=>[...xs].sort((a,b)=>a-b)[Math.floor(xs.length/2)],paths=data.sourceFiles.map(p=>JSON.parse(gunzipSync(readFileSync(p))));
 assert.ok(paths.every(p=>p.rows.length===300&&p.spec.signature===data.signature));
 const table=['|빌드|기능|Run|구매 레벨|남은 노드|Photon 잔고|Catalyst 잔고|그 Run 파괴|그 Run Photon|','|---|---|---:|---:|---:|---:|---:|---:|---:|'];
@@ -16,6 +17,8 @@ for(const profile of ['Fresh','LegacyMax'])for(const time of ['Fixed20','ExtraTi
 const comparison=['|계열|형태|20초 파괴 중앙값|32초 파괴 중앙값|','|---|---|---:|---:|'];
 for(const family of [...new Set(forms.rows.map(r=>r.family))])for(const form of [...new Set(forms.rows.filter(r=>r.family===family).map(r=>r.form))])comparison.push(`|${family}|${form||'NONE'}|${median(forms.rows.filter(r=>r.family===family&&r.form===form&&r.duration===20).map(r=>r.kills))}|${median(forms.rows.filter(r=>r.family===family&&r.form===form&&r.duration===32).map(r=>r.kills))}|`);
 const capRuns=paths.reduce((n,p)=>n+p.rows.filter(r=>Object.keys(r.caps).length).length,0),allForms=paths.filter(p=>p.spec.feature==='Evolution2').flatMap(p=>p.rows.filter(r=>Object.values(r.evolutionOwned).reduce((n,a)=>n+a.length,0)===15).slice(0,1).map(r=>r.run));
+const performanceTable=['|모드|Rank|Run당 update p95 중앙값(ms)|파괴 중앙값|','|---|---:|---:|---:|'];
+for(const mode of ['M9','M10_OFF','M10_ON'])for(const rank of [0,4]){const rows=perf.records.filter(r=>r.mode===mode&&r.rank===rank);performanceTable.push(`|${mode}|${rank}|${median(rows.map(r=>r.tickP95ms)).toFixed(3)}|${median(rows.map(r=>r.kills))}|`);}
 writeFileSync('docs/Shard_Storm_M10_Balance_Report.md',`# M10 Skill Expansion — Balance Report
 
 ## 방법과 증거
@@ -44,9 +47,15 @@ ${comparison.join('\n')}
 
 late contact ${data.lateContacts}, 최대 projectile contact error ${data.maxProjectileError}px, wave ${data.maxWaveError}px. 안전 상한을 실제로 만난 Run ${capRuns}/${data.actualRuns}; 종류별 합계 \`${JSON.stringify(data.caps)}\`. 기존150shards/10depth/400chainEvents/64waves/1024scheduled/512tickIterations는 유지했습니다. 병렬 성장 worker의 CPU 수치를 브라우저 FPS나 격리 성능으로 해석하지 않습니다. 기존512 iteration cap에 도달하면 남은 tick 구간이 생략되는 제한은 그대로 기록합니다.
 
+전체 성장 worker 종료 후 단독90Run으로 M9 커밋17dcc954와 동결된 M10 소스를 비교했습니다. OFF의 파괴/Raw/Photon은 정확히 일치합니다. Rank0은0레벨, Rank4 기준선/OFF는19 MAX, ON은49 MAX입니다. Signature/Evolution/Relic/Contract는 비활성이고, 활성 빌드 조합과 Form의 결과는 앞의 별도 실험에서 비교했습니다. update CPU만 측정하므로 Chrome FPS를 뜻하지 않습니다.
+
+${performanceTable.join('\n')}
+
 ## 조정 판단과 사람 검증
 
 가격·변환율 일괄 인상이나 기존 자산 초기화는 하지 않았습니다. Catalyst Extraction만 사용자 승인 A안(직접 Hex/Reactor 처치로 시작한 동일 Chain의 이후 정상10킬)으로 확정했습니다. 가격850 Photon/8 Catalyst, Run 지급 상한1/2는 명세대로 유지합니다. 다른 Chain과 Echo는 포함하지 않습니다.
+
+이 M10 장기 결과의 서명은 schema7/커밋2f75e4f의 동결 소스입니다. 이후 M11에서 발견한 실제 Chrome 저장 용량 문제는 사용자 승인에 따라 schema8 동일 키의 무손실 압축으로 해결했습니다. M10의 전체 기록도 보존하며, [저장 결정과 검증](Shard_Storm_Save_Capacity_Decision.md)을 참조하세요.
 
 사람은 Signature3·Evolution2의 기회비용이 읽히는지, Focus Strike의 공격 간격 손해·Pull의 거리 손해·Quick의 피해 손해가 실제 선택을 만드는지, Form 미구매 상태가 성장을 부당하게 막는지, 후반 잉여가 생겨도 다른 빌드를 시험할 이유가 있는지 확인해야 합니다. M11의 행동 수집·Elite는 별도 검증하며 사람의 재미를 자동 입력으로 확정하지 않습니다.
 `,'utf8');

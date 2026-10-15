@@ -7,7 +7,7 @@ try{
  const snap=()=>page.evaluate(()=>window.shardStorm.snapshot());
  const point=async s=>{const b=await page.locator('#game').boundingBox();return{x:b.x+s.x*b.width/960,y:b.y+s.y*b.height/540};};
  for(const rank of [0,1,2,3]){
-  await page.goto(base);await page.evaluate(async rank=>{const{freshSave}=await import('./storage.js'),{CONFIG:C}=await import('./config.js');const s=freshSave();if(rank){s.lifetimeDestroyed=C.discovery[rank].threshold;s.discoveryRank=rank;s.bank=10000;s.catalystBalance=200;for(const[k,u]of Object.entries(C.upgrades))if(k!=='extraTime'&&(u.rank||0)<=rank)s.levels[k]=u.max;}localStorage.setItem(C.storageKey,JSON.stringify(s));},rank);await page.reload();
+  await page.goto(base);await page.evaluate(async rank=>{const{freshSave}=await import('./storage.js'),{CONFIG:C}=await import('./config.js');const s=freshSave();if(rank){s.lifetimeDestroyed=C.discovery[rank].threshold;s.discoveryRank=rank;s.bank=10000;s.catalystBalance=200;for(const[k,u]of Object.entries(C.upgrades))if(k!=='extraTime'&&u.introduced!==10&&(u.rank||0)<=rank)s.levels[k]=u.max;}localStorage.setItem(C.storageKey,JSON.stringify(s));},rank);await page.reload();
   if(rank)await page.locator('.edition').evaluate(el=>el.append(' · QA FIXTURE'));
   if(rank===2)await page.locator('#focus').click();const before=await snap();assert.equal(before.saveVersion,8);
   await page.locator('#start').click();const p=await point({x:480,y:335});await page.mouse.click(p.x,p.y);await page.mouse.down();const seen=new Set();let captured=false;
