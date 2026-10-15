@@ -29,11 +29,11 @@ try {
    const start=performance.now();g.update(C.step);ticks.push(performance.now()-start);
   }
   ticks.sort((a,b)=>a-b);
-  records.push({mode,seed,rank,repetition,kills:g.totalDestroyed,raw:g.runEarned,photon:g.refinery.payout,tickP95ms:ticks[Math.floor(ticks.length*.95)],caps:g.capCounts,projectileError:g.physicsChecks.maxProjectileContactError,waveError:g.physicsChecks.maxWaveContactError});
+  records.push({mode,seed,rank,repetition,kills:g.totalDestroyed,raw:g.runEarned,photon:g.metaResult?.totalPhoton??g.refinery.payout,calibrationPhoton:g.calibrationPhoton||0,catalyst:g.metaResult?.totalCatalyst??g.pendingCatalyst,tickP95ms:ticks[Math.floor(ticks.length*.95)],caps:g.capCounts,projectileError:g.physicsChecks.maxProjectileContactError,waveError:g.physicsChecks.maxWaveContactError});
  }
  for(const a of records.filter(r=>r.mode==='M9')) {
   const b=records.find(r=>r.mode==='M10_OFF'&&r.seed===a.seed&&r.rank===a.rank&&r.repetition===a.repetition);
-  assert.deepEqual([b.kills,b.raw,b.photon],[a.kills,a.raw,a.photon]);
+  assert.deepEqual([b.kills,b.raw,b.photon,b.calibrationPhoton,b.catalyst],[a.kills,a.raw,a.photon,a.calibrationPhoton,a.catalyst]);
  }
  for(const r of records)assert.ok(r.projectileError<.002&&r.waveError<.002);
  writeFileSync('artifacts/m10-performance.json',JSON.stringify({passed:true,isolated:process.env.PERFORMANCE_ISOLATED==='1',baseline,targetRoot,node:process.version,workload:'90 actual20s Runs;5seeds xRank0/4 x3repetitions xM9/M10_OFF/M10_ON. Rank0 zero levels; Rank4 baseline/OFF19 MAX, ON49 MAX. No active Signature/Evolution/Relic, no Contracts. Exact OFF economy parity; ON changes available passive skills, so its combat results need not match. M10 production source from M10_SOURCE_ROOT if set. update CPU only, not browser FPS.',records},null,2));

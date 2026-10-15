@@ -66,7 +66,7 @@ ${elite.join('\n')}
 
 late contact ${data.lateContacts}, 최대 projectile 오차 ${data.maxProjectileError}px / wave ${data.maxWaveError}px. 상한을 만난 Run ${capRuns}/${data.actualRuns}, 종류별 \`${JSON.stringify(data.caps)}\`. 실제 peak \`${JSON.stringify(peaks)}\`;150shards/64waves/1024scheduled/400chainEvents/10depth/512tickIterations를 유지했습니다. 기존512 iteration cap에 도달하면 남은tick 물리가 생략될 수 있습니다. 이 제한을 숨기거나 cap을 늘려 통과시키지 않았습니다.
 
-성장 worker 종료 후 별도 단독90Run에서 M10 커밋2f75e4f와 M11 OFF의 파괴/Raw/Photon이 모두 동일했습니다. ON은 신규 도형을 자연 생성합니다.0레벨/49MAX, Signature·Evolution·Relic 비활성 조건이므로 완전 강화 조합의 최악 부하를 뜻하지 않습니다. 완전 조합은 별도60Run FX ON/OFF에서 전투·Codex·Elite 결과 일치를 확인했습니다. update CPU만 측정하며 Chrome FPS가 아닙니다.
+성장 worker 종료 후 별도 단독90Run(5시드×Rank0/4×3빌드×M10/M11 OFF/ON)에서 M10 커밋2f75e4f와 M11 OFF의 파괴/Raw/Photon이 모두 동일했습니다. Rank0은0레벨/빈 장착, Rank4는49MAX+Signature3+Evolution2+Relic2+insight19를 주입한 강화 fixture입니다. ON은 신규 도형/Elite 조건을 실제로 적용합니다. 이 표는 인간의 자연 해금 속도나 모든 조합의 최악 부하를 뜻하지 않습니다. 완전 조합은 별도60Run FX ON/OFF에서도 전투·Codex·Elite 결과 일치를 확인했습니다. update CPU만 측정하며 Chrome FPS가 아닙니다.
 
 ${performanceTable.join('\n')}
 
@@ -130,3 +130,32 @@ Chrome ${browser.browser} 실제20초7Run(자연 fresh1+명시된 도형 fixture
 브랜치 feat/m9-m11-content-expansion. M11/codec 통합 커밋 d0834c5, 최종 QA와 보고서는 이후 커밋에 기록합니다.
 `,'utf8');
 console.log('M11 full evidence reports written');
+writeFileSync('artifacts/M9_M11_Evidence_Index.md',`# M9.0~M11 QA evidence
+
+## Canonical completed growth datasets
+
+- M9: m9-balance-results.json,38,250 actual Runs/165paths. Historical milestone source; see ../docs/Shard_Storm_M9_Balance_Report.md.
+- M10: m10-balance-results.json,72,000 actual Runs/240paths; signature ${read('artifacts/m10-balance-results.json').signature}. Use only this JSON's sourceFiles as its full matrix. m10-frozen-logs preserves earlier smoke/resume logs with their own labels.
+- M11: m11-balance-results.json,54,000 actual Runs/180paths; signature ${data.signature}. Every referenced checkpoint has300 distinct actual battle/settlement rows. m11-frozen-logs includes historical superseded smoke/partial attempts; they are not added to54,000.
+- M10 Form control comparison: m10-form-comparison.json,200 injected MAX-profile Runs; this is not a natural-purchase growth experiment.
+
+## Current integration regressions
+
+- m11-unit-final-current.txt:307 unit tests PASS,0fail/skip.
+- m11-browser-qa-summary.json:24 actual20s Chrome pointer Runs,0console errors. M11 seven plus m11-regression/browser-verified M9 five/M7M8 six/M10 six. Controlled profiles are labeled in every source.
+- m11-ui-browser-results.json: actual Phase/Reinforced pointer checks and injected Codex cosmetic display coverage. This does not prove naturally earned mastery.
+- m11-regression/result.json: benchmark20, balance486, M5M6 1573, M7M8 smoke650(includes420effect comparisons), M9 smoke165, M10 smoke240. These are separate from completed growth datasets. Source files with -1.json.gz are smoke checkpoints.
+- m11-regression/browser, browser-followup, browser-final: retained failed historical harness attempts (old19-node expectation and brittle wall-time assertion). browser-verified is the successful final regression set. Do not count failed attempts as extra passing Runs.
+
+## Storage and performance
+
+- storage-codec-browser-results.json: old20 complete records, lossless current encoding, pending once, corruption preservation and exact original export.
+- storage-current32-results.json:20 distinct current MAX32s battle records, all events retained, actual private Chrome same-key storage and two reloads with full-history SHA-256 equality. Node combat fixture; not20 human/browser pointer battles.
+- m11-performance.json / m10-performance.json: isolated=true final CPU workloads,90Runs each. Update CPU is not browser FPS. M11's Rank4 fixtures include3Signatures/2Evolutions/2Relics and19insights.
+- m11-regression/m11-parity-precheck.json and m11-full-build-parity-precheck.json: earlier functional parity, isolated=false timings under growth workers; do not use their timing as final performance.
+- m11-combination-results.json:60 actual combined MAX-profile Runs with exact combat/Codex/Elite FX ON/OFF parity.
+
+## Historical preservation
+
+m11-integration-source.zip / m11-integration.patch and old work logs preserve pre-integration progress and the resolved storage human gate. Actual production integration is in the repository source, not only that archive. Current status comes from the newest implementation reports and README. All automatic input/fixtures remain distinct from real human enjoyment/retention testing.
+`,'utf8');

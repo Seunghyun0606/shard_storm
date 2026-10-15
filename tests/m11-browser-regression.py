@@ -14,7 +14,7 @@ root = Path(__file__).resolve().parent.parent
 destination = root / "artifacts" / "m11-regression" / os.environ.get("QA_REGRESSION_LABEL", "browser")
 destination.mkdir(parents=True, exist_ok=True)
 results = []
-for milestone, script in [("m9", "m9-browser.mjs"), ("m7-m8", "m7-m8-browser.mjs"), ("m10", "m10-browser.mjs")]:
+for milestone, script in [("m9", "m9-browser.mjs"), ("m7-m8", "m7-m8-browser.mjs"), ("m10", "m10-browser.mjs"), ("m5-m6", "m5-m6-browser.mjs")]:
     if milestone not in os.environ.get("QA_REGRESSION_STAGES", "m9,m7-m8,m10").split(","):
         continue
     with tempfile.TemporaryDirectory(prefix=f"shard-{milestone}-regression-") as folder:
