@@ -116,3 +116,22 @@ test('M9 first encounters prioritize mechanic-friendly formations before random2
   const g=arena({discoveryRank:4}),s=g.addShape(type,450,300,0,false,0);g.ecologyPatternRng=()=>.99;const plan=ecologyFormation(g);assert.equal(plan.kind,kind);assert.equal(plan.anchor,s);assert.equal(g.introFormationQueue.length,0);
  }
 });
+
+test('M9 Mirror plus Ricochet Coil redirects the same main shard without spending a wall bounce',()=>{
+ const g=arena({relicLoadout:['ricochetCoil']}),m=g.addShape('mirror',350,250,0,false,0);
+ g.addShape('star',420,310,0,false,0);const source=g.addShape('triangle',250,250,0,false,0);
+ source.destroyed=true; // Native emission occurs after its source has died.
+ const p=g.emitMain(source,0,{chainId:g.newChain(),depth:0},false),budget=p.bounces,range=p.range;
+ advance(g,.15);assert.equal(m.reflections,1);assert.equal(p.reflectionKind,'mirror');assert.equal(p.bounces,budget);
+ assert.equal(p.range,range);assert.ok(p.distance<=range);assert.equal(g.relicActivations.ricochetCoil,1);
+ assert.ok(g.physicsChecks.maxProjectileContactError<.002);
+});
+
+test('M9 auxiliary destruction of Echo never emits inherited/native shards or advances Reactor objectives',()=>{
+ const g=arena({discoveryRank:4}),chain=g.newChain(),echo=g.addShape('triangle',350,250,0,false,0,'normal',{echo:true});
+ const reactor=g.addShape('reactor',420,250,0,false,0);const initialHP=reactor.hp;
+ g.emitAux({x:280,y:250,id:-1},0,{chainId:chain,depth:0},'ancient-fragment',1,100);advance(g,.25);
+ assert.equal(echo.destroyed,true);assert.equal(g.echoKills,1);assert.equal(g.totalDestroyed,0);assert.equal(g.runEarned,0);
+ assert.equal(reactor.hp,initialHP);assert.equal(g.shardsEmitted,1);assert.equal(g.metaCounters.primaryShardKills,0);
+ assert.equal(g.metaCounters.reactorStageWaveExecuted,0);
+});
