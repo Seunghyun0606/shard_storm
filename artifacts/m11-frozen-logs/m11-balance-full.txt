@@ -1,0 +1,42 @@
+
+> benchmark:m11
+> node tests/m11-benchmark.js
+
+M11 paths 1/180: a8e7cad93557-31415-Crusher-Fresh-ExtraTime-Normal-M8-300
+M11 paths 2/180: a8e7cad93557-31415-Crusher-Fresh-ExtraTime-Normal-M9-300
+M11 paths 3/180: a8e7cad93557-31415-Crusher-Fresh-ExtraTime-Adaptive-M8-300
+M11 paths 4/180: a8e7cad93557-31415-Crusher-Fresh-ExtraTime-Adaptive-M9-300
+M11 paths 5/180: a8e7cad93557-31415-Crusher-Fresh-ExtraTime-Normal-M10-300
+M11 paths 6/180: a8e7cad93557-31415-Crusher-Fresh-ExtraTime-Normal-M11-300
+node:fs:1013
+  binding.rename(
+          ^
+
+Error: EPERM: operation not permitted, rename 'C:\Users\limse\AppData\Local\Temp\shard-storm-m11-integration\artifacts\m11-growth\a8e7cad93557-31415-Crusher-Fresh-ExtraTime-Anomaly-M8-300.json.gz.tmp-20848' -> 'C:\Users\limse\AppData\Local\Temp\shard-storm-m11-integration\artifacts\m11-growth\a8e7cad93557-31415-Crusher-Fresh-ExtraTime-Anomaly-M8-300.json.gz'
+    at renameSync (node:fs:1013:11)
+    at atomic (file:///C:/Users/limse/AppData/Local/Temp/shard-storm-m11-integration/tests/m11-benchmark.js:18:129)
+    at file:///C:/Users/limse/AppData/Local/Temp/shard-storm-m11-integration/tests/m11-benchmark.js:23:32
+    at advancedGrowth (file:///C:/Users/limse/AppData/Local/Temp/shard-storm-m11-integration/tests/m11-simulation.js:56:35)
+    at file:///C:/Users/limse/AppData/Local/Temp/shard-storm-m11-integration/tests/m11-benchmark.js:23:2
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async node:internal/modules/esm/loader:643:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  errno: -4048,
+  code: 'EPERM',
+  syscall: 'rename',
+  path: 'C:\\Users\\limse\\AppData\\Local\\Temp\\shard-storm-m11-integration\\artifacts\\m11-growth\\a8e7cad93557-31415-Crusher-Fresh-ExtraTime-Anomaly-M8-300.json.gz.tmp-20848',
+  dest: 'C:\\Users\\limse\\AppData\\Local\\Temp\\shard-storm-m11-integration\\artifacts\\m11-growth\\a8e7cad93557-31415-Crusher-Fresh-ExtraTime-Anomaly-M8-300.json.gz'
+}
+
+Node.js v24.18.0
+file:///C:/Users/limse/AppData/Local/Temp/shard-storm-m11-integration/tests/m11-benchmark.js:35
+ while(cursor<pending.length){const spec=pending[cursor++];await new Promise((resolve,reject)=>{const child=fork(fileURLToPath(import.meta.url),['--worker',JSON.stringify(spec)],{stdio:'inherit'});child.on('error',reject);child.on('exit',code=>code===0?resolve():reject(Error(`${spec.key}: exit${code}`)));});console.log(`M11 paths ${++done}/${pending.length}: ${spec.key}`);}
+                                                                                                                                                                                                                                                                              ^
+
+Error: a8e7cad93557-31415-Crusher-Fresh-ExtraTime-Anomaly-M8-300: exit1
+    at ChildProcess.<anonymous> (file:///C:/Users/limse/AppData/Local/Temp/shard-storm-m11-integration/tests/m11-benchmark.js:35:271)
+    at ChildProcess.emit (node:events:509:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:295:12)
+
+Node.js v24.18.0

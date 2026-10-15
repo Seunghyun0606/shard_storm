@@ -13,17 +13,22 @@ assert.equal(browser.runs.length,7);assert.equal(storage.fullRecords,20);assert.
 assert.equal(data.lateContacts,0);assert.ok(data.maxProjectileError<.002&&data.maxWaveError<.002);
 const paths=data.sourceFiles.map(p=>JSON.parse(gunzipSync(readFileSync(p))));
 assert.ok(paths.every(p=>p.rows.length===300&&p.spec.signature===data.signature));
+assert.equal(new Set(data.sourceFiles).size,180);assert.equal(new Set(paths.map(p=>p.spec.key)).size,180);
+assert.ok(paths.every(p=>p.rows.every((r,i)=>r.run===i+1&&r.seed===p.spec.seed+(i+1)*7919)),'Each path must contain300 sequential distinct seeded Runs');
 const median=xs=>[...xs].sort((a,b)=>a-b)[Math.floor(xs.length/2)],f=n=>Number(n.toFixed(3));
 const stageText=a=>a.join('/');
 const progression=['|빌드|기능|Run|레벨|Photon 잔고|Catalyst|도형 발견 수¹|Codex I/II/III/IV²|Insight|Elite 누적 생성|','|---|---|---:|---:|---:|---:|---:|---|---:|---:|'];
 for(const row of data.summary.filter(r=>r.mode==='Normal'))for(const c of row.checkpoints.filter(c=>[5,20,50,100,200,300].includes(c.run)))progression.push(`|${row.strategy}|${row.feature}|${c.run}|${c.levels}|${c.bank}|${c.catalyst}|${c.uniqueEncounters}|${stageText(c.codexStages)}|${c.insight}|${c.eliteSpawns}|`);
-const end=['|빌드|모드|기능|300회 레벨|Photon 잔고|Catalyst|해당 Run 파괴|해당 Run Photon|Insight|','|---|---|---|---:|---:|---:|---:|---:|---:|'];
-for(const row of data.summary){const c=row.checkpoints.find(c=>c.run===300);end.push(`|${row.strategy}|${row.mode}|${row.feature}|${c.levels}|${c.bank}|${c.catalyst}|${c.kills}|${c.photon}|${c.insight}|`);}
+const end=['|빌드|모드|기능|300회 레벨|Photon 잔고|Catalyst|해당 Run 파괴|해당 Run Photon|최고 Chain|빈 화면(s)|Insight|','|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|'];
+for(const row of data.summary){const c=row.checkpoints.find(c=>c.run===300);end.push(`|${row.strategy}|${row.mode}|${row.feature}|${c.levels}|${c.bank}|${c.catalyst}|${c.kills}|${c.photon}|${c.chain}|${c.blank.toFixed(2)}|${c.insight}|`);}
 const m11=paths.filter(p=>p.spec.feature==='M11'),codex=['|도형|300회 정상 처치 중앙값|기술 성공 중앙값|단계 중앙값|Stage III 이상 경로/45|실제 행동 조건|','|---|---:|---:|---:|---:|---|'];
 const normal=m11.filter(p=>p.spec.mode==='Normal'),maxed=normal.flatMap(p=>{const row=p.rows.find(r=>r.levels===100);return row?[row.run]:[];});
 for(const id of CODEX_IDS){const rows=m11.map(p=>p.rows[299].codex[id]);codex.push(`|${ADVANCED_SHAPES[id]?.name||id}|${median(rows.map(r=>r.kills))}|${median(rows.map(r=>r.techniques))}|${median(rows.map(r=>r.stage))}|${rows.filter(r=>r.stage>=3).length}/45|${TECHNIQUES[id]}|`);}
 const elite=['|Elite|실제 생성|Primary 처치|안전 배치 시도|','|---|---:|---:|---:|'];
 for(const[id,d]of Object.entries(ELITES)){const r=data.eliteTotals[id]||{};elite.push(`|${d.name}|${r.spawned||0}|${r.kills||0}|${r.attempts||0}|`);}
+const eliteSpawns=Object.values(data.eliteTotals).reduce((n,r)=>n+r.spawned,0),eliteRunCount=m11.length*300;
+const safetyTable=['|기능|실제 Run|512 iteration 도달 Run|기타 상한 포함 Run|','|---|---:|---:|---:|'];
+for(const feature of ['M8','M9','M10','M11']){const rows=paths.filter(p=>p.spec.feature===feature).flatMap(p=>p.rows);safetyTable.push(`|${feature}|${rows.length}|${rows.filter(r=>r.caps.tickIterations>0).length}|${rows.filter(r=>Object.values(r.caps).some(n=>n>0)).length}|`);}
 const capRuns=paths.reduce((n,p)=>n+p.rows.filter(r=>Object.values(r.caps).some(n=>n>0)).length,0),peaks={};
 for(const key of ['shards','waves','scheduled'])peaks[key]=Math.max(...paths.map(p=>Math.max(...p.rows.map(r=>r.peaks[key]))));
 assert.ok(peaks.shards<=150&&peaks.waves<=64&&peaks.scheduled<=1024);
@@ -52,6 +57,8 @@ ${end.join('\n')}
 
 M11이 켜진45경로만 집계했습니다. 기술 조건 단위 테스트는19종 모두 양성·음성을 검증합니다. 자동 조준에서0회인 조건을 자연 성장 성공으로 보고하지 않습니다.
 
+정상 처치 수는 Elite primary를 제외하지만, 그 primary의 실제 고유 행동은 technique에 기여할 수 있습니다. 따라서 Reactor/Ancient의 기술 성공 수가 정상 처치 수보다 클 수 있습니다. Echo/debug/fixture의 정상 처치 누적은 제외합니다.
+
 ${codex.join('\n')}
 
 ## Elite 자연 등장과 처치
@@ -60,11 +67,15 @@ ${elite.join('\n')}
 
 위 수치는 실제 성장 경로에서 해금·Run200처치·안전 배치를 통과한 사건입니다. 별도 단위/Chrome fixture는 이 수에 포함하지 않습니다.6종 전체의 Rank/insight/원자적 배치/처치 보상/실패 fallback/Run당1회는 통제 테스트에서 검증했습니다. Primary의native Raw+50/Catalyst+3만 추가하고, Codex는 Photon/Catalyst를 지급하지 않습니다.
 
+**희귀 등장 밸런스 문제:** M11 활성 ${eliteRunCount.toLocaleString()} Run 중 ${eliteSpawns.toLocaleString()} Run(${(100*eliteSpawns/eliteRunCount).toFixed(1)}%)에서 Elite가 생성됐습니다. 현재3%는 적격 생성 시도마다 판정합니다. 한 Run에서N회 시도하면1회 이상 확률은1−0.97^N이며 N=100이면95.2%,200이면99.8%입니다. Run당1회 상한을 지켜도 충분히 성장한 자동 입력에서는 거의 매 Run 등장해 PRD의 드문 encounter 의도와 긴장이 있습니다. 숫자3%와 현재 판정은 이번 구현에서 임의 변경하지 않았습니다. 다음 대조 실험으로 같은3%를 적격 Run당1회 추첨하는 후보를 권장하며, 소개 등장 정책과 실제 사람이 원하는 빈도를 확인한 뒤 판정 단위를 결정해야 합니다. 이 후보는 운영 기본값에 적용하지 않았습니다.
+
 실제 고급 기능 카운터: \`${JSON.stringify(data.advancedActivations)}\`. 이는 정의 호출이 아닌 실제 적용/이동/실행 지점에서 계측합니다.
 
 ## 안전 상한과 성능
 
 late contact ${data.lateContacts}, 최대 projectile 오차 ${data.maxProjectileError}px / wave ${data.maxWaveError}px. 상한을 만난 Run ${capRuns}/${data.actualRuns}, 종류별 \`${JSON.stringify(data.caps)}\`. 실제 peak \`${JSON.stringify(peaks)}\`;150shards/64waves/1024scheduled/400chainEvents/10depth/512tickIterations를 유지했습니다. 기존512 iteration cap에 도달하면 남은tick 물리가 생략될 수 있습니다. 이 제한을 숨기거나 cap을 늘려 통과시키지 않았습니다.
+
+${safetyTable.join('\n')}
 
 성장 worker 종료 후 별도 단독90Run(5시드×Rank0/4×3빌드×M10/M11 OFF/ON)에서 M10 커밋2f75e4f와 M11 OFF의 파괴/Raw/Photon이 모두 동일했습니다. Rank0은0레벨/빈 장착, Rank4는49MAX+Signature3+Evolution2+Relic2+insight19를 주입한 강화 fixture입니다. ON은 신규 도형/Elite 조건을 실제로 적용합니다. 이 표는 인간의 자연 해금 속도나 모든 조합의 최악 부하를 뜻하지 않습니다. 완전 조합은 별도60Run FX ON/OFF에서도 전투·Codex·Elite 결과 일치를 확인했습니다. update CPU만 측정하며 Chrome FPS가 아닙니다.
 
@@ -124,6 +135,8 @@ Chrome ${browser.browser} 실제20초7Run(자연 fresh1+명시된 도형 fixture
 ## 남은 한계와 후속
 
 기존512 tick iteration 상한과 유한 localStorage 할당량은 유지합니다. 자동 전투와 격리 fixture는 사람의 재미 검증이 아닙니다. 고비용 Bloom/Shader/도형별 조립 생성/진짜 물리 슬로모션/논리 Arena 확장/전용 audio는 [Deferred TODO](Shard_Storm_Deferred_VFX_TODO.md)로 남겼습니다. 사람은 목표 설명·조준 순서·희귀 기술 정체·빌드 교체 후 재도전 의향을 검증해야 합니다.
+
+현재3% Elite 판정은 생성 시도마다 누적되므로 M11 전체 실험의 ${(100*eliteSpawns/eliteRunCount).toFixed(1)}% Run에 등장했습니다. 희귀성은 아직 밸런스 문제이며, 기존 경제와 함께 다음 실험 후보로 기록했습니다. 구현 동작 확인과 희귀함·장기 재미의 달성은 구분합니다.
 
 실제 사용자 검증의 조건·질문·기록 표는 [사람 플레이 가이드](Shard_Storm_M9_M11_Human_Playtest.md)에 구분했습니다.
 

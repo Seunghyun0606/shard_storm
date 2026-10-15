@@ -1,0 +1,10 @@
+
+> benchmark:m11
+> node tests/m11-benchmark.js
+
+M11 paths 1/180: e6b87f3f3ce8-31415-Crusher-Fresh-ExtraTime-Normal-M8-300
+M11 paths 2/180: e6b87f3f3ce8-31415-Crusher-Fresh-ExtraTime-Normal-M9-300
+M11 paths 3/180: e6b87f3f3ce8-31415-Crusher-Fresh-ExtraTime-Adaptive-M8-300
+M11 paths 4/180: e6b87f3f3ce8-31415-Crusher-Fresh-ExtraTime-Adaptive-M9-300
+M11 paths 5/180: e6b87f3f3ce8-31415-Crusher-Fresh-ExtraTime-Normal-M10-300
+M11 paths 6/180: e6b87f3f3ce8-31415-Crusher-Fresh-ExtraTime-Normal-M11-300

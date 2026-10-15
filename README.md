@@ -1,10 +1,59 @@
-# Shard Storm — M11 기능 통합 / 장기 검증 진행 중
+# Shard Storm — M9.0~M11
 
-M9.0~M11의 플레이 기능을 연결했습니다. **19도형·secondary trait8·49스킬/100레벨·Signature10종 중3개·Evolution15형태 중2계열·Codex19종×4단계·Elite6종·schema8**입니다. 기존20초 Run·7도형·19스킬·Relic/Contract/Anomaly·재화·기록을 유지합니다. 사용자 승인 A안에 따라 같은 저장 키의 전체 내용을 무손실 압축하며 상세 로그를 삭제하지 않습니다.
+M9.0~M11의 기능 구현과 자동 QA를 완료했습니다. **19도형(신규12)·secondary trait8종·49스킬(신규30)/100레벨·Signature10종 중3개·Evolution15형태 중2계열·Codex19종×4단계·Elite6종·schema8**입니다. 기존20초 Run·클릭/홀드/드래그·primary Modifier3종·Relic/Contract/Anomaly·재화·구매 레벨을 보존합니다.
 
-현재 전체307개 테스트와 저장 용량/복구 Chrome QA가 PASS입니다. 현재 통합 코드의 M11 7회+M9 5회+M7/M8 6회+M10 6회+M5/M6 4회, 총28회 실제20초 포인터 QA도 PASS입니다. Codex 보상 표시·Phase/Reinforced 포인터 검증과 현재 MAX32초20기록의 새로고침 후 원문 동일성을 추가 확인했습니다. M10의72000Run/240경로 전체 성장 실험은 완료·수집했고, M11의54000Run은 진행 중입니다. **전체 장기 검증·최종 보고서까지 완료했다는 뜻은 아닙니다.** 재개 상태는 [작업 로그](docs/Shard_Storm_M9_M11_Work_Log.md)를 참조하세요. 아래 이전 마일스톤 설명은 당시 기록입니다.
+전체 **307 PASS/0 FAIL/skip0**. 기존 benchmark·balance·M5/M6 및 M7/M8/M9/M10 회귀를 통과했습니다. 현재 통합 코드의 실제 Chrome20초 포인터 검증은 **28 Run/콘솔 오류0**입니다. M9 성장38,250 Run, M10 **72,000 Run/240경로**, M11 **54,000 Run/180경로**를 완료했습니다. M10 Form 비교200 Run, M11 강화 조합 FX ON/OFF60 Run, 별도 단독 CPU 비교 M10/M11 각90 Run도 PASS입니다. [검증 자료 색인](artifacts/M9_M11_Evidence_Index.md), [현재 Chrome 집계](artifacts/m11-browser-qa-summary.json).
 
-신규 명령: `npm run benchmark:m11`, `npm run qa:m11`, `npm run qa:storage`, `npm run qa:storage:current`. 기존 테스트·벤치마크 명령은 유지했습니다. Codex/Elite는 TITLE/RESULT의 CODEX 패널에서 확인하며 최대2개 과제를 추적할 수 있습니다. 자동 입력과 fixture 결과는 사람의 실제 재미 검증과 구분합니다. [저장 형식·용량 검증](docs/Shard_Storm_Save_Capacity_Decision.md), [사람 플레이 가이드](docs/Shard_Storm_M9_M11_Human_Playtest.md).
+|단계|구현|전투 통합 커밋|보고서|
+|---|---|---|---|
+|M9.0|확대 화면/Focus/DPR/타격감/Reduced Motion|ab47fbc|[Implementation](docs/Shard_Storm_M9_0_Implementation_Report.md) · [Balance](docs/Shard_Storm_M9_0_Balance_Report.md)|
+|M9|신규6도형/4trait/4배치/발견/schema6|17dcc954|[Implementation](docs/Shard_Storm_M9_Implementation_Report.md) · [Balance](docs/Shard_Storm_M9_Balance_Report.md)|
+|M10|신규30스킬/Signature/Evolution/검색/schema7|2f75e4f|[Implementation](docs/Shard_Storm_M10_Implementation_Report.md) · [Balance](docs/Shard_Storm_M10_Balance_Report.md)|
+|M11|신규6도형/4trait/Codex/Elite/schema8/무손실 저장|d0834c5|[Implementation](docs/Shard_Storm_M11_Implementation_Report.md) · [Balance](docs/Shard_Storm_M11_Balance_Report.md)|
+
+Codex/Elite는 TITLE/RESULT의 CODEX 패널에서 확인하고 최대2개 과제를 추적합니다. Signature/Evolution은 소유와 활성화를 분리하며 정산 후 교체합니다. 신규6종 Portal Pair/Parasite Link/Phase Crystal/Chain Beacon/Shifter/Prism Lens는 기존 Arena에 혼합 등장합니다. [Codex 화면](artifacts/m11-prismLens-codex.png) · [Elite](artifacts/m11-elite-collection.png) · [49노드](artifacts/m10-49-skill-tree.png) · [620px Replay](artifacts/m11-prismLens-narrow-result.png).
+
+같은 `shard-storm-v1` 키를 유지하며 schema1~7을 읽습니다. 사용자 승인 A에 따라 전체 최근20기록을 UTF-8/LZ4/base64+길이/CRC32로 무손실 저장합니다. 기존20기록7.83MB→1.92MB, 현재 MAX32초20기록10.30MB→2.66MB로 압축한 뒤 실제 Chrome 저장·새로고침2회·전체 기록 해시 동일성을 확인했습니다. 손상된 원본은 보존하고 내보낼 수 있습니다. [저장 검증](docs/Shard_Storm_Save_Capacity_Decision.md), [승인된 Catalyst Extraction 규칙](docs/Shard_Storm_M10_Rule_Decision.md).
+
+실행: `npm start` → http://127.0.0.1:4173. 별도 터미널에서 다음 명령을 실행합니다.
+
+```powershell
+npm test
+npm run benchmark
+npm run benchmark:balance
+npm run benchmark:m5-m6
+$env:M7_RUNS='1' # 회귀 smoke; 과거 전체300Run 결과와 구분
+npm run benchmark:m7-m8
+$env:CONTENT_WORKERS='6'
+npm run benchmark:m9
+npm run benchmark:m10
+npm run benchmark:m11
+$env:PLAYWRIGHT_MODULE=Join-Path $env:TEMP 'shard-storm-qa/node_modules/playwright'
+$env:QA_BASE_URL='http://127.0.0.1:4173'
+npm run qa:m9-0
+npm run qa:m9
+npm run qa:m10
+npm run qa:m11
+npm run qa:storage
+npm run qa:storage:current
+```
+
+Playwright 설치가 필요하면 앱 밖에 `npm install --prefix "$env:TEMP/shard-storm-qa" playwright`를 사용합니다. QA는 설치된 Chrome과 별도 임시 context를 사용합니다. 전체 성장 실험은 CPU 시간이 필요하며 소스 서명이 같은 경로별 gzip 체크포인트에서 재개합니다. `M10_RUNS=1`/`M11_RUNS=1`은 별도의 smoke 결과이며 전체300Run 검증을 대신하지 않습니다. 단독 CPU 측정은 모든 성장 worker 종료 후 수행했으며 브라우저 FPS와 구분합니다.
+
+현재 M11 Normal 자동 성장(구매에 따라20~32초)의 시드5개 중앙값을3빌드로 비교하면 다음과 같습니다. 실제 사람의 성장 속도나 재미를 뜻하지 않습니다.
+
+|Run|구매 레벨|Photon 잔고|기술 insight|
+|---|---:|---:|---:|
+|50|78~82|119~252|16~17|
+|100|100|2,912~5,922|17~18|
+|200|100|116,651~123,917|17~18|
+|300|100|232,723~241,473|18~19|
+
+기존 가격·기본 Refinery .06·기본 생성 .20초×3은 유지했습니다. 알려진 밸런스 문제는100레벨 구매 소진 후 재화 잉여와 Elite 빈도입니다. 현재3%는 적격 생성 시도마다 누적되어 M11 전체13,500 Run 중12,847회(95.2%) 등장했습니다. Run당1회 상한과 보상1회 처리는 지켰으나 희귀성은 후속 비교가 필요합니다. 기존512 iteration/tick 상한에서 남은 물리가 생략될 수 있는 제한도 보고서에 공개했습니다.
+
+사람이 검증할 항목은 타깃 우선순위·Phase 타이밍·Portal/Prism 조준·Pentagon 같은 고유 기술의 접근성·빌드 교체 후 재도전 이유입니다. [사람 플레이 가이드](docs/Shard_Storm_M9_M11_Human_Playtest.md). Shader/Bloom/정교한 생성 연출/진짜 물리 slow motion/논리 Arena 확대/전용 audio는 [Deferred TODO](docs/Shard_Storm_Deferred_VFX_TODO.md)로 유지합니다. [단계별 작업 기록](docs/Shard_Storm_M9_M11_Work_Log.md).
+
+## 과거 M9 검증 기록 (아래 수치는 당시 기준)
 
 - FOCUS toggles a viewport-sized field; logical coordinates remain960x540. Backing resolution follows CSS/DPR up to2. DEV options include Combat FX/Shake/Reduced Motion.
 - New shapes: Splitter/Fuse Bomb/Conductor/Mirror/Gravity Well/Repair Node. The collapsible Shape Ecology guide explains each mechanic. Echo contributes only to visible combos, with0Raw/no permanent or reward-objective progress.
