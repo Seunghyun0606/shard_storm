@@ -1,3 +1,7 @@
+
+> qa:storage:current
+> node tests/storage-current-capacity.mjs
+
 Current M11 full32s record 1/20: Crusher
 Current M11 full32s record 2/20: Cascade
 Current M11 full32s record 3/20: Reactor
@@ -18,4 +22,4 @@ Current M11 full32s record 17/20: Cascade
 Current M11 full32s record 18/20: Reactor
 Current M11 full32s record 19/20: Crusher
 Current M11 full32s record 20/20: Cascade
-Current M11 full32s20-record Chrome storage PASS: 10303343->2658428 chars
+Current M11 full32s20-record Chrome storage PASS: 10303344->2658392 chars

@@ -1,6 +1,7 @@
 import {createRequire} from 'node:module';
 import {writeFileSync} from 'node:fs';
 import {gzipSync} from 'node:zlib';
+import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
 import {CONFIG as C} from '../config.js';
 import {freshSave} from '../storage.js';
@@ -34,6 +35,10 @@ try{
  },{packed,raw});
  const result={...stored,browser:await browser.version(),rawCharacters:raw.length,packedCharacters:packed.length,fullCurrentM11Runs:20,duration:32,errors,method:'20 distinct seeded actual MAX49/Signature3/Evolution2/Relic2 current-M11 Runs; rotating3 builds, all insight fixture. Complete events retained; private Chrome origin context only. No production user profile.'};
  writeFileSync('artifacts/storage-current32-results.json',JSON.stringify(result,null,2));assert.equal(stored.passed,true);assert.equal(stored.records,20);assert.equal(stored.bank,save.bank);assert.equal(stored.catalyst,save.catalystBalance);assert.deepEqual(stored.levels,save.levels);
- await page.reload();assert.equal((await page.evaluate(()=>window.shardStorm.snapshot())).bank,save.bank);await page.reload();assert.equal((await page.evaluate(()=>window.shardStorm.snapshot())).bank,save.bank);assert.deepEqual(errors,[]);
- result.reloads=2;result.reloadBankExact=true;writeFileSync('artifacts/storage-current32-results.json',JSON.stringify(result,null,2));console.log(`Current M11 full32s20-record Chrome storage PASS: ${raw.length}->${packed.length} chars`);
+ const expectedHistory=createHash('sha256').update(JSON.stringify(save.lastRuns)).digest('hex');
+ for(let i=0;i<2;i++){
+  await page.reload();const live=await page.evaluate(()=>window.shardStorm.snapshot());assert.equal(live.bank,save.bank);assert.equal(live.catalystBalance,save.catalystBalance);assert.deepEqual(live.levels,save.levels);
+  const history=await page.evaluate(async()=>{const{decodeSave}=await import('./save-codec.js'),s=decodeSave(localStorage.getItem('shard-storm-v1')),bytes=new TextEncoder().encode(JSON.stringify(s.lastRuns)),digest=await crypto.subtle.digest('SHA-256',bytes);return {records:s.lastRuns.length,sha256:Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('')};});assert.equal(history.records,20);assert.equal(history.sha256,expectedHistory);
+ }
+ assert.deepEqual(errors,[]);result.reloads=2;result.reloadBankExact=true;result.reloadRecordsExact=true;result.historySha256=expectedHistory;writeFileSync('artifacts/storage-current32-results.json',JSON.stringify(result,null,2));console.log(`Current M11 full32s20-record Chrome storage PASS: ${raw.length}->${packed.length} chars`);
 }finally{await browser.close();}

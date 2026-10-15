@@ -10,7 +10,7 @@
 
 손상·잘린 JSON 또는 알 수 없는 미래 스키마는 원본을 보존하고 자동 쓰기를 차단합니다. 사용자에게 복구 안내와 원본 내보내기를 제공합니다. 유효한 세이브의 재화나 기록은 초기화하지 않습니다. 압축 후에도 브라우저가 저장을 차단하거나 origin 할당량이 부족하면 기존 값을 보존하며 실패를 알립니다.
 
-현재 M11의 더 큰 기록도 별도로 검증했습니다. MAX49/Signature3/Evolution2/Relic2와 insight19를 주입한 격리 프로필에서3빌드를 번갈아 서로 다른 seed의32초 전투20회를 실제 시뮬레이션했습니다. 상세 이벤트를 생략하지 않은 전체 기록은10,303,343문자→2,658,428문자로 압축됐고, Chrome155의 같은 저장 키에 저장한 뒤 새로고침2회에도 은행·Catalyst·49스킬·20기록을 보존했습니다. [결과](../artifacts/storage-current32-results.json), [로그](../artifacts/storage-current32-test.txt), `npm run qa:storage:current`. 전투는 Node 자동 입력, 저장/복원은 실제 private Chrome context이며 사람 플레이나 무제한 저장 가능성을 뜻하지 않습니다.
+현재 M11의 더 큰 기록도 별도로 검증했습니다. MAX49/Signature3/Evolution2/Relic2와 insight19를 주입한 격리 프로필에서3빌드를 번갈아 서로 다른 seed의32초 전투20회를 실제 시뮬레이션했습니다. 상세 이벤트를 생략하지 않은 전체 기록은 약10.30MB→2.66MB로 압축됐고, Chrome155의 같은 저장 키에 저장한 뒤 새로고침2회에도 은행·Catalyst·49스킬·20기록을 보존했습니다. 매 새로고침 후 전체 기록의 SHA-256 동일성도 확인했습니다. [결과](../artifacts/storage-current32-results.json), [로그](../artifacts/storage-current32-test.txt), `npm run qa:storage:current`. 전투는 Node 자동 입력, 저장/복원은 실제 private Chrome context이며 사람 플레이나 무제한 저장 가능성을 뜻하지 않습니다.
 
 ## 결정 전 재현 및 검토 기록
 

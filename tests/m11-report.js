@@ -5,7 +5,7 @@ import {CODEX_IDS} from '../codex.js';
 import {TECHNIQUES,ELITES,ADVANCED_SHAPES} from '../advanced-defs.js';
 const read=p=>JSON.parse(readFileSync(p,'utf8'));
 const data=read('artifacts/m11-balance-results.json'),browser=read('artifacts/m11-browser-results.json'),storage=read('artifacts/storage-codec-browser-results.json'),ui=read('artifacts/m11-ui-browser-results.json'),combined=read('artifacts/m11-combination-results.json'),perf=read('artifacts/m11-performance.json'),browserRegression=read('artifacts/m11-browser-qa-summary.json');
-const currentStorage=read('artifacts/storage-current32-results.json');assert.equal(currentStorage.passed,true);assert.equal(currentStorage.fullCurrentM11Runs,20);assert.equal(currentStorage.reloadBankExact,true);
+const currentStorage=read('artifacts/storage-current32-results.json');assert.equal(currentStorage.passed,true);assert.equal(currentStorage.fullCurrentM11Runs,20);assert.equal(currentStorage.reloadBankExact,true);assert.equal(currentStorage.reloadRecordsExact,true);
 assert.equal(data.passed,true);assert.equal(data.actualRuns,54000);assert.equal(data.sourceFiles.length,180);
 for(const r of [browser,storage,ui,combined,perf])assert.equal(r.passed,true);
 assert.equal(browserRegression.passed,true);assert.equal(browserRegression.actual20SecondRuns,24);

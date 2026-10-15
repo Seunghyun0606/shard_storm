@@ -14,8 +14,8 @@ for(const profile of ['Fresh','LegacyMax'])for(const time of ['Fixed20','ExtraTi
  const set=paths.filter(p=>p.spec.profile===profile&&p.spec.time===time&&p.spec.strategy===strategy&&p.spec.feature==='Evolution2');
  late.push(`|${profile}|${time}|${strategy}|Evolution2|${median(set.map(p=>p.rows[299].bank))}|${median(set.map(p=>p.rows[299].catalyst))}|${median(set.map(p=>Object.values(p.rows[299].evolutionOwned).reduce((n,a)=>n+a.length,0)))}|`);
 }
-const comparison=['|계열|형태|20초 파괴 중앙값|32초 파괴 중앙값|','|---|---|---:|---:|'];
-for(const family of [...new Set(forms.rows.map(r=>r.family))])for(const form of [...new Set(forms.rows.filter(r=>r.family===family).map(r=>r.form))])comparison.push(`|${family}|${form||'NONE'}|${median(forms.rows.filter(r=>r.family===family&&r.form===form&&r.duration===20).map(r=>r.kills))}|${median(forms.rows.filter(r=>r.family===family&&r.form===form&&r.duration===32).map(r=>r.kills))}|`);
+const comparison=['|계열|형태|20초 파괴 중앙값|32초 파괴 중앙값|20초 Photon|32초 Photon|해당 Form 발동 합계|','|---|---|---:|---:|---:|---:|---:|'];
+for(const family of [...new Set(forms.rows.map(r=>r.family))])for(const form of [...new Set(forms.rows.filter(r=>r.family===family).map(r=>r.form))]){const rows=forms.rows.filter(r=>r.family===family&&r.form===form),a=rows.filter(r=>r.duration===20),b=rows.filter(r=>r.duration===32);comparison.push(`|${family}|${form||'NONE'}|${median(a.map(r=>r.kills))}|${median(b.map(r=>r.kills))}|${median(a.map(r=>r.photon))}|${median(b.map(r=>r.photon))}|${form?rows.reduce((n,r)=>n+(r.executed['evolution:'+form]||0),0):'-'}|`);}
 const capRuns=paths.reduce((n,p)=>n+p.rows.filter(r=>Object.keys(r.caps).length).length,0),allForms=paths.filter(p=>p.spec.feature==='Evolution2').flatMap(p=>p.rows.filter(r=>Object.values(r.evolutionOwned).reduce((n,a)=>n+a.length,0)===15).slice(0,1).map(r=>r.run));
 const performanceTable=['|모드|Rank|Run당 update p95 중앙값(ms)|파괴 중앙값|','|---|---:|---:|---:|'];
 for(const mode of ['M9','M10_OFF','M10_ON'])for(const rank of [0,4]){const rows=perf.records.filter(r=>r.mode===mode&&r.rank===rank);performanceTable.push(`|${mode}|${rank}|${median(rows.map(r=>r.tickP95ms)).toFixed(3)}|${median(rows.map(r=>r.kills))}|`);}
@@ -42,6 +42,8 @@ Evolution 전15형태의 합계 비용은31500 Photon/450 Catalyst이며 각 형
 별도200Run: 5시드×20/32초×5계열×NONE/A/B/C. 같은 계열 내 동일3 Signature·Coil/Governor·49스킬 MAX fixture. 구매 비용이나 자연 성장 속도는 이 비교에서 추정하지 않습니다.
 
 ${comparison.join('\n')}
+
+공칭 기본 생성은.20초×3개(초당15개)입니다. 강화 fixture가 화면을 빠르게 비우면 파괴 수는20초 약300/32초 약480 부근의 생성 공급에 제한될 수 있습니다. 같은 파괴 수가 나온 Form도 실제 발동·대상 선택·실수 허용도는 다르므로, 이 비교만으로 효과 없음이나 동일한 재미를 결론 내리지 않습니다. 발동 합계0인 자연 조합도0으로 표시하고, 그 Form의 실제 동작은 별도 통제 단위 테스트에서 검증합니다.
 
 ## 정확성·성능 한계
 

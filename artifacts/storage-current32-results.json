@@ -56,12 +56,14 @@
     "prismaticCascade": 1
   },
   "browser": "155.0.8059.79",
-  "rawCharacters": 10303343,
-  "packedCharacters": 2658428,
+  "rawCharacters": 10303344,
+  "packedCharacters": 2658392,
   "fullCurrentM11Runs": 20,
   "duration": 32,
   "errors": [],
   "method": "20 distinct seeded actual MAX49/Signature3/Evolution2/Relic2 current-M11 Runs; rotating3 builds, all insight fixture. Complete events retained; private Chrome origin context only. No production user profile.",
   "reloads": 2,
-  "reloadBankExact": true
+  "reloadBankExact": true,
+  "reloadRecordsExact": true,
+  "historySha256": "dfbdd527888bc69d385682ca6ef30581b841869d76ab428d803f983b93f84ce9"
 }
