@@ -4,9 +4,11 @@ import {gunzipSync} from 'node:zlib';
 import {CODEX_IDS} from '../codex.js';
 import {TECHNIQUES,ELITES,ADVANCED_SHAPES} from '../advanced-defs.js';
 const read=p=>JSON.parse(readFileSync(p,'utf8'));
-const data=read('artifacts/m11-balance-results.json'),browser=read('artifacts/m11-browser-results.json'),storage=read('artifacts/storage-codec-browser-results.json'),ui=read('artifacts/m11-ui-browser-results.json'),combined=read('artifacts/m11-combination-results.json'),perf=read('artifacts/m11-performance.json');
+const data=read('artifacts/m11-balance-results.json'),browser=read('artifacts/m11-browser-results.json'),storage=read('artifacts/storage-codec-browser-results.json'),ui=read('artifacts/m11-ui-browser-results.json'),combined=read('artifacts/m11-combination-results.json'),perf=read('artifacts/m11-performance.json'),browserRegression=read('artifacts/m11-browser-qa-summary.json');
+const currentStorage=read('artifacts/storage-current32-results.json');assert.equal(currentStorage.passed,true);assert.equal(currentStorage.fullCurrentM11Runs,20);assert.equal(currentStorage.reloadBankExact,true);
 assert.equal(data.passed,true);assert.equal(data.actualRuns,54000);assert.equal(data.sourceFiles.length,180);
 for(const r of [browser,storage,ui,combined,perf])assert.equal(r.passed,true);
+assert.equal(browserRegression.passed,true);assert.equal(browserRegression.actual20SecondRuns,24);
 assert.equal(browser.runs.length,7);assert.equal(storage.fullRecords,20);assert.equal(storage.size.exact,true);assert.equal(combined.actualRuns,60);assert.equal(perf.records.length,90);assert.equal(perf.isolated,true);
 assert.equal(data.lateContacts,0);assert.ok(data.maxProjectileError<.002&&data.maxWaveError<.002);
 const paths=data.sourceFiles.map(p=>JSON.parse(gunzipSync(readFileSync(p))));
@@ -18,6 +20,7 @@ for(const row of data.summary.filter(r=>r.mode==='Normal'))for(const c of row.ch
 const end=['|빌드|모드|기능|300회 레벨|Photon 잔고|Catalyst|해당 Run 파괴|해당 Run Photon|Insight|','|---|---|---|---:|---:|---:|---:|---:|---:|'];
 for(const row of data.summary){const c=row.checkpoints.find(c=>c.run===300);end.push(`|${row.strategy}|${row.mode}|${row.feature}|${c.levels}|${c.bank}|${c.catalyst}|${c.kills}|${c.photon}|${c.insight}|`);}
 const m11=paths.filter(p=>p.spec.feature==='M11'),codex=['|도형|300회 정상 처치 중앙값|기술 성공 중앙값|단계 중앙값|Stage III 이상 경로/45|실제 행동 조건|','|---|---:|---:|---:|---:|---|'];
+const normal=m11.filter(p=>p.spec.mode==='Normal'),maxed=normal.flatMap(p=>{const row=p.rows.find(r=>r.levels===100);return row?[row.run]:[];});
 for(const id of CODEX_IDS){const rows=m11.map(p=>p.rows[299].codex[id]);codex.push(`|${ADVANCED_SHAPES[id]?.name||id}|${median(rows.map(r=>r.kills))}|${median(rows.map(r=>r.techniques))}|${median(rows.map(r=>r.stage))}|${rows.filter(r=>r.stage>=3).length}/45|${TECHNIQUES[id]}|`);}
 const elite=['|Elite|실제 생성|Primary 처치|안전 배치 시도|','|---|---:|---:|---:|'];
 for(const[id,d]of Object.entries(ELITES)){const r=data.eliteTotals[id]||{};elite.push(`|${d.name}|${r.spawned||0}|${r.kills||0}|${r.attempts||0}|`);}
@@ -71,6 +74,10 @@ ${performanceTable.join('\n')}
 
 기존 가격·Refinery 변환율·자산은 유지했습니다. 새 도형의HP/Raw/확률과trait확률,Elite보상은 PRD 초기값입니다. 수정한 것은 피해 출처 분류·시점·중복 차단 오류이며 포괄적인 성장 둔화가 아닙니다. 세이브 용량은 사용자 승인에 따라 같은 키의 무손실 LZ4/base64로 해결했습니다. 실제20개 완전 기록 ${storage.size.rawCharacters.toLocaleString()}문자→${storage.size.packedCharacters.toLocaleString()}문자, 손상 원본/내보내기/정산1회 검증 PASS입니다. 압축해도 origin 할당량은 유한하며 저장 실패 시 원본을 보존하고 경고합니다.
 
+추가로 현재 M11 MAX49/Signature3/Evolution2/Relic2,3빌드의 서로 다른 seed32초 전투20회를 실행했습니다. 완전 기록 ${currentStorage.rawCharacters.toLocaleString()}문자→${currentStorage.packedCharacters.toLocaleString()}문자, 실제 Chrome 동일 키 저장·새로고침2회·은행/49스킬/20기록 보존 PASS입니다. 이는 별도 강제 성장 fixture의 저장 stress이며 자연 성장이나 사람 포인터 전투가 아닙니다.
+
+현재 경제에서 주의할 수치는 후반 구매 소진과 재화 잉여입니다. Normal15경로 중 ${maxed.length}경로가300회 안에100레벨을 모두 구매했고, 완료 경로의 최초100레벨 Run 중앙값은 ${maxed.length?median(maxed):'없음'}입니다. Normal300회 Photon 잔고 중앙값 ${median(normal.map(p=>p.rows[299].bank))}, Catalyst ${median(normal.map(p=>p.rows[299].catalyst))}입니다. Codex는 이 잉여를 소모시키는 강화 시스템이 아니라 행동 목표입니다. 사람의 구매 정체·기술 공략 빈도를 확인하기 전에는 일괄 가격 변경으로 이 차이를 덮지 않습니다.
+
 사람은 Phase 창을 기다릴 이유, Shifter 예고 뒤 조준·Portal 경로·Prism 파동을 활용하는 선택,19개 기술 설명의 이해,2개 pin의 유용성,insight 문턱에 따른 Elite 정체,Signature3/Evolution2 교체의 재미를 확인해야 합니다. 자동 조준이 놓친 기술의 접근성을 우선 관찰하고, 그 전에는 목표 수치나 기존 가격을 임의로 낮추거나 올리지 않습니다.
 `,'utf8');
 writeFileSync('docs/Shard_Storm_M11_Implementation_Report.md',`# M11 Collection & Advanced Shapes — Implementation Report
@@ -108,6 +115,8 @@ Chrome ${browser.browser} 실제20초7Run(자연 fresh1+명시된 도형 fixture
 
 54,000Run/180경로와60강화 조합 FX A/B, 단독90Run 성능/OFF 정확 일치가 PASS입니다. [Balance Report](Shard_Storm_M11_Balance_Report.md)에 실제50/100/200/300 성장·자연 기술/Elite 빈도·상한·제한을 기록했습니다. 기존 회귀와 브라우저 재실행은 artifacts/m11-regression에 분리해 이전 보고서 증거를 덮어쓰지 않습니다.
 
+현재 코드의 기존 benchmark20/기본 balance486/M5M6 1573/M7M8 650(230성장 smoke+420효과 비교)/M9 smoke165/M10 smoke240도 PASS입니다. 현재 Chrome 총24실제20초 Run은 M11 7+M9 5+M7M8 6+M10 6이며 모두 콘솔 오류0입니다. [집계](../artifacts/m11-browser-qa-summary.json). M7/M8의 과거19노드 기대값은49개와 기존19노드 모두의 보존 검사로 갱신했습니다. 클릭 후100ms 내 응답에 의존하던 timer 검사는 실제 기본20초 설정을 직접 확인하도록 고쳤고 최종20초·정산 검사는 유지했습니다. 이 실패와 수정 후 결과를 함께 보존했습니다.
+
 ## 발견한 오류와 수정
 
 복사 피해가 main의 small=false를 물려 Hollow에2피해를 주던 오류를 복사 최대1로 고쳤습니다. Phase 보호 direct0이 Reinforced 방어를 소모하지 않도록 판정 순서를 고쳤습니다. Shifter 전후 motion 구간을 분리해 teleport 중 허위 보간을 차단했습니다. Lens sector를 nativeWave로 잘못 세거나 실행하지 않은 파동을 Codex로 인정하지 않습니다. 길어진 기록의 실제 Chrome QuotaExceededError를 재현하고 승인된 전체 무손실 압축으로 해결했습니다.
@@ -115,6 +124,8 @@ Chrome ${browser.browser} 실제20초7Run(자연 fresh1+명시된 도형 fixture
 ## 남은 한계와 후속
 
 기존512 tick iteration 상한과 유한 localStorage 할당량은 유지합니다. 자동 전투와 격리 fixture는 사람의 재미 검증이 아닙니다. 고비용 Bloom/Shader/도형별 조립 생성/진짜 물리 슬로모션/논리 Arena 확장/전용 audio는 [Deferred TODO](Shard_Storm_Deferred_VFX_TODO.md)로 남겼습니다. 사람은 목표 설명·조준 순서·희귀 기술 정체·빌드 교체 후 재도전 의향을 검증해야 합니다.
+
+실제 사용자 검증의 조건·질문·기록 표는 [사람 플레이 가이드](Shard_Storm_M9_M11_Human_Playtest.md)에 구분했습니다.
 
 브랜치 feat/m9-m11-content-expansion. M11/codec 통합 커밋 d0834c5, 최종 QA와 보고서는 이후 커밋에 기록합니다.
 `,'utf8');

@@ -35,7 +35,7 @@ ${table.join('\n')}
 
 ${late.join('\n')}
 
-Evolution 전15형태의 합계 비용은31500 Photon/450 Catalyst이며 각 형태를 소유해도 동시에2계열만 활성화합니다. 전15형태를 실제 구매한 경로의 최초 구매 완료 Run 중앙값: ${allForms.length?median(allForms):'300회 안에 완료한 경로 없음'} (완료 경로만의 통계). 기본 스킬 가격·기존 재화·Refinery 변환율은 일괄 변경하지 않았습니다. 자동 조준의 효율로 생긴 후반 잉여를 사람에게 동일하게 적용하지 않습니다.
+Evolution 전15형태의 합계 비용은31500 Photon/450 Catalyst이며 각 형태를 소유해도 동시에2계열만 활성화합니다. 전15형태를 실제 구매한 경로는 ${allForms.length}/60, 최초 구매 완료 Run 중앙값: ${allForms.length?median(allForms):'300회 안에 완료한 경로 없음'} (완료 경로만의 통계, Fresh/LegacyMax 및20/ExtraTime을 포함). 기본 스킬 가격·기존 재화·Refinery 변환율은 일괄 변경하지 않았습니다. 자동 조준의 효율로 생긴 후반 잉여를 사람에게 동일하게 적용하지 않습니다.
 
 ## A/B/C Form 통제 비교
 
@@ -75,7 +75,7 @@ writeFileSync('docs/Shard_Storm_M10_Implementation_Report.md',`# M10 Skill Expan
 
 ## 검증
 
-단위 **236 PASS / 0 FAIL / 삭제·skip 없음** ([로그](../artifacts/m10-unit-final.txt)). Chrome ${browser.browser} 실제20초6Run PASS, 콘솔 오류0 ([결과](../artifacts/m10-browser-results.json)). Fresh만 자연 계정이고 나머지 빌드는 명시된 격리 fixture입니다. 전체 성장72000Run과 Form 비교200Run PASS. 기존 benchmark(legacy18+short2), balance486Run, M5/M6 1573Run, M7/M8 650Run smoke와420효과 A/B, M9 165Run smoke PASS. 이전 마일스톤의 전체 장기 결과는 별도로 보존했습니다.
+단위 **236 PASS / 0 FAIL / 삭제·skip 없음** ([로그](../artifacts/m10-unit-final.txt)). Chrome ${browser.browser} 실제20초6Run PASS, 콘솔 오류0 ([결과](../artifacts/m10-browser-results.json)). Fresh만 자연 계정이고 나머지 빌드는 명시된 격리 fixture입니다. 전체 성장72000Run과 Form 비교200Run PASS. 기존 benchmark(legacy18+short2), balance486Run, M5/M6 1573Run, M7/M8 650Run(230성장 smoke+420효과 A/B), M9 165Run smoke PASS. 이전 마일스톤의 전체 장기 결과는 별도로 보존했습니다. M11 통합 후 전체307단위와 현재 코드의 M10 포인터6Run 회귀도 PASS이며 artifacts/m11-regression에 구분했습니다.
 
 스크린샷: [49노드](../artifacts/m10-49-skill-tree.png), [검색](../artifacts/m10-skill-search.png), [빌드 슬롯](../artifacts/m10-signature-evolution-title.png), [좁은 결과 화면](../artifacts/m10-Signature3-narrow-result.png). 검색 결과가 그래프 아래에서 잘리던 문제를 compact 배치로 수정했습니다.
 

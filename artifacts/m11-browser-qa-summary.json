@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "actual20SecondRuns": 24,
+  "sources": [
+    {
+      "source": "m11-browser-results.json",
+      "sha256": "73bc7346d55a764c637f02136e72f9f3b6a02214424e6bd52e27d80f877d03f4",
+      "passed": true,
+      "runs": 7,
+      "consoleErrors": 0,
+      "browser": "155.0.8059.79"
+    },
+    {
+      "source": "m11-regression/browser-verified/m9/m9-browser-results.json",
+      "sha256": "1d3e0c1df0d1549364a264326008be406d7944e23d759a96f76095f6c015a419",
+      "passed": true,
+      "runs": 5,
+      "consoleErrors": 0,
+      "browser": "155.0.8059.79"
+    },
+    {
+      "source": "m11-regression/browser-verified/m7-m8/m7-m8-browser-results.json",
+      "sha256": "c844013d7aa85247d24949583b12998b57ac904a3ffda3efdfb39c34fd04d565",
+      "passed": true,
+      "runs": 6,
+      "consoleErrors": 0,
+      "browser": "155.0.8059.79"
+    },
+    {
+      "source": "m11-regression/browser-verified/m10/m10-browser-results.json",
+      "sha256": "0c15c6734b8d3bbf34686e890a75f949fccced467f5aad994efd7ecd9b9e69bc",
+      "passed": true,
+      "runs": 6,
+      "consoleErrors": 0,
+      "browser": "155.0.8059.79"
+    }
+  ],
+  "extraChecks": [
+    "m11-ui-browser-results.json",
+    "storage-codec-browser-results.json"
+  ],
+  "method": "Current integrated M11 production code; private Chrome contexts; real pointer automation. Fixtures labeled in each source. No human enjoyment claim."
+}
