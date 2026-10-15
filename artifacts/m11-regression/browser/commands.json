@@ -1,0 +1,12 @@
+[
+  {
+    "milestone": "m9",
+    "script": "m9-browser.mjs",
+    "exitCode": 0
+  },
+  {
+    "milestone": "m7-m8",
+    "script": "m7-m8-browser.mjs",
+    "exitCode": 1
+  }
+]

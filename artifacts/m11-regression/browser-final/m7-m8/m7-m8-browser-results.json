@@ -1,0 +1,9 @@
+{
+  "passed": false,
+  "runs": [],
+  "checks": [
+    "fresh offer fixed across reload, real UI acceptance"
+  ],
+  "errors": [],
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nundefined !== 20\n\n    at play (file:///C:/Users/limse/Desktop/%ED%9A%8C%EC%82%AC/AI_PJT/shard_storm/tests/m7-m8-browser.mjs:15:29)\n    at async file:///C:/Users/limse/Desktop/%ED%9A%8C%EC%82%AC/AI_PJT/shard_storm/tests/m7-m8-browser.mjs:30:78"
+}

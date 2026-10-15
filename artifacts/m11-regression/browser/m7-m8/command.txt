@@ -1,0 +1,19 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+49 !== 19
+
+    at play (file:///C:/Users/limse/Desktop/%ED%9A%8C%EC%82%AC/AI_PJT/shard_storm/tests/m7-m8-browser.mjs:21:367)
+    at async file:///C:/Users/limse/Desktop/%ED%9A%8C%EC%82%AC/AI_PJT/shard_storm/tests/m7-m8-browser.mjs:29:78 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 49,
+  expected: 19,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.18.0

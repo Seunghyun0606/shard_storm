@@ -1,0 +1,3422 @@
+{
+  "passed": false,
+  "runs": [
+    {
+      "kind": "fresh",
+      "fixture": false,
+      "before": {
+        "state": "TITLE",
+        "paused": false,
+        "held": false,
+        "successfulClicks": 0,
+        "missedClicks": 0,
+        "fps": 77.29237829217699,
+        "combo": null,
+        "audioVoices": 0,
+        "shapes": [],
+        "waves": [],
+        "scheduled": 0,
+        "clickRings": 0,
+        "bank": 0,
+        "levels": {
+          "crushPower": 0,
+          "shardPower": 0,
+          "shardRange": 0,
+          "chainAmplifier": 0,
+          "extraTime": 0,
+          "crushSpeed": 0,
+          "impactPulse": 0,
+          "ricochetPlus": 0,
+          "shardBloom": 0,
+          "echoCatalyst": 0,
+          "photonBoost": 0,
+          "precisionFracture": 0,
+          "yieldStabilizer": 0,
+          "rareSeparator": 0,
+          "fragmentRelay": 0,
+          "kineticReach": 0,
+          "resonanceLayer": 0,
+          "salvageScanner": 0,
+          "catalystChannel": 0,
+          "weakpointScanner": 0,
+          "armorShatter": 0,
+          "markedTarget": 0,
+          "chainStarter": 0,
+          "executionPulse": 0,
+          "piercingShard": 0,
+          "angularSplit": 0,
+          "mirrorReturn": 0,
+          "ricochetBloom": 0,
+          "portalMomentum": 0,
+          "fuseAccelerator": 0,
+          "conductiveSurge": 0,
+          "delayedEcho": 0,
+          "resonanceBurst": 0,
+          "chainOverdrive": 0,
+          "gravityBreak": 0,
+          "portalCalibration": 0,
+          "phaseDisruptor": 0,
+          "magneticPolarity": 0,
+          "targetIntercept": 0,
+          "rareHarvest": 0,
+          "catalystExtraction": 0,
+          "precisionSalvage": 0,
+          "contractScanner": 0,
+          "refineryCalibration": 0,
+          "splitterMastery": 0,
+          "fuseSymphony": 0,
+          "shieldInversion": 0,
+          "ancientBreaker": 0,
+          "prismaticCascade": 0
+        },
+        "derivedStats": {
+          "directDamage": 3,
+          "attackInterval": 0.2,
+          "duration": 20,
+          "triangleDamage": 3,
+          "pentagonDamage": 3,
+          "shardRange": 180,
+          "bounces": 1,
+          "triangleCount": 3,
+          "pentagonCount": 2,
+          "squareDamage": 2,
+          "starDamage": 5,
+          "squareRadius": 90,
+          "starRadius": 145,
+          "inheritanceDamage": 1,
+          "impactEnabled": false,
+          "impactRadius": 42,
+          "impactDamage": 1,
+          "bonusMultiplier": 1
+        },
+        "options": {
+          "secondaryTraitsEnabled": true,
+          "combatFXEnabled": true,
+          "screenShakeEnabled": true,
+          "reducedMotionEnabled": false,
+          "oreEnabled": true,
+          "inheritance": true,
+          "ricochet": true,
+          "sequentialPropagation": true,
+          "visualVariety": true,
+          "damageVFX": true,
+          "sound": false,
+          "comboFeedback": true,
+          "modifiers": true,
+          "modifierVisuals": true,
+          "motionEnabled": true,
+          "refineryEnabled": true
+        },
+        "saveVersion": 8,
+        "shapeCodex": {
+          "triangle": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "square": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "pentagon": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "star": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "hex": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "reactor": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "ancient": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "splitter": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "fuseBomb": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "conductor": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "mirror": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "gravityWell": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "repairNode": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "portalGate": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "parasiteLink": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "phaseCrystal": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "chainBeacon": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "shifter": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          },
+          "prismLens": {
+            "kills": 0,
+            "techniques": 0,
+            "stage": 0,
+            "discovered": false
+          }
+        },
+        "codexPinnedIds": [],
+        "insightUnlocked": [],
+        "eliteHistory": {},
+        "advancedIntroFlags": {},
+        "signatureLoadout": [],
+        "evolutionOwned": {
+          "direct": [],
+          "shard": [],
+          "shockwave": [],
+          "reactor": [],
+          "gravity": []
+        },
+        "evolutionActive": [],
+        "shapeIntroSeen": {},
+        "contracts": {
+          "active": [
+            "preciseClicks"
+          ],
+          "records": {
+            "preciseClicks": {
+              "stage": 1,
+              "progress": 0,
+              "maxCompletedStage": 0
+            }
+          }
+        },
+        "contractMedals": [],
+        "anomalyOffer": {
+          "offerId": "offer-1335511490",
+          "eligibilityRank": 0,
+          "offeredIds": [
+            "denseField",
+            "fastOrbit"
+          ],
+          "seedKey": "browser-fresh:0:0"
+        },
+        "selectedAnomaly": null,
+        "anomalyOfferIndex": 0,
+        "totalAnomalyWins": 0,
+        "relicOwned": [],
+        "relicEquipped": [],
+        "relicAchievements": {
+          "mainShardWallBounces": 0,
+          "nativeWaveKills": 0,
+          "directCrackedKills": 0,
+          "wardReleasesFromHexDeath": 0,
+          "reactorStageWaveExecuted": 0,
+          "ancientKills": 0
+        },
+        "relicBlueprintUnlocked": [],
+        "sandbox": false,
+        "pendingSettlement": null,
+        "totalRuns": 0,
+        "lifetimeDestroyed": 0,
+        "discoveryRank": 0,
+        "catalystBalance": 0,
+        "milestoneWelcomeFlags": {}
+      },
+      "record": {
+        "advancedEnabled": true,
+        "codexSnapshot": {
+          "version": 8,
+          "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+          "delta": {
+            "triangle": {
+              "kills": 33,
+              "techniques": 4
+            },
+            "square": {
+              "kills": 14,
+              "techniques": 0
+            },
+            "pentagon": {
+              "kills": 7,
+              "techniques": 0
+            },
+            "star": {
+              "kills": 0,
+              "techniques": 0
+            },
+            "hex": {
+              "kills": 0,
+              "techniques": 0
+            },
+            "reactor": {
+              "kills": 0,
+              "techniques": 0
+            },
+            "ancient": {
+              "kills": 0,
+              "techniques": 0
+            },
+            "splitter": {
+              "kills": 2,
+              "techniques": 0
+            },
+            "fuseBomb": {
+              "kills": 1,
+              "techniques": 0
+            },
+            "conductor": {
+              "kills": 0,
+              "techniques": 0
+            },
+            "mirror": {
+              "kills": 0,
+              "techniques": 0
+            },
+            "gravityWell": {
+              "kills": 0,
+              "techniques": 0
+            },
+            "repairNode": {
+              "kills": 0,
+              "techniques": 0
+            },
+            "portalGate": {
+              "kills": 0,
+              "techniques": 0
+            },
+            "parasiteLink": {
+              "kills": 0,
+              "techniques": 0
+            },
+            "phaseCrystal": {
+              "kills": 0,
+              "techniques": 0
+            },
+            "chainBeacon": {
+              "kills": 0,
+              "techniques": 0
+            },
+            "shifter": {
+              "kills": 0,
+              "techniques": 0
+            },
+            "prismLens": {
+              "kills": 0,
+              "techniques": 0
+            }
+          },
+          "elite": {},
+          "intro": []
+        },
+        "codexDelta": {
+          "triangle": {
+            "kills": 33,
+            "techniques": 4
+          },
+          "square": {
+            "kills": 14,
+            "techniques": 0
+          },
+          "pentagon": {
+            "kills": 7,
+            "techniques": 0
+          },
+          "star": {
+            "kills": 0,
+            "techniques": 0
+          },
+          "hex": {
+            "kills": 0,
+            "techniques": 0
+          },
+          "reactor": {
+            "kills": 0,
+            "techniques": 0
+          },
+          "ancient": {
+            "kills": 0,
+            "techniques": 0
+          },
+          "splitter": {
+            "kills": 2,
+            "techniques": 0
+          },
+          "fuseBomb": {
+            "kills": 1,
+            "techniques": 0
+          },
+          "conductor": {
+            "kills": 0,
+            "techniques": 0
+          },
+          "mirror": {
+            "kills": 0,
+            "techniques": 0
+          },
+          "gravityWell": {
+            "kills": 0,
+            "techniques": 0
+          },
+          "repairNode": {
+            "kills": 0,
+            "techniques": 0
+          },
+          "portalGate": {
+            "kills": 0,
+            "techniques": 0
+          },
+          "parasiteLink": {
+            "kills": 0,
+            "techniques": 0
+          },
+          "phaseCrystal": {
+            "kills": 0,
+            "techniques": 0
+          },
+          "chainBeacon": {
+            "kills": 0,
+            "techniques": 0
+          },
+          "shifter": {
+            "kills": 0,
+            "techniques": 0
+          },
+          "prismLens": {
+            "kills": 0,
+            "techniques": 0
+          }
+        },
+        "codexEvents": [
+          {
+            "id": "triangle",
+            "sourceId": 14,
+            "chainId": 14,
+            "at": 3.2732197007806847,
+            "targetId": 23,
+            "eventId": 1
+          },
+          {
+            "id": "triangle",
+            "sourceId": 17,
+            "chainId": 14,
+            "at": 3.2732197007806847,
+            "targetId": 23,
+            "eventId": 2
+          },
+          {
+            "id": "triangle",
+            "sourceId": 15,
+            "chainId": 14,
+            "at": 3.2732197007806847,
+            "targetId": 23,
+            "eventId": 3
+          },
+          {
+            "id": "triangle",
+            "sourceId": 23,
+            "chainId": 14,
+            "at": 3.406347366123196,
+            "targetId": 13,
+            "eventId": 4
+          }
+        ],
+        "advancedCounts": {},
+        "advancedEvents": [],
+        "advancedSpawned": {},
+        "eliteDelta": {},
+        "skillExpansionEnabled": true,
+        "signatureLoadout": [],
+        "evolutionActive": [],
+        "expansionExecuted": {},
+        "expansionImpact": {},
+        "expansionEvents": [],
+        "calibrationPhoton": 0,
+        "ecologyEnabled": true,
+        "ecologyCounts": {
+          "introduction": 2,
+          "fuseArmed": 1,
+          "fuseExploded": 1,
+          "echoSpawn": 1,
+          "echoDeath": 1
+        },
+        "introConsumed": [
+          "splitter",
+          "fuseBomb"
+        ],
+        "ecologyEvents": [
+          {
+            "eventId": 1,
+            "kind": "introduction",
+            "sourceId": 27,
+            "at": 2.9999999999999942,
+            "type": "splitter"
+          },
+          {
+            "eventId": 2,
+            "kind": "introduction",
+            "sourceId": 28,
+            "at": 2.9999999999999942,
+            "type": "fuseBomb"
+          },
+          {
+            "eventId": 3,
+            "kind": "fuseArmed",
+            "sourceId": 28,
+            "chainId": 42,
+            "at": 8.413315282887636
+          },
+          {
+            "eventId": 4,
+            "kind": "fuseExploded",
+            "sourceId": 28,
+            "chainId": 42,
+            "at": 9.113315282887635,
+            "waveId": 7
+          },
+          {
+            "eventId": 5,
+            "kind": "echoSpawn",
+            "sourceId": 27,
+            "chainId": 56,
+            "at": 11.176666666666799,
+            "targetId": 52
+          },
+          {
+            "eventId": 6,
+            "kind": "echoDeath",
+            "sourceId": 52,
+            "chainId": 58,
+            "at": 11.516666666666818,
+            "parentId": 27,
+            "parentChain": 56
+          }
+        ],
+        "echoSpawned": 1,
+        "echoKills": 1,
+        "echoRaw": 0,
+        "metaCounters": {
+          "mainShardWallBounces": 28,
+          "nativeWaveKills": 2,
+          "directCrackedKills": 4,
+          "wardReleasesFromHexDeath": 0,
+          "reactorStageWaveExecuted": 0,
+          "ancientKills": 0,
+          "directKills": 38,
+          "chain10": 0,
+          "primaryShardKills": 15,
+          "coreOreKills": 0,
+          "anomalyWins": 0,
+          "chain15": 0,
+          "movingDirectKills": 35,
+          "chargedOrReactorKills": 0
+        },
+        "metaResult": {
+          "anomaly": {
+            "id": null,
+            "succeeded": false,
+            "photon": 0,
+            "actual": 0,
+            "target": 0
+          },
+          "contracts": {
+            "changes": [
+              {
+                "id": "preciseClicks",
+                "stage": 1,
+                "progress": 38,
+                "maxCompletedStage": 0,
+                "delta": 38,
+                "done": false
+              }
+            ],
+            "completed": [],
+            "photon": 0,
+            "catalyst": 0
+          },
+          "refineryPhoton": 38,
+          "calibrationPhoton": 0,
+          "totalPhoton": 38,
+          "totalCatalyst": 0
+        },
+        "anomalyId": null,
+        "contractSnapshot": [
+          {
+            "id": "preciseClicks",
+            "stage": 1,
+            "progress": 0,
+            "maxCompletedStage": 0
+          }
+        ],
+        "causalLog": [
+          {
+            "eventId": 1,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 0.05,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 1,
+            "sourceType": "direct",
+            "targetShapeId": 1,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 2,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 0.2061284795882449,
+            "eventType": "primaryShardKills",
+            "amount": 1,
+            "chainId": 1,
+            "sourceType": "triangle",
+            "sourceShapeId": 1,
+            "targetShapeId": 4,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": true,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 3,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 0.20714285688991113,
+            "eventType": "primaryShardKills",
+            "amount": 1,
+            "chainId": 1,
+            "sourceType": "triangle",
+            "sourceShapeId": 1,
+            "targetShapeId": 2,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": true,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 4,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 0.20714285688991113,
+            "eventType": "primaryShardKills",
+            "amount": 1,
+            "chainId": 1,
+            "sourceType": "triangle",
+            "sourceShapeId": 1,
+            "targetShapeId": 3,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": true,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 5,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 0.43788653678927875,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 1,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 6,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 0.5166666666666666,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 3,
+            "sourceType": "direct",
+            "targetShapeId": 5,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 7,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 0.5166666666666666,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 3,
+            "sourceType": "direct",
+            "targetShapeId": 5,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 8,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 0.6730727792375887,
+            "eventType": "primaryShardKills",
+            "amount": 1,
+            "chainId": 3,
+            "sourceType": "triangle",
+            "sourceShapeId": 5,
+            "targetShapeId": 7,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": true,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 9,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 0.7911181343131843,
+            "eventType": "primaryShardKills",
+            "amount": 1,
+            "chainId": 3,
+            "sourceType": "triangle",
+            "sourceShapeId": 5,
+            "targetShapeId": 6,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": true,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 10,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 0.8666666666666677,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 3,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 11,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 1.0333333333333345,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 3,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 12,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 1.1166666666666676,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 6,
+            "sourceType": "direct",
+            "targetShapeId": 19,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 13,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 1.1166666666666676,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 6,
+            "sourceType": "direct",
+            "targetShapeId": 19,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 14,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 1.343685578484286,
+            "eventType": "primaryShardKills",
+            "amount": 1,
+            "chainId": 6,
+            "sourceType": "triangle",
+            "sourceShapeId": 19,
+            "targetShapeId": 18,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": true,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 15,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 1.3607724314359073,
+            "eventType": "primaryShardKills",
+            "amount": 1,
+            "chainId": 6,
+            "sourceType": "triangle",
+            "sourceShapeId": 19,
+            "targetShapeId": 8,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": true,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 16,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 1.5166666666666662,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 6,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 17,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 1.5166666666666662,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 6,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 18,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 1.592650286728672,
+            "eventType": "primaryShardKills",
+            "amount": 1,
+            "chainId": 6,
+            "sourceType": "triangle",
+            "sourceShapeId": 18,
+            "targetShapeId": 11,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": true,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 19,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 1.6833333333333322,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 6,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 20,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 1.9166666666666647,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 10,
+            "sourceType": "direct",
+            "targetShapeId": 10,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 21,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 1.9166666666666647,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 10,
+            "sourceType": "direct",
+            "targetShapeId": 10,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 22,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 2.716666666666662,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 14,
+            "sourceType": "direct",
+            "targetShapeId": 14,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 23,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 2.865741636110519,
+            "eventType": "primaryShardKills",
+            "amount": 1,
+            "chainId": 14,
+            "sourceType": "triangle",
+            "sourceShapeId": 14,
+            "targetShapeId": 17,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": true,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 24,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 2.883333333333328,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 14,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 25,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 2.9883330602660276,
+            "eventType": "primaryShardKills",
+            "amount": 1,
+            "chainId": 14,
+            "sourceType": "triangle",
+            "sourceShapeId": 14,
+            "targetShapeId": 22,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": true,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 26,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 3.088033499090916,
+            "eventType": "primaryShardKills",
+            "amount": 1,
+            "chainId": 14,
+            "sourceType": "triangle",
+            "sourceShapeId": 17,
+            "targetShapeId": 15,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": true,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 27,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 3.088033499090916,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 14,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 28,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 3.2732197007806847,
+            "eventType": "primaryShardKills",
+            "amount": 1,
+            "chainId": 14,
+            "sourceType": "triangle",
+            "sourceShapeId": 15,
+            "targetShapeId": 23,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": true,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 29,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 3.406347366123196,
+            "eventType": "primaryShardKills",
+            "amount": 1,
+            "chainId": 14,
+            "sourceType": "triangle",
+            "sourceShapeId": 23,
+            "targetShapeId": 13,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": true,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 30,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 3.516666666666659,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 18,
+            "sourceType": "direct",
+            "targetShapeId": 9,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 31,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 3.516666666666659,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 18,
+            "sourceType": "direct",
+            "targetShapeId": 9,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 32,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 3.5275290312921337,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 14,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 33,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 3.5833333333333255,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 18,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 34,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 3.6272931376049207,
+            "eventType": "primaryShardKills",
+            "amount": 1,
+            "chainId": 18,
+            "sourceType": "triangle",
+            "sourceShapeId": 9,
+            "targetShapeId": 30,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": true,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 35,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 3.6333333333333253,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 18,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 36,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 3.683333333333325,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 18,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 37,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 3.8833333333333244,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 18,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 38,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 4.316666666666657,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 22,
+            "sourceType": "direct",
+            "targetShapeId": 25,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 39,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 4.316666666666657,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 22,
+            "sourceType": "direct",
+            "targetShapeId": 25,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 40,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 4.9166666666666545,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 25,
+            "sourceType": "direct",
+            "targetShapeId": 16,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 41,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 4.9166666666666545,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 25,
+            "sourceType": "direct",
+            "targetShapeId": 16,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 42,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 5.716666666666652,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 29,
+            "sourceType": "direct",
+            "targetShapeId": 24,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 43,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 5.716666666666652,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 29,
+            "sourceType": "direct",
+            "targetShapeId": 24,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 44,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 5.933333333333318,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 29,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 45,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 6.516666666666649,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 33,
+            "sourceType": "direct",
+            "targetShapeId": 12,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 46,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 6.516666666666649,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 33,
+            "sourceType": "direct",
+            "targetShapeId": 12,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 47,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 7.316666666666646,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 37,
+            "sourceType": "direct",
+            "targetShapeId": 29,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 48,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 7.316666666666646,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 37,
+            "sourceType": "direct",
+            "targetShapeId": 29,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 49,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 7.416666666666646,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 37,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 50,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 7.516666666666645,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 37,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 51,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 8.11666666666665,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 41,
+            "sourceType": "direct",
+            "targetShapeId": 34,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 52,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 8.11666666666665,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 41,
+            "sourceType": "direct",
+            "targetShapeId": 34,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 53,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 8.31666666666666,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 42,
+            "sourceType": "direct",
+            "targetShapeId": 40,
+            "targetType": "square",
+            "targetModifier": "cracked",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 54,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 8.31666666666666,
+            "eventType": "directCrackedKills",
+            "amount": 1,
+            "chainId": 42,
+            "sourceType": "direct",
+            "targetShapeId": 40,
+            "targetType": "square",
+            "targetModifier": "cracked",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 55,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 8.31666666666666,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 42,
+            "sourceType": "direct",
+            "targetShapeId": 40,
+            "targetType": "square",
+            "targetModifier": "cracked",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 56,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 8.51666666666667,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 43,
+            "sourceType": "direct",
+            "targetShapeId": 33,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 57,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 8.51666666666667,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 43,
+            "sourceType": "direct",
+            "targetShapeId": 33,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 58,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 8.71666666666668,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 44,
+            "sourceType": "direct",
+            "targetShapeId": 38,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 59,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 8.71666666666668,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 44,
+            "sourceType": "direct",
+            "targetShapeId": 38,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 60,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 8.800000000000017,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 44,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 61,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 8.85000000000002,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 44,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 62,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 9.516666666666719,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 48,
+            "sourceType": "direct",
+            "targetShapeId": 32,
+            "targetType": "splitter",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 63,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 9.516666666666719,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 48,
+            "sourceType": "direct",
+            "targetShapeId": 32,
+            "targetType": "splitter",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 64,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 9.716666666666729,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 49,
+            "sourceType": "direct",
+            "targetShapeId": 28,
+            "targetType": "fuseBomb",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 65,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 9.716666666666729,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 49,
+            "sourceType": "direct",
+            "targetShapeId": 28,
+            "targetType": "fuseBomb",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 66,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 10.316666666666759,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 52,
+            "sourceType": "direct",
+            "targetShapeId": 45,
+            "targetType": "square",
+            "targetModifier": "cracked",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 67,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 10.316666666666759,
+            "eventType": "directCrackedKills",
+            "amount": 1,
+            "chainId": 52,
+            "sourceType": "direct",
+            "targetShapeId": 45,
+            "targetType": "square",
+            "targetModifier": "cracked",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 68,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 10.316666666666759,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 52,
+            "sourceType": "direct",
+            "targetShapeId": 45,
+            "targetType": "square",
+            "targetModifier": "cracked",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 69,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 10.716666666666779,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 54,
+            "sourceType": "direct",
+            "targetShapeId": 31,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 70,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 10.716666666666779,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 54,
+            "sourceType": "direct",
+            "targetShapeId": 31,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 71,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 10.916666666666789,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 55,
+            "sourceType": "direct",
+            "targetShapeId": 49,
+            "targetType": "triangle",
+            "targetModifier": "cracked",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 72,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 10.916666666666789,
+            "eventType": "directCrackedKills",
+            "amount": 1,
+            "chainId": 55,
+            "sourceType": "direct",
+            "targetShapeId": 49,
+            "targetType": "triangle",
+            "targetModifier": "cracked",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 73,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 10.916666666666789,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 55,
+            "sourceType": "direct",
+            "targetShapeId": 49,
+            "targetType": "triangle",
+            "targetModifier": "cracked",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 74,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 11.116666666666799,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 56,
+            "sourceType": "direct",
+            "targetShapeId": 27,
+            "targetType": "splitter",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 75,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 11.116666666666799,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 56,
+            "sourceType": "direct",
+            "targetShapeId": 27,
+            "targetType": "splitter",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 76,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 11.316666666666809,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 57,
+            "sourceType": "direct",
+            "targetShapeId": 35,
+            "targetType": "pentagon",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 77,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 11.316666666666809,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 57,
+            "sourceType": "direct",
+            "targetShapeId": 35,
+            "targetType": "pentagon",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 78,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 11.466666666666816,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 57,
+            "sourceType": "pentagon"
+          },
+          {
+            "eventId": 79,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 11.716666666666828,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 59,
+            "sourceType": "direct",
+            "targetShapeId": 36,
+            "targetType": "pentagon",
+            "targetModifier": "cracked",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 80,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 11.716666666666828,
+            "eventType": "directCrackedKills",
+            "amount": 1,
+            "chainId": 59,
+            "sourceType": "direct",
+            "targetShapeId": 36,
+            "targetType": "pentagon",
+            "targetModifier": "cracked",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 81,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 11.716666666666828,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 59,
+            "sourceType": "direct",
+            "targetShapeId": 36,
+            "targetType": "pentagon",
+            "targetModifier": "cracked",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 82,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 11.90000000000017,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 59,
+            "sourceType": "pentagon"
+          },
+          {
+            "eventId": 83,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 12.516666666666868,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 63,
+            "sourceType": "direct",
+            "targetShapeId": 41,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 84,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 12.516666666666868,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 63,
+            "sourceType": "direct",
+            "targetShapeId": 41,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 85,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 12.600000000000206,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 63,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 86,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 12.716666666666878,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 64,
+            "sourceType": "direct",
+            "targetShapeId": 43,
+            "targetType": "pentagon",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 87,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 12.716666666666878,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 64,
+            "sourceType": "direct",
+            "targetShapeId": 43,
+            "targetType": "pentagon",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 88,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 13.316666666666908,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 67,
+            "sourceType": "direct",
+            "targetShapeId": 47,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 89,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 13.316666666666908,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 67,
+            "sourceType": "direct",
+            "targetShapeId": 47,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 90,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 13.50000000000025,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 67,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 91,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 13.716666666666928,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 69,
+            "sourceType": "direct",
+            "targetShapeId": 53,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 92,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 13.716666666666928,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 69,
+            "sourceType": "direct",
+            "targetShapeId": 53,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 93,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 15.316666666667007,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 77,
+            "sourceType": "direct",
+            "targetShapeId": 26,
+            "targetType": "pentagon",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 94,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 15.316666666667007,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 77,
+            "sourceType": "direct",
+            "targetShapeId": 26,
+            "targetType": "pentagon",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 95,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 15.916666666667037,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 80,
+            "sourceType": "direct",
+            "targetShapeId": 55,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 96,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 15.916666666667037,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 80,
+            "sourceType": "direct",
+            "targetShapeId": 55,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 97,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 16.0833333333337,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 80,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 98,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 16.716666666667,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 84,
+            "sourceType": "direct",
+            "targetShapeId": 46,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 99,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 17.516666666666953,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 88,
+            "sourceType": "direct",
+            "targetShapeId": 21,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 100,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 17.516666666666953,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 88,
+            "sourceType": "direct",
+            "targetShapeId": 21,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 101,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 18.316666666666908,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 92,
+            "sourceType": "direct",
+            "targetShapeId": 54,
+            "targetType": "pentagon",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 102,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 18.316666666666908,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 92,
+            "sourceType": "direct",
+            "targetShapeId": 54,
+            "targetType": "pentagon",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 103,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 18.516666666666897,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 93,
+            "sourceType": "direct",
+            "targetShapeId": 58,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 104,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 18.516666666666897,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 93,
+            "sourceType": "direct",
+            "targetShapeId": 58,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 105,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 18.633333333333557,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 93,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 106,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 18.716666666666885,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 94,
+            "sourceType": "direct",
+            "targetShapeId": 60,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 107,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 18.716666666666885,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 94,
+            "sourceType": "direct",
+            "targetShapeId": 60,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 108,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 18.766666666666882,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 93,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 109,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 19.116666666666863,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 96,
+            "sourceType": "direct",
+            "targetShapeId": 62,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 110,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 19.116666666666863,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 96,
+            "sourceType": "direct",
+            "targetShapeId": 62,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 111,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 19.31666666666685,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 97,
+            "sourceType": "direct",
+            "targetShapeId": 64,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 112,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 19.31666666666685,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 97,
+            "sourceType": "direct",
+            "targetShapeId": 64,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 113,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 19.350000000000183,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 96,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 114,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 19.500000000000174,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 97,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 115,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 19.51666666666684,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 98,
+            "sourceType": "direct",
+            "targetShapeId": 44,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 116,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 19.51666666666684,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 98,
+            "sourceType": "direct",
+            "targetShapeId": 44,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 117,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 19.542092388311783,
+            "eventType": "primaryShardKills",
+            "amount": 1,
+            "chainId": 97,
+            "sourceType": "triangle",
+            "sourceShapeId": 64,
+            "targetShapeId": 67,
+            "targetType": "triangle",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": true,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 118,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 19.542092388311783,
+            "eventType": "shardWallBounce",
+            "amount": 1,
+            "chainId": 97,
+            "sourceType": "triangle"
+          },
+          {
+            "eventId": 119,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 19.71666666666683,
+            "eventType": "directKills",
+            "amount": 1,
+            "chainId": 99,
+            "sourceType": "direct",
+            "targetShapeId": 20,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 120,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 19.71666666666683,
+            "eventType": "movingDirectKills",
+            "amount": 1,
+            "chainId": 99,
+            "sourceType": "direct",
+            "targetShapeId": 20,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": true,
+            "primaryShard": false,
+            "nativeWave": false,
+            "anomalyId": null
+          },
+          {
+            "eventId": 121,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 19.861522473060585,
+            "eventType": "nativeWaveKills",
+            "amount": 1,
+            "chainId": 99,
+            "sourceType": "square",
+            "sourceShapeId": 20,
+            "targetShapeId": 65,
+            "targetType": "pentagon",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": false,
+            "nativeWave": true,
+            "anomalyId": null
+          },
+          {
+            "eventId": 122,
+            "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+            "simulationTime": 19.86635086240847,
+            "eventType": "nativeWaveKills",
+            "amount": 1,
+            "chainId": 99,
+            "sourceType": "square",
+            "sourceShapeId": 20,
+            "targetShapeId": 39,
+            "targetType": "square",
+            "targetModifier": "normal",
+            "targetOreGrade": "common",
+            "direct": false,
+            "primaryShard": false,
+            "nativeWave": true,
+            "anomalyId": null
+          }
+        ],
+        "relicLoadout": [],
+        "relicActivations": {},
+        "siphonUnused": 0,
+        "siphonConsumed": 0,
+        "offerId": "offer-1335511490",
+        "metaVersion": 1,
+        "rawHP": 205,
+        "rawNativeBonus": 402,
+        "oreEnabled": true,
+        "specialSpawns": {
+          "splitter": 4,
+          "fuseBomb": 1
+        },
+        "stageEvents": [],
+        "skillActivations": {},
+        "skillEvents": [],
+        "tetherPairs": 0,
+        "tetherAttempts": 0,
+        "discoveryRankAtStart": 0,
+        "contentMode": "M5_M6_ON",
+        "oreChances": {
+          "prism": 0,
+          "core": 0,
+          "void": 0
+        },
+        "oreSpawnCounts": {
+          "common": 74,
+          "prism": 0,
+          "core": 0,
+          "void": 0
+        },
+        "oreKills": {
+          "common": 57,
+          "prism": 0,
+          "core": 0,
+          "void": 0
+        },
+        "pendingCatalyst": 0,
+        "rawBase": 607,
+        "rawOreBonus": 0,
+        "rawSkillBonus": 0,
+        "rewardsBySource": [],
+        "welcomeConsumed": [],
+        "motionMeasurements": {
+          "maxObservedSpeed": 5.2260120941321535,
+          "maxObservedDisplacement": 5.532595272602431,
+          "rotationRateMinDeg": 10.007390194572508,
+          "rotationRateMaxDeg": 34.003162648295984,
+          "driftingSpawnCount": 39,
+          "rotatingSpawnCount": 48
+        },
+        "refinerySkipped": true,
+        "resultWaitSeconds": 0.754300000000745,
+        "physicsChecks": {
+          "waveContactsChecked": 26,
+          "maxWaveContactError": 9.757260031051374e-7,
+          "lateWaveContacts": 0,
+          "duplicateWaveRejected": 0,
+          "projectileContactsChecked": 26,
+          "maxProjectileContactError": 7.998433382283565e-7
+        },
+        "ruleset": "v09",
+        "tierPreset": "v09_short",
+        "runId": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+        "runDurationConfigured": 20,
+        "runDurationActual": 20,
+        "rawEarned": 607,
+        "processedPhoton": 38,
+        "photonPayout": 38,
+        "refinery": {
+          "id": "8fdb654e-ea4f-4a01-8f77-d0a3f8237234",
+          "raw": 607,
+          "rate": 0.06,
+          "multiplier": 1.070345963756178,
+          "payout": 38,
+          "enabled": true,
+          "yieldLevel": 0,
+          "tokens": [
+            {
+              "raw": 60,
+              "slot": 1,
+              "originalMultiplier": 1,
+              "multiplier": 1
+            },
+            {
+              "raw": 60,
+              "slot": 0,
+              "originalMultiplier": 0.8,
+              "multiplier": 0.8
+            },
+            {
+              "raw": 60,
+              "slot": 2,
+              "originalMultiplier": 1.1,
+              "multiplier": 1.1
+            },
+            {
+              "raw": 60,
+              "slot": 2,
+              "originalMultiplier": 1.1,
+              "multiplier": 1.1
+            },
+            {
+              "raw": 60,
+              "slot": 2,
+              "originalMultiplier": 1.1,
+              "multiplier": 1.1
+            },
+            {
+              "raw": 60,
+              "slot": 1,
+              "originalMultiplier": 1,
+              "multiplier": 1
+            },
+            {
+              "raw": 60,
+              "slot": 2,
+              "originalMultiplier": 1.1,
+              "multiplier": 1.1
+            },
+            {
+              "raw": 60,
+              "slot": 3,
+              "originalMultiplier": 1.3,
+              "multiplier": 1.3
+            },
+            {
+              "raw": 60,
+              "slot": 2,
+              "originalMultiplier": 1.1,
+              "multiplier": 1.1
+            },
+            {
+              "raw": 67,
+              "slot": 2,
+              "originalMultiplier": 1.1,
+              "multiplier": 1.1
+            }
+          ],
+          "confirmed": true
+        },
+        "motionEnabled": true,
+        "motionProfiles": {
+          "both": 20,
+          "drift": 19,
+          "rotate": 28,
+          "static": 7
+        },
+        "missedClicks": 61,
+        "movingHitAccuracy": 0.39,
+        "projectileHitRate": 0.22807017543859648,
+        "projectileHits": 26,
+        "waveContacts": 28,
+        "maxMotionSpeed": 5.70574238414976,
+        "bins5": [
+          {
+            "start": 0,
+            "end": 5,
+            "totalDestroyed": 22,
+            "directKills": 8,
+            "cascadeKills": 14,
+            "earnedPhoton": 192,
+            "comboMilestones": {
+              "5": 1,
+              "10": 0,
+              "20": 0
+            },
+            "bestChain": 6,
+            "cascadeDurationTotalMs": 1707.8851149932289,
+            "completedCascadeChains": 5,
+            "sampledSeconds": 5,
+            "samples": 344,
+            "aliveIntegral": 63.29734847021084,
+            "targetIntegral": 66.03500081920205,
+            "emptyArenaDuration": 0,
+            "spawnAttempts": 33,
+            "spawnSuccesses": 33,
+            "spawnFailures": 0,
+            "safetyCapsHit": 0,
+            "caps": {},
+            "typeStats": {
+              "triangle": {
+                "spawnCount": 22,
+                "directHitCount": 5,
+                "directKillCount": 5,
+                "cascadeKillCount": 13
+              },
+              "square": {
+                "spawnCount": 9,
+                "cascadeKillCount": 1,
+                "directHitCount": 3,
+                "directKillCount": 3
+              },
+              "pentagon": {
+                "spawnCount": 3
+              },
+              "splitter": {
+                "spawnCount": 2
+              },
+              "fuseBomb": {
+                "spawnCount": 1
+              }
+            },
+            "modifierStats": {
+              "normal": {
+                "spawnCount": 36,
+                "directHitCount": 8,
+                "clickedFirstCount": 8,
+                "directKillCount": 8,
+                "cascadeKillCount": 14
+              },
+              "cracked": {
+                "spawnCount": 1
+              }
+            },
+            "hpDistribution": {
+              "3": 23,
+              "4": 9,
+              "5": 4,
+              "6": 1
+            },
+            "enhancedSpawns": 0,
+            "rawEarned": 192,
+            "averageAlive": 12.65946969404217,
+            "averageTarget": 13.20700016384041
+          },
+          {
+            "start": 5,
+            "end": 10,
+            "totalDestroyed": 11,
+            "directKills": 9,
+            "cascadeKills": 2,
+            "earnedPhoton": 134,
+            "comboMilestones": {
+              "5": 0,
+              "10": 0,
+              "20": 0
+            },
+            "bestChain": 3,
+            "cascadeDurationTotalMs": 942.1254892380091,
+            "completedCascadeChains": 1,
+            "sampledSeconds": 5,
+            "samples": 326,
+            "aliveIntegral": 73.96096536165811,
+            "targetIntegral": 75.0000000000003,
+            "emptyArenaDuration": 0,
+            "spawnAttempts": 11,
+            "spawnSuccesses": 11,
+            "spawnFailures": 0,
+            "safetyCapsHit": 0,
+            "caps": {},
+            "typeStats": {
+              "triangle": {
+                "directHitCount": 5,
+                "directKillCount": 5,
+                "spawnCount": 3
+              },
+              "square": {
+                "spawnCount": 5,
+                "directHitCount": 2,
+                "directKillCount": 2,
+                "cascadeKillCount": 1
+              },
+              "pentagon": {
+                "spawnCount": 3,
+                "cascadeKillCount": 1
+              },
+              "splitter": {
+                "directHitCount": 1,
+                "directKillCount": 1
+              },
+              "fuseBomb": {
+                "directHitCount": 1,
+                "directKillCount": 1
+              }
+            },
+            "modifierStats": {
+              "normal": {
+                "directHitCount": 8,
+                "clickedFirstCount": 8,
+                "directKillCount": 8,
+                "spawnCount": 9,
+                "cascadeKillCount": 2
+              },
+              "cracked": {
+                "spawnCount": 2,
+                "directHitCount": 1,
+                "clickedFirstCount": 1,
+                "directKillCount": 1
+              }
+            },
+            "hpDistribution": {
+              "2": 2,
+              "3": 3,
+              "4": 3,
+              "5": 3
+            },
+            "enhancedSpawns": 0,
+            "rawEarned": 134,
+            "averageAlive": 14.792193072331623,
+            "averageTarget": 15.00000000000006
+          },
+          {
+            "start": 10,
+            "end": 15,
+            "totalDestroyed": 10,
+            "directKills": 10,
+            "cascadeKills": 0,
+            "earnedPhoton": 119,
+            "comboMilestones": {
+              "5": 0,
+              "10": 0,
+              "20": 0
+            },
+            "bestChain": 1,
+            "cascadeDurationTotalMs": 0,
+            "completedCascadeChains": 0,
+            "sampledSeconds": 4.999999999999924,
+            "samples": 315,
+            "aliveIntegral": 74.10666666666589,
+            "targetIntegral": 74.99999999999926,
+            "emptyArenaDuration": 0,
+            "spawnAttempts": 10,
+            "spawnSuccesses": 10,
+            "spawnFailures": 0,
+            "safetyCapsHit": 0,
+            "caps": {},
+            "typeStats": {
+              "square": {
+                "directHitCount": 2,
+                "directKillCount": 2,
+                "spawnCount": 2
+              },
+              "triangle": {
+                "spawnCount": 5,
+                "directHitCount": 5,
+                "directKillCount": 4
+              },
+              "splitter": {
+                "spawnCount": 1,
+                "directHitCount": 1,
+                "directKillCount": 1
+              },
+              "pentagon": {
+                "directHitCount": 3,
+                "directKillCount": 3,
+                "spawnCount": 3
+              }
+            },
+            "modifierStats": {
+              "cracked": {
+                "directHitCount": 3,
+                "clickedFirstCount": 3,
+                "directKillCount": 3,
+                "spawnCount": 1
+              },
+              "normal": {
+                "directHitCount": 8,
+                "clickedFirstCount": 8,
+                "directKillCount": 7,
+                "spawnCount": 10
+              }
+            },
+            "hpDistribution": {
+              "1": 1,
+              "2": 1,
+              "3": 3,
+              "4": 2,
+              "5": 4
+            },
+            "enhancedSpawns": 0,
+            "rawEarned": 119,
+            "averageAlive": 14.821333333333405,
+            "averageTarget": 15.000000000000082
+          },
+          {
+            "start": 15,
+            "end": 20,
+            "totalDestroyed": 14,
+            "directKills": 11,
+            "cascadeKills": 3,
+            "earnedPhoton": 162,
+            "comboMilestones": {
+              "5": 0,
+              "10": 0,
+              "20": 0
+            },
+            "bestChain": 3,
+            "cascadeDurationTotalMs": 375.10991738657395,
+            "completedCascadeChains": 2,
+            "sampledSeconds": 4.999999999999675,
+            "samples": 329,
+            "aliveIntegral": 85.55329905710803,
+            "targetIntegral": 87.24999999999402,
+            "emptyArenaDuration": 0,
+            "spawnAttempts": 15,
+            "spawnSuccesses": 15,
+            "spawnFailures": 0,
+            "safetyCapsHit": 0,
+            "caps": {},
+            "typeStats": {
+              "pentagon": {
+                "directHitCount": 2,
+                "directKillCount": 2,
+                "spawnCount": 3,
+                "cascadeKillCount": 1
+              },
+              "triangle": {
+                "spawnCount": 5,
+                "directHitCount": 5,
+                "directKillCount": 5,
+                "cascadeKillCount": 1
+              },
+              "star": {
+                "spawnCount": 3
+              },
+              "square": {
+                "directHitCount": 4,
+                "directKillCount": 4,
+                "spawnCount": 3,
+                "cascadeKillCount": 1
+              },
+              "splitter": {
+                "spawnCount": 1
+              }
+            },
+            "modifierStats": {
+              "normal": {
+                "directHitCount": 11,
+                "clickedFirstCount": 11,
+                "directKillCount": 11,
+                "spawnCount": 15,
+                "cascadeKillCount": 3
+              }
+            },
+            "hpDistribution": {
+              "3": 5,
+              "4": 3,
+              "5": 4,
+              "9": 3
+            },
+            "enhancedSpawns": 0,
+            "rawEarned": 162,
+            "averageAlive": 17.11065981142272,
+            "averageTarget": 17.44999999999994
+          }
+        ],
+        "inputPolicy": "human",
+        "sandbox": false,
+        "experiment": {
+          "spawnInterval": 0.2,
+          "spawnBatch": 3,
+          "clusterChance": 0.6
+        },
+        "elapsed": 20,
+        "bins": [
+          {
+            "start": 0,
+            "end": 10,
+            "totalDestroyed": 33,
+            "directKills": 17,
+            "cascadeKills": 16,
+            "earnedPhoton": 326,
+            "comboMilestones": {
+              "5": 1,
+              "10": 0,
+              "20": 0
+            },
+            "bestChain": 6,
+            "cascadeDurationTotalMs": 2650.010604231238,
+            "completedCascadeChains": 6,
+            "sampledSeconds": 10,
+            "samples": 669,
+            "aliveIntegral": 137.25831383186863,
+            "targetIntegral": 141.03500081920183,
+            "emptyArenaDuration": 0,
+            "spawnAttempts": 44,
+            "spawnSuccesses": 44,
+            "spawnFailures": 0,
+            "safetyCapsHit": 0,
+            "caps": {},
+            "typeStats": {
+              "triangle": {
+                "spawnCount": 25,
+                "directHitCount": 10,
+                "directKillCount": 10,
+                "cascadeKillCount": 13
+              },
+              "square": {
+                "spawnCount": 14,
+                "cascadeKillCount": 2,
+                "directHitCount": 5,
+                "directKillCount": 5
+              },
+              "pentagon": {
+                "spawnCount": 6,
+                "cascadeKillCount": 1
+              },
+              "splitter": {
+                "spawnCount": 2,
+                "directHitCount": 1,
+                "directKillCount": 1
+              },
+              "fuseBomb": {
+                "spawnCount": 1,
+                "directHitCount": 1,
+                "directKillCount": 1
+              }
+            },
+            "modifierStats": {
+              "normal": {
+                "spawnCount": 45,
+                "directHitCount": 16,
+                "clickedFirstCount": 16,
+                "directKillCount": 16,
+                "cascadeKillCount": 16
+              },
+              "cracked": {
+                "spawnCount": 3,
+                "directHitCount": 1,
+                "clickedFirstCount": 1,
+                "directKillCount": 1
+              }
+            },
+            "hpDistribution": {
+              "2": 2,
+              "3": 26,
+              "4": 12,
+              "5": 7,
+              "6": 1
+            },
+            "enhancedSpawns": 0,
+            "averageAlive": 13.725831383186863,
+            "averageTarget": 14.103500081920183,
+            "spawnSuccessRate": 1,
+            "cascadeRatio": 0.48484848484848486,
+            "avgCascadeDurationMs": 441.6684340385397
+          },
+          {
+            "start": 10,
+            "end": 20,
+            "totalDestroyed": 24,
+            "directKills": 21,
+            "cascadeKills": 3,
+            "earnedPhoton": 281,
+            "comboMilestones": {
+              "5": 0,
+              "10": 0,
+              "20": 0
+            },
+            "bestChain": 3,
+            "cascadeDurationTotalMs": 375.10991738657395,
+            "completedCascadeChains": 2,
+            "sampledSeconds": 9.999999999999924,
+            "samples": 644,
+            "aliveIntegral": 159.6599657237786,
+            "targetIntegral": 162.24999999999824,
+            "emptyArenaDuration": 0,
+            "spawnAttempts": 25,
+            "spawnSuccesses": 25,
+            "spawnFailures": 0,
+            "safetyCapsHit": 0,
+            "caps": {},
+            "typeStats": {
+              "square": {
+                "directHitCount": 6,
+                "directKillCount": 6,
+                "spawnCount": 5,
+                "cascadeKillCount": 1
+              },
+              "triangle": {
+                "spawnCount": 10,
+                "directHitCount": 10,
+                "directKillCount": 9,
+                "cascadeKillCount": 1
+              },
+              "splitter": {
+                "spawnCount": 2,
+                "directHitCount": 1,
+                "directKillCount": 1
+              },
+              "pentagon": {
+                "directHitCount": 5,
+                "directKillCount": 5,
+                "spawnCount": 6,
+                "cascadeKillCount": 1
+              },
+              "star": {
+                "spawnCount": 3
+              }
+            },
+            "modifierStats": {
+              "cracked": {
+                "directHitCount": 3,
+                "clickedFirstCount": 3,
+                "directKillCount": 3,
+                "spawnCount": 1
+              },
+              "normal": {
+                "directHitCount": 19,
+                "clickedFirstCount": 19,
+                "directKillCount": 18,
+                "spawnCount": 25,
+                "cascadeKillCount": 3
+              }
+            },
+            "hpDistribution": {
+              "1": 1,
+              "2": 1,
+              "3": 8,
+              "4": 5,
+              "5": 8,
+              "9": 3
+            },
+            "enhancedSpawns": 0,
+            "averageAlive": 15.965996572377984,
+            "averageTarget": 16.224999999999948,
+            "spawnSuccessRate": 1,
+            "cascadeRatio": 0.125,
+            "avgCascadeDurationMs": 187.55495869328698
+          }
+        ],
+        "emptyArenaDuration": 0,
+        "emptyEpisodesOverHalfSecond": 0,
+        "maxEmptyEpisode": 0,
+        "spawnAttempts": 69,
+        "spawnSuccesses": 69,
+        "spawnFailures": 0,
+        "capCounts": {},
+        "capSources": {},
+        "chargedCaps": 0,
+        "peakWaves": 2,
+        "peakScheduled": 3,
+        "secondShardPeaks": [
+          9,
+          8,
+          5,
+          8,
+          0,
+          3,
+          3,
+          3,
+          5,
+          2,
+          3,
+          3,
+          5,
+          3,
+          2,
+          3,
+          3,
+          0,
+          6,
+          5
+        ],
+        "hpDistribution": {
+          "1": 1,
+          "2": 3,
+          "3": 34,
+          "4": 17,
+          "5": 15,
+          "6": 1,
+          "9": 3
+        },
+        "enhancedSpawnCount": 0,
+        "frameSampleCount": 2507,
+        "stepSampleCount": 1199,
+        "averageFPS": 125.91227668244427,
+        "fixedStepP95ms": 0.4000000022351742,
+        "modifiersEnabled": true,
+        "modifierStats": {
+          "normal": {
+            "spawnCount": 70,
+            "clickedFirstCount": 35,
+            "directHitCount": 35,
+            "directKillCount": 34,
+            "cascadeKillCount": 19,
+            "selectionRate": 0.5
+          },
+          "cracked": {
+            "spawnCount": 4,
+            "clickedFirstCount": 4,
+            "directHitCount": 4,
+            "directKillCount": 4,
+            "cascadeKillCount": 0,
+            "selectionRate": 1
+          },
+          "charged": {
+            "spawnCount": 0,
+            "clickedFirstCount": 0,
+            "directHitCount": 0,
+            "directKillCount": 0,
+            "cascadeKillCount": 0,
+            "selectionRate": 0
+          }
+        },
+        "typeStats": {
+          "triangle": {
+            "spawnCount": 35,
+            "directHitCount": 20,
+            "directKillCount": 19,
+            "cascadeKillCount": 14
+          },
+          "square": {
+            "spawnCount": 19,
+            "directHitCount": 11,
+            "directKillCount": 11,
+            "cascadeKillCount": 3
+          },
+          "pentagon": {
+            "spawnCount": 12,
+            "directHitCount": 5,
+            "directKillCount": 5,
+            "cascadeKillCount": 2
+          },
+          "star": {
+            "spawnCount": 3,
+            "directHitCount": 0,
+            "directKillCount": 0,
+            "cascadeKillCount": 0
+          },
+          "hex": {
+            "spawnCount": 0,
+            "directHitCount": 0,
+            "directKillCount": 0,
+            "cascadeKillCount": 0
+          },
+          "reactor": {
+            "spawnCount": 0,
+            "directHitCount": 0,
+            "directKillCount": 0,
+            "cascadeKillCount": 0
+          },
+          "ancient": {
+            "spawnCount": 0,
+            "directHitCount": 0,
+            "directKillCount": 0,
+            "cascadeKillCount": 0
+          },
+          "portalGate": {
+            "spawnCount": 0,
+            "directHitCount": 0,
+            "directKillCount": 0,
+            "cascadeKillCount": 0
+          },
+          "parasiteLink": {
+            "spawnCount": 0,
+            "directHitCount": 0,
+            "directKillCount": 0,
+            "cascadeKillCount": 0
+          },
+          "phaseCrystal": {
+            "spawnCount": 0,
+            "directHitCount": 0,
+            "directKillCount": 0,
+            "cascadeKillCount": 0
+          },
+          "chainBeacon": {
+            "spawnCount": 0,
+            "directHitCount": 0,
+            "directKillCount": 0,
+            "cascadeKillCount": 0
+          },
+          "shifter": {
+            "spawnCount": 0,
+            "directHitCount": 0,
+            "directKillCount": 0,
+            "cascadeKillCount": 0
+          },
+          "prismLens": {
+            "spawnCount": 0,
+            "directHitCount": 0,
+            "directKillCount": 0,
+            "cascadeKillCount": 0
+          },
+          "splitter": {
+            "spawnCount": 4,
+            "directHitCount": 2,
+            "directKillCount": 2,
+            "cascadeKillCount": 0
+          },
+          "fuseBomb": {
+            "spawnCount": 1,
+            "directHitCount": 1,
+            "directKillCount": 1,
+            "cascadeKillCount": 0
+          },
+          "conductor": {
+            "spawnCount": 0,
+            "directHitCount": 0,
+            "directKillCount": 0,
+            "cascadeKillCount": 0
+          },
+          "mirror": {
+            "spawnCount": 0,
+            "directHitCount": 0,
+            "directKillCount": 0,
+            "cascadeKillCount": 0
+          },
+          "gravityWell": {
+            "spawnCount": 0,
+            "directHitCount": 0,
+            "directKillCount": 0,
+            "cascadeKillCount": 0
+          },
+          "repairNode": {
+            "spawnCount": 0,
+            "directHitCount": 0,
+            "directKillCount": 0,
+            "cascadeKillCount": 0
+          }
+        },
+        "chargedContribution": {
+          "damage": 0,
+          "kills": 0,
+          "photons": 0
+        },
+        "modifierRngPolicy": "independent mechanical stream; one draw per spawn attempt including OFF and Enhanced",
+        "comboMilestones": {
+          "5": 1,
+          "10": 0,
+          "20": 0
+        },
+        "comboEvents": [
+          {
+            "chainId": 14,
+            "threshold": 5,
+            "kills": 5,
+            "at": 3.2732197007806847,
+            "x": 363.58251039742805,
+            "y": 237.06420065626293
+          }
+        ],
+        "timeToFirstChain5": 3.2732197007806847,
+        "maxChain": 6,
+        "comboFeedbackEnabled": true,
+        "durationSeconds": 20,
+        "seed": 31415,
+        "levels": {
+          "crushPower": 0,
+          "shardPower": 0,
+          "shardRange": 0,
+          "chainAmplifier": 0,
+          "extraTime": 0,
+          "crushSpeed": 0,
+          "impactPulse": 0,
+          "ricochetPlus": 0,
+          "shardBloom": 0,
+          "echoCatalyst": 0,
+          "photonBoost": 0,
+          "precisionFracture": 0,
+          "yieldStabilizer": 0,
+          "rareSeparator": 0,
+          "fragmentRelay": 0,
+          "kineticReach": 0,
+          "resonanceLayer": 0,
+          "salvageScanner": 0,
+          "catalystChannel": 0,
+          "weakpointScanner": 0,
+          "armorShatter": 0,
+          "markedTarget": 0,
+          "chainStarter": 0,
+          "executionPulse": 0,
+          "piercingShard": 0,
+          "angularSplit": 0,
+          "mirrorReturn": 0,
+          "ricochetBloom": 0,
+          "portalMomentum": 0,
+          "fuseAccelerator": 0,
+          "conductiveSurge": 0,
+          "delayedEcho": 0,
+          "resonanceBurst": 0,
+          "chainOverdrive": 0,
+          "gravityBreak": 0,
+          "portalCalibration": 0,
+          "phaseDisruptor": 0,
+          "magneticPolarity": 0,
+          "targetIntercept": 0,
+          "rareHarvest": 0,
+          "catalystExtraction": 0,
+          "precisionSalvage": 0,
+          "contractScanner": 0,
+          "refineryCalibration": 0,
+          "splitterMastery": 0,
+          "fuseSymphony": 0,
+          "shieldInversion": 0,
+          "ancientBreaker": 0,
+          "prismaticCascade": 0
+        },
+        "totalDestroyed": 57,
+        "directKills": 38,
+        "cascadeKills": 19,
+        "bestChain": 6,
+        "photonsEarned": 38,
+        "highestTier": 2,
+        "unlockTimes": {
+          "15": 2.9883330602660276,
+          "45": 15.916666666667037,
+          "pentagon": 2.9883330602660276,
+          "star": 15.916666666667037
+        },
+        "firstCascadeTime": 0.2061284795882449,
+        "inheritanceEnabled": true,
+        "ricochetEnabled": true,
+        "sequentialPropagationEnabled": true,
+        "visualVarietyEnabled": true,
+        "avgCascadeDurationMs": 378.14006520222654,
+        "variantCounts": {
+          "deep": 16,
+          "matte": 24,
+          "bright": 34
+        },
+        "patternCounts": {
+          "arc": 11,
+          "scattered": 27,
+          "burst_cluster": 16,
+          "ringFormation": 6,
+          "bombGarden": 1
+        },
+        "optionChanges": [],
+        "safetyCapsHit": 0,
+        "skippedSeconds": 0,
+        "skippedEvents": 0,
+        "peakShards": 9
+      },
+      "seen": [
+        "triangle",
+        "square",
+        "pentagon",
+        "splitter",
+        "fuseBomb",
+        "star"
+      ],
+      "averageFPS": 125.91227668244427,
+      "tickP95": 0.4000000022351742
+    }
+  ],
+  "checks": [
+    "fresh offer fixed across reload, real UI acceptance",
+    "Fresh Lab excludes live save and offer sequence"
+  ],
+  "errors": [],
+  "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok((await snap()).remaining>19.9)\n\n    at play (file:///C:/Users/limse/Desktop/%ED%9A%8C%EC%82%AC/AI_PJT/shard_storm/tests/m7-m8-browser.mjs:15:66)\n    at async file:///C:/Users/limse/Desktop/%ED%9A%8C%EC%82%AC/AI_PJT/shard_storm/tests/m7-m8-browser.mjs:30:78"
+}

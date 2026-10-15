@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "commands": [
+    "npm run benchmark",
+    "npm run benchmark:balance",
+    "npm run benchmark:m5-m6",
+    "M7_RUNS=1 npm run benchmark:m7-m8",
+    "CONTENT_RUNS=1 npm run benchmark:m9",
+    "M10_RUNS=1 npm run benchmark:m10"
+  ],
+  "allCommandExitCodes": 0,
+  "restoredHistoricalOutputs": {
+    "v09-legacy-regression-results.json": {
+      "exactBytes": false,
+      "sameUtf8Text": true
+    },
+    "v09-short-regression-results.json": {
+      "exactBytes": false,
+      "sameUtf8Text": true
+    },
+    "v09-balance-results.json": {
+      "exactBytes": false,
+      "sameUtf8Text": true
+    },
+    "m5-m6-balance.json": {
+      "exactBytes": false,
+      "sameUtf8Text": true
+    },
+    "m5-m6-balance-summary.txt": {
+      "exactBytes": true,
+      "sameUtf8Text": true
+    },
+    "m7-m8-balance.json": {
+      "exactBytes": false,
+      "sameUtf8Text": true
+    },
+    "m9-balance-results.json": {
+      "exactBytes": true,
+      "sameUtf8Text": true
+    },
+    "m10-balance-results.json": {
+      "exactBytes": true,
+      "sameUtf8Text": true
+    }
+  },
+  "freshResults": {
+    "m7-m8-balance.json": {
+      "passed": true,
+      "actualRuns": 650,
+      "actualGrowthRuns": null,
+      "exitCode": 0,
+      "passEvidence": "benchmark-m7-m8.txt and successful command exit; legacy result format has no passed field"
+    },
+    "m9-balance-results.json": {
+      "passed": true,
+      "actualRuns": 165,
+      "actualGrowthRuns": null
+    },
+    "m10-balance-results.json": {
+      "passed": true,
+      "actualRuns": 240,
+      "actualGrowthRuns": null
+    }
+  },
+  "method": "Current integrated M11 code. Legacy/short20, balance486, M5M6 full1573; newer growth regressions are smoke, not 300Run evidence. Independent full milestone matrices retained separately. Disk backup reads Git LF originals; Windows working files can retain CRLF. Historical UTF8 text equality verified."
+}
