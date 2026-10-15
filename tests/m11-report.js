@@ -8,7 +8,7 @@ const data=read('artifacts/m11-balance-results.json'),browser=read('artifacts/m1
 const currentStorage=read('artifacts/storage-current32-results.json');assert.equal(currentStorage.passed,true);assert.equal(currentStorage.fullCurrentM11Runs,20);assert.equal(currentStorage.reloadBankExact,true);assert.equal(currentStorage.reloadRecordsExact,true);
 assert.equal(data.passed,true);assert.equal(data.actualRuns,54000);assert.equal(data.sourceFiles.length,180);
 for(const r of [browser,storage,ui,combined,perf])assert.equal(r.passed,true);
-assert.equal(browserRegression.passed,true);assert.equal(browserRegression.actual20SecondRuns,24);
+assert.equal(browserRegression.passed,true);assert.equal(browserRegression.actual20SecondRuns,28);
 assert.equal(browser.runs.length,7);assert.equal(storage.fullRecords,20);assert.equal(storage.size.exact,true);assert.equal(combined.actualRuns,60);assert.equal(perf.records.length,90);assert.equal(perf.isolated,true);
 assert.equal(data.lateContacts,0);assert.ok(data.maxProjectileError<.002&&data.maxWaveError<.002);
 const paths=data.sourceFiles.map(p=>JSON.parse(gunzipSync(readFileSync(p))));
@@ -115,7 +115,7 @@ Chrome ${browser.browser} 실제20초7Run(자연 fresh1+명시된 도형 fixture
 
 54,000Run/180경로와60강화 조합 FX A/B, 단독90Run 성능/OFF 정확 일치가 PASS입니다. [Balance Report](Shard_Storm_M11_Balance_Report.md)에 실제50/100/200/300 성장·자연 기술/Elite 빈도·상한·제한을 기록했습니다. 기존 회귀와 브라우저 재실행은 artifacts/m11-regression에 분리해 이전 보고서 증거를 덮어쓰지 않습니다.
 
-현재 코드의 기존 benchmark20/기본 balance486/M5M6 1573/M7M8 650(230성장 smoke+420효과 비교)/M9 smoke165/M10 smoke240도 PASS입니다. 현재 Chrome 총24실제20초 Run은 M11 7+M9 5+M7M8 6+M10 6이며 모두 콘솔 오류0입니다. [집계](../artifacts/m11-browser-qa-summary.json). M7/M8의 과거19노드 기대값은49개와 기존19노드 모두의 보존 검사로 갱신했습니다. 클릭 후100ms 내 응답에 의존하던 timer 검사는 실제 기본20초 설정을 직접 확인하도록 고쳤고 최종20초·정산 검사는 유지했습니다. 이 실패와 수정 후 결과를 함께 보존했습니다.
+현재 코드의 기존 benchmark20/기본 balance486/M5M6 1573/M7M8 650(230성장 smoke+420효과 비교)/M9 smoke165/M10 smoke240도 PASS입니다. 현재 Chrome 총28실제20초 Run은 M11 7+M9 5+M7M8 6+M10 6+M5M6 4이며 모두 콘솔 오류0입니다. [집계](../artifacts/m11-browser-qa-summary.json). M7/M8과 M5/M6의 과거19노드 기대값은49개와 기존19노드의 보존 검사로 갱신했습니다. M5/M6의 기존20개 선행 연결·구매·광석·FPS·Rank·새로고침 검사는 유지했습니다. 클릭 직후 wall-clock 응답에 의존하던 timer 검사는 실제 기본20초 설정·종료 시간을 직접 확인하도록 고쳤고 정산 검사는 유지했습니다. CSS960px 고정 검사는 확대된 화면에서 정확한 논리960×540 변환 검사로 갱신했습니다. 실패와 수정 후 결과를 함께 보존했습니다.
 
 ## 발견한 오류와 수정
 
@@ -142,10 +142,10 @@ writeFileSync('artifacts/M9_M11_Evidence_Index.md',`# M9.0~M11 QA evidence
 ## Current integration regressions
 
 - m11-unit-final-current.txt:307 unit tests PASS,0fail/skip.
-- m11-browser-qa-summary.json:24 actual20s Chrome pointer Runs,0console errors. M11 seven plus m11-regression/browser-verified M9 five/M7M8 six/M10 six. Controlled profiles are labeled in every source.
+- m11-browser-qa-summary.json:28 actual20s Chrome pointer Runs,0console errors. M11 seven plus m11-regression/browser-verified M9 five/M7M8 six/M10 six, browser-m5-m6-verified M5M6 four. Controlled profiles are labeled in every source.
 - m11-ui-browser-results.json: actual Phase/Reinforced pointer checks and injected Codex cosmetic display coverage. This does not prove naturally earned mastery.
 - m11-regression/result.json: benchmark20, balance486, M5M6 1573, M7M8 smoke650(includes420effect comparisons), M9 smoke165, M10 smoke240. These are separate from completed growth datasets. Source files with -1.json.gz are smoke checkpoints.
-- m11-regression/browser, browser-followup, browser-final: retained failed historical harness attempts (old19-node expectation and brittle wall-time assertion). browser-verified is the successful final regression set. Do not count failed attempts as extra passing Runs.
+- m11-regression/browser, browser-followup, browser-final and browser-m5-m6: retained failed historical harness attempts (old19-node expectation, brittle wall-time assertion and obsolete960px CSS width). browser-verified and browser-m5-m6-verified are successful final regression sets. Do not count failed attempts as extra passing Runs.
 
 ## Storage and performance
 

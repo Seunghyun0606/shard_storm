@@ -2,9 +2,9 @@
 
 M9.0~M11의 플레이 기능을 연결했습니다. **19도형·secondary trait8·49스킬/100레벨·Signature10종 중3개·Evolution15형태 중2계열·Codex19종×4단계·Elite6종·schema8**입니다. 기존20초 Run·7도형·19스킬·Relic/Contract/Anomaly·재화·기록을 유지합니다. 사용자 승인 A안에 따라 같은 저장 키의 전체 내용을 무손실 압축하며 상세 로그를 삭제하지 않습니다.
 
-현재 전체307개 테스트와 저장 용량/복구 Chrome QA가 PASS입니다. 압축 통합 후 M11의 기본 계정1회+신규 도형 fixture6회 실제20초 포인터 QA도 PASS이며, Codex 보상 표시와 Phase/Reinforced 조합의 실제 포인터 검증을 추가했습니다. M10의72000Run 및 M11의54000Run 전체 성장 실험은 진행 중입니다. **장기 검증·최종 보고서까지 완료했다는 뜻은 아닙니다.** 재개 상태는 [작업 로그](docs/Shard_Storm_M9_M11_Work_Log.md)를 참조하세요. 아래 이전 마일스톤 설명은 당시 기록입니다.
+현재 전체307개 테스트와 저장 용량/복구 Chrome QA가 PASS입니다. 현재 통합 코드의 M11 7회+M9 5회+M7/M8 6회+M10 6회+M5/M6 4회, 총28회 실제20초 포인터 QA도 PASS입니다. Codex 보상 표시·Phase/Reinforced 포인터 검증과 현재 MAX32초20기록의 새로고침 후 원문 동일성을 추가 확인했습니다. M10의72000Run/240경로 전체 성장 실험은 완료·수집했고, M11의54000Run은 진행 중입니다. **전체 장기 검증·최종 보고서까지 완료했다는 뜻은 아닙니다.** 재개 상태는 [작업 로그](docs/Shard_Storm_M9_M11_Work_Log.md)를 참조하세요. 아래 이전 마일스톤 설명은 당시 기록입니다.
 
-신규 명령: `npm run benchmark:m11`, `npm run qa:m11`, `npm run qa:storage`. 기존 테스트·벤치마크 명령은 유지했습니다. Codex/Elite는 TITLE/RESULT의 CODEX 패널에서 확인하며 최대2개 과제를 추적할 수 있습니다. 자동 입력과 fixture 결과는 사람의 실제 재미 검증과 구분합니다.
+신규 명령: `npm run benchmark:m11`, `npm run qa:m11`, `npm run qa:storage`, `npm run qa:storage:current`. 기존 테스트·벤치마크 명령은 유지했습니다. Codex/Elite는 TITLE/RESULT의 CODEX 패널에서 확인하며 최대2개 과제를 추적할 수 있습니다. 자동 입력과 fixture 결과는 사람의 실제 재미 검증과 구분합니다. [저장 형식·용량 검증](docs/Shard_Storm_Save_Capacity_Decision.md), [사람 플레이 가이드](docs/Shard_Storm_M9_M11_Human_Playtest.md).
 
 - FOCUS toggles a viewport-sized field; logical coordinates remain960x540. Backing resolution follows CSS/DPR up to2. DEV options include Combat FX/Shake/Reduced Motion.
 - New shapes: Splitter/Fuse Bomb/Conductor/Mirror/Gravity Well/Repair Node. The collapsible Shape Ecology guide explains each mechanic. Echo contributes only to visible combos, with0Raw/no permanent or reward-objective progress.

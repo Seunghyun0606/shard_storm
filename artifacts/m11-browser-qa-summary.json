@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "actual20SecondRuns": 24,
+  "actual20SecondRuns": 28,
   "sources": [
     {
       "source": "m11-browser-results.json",
@@ -33,6 +33,14 @@
       "consoleErrors": 0,
       "browser": "155.0.8059.79",
       "sha256Utf8LF": "0c15c6734b8d3bbf34686e890a75f949fccced467f5aad994efd7ecd9b9e69bc"
+    },
+    {
+      "source": "m11-regression/browser-m5-m6-verified/m5-m6/m5-m6-browser-results.json",
+      "sha256Utf8LF": "12240320d8a9f5ede08c28636e9259d43e08f0e7b77503e0d91609878a159f11",
+      "passed": true,
+      "runs": 4,
+      "consoleErrors": 0,
+      "browser": "155.0.8059.79"
     }
   ],
   "extraChecks": [

@@ -1,0 +1,18 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+979.125 !== 960
+
+    at file:///C:/Users/limse/Desktop/%ED%9A%8C%EC%82%AC/AI_PJT/shard_storm/tests/m5-m6-browser.mjs:46:315 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 979.125,
+  expected: 960,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.18.0

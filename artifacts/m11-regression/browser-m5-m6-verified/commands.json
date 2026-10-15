@@ -1,0 +1,7 @@
+[
+  {
+    "milestone": "m5-m6",
+    "script": "m5-m6-browser.mjs",
+    "exitCode": 0
+  }
+]
