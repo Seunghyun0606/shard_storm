@@ -1,3 +1,5 @@
+import {ADVANCED_TRAITS} from './advanced-defs.js';
+import {codexEvent} from './codex.js';
 import { CONFIG as C } from './config.js';
 import {level,form,expansionUsed,expansionReflected,expansionFuseExecuted} from './expansion.js';
 import { ECOLOGY_SHAPES, TRAITS, FORMATIONS } from './ecology-defs.js';
@@ -10,7 +12,7 @@ export function initEcology(g, enabled, introSeen = {}) {
 }
 export function ecologyLog(g,kind,s,cause={},extra={}) {
   g.ecologyCounts[kind]=(g.ecologyCounts[kind]||0)+1;
-  const eventId=g.nextEcologyEvent++;if(g.ecologyEvents.length<2048)g.ecologyEvents.push({eventId,kind,sourceId:s.id,chainId:cause.chainId,at:g.simulationTime,...extra});
+  codexEvent(g,kind,s,cause,extra);const eventId=g.nextEcologyEvent++;if(g.ecologyEvents.length<2048)g.ecologyEvents.push({eventId,kind,sourceId:s.id,chainId:cause.chainId,at:g.simulationTime,...extra});
 }
 export const ordinary = s => !C.shapes[s.type].special && !s.echo;
 export function near(g,s,radius,predicate=ordinary) {
@@ -20,7 +22,7 @@ export function near(g,s,radius,predicate=ordinary) {
 export function ecologyType(g) {
   if(!g.ecologyEnabled)return null;
   const rolls=Object.keys(ECOLOGY_SHAPES).map(()=>g.ecologyRng());
-  if(g.alive.filter(s=>C.shapes[s.type].ecology).length>=7)return null;
+  if(g.alive.filter(s=>C.shapes[s.type].ecology&&!C.shapes[s.type].advanced).length>=7)return null;
   const eligible=Object.entries(ECOLOGY_SHAPES).filter(([id,d])=>g.discoveryRank>=d.rank&&g.highestTier>=d.tier&&g.alive.filter(s=>s.type===id).length<d.cap);
   const introduction=eligible.find(([id])=>!g.introSeen[id]&&!g.introConsumed.includes(id));
   if(introduction)return introduction[0];
@@ -29,7 +31,7 @@ export function ecologyType(g) {
 export function rollTrait(g,s) {
   const roll=g.traitRng();if(!g.ecologyEnabled||!g.options.secondaryTraitsEnabled||!g.options.modifiers||g.initializing||s.echo)return null;
   let cursor=0;
-  for(const [id,d]of Object.entries(TRAITS)){
+  for(const [id,d]of Object.entries(g.advancedEnabled?{...TRAITS,...ADVANCED_TRAITS}:TRAITS)){
     if(g.discoveryRank<d.rank)continue;cursor+=d.chance;
     if(roll<cursor)return d.exclude.includes(s.type)||(d.excludeEnhanced&&s.enhanced)||(d.excludeCharged&&s.modifier==='charged')?null:id;
   }
@@ -38,7 +40,7 @@ export function rollTrait(g,s) {
 export function ecologySpawn(g,s) {
   s.secondaryTrait=rollTrait(g,s);
   if(!g.ecologyEnabled)return;
-  if(C.shapes[s.type].ecology&&!g.introConsumed.includes(s.type)&&!g.introSeen[s.type]){g.introConsumed.push(s.type);g.introFormationQueue.push(s);ecologyLog(g,'introduction',s,{}, {type:s.type});}
+  if(C.shapes[s.type].ecology&&!C.shapes[s.type].advanced&&!g.introConsumed.includes(s.type)&&!g.introSeen[s.type]){g.introConsumed.push(s.type);g.introFormationQueue.push(s);ecologyLog(g,'introduction',s,{}, {type:s.type});}
   if(s.type==='conductor')s.linkIds=near(g,s,115+(level(g,'conductiveSurge')>=2?15:0)).slice(0,2).map(t=>t.id);
   if(s.type==='repairNode')s.nextRepair=g.simulationTime+.85;
 }

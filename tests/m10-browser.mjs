@@ -25,7 +25,7 @@ try {
    localStorage.setItem(C.storageKey,JSON.stringify(s));
   },mode);await page.reload();
   if(mode!=='Fresh')await page.locator('.edition').evaluate(e=>e.append(' · QA FIXTURE'));
-  assert.equal((await snapshot()).saveVersion,7);
+  assert.equal((await snapshot()).saveVersion,8);
   if(mode==='Signature3') {
    await page.locator('#build-start summary').click();
    assert.equal(await page.locator('#build-start [data-signature]').count(),10);assert.equal(await page.locator('#build-start [data-evolution-family]').count(),5);

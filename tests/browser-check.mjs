@@ -48,7 +48,7 @@ try {
   const legacy = { saveVersion: 1, bank: 321, levels: { crushPower: 2, shardPower: 0, shardRange: 1, chainAmplifier: 1, extraTime: 2 }, bestStats: { totalDestroyed: 120, bestChain: 14, photonsEarned: 900 }, lastRuns: [{ photonsEarned: 900, seed: 7 }], options: { inheritance: false, ricochet: true, damageVFX: true, sound: false } };
   await page.evaluate(data => localStorage.setItem('shard-storm-v1', JSON.stringify(data)), legacy); await page.reload();
   let migrated = await snapshot(); assert.equal(migrated.saveVersion, 2); assert.equal(migrated.bank, 321); assert.equal(migrated.levels.shardRange, 1); assert.equal(migrated.levels.impactPulse, 0); assert.equal(migrated.options.inheritance, false); assert.equal(migrated.derivedStats.shardRange, 230);
-  const migratedRaw = await page.evaluate(() => JSON.parse(localStorage.getItem('shard-storm-v1'))); assert.deepEqual(migratedRaw.bestStats, legacy.bestStats); assert.deepEqual(migratedRaw.lastRuns, legacy.lastRuns); checks.push('legacy v0.6 save migrated and persisted with bank / five levels / best / history');
+  const migratedRaw = await page.evaluate(async()=>{const{decodeSave}=await import('./save-codec.js');return decodeSave(localStorage.getItem('shard-storm-v1'));}); assert.deepEqual(migratedRaw.bestStats, legacy.bestStats); assert.deepEqual(migratedRaw.lastRuns, legacy.lastRuns); checks.push('legacy v0.6 save migrated and persisted with bank / five levels / best / history');
   await page.evaluate(() => localStorage.clear()); await page.reload();
   await screenshot('01-title'); assert.equal((await snapshot()).state, 'TITLE');
   await page.locator('#start').click(); await clickWorld(480, 335); await page.waitForTimeout(190);
@@ -78,7 +78,7 @@ try {
   assert.equal((await snapshot()).levels.photonBoost, 1); checks.push('all six P1 skills purchased through real prerequisite paths');
   await screenshot('07-p1-skill-tree');
   const replay = await page.locator('#again').boundingBox(), resultBounds = await page.locator('#result').boundingBox(); assert.ok(replay.y + replay.height <= resultBounds.y + resultBounds.height + 1); checks.push('graph-only scrolling keeps replay in result bounds');
-  const exact = await snapshot(); const raw = await page.evaluate(() => JSON.parse(localStorage.getItem('shard-storm-v1'))); raw.bank = 0;
+  const exact = await snapshot(); const raw = await page.evaluate(async()=>{const{decodeSave}=await import('./save-codec.js');return decodeSave(localStorage.getItem('shard-storm-v1'));}); raw.bank = 0;
   await page.evaluate(data => localStorage.setItem('shard-storm-v1', JSON.stringify(data)), raw); await page.reload();
   await page.keyboard.press('d'); await page.locator('#duration').fill('1'); await page.locator('#same-seed').click(); await page.locator('#dev-close').click();
   await page.locator('#result').waitFor({ state: 'visible' }); assert.equal(await (await selectSkill('shardPower')).isEnabled(), false); checks.push('insufficient bank button disabled');

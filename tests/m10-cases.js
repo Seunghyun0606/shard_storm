@@ -149,7 +149,7 @@ export function registerM10Cases() {
   for(let version=1;version<=7;version++){
    const save=freshSave();save.saveVersion=version;save.bank=123456;save.catalystBalance=33;save.levels.crushPower=2;save.levels.extraTime=1;save.lifetimeDestroyed=8000;save.discoveryRank=4;
    save.signatureLoadout=['unknown','chainStarter','chainStarter'];save.levels.chainStarter=1;save.evolutionOwned={direct:['focusStrike','unknown']};save.evolutionActive=[{family:'direct',form:'focusStrike'},{family:'direct',form:'focusStrike'}];
-   const loaded=loadSave({getItem:()=>JSON.stringify(save)});assert.equal(loaded.saveVersion,7);assert.equal(loaded.bank,123456);assert.equal(loaded.levels.crushPower,2);assert.equal(loaded.levels.extraTime,1);
+   const loaded=loadSave({getItem:()=>JSON.stringify(save)});assert.equal(loaded.saveVersion,C.saveVersion);assert.equal(loaded.bank,123456);assert.equal(loaded.levels.crushPower,2);assert.equal(loaded.levels.extraTime,1);
    if(version>=3)assert.equal(loaded.catalystBalance,33);
    assert.deepEqual(loaded.signatureLoadout,version>=7?['chainStarter']:[]);assert.equal(loaded.evolutionActive.length,version>=7?1:0);
   }

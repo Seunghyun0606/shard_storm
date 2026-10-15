@@ -1,3 +1,4 @@
+import {codexEvent} from './codex.js';
 import { CONFIG as C } from './config.js';
 import {form,expansionUsed,expansionStageStats,expansionStageExecuted} from './expansion.js';
 import { poseAt } from './motion.js';
@@ -66,6 +67,7 @@ export function healthStages(game,s,previous,cause) {
       if(s.type==='ancient')for(let n=0;n<cfg.shards;n++)game.emitAux(at,at.angle+n*Math.PI,child,'ancient-fragment',cfg.shardDamage,cfg.shardRange);
       if(s.type==='ancient'&&!cause.noRelicProc&&game.relicLoadout.includes('ancientResonator')){const r=C.relics.ancientResonator;const p=game.emitAux(at,at.angle+Math.PI/2,{...child,relicId:'ancientResonator',noRelicProc:true},'relic-ancient',r.damage,r.range);if(p){p.relicId='ancientResonator';game.relicActivations.ancientResonator=(game.relicActivations.ancientResonator||0)+1;}}
       const wave=game.area(at,cfg.radius,damage,{...child,relicId:governor?'reactorGovernor':undefined},C.shapes[s.type].color,s.id);
+      if(wave)codexEvent(game,'stage',s,child,{stageIndex:i+1});
       if(wave&&s.type==='reactor'){for(const id of ['quick','delayed'])if(form(game,'reactor',id))expansionUsed(game,`evolution:${id}`,child,{waveId:wave.id});expansionStageExecuted(game,s,child,wave);count(game,'reactorStageWaveExecuted',1,{eventType:'stageWaveExecuted',sourceShapeId:s.id,stageIndex:i+1,chainId:cause.chainId});if(governor)game.relicActivations.reactorGovernor=(game.relicActivations.reactorGovernor||0)+1;}
     },{...child,relicId:governor?'reactorGovernor':undefined},delay);
   }

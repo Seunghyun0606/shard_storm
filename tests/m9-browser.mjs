@@ -9,7 +9,7 @@ try{
  for(const rank of [0,1,2,3]){
   await page.goto(base);await page.evaluate(async rank=>{const{freshSave}=await import('./storage.js'),{CONFIG:C}=await import('./config.js');const s=freshSave();if(rank){s.lifetimeDestroyed=C.discovery[rank].threshold;s.discoveryRank=rank;s.bank=10000;s.catalystBalance=200;for(const[k,u]of Object.entries(C.upgrades))if(k!=='extraTime'&&(u.rank||0)<=rank)s.levels[k]=u.max;}localStorage.setItem(C.storageKey,JSON.stringify(s));},rank);await page.reload();
   if(rank)await page.locator('.edition').evaluate(el=>el.append(' · QA FIXTURE'));
-  if(rank===2)await page.locator('#focus').click();const before=await snap();assert.equal(before.saveVersion,7);
+  if(rank===2)await page.locator('#focus').click();const before=await snap();assert.equal(before.saveVersion,8);
   await page.locator('#start').click();const p=await point({x:480,y:335});await page.mouse.click(p.x,p.y);await page.mouse.down();const seen=new Set();let captured=false;
   while((await snap()).state==='PLAYING'){
    const live=await snap();for(const s of live.shapes)seen.add(s.type);const target=live.shapes.filter(s=>s.grace<=0).sort((a,b)=>Number(Boolean(b.secondaryTrait))-Number(Boolean(a.secondaryTrait))||a.hp-b.hp||a.id-b.id)[0];
@@ -17,7 +17,7 @@ try{
    await page.waitForTimeout(60);
   }
   await page.mouse.up();const pending=await snap();assert.equal(pending.record.ecologyEnabled,true);assert.equal(pending.record.echoRaw,0);assert.ok(pending.successfulClicks+pending.missedClicks>=70,'continuous pointer attack coverage');
-  if(rank===2){await page.reload();assert.equal((await snap()).bank,before.bank+pending.pendingSettlement.payout);const seenIntro=await page.evaluate(()=>JSON.parse(localStorage.getItem('shard-storm-v1')).shapeIntroSeen);for(const id of pending.record.introConsumed)assert.equal(seenIntro[id],true);await page.reload();assert.equal((await snap()).bank,before.bank+pending.pendingSettlement.payout);}
+  if(rank===2){await page.reload();assert.equal((await snap()).bank,before.bank+pending.pendingSettlement.payout);const seenIntro=await page.evaluate(async()=> (await import('./save-codec.js')).decodeSave(localStorage.getItem('shard-storm-v1')).shapeIntroSeen);for(const id of pending.record.introConsumed)assert.equal(seenIntro[id],true);await page.reload();assert.equal((await snap()).bank,before.bank+pending.pendingSettlement.payout);}
   else{if(await page.locator('#refinery-skip').isVisible())await page.locator('#refinery-skip').click();await page.waitForFunction(()=>window.shardStorm.snapshot().settled);assert.equal((await snap()).bank,before.bank+pending.pendingSettlement.payout);await page.setViewportSize({width:620,height:800});await page.locator('#again').scrollIntoViewIfNeeded();await page.screenshot({path:`artifacts/m9-rank${rank}-result.png`,fullPage:true});await page.locator('#again').click();assert.equal((await snap()).state,'PLAYING');await page.setViewportSize({width:1560,height:1000});}
   runs.push({rank,fixture:rank!==0,record:pending.record,seen:[...seen]});
  }

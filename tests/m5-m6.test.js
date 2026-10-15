@@ -29,7 +29,7 @@ test('M5 rank exact boundaries, staged rewards advance once only after completio
   completeSettlement(save);assert.equal(save.discoveryRank,1);assert.equal(save.milestoneWelcomeFlags[1],true);assert.equal(completeSettlement(save),false);assert.equal(save.lifetimeDestroyed,300);
 });
 test('M5 schema1/2/3/4 preserve valid bank, levels, history and exact lifetime; sandbox cannot write',()=>{
-  for(const version of [1,2,3,4]){const mem=memoryStorage(),old={...freshSave(),saveVersion:version,bank:999,levels:{...freshSave().levels,extraTime:6},lifetimeDestroyed:1570,totalRuns:9,lastRuns:[{totalDestroyed:60,photonsEarned:10}]};mem.setItem(C.storageKey,JSON.stringify(old));const s=loadSave(mem);assert.equal(s.saveVersion,7);assert.equal(s.bank,999);assert.equal(s.levels.extraTime,6);assert.deepEqual(s.lastRuns,old.lastRuns);assert.equal(s.lifetimeDestroyed,version<3?0:1570);assert.equal(s.discoveryRank,version<3?0:2);assert.equal(writeSave(mem,{...s,sandbox:true}),false);}
+  for(const version of [1,2,3,4]){const mem=memoryStorage(),old={...freshSave(),saveVersion:version,bank:999,levels:{...freshSave().levels,extraTime:6},lifetimeDestroyed:1570,totalRuns:9,lastRuns:[{totalDestroyed:60,photonsEarned:10}]};mem.setItem(C.storageKey,JSON.stringify(old));const s=loadSave(mem);assert.equal(s.saveVersion,C.saveVersion);assert.equal(s.bank,999);assert.equal(s.levels.extraTime,6);assert.deepEqual(s.lastRuns,old.lastRuns);assert.equal(s.lifetimeDestroyed,version<3?0:1570);assert.equal(s.discoveryRank,version<3?0:2);assert.equal(writeSave(mem,{...s,sandbox:true}),false);}
 });
 test('M5 eight skill purchases require rank, all prerequisites and both currencies atomically',()=>{
   for(const node of skillDefinitions.filter(n=>n.rank)){

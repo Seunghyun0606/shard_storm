@@ -16,6 +16,9 @@
     "benchmark:m9": "node tests/m9-balance.js",
     "qa:m9": "node tests/m9-browser.mjs",
     "benchmark:m10": "node tests/m10-balance.js",
-    "qa:m10": "node tests/m10-browser.mjs"
+    "qa:m10": "node tests/m10-browser.mjs",
+    "benchmark:m11": "node tests/m11-benchmark.js",
+    "qa:m11": "node tests/m11-browser.mjs",
+    "qa:storage": "node tests/save-codec-browser.mjs"
   }
 }

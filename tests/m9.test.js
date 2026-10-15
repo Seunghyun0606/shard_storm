@@ -9,7 +9,7 @@ function arena(args={}){const g=new Game({ecologyEnabled:true,sandbox:true,optio
 function damage(g,s,n,source='direct',chainId=g.newChain()){g.enqueue(s,n,{source,chainId,depth:0});g.flush();return chainId;}
 const advance=(g,t)=>{while(t>1e-9){const step=Math.min(t,C.step);g.update(step);t-=step;}};
 test('M9 exact six definitions/rank AND tier/total seven cap and deterministic introductions',()=>{
- assert.equal(Object.keys(C.shapes).length,13);assert.equal(Object.keys(ECOLOGY_SHAPES).length,6);assert.equal(Object.keys(TRAITS).length,4);
+ assert.equal(Object.values(C.shapes).filter(d=>!d.advanced).length,13);assert.equal(Object.keys(ECOLOGY_SHAPES).length,6);assert.equal(Object.keys(TRAITS).length,4);
  for(const [id,d]of Object.entries(ECOLOGY_SHAPES)){
   const g=arena({discoveryRank:d.rank});g.introSeen=Object.fromEntries(Object.keys(ECOLOGY_SHAPES).filter(k=>k!==id).map(k=>[k,true]));g.highestTier=d.tier-1;assert.equal(ecologyType(g),null);
   g.highestTier=d.tier;assert.equal(ecologyType(g),id);for(let i=0;i<d.cap;i++)g.addShape(id,100+i*75,200,0,false,0);assert.notEqual(ecologyType(g),id);

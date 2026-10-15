@@ -1,3 +1,5 @@
+import {ADVANCED_TRAITS} from './advanced-defs.js';
+import {phaseVulnerable} from './advanced-shapes.js';
 import { CONFIG as C } from './config.js';
 import { spawnAlpha } from './presentation.js';
 import {scannerEligible,level} from './expansion.js';
@@ -36,6 +38,8 @@ export function draw(ctx, game, fps = 60, osReducedMotion = false) {
     const target=game.alive.find(t=>t.id===id);if(!target||links>=3||Math.hypot(target.x-s.x,target.y-s.y)>115+(level(game,'conductiveSurge')>=2?15:0))continue;
     ctx.strokeStyle='#ede08566';ctx.lineWidth=1;ctx.setLineDash([3,5]);ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(target.x,target.y);ctx.stroke();ctx.setLineDash([]);links++;
   }
+  for(const s of game.alive){const ids=s.parasiteIds||(s.portalPartner?[s.portalPartner]:[]);for(const id of ids){const target=game.alive.find(t=>t.id===id);if(!target||links>=3||s.id>target.id&&s.portalPartner)continue;if(!s.portalPartner&&Math.hypot(target.x-s.x,target.y-s.y)>100)continue;ctx.strokeStyle=s.portalPartner?'#72cfff55':'#b4e87b55';ctx.lineWidth=1;ctx.setLineDash([3,6]);ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(target.x,target.y);ctx.stroke();ctx.setLineDash([]);links++;}}
+  for(const a of game.alive.filter(s=>s.secondaryTrait==='polarized'&&!s.polarBroken)){if(links>=3)break;const b=game.alive.filter(s=>s.id!==a.id&&s.secondaryTrait==='polarized'&&!s.polarBroken&&Math.hypot(s.x-a.x,s.y-a.y)<=105).sort((s,t)=>Math.hypot(s.x-a.x,s.y-a.y)-Math.hypot(t.x-a.x,t.y-a.y))[0];if(!b||a.id>b.id)continue;ctx.strokeStyle='#a8d5ff55';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();links++;}
   for (const s of game.alive) {
     const cfg = C.shapes[s.type], scale = (s.grace > 0 ? Math.max(.1, 1 - s.grace / C.spawnGrace) : 1) * (1 + (C.visual.recoilScale - 1) * s.recoil / C.visual.recoilLife);
     const knock = s.knockTime / C.visual.knockbackLife;
@@ -68,7 +72,11 @@ export function draw(ctx, game, fps = 60, osReducedMotion = false) {
     if(s.echo){ctx.font='8px Arial';ctx.textAlign='center';ctx.fillStyle='#91ded7';ctx.fillText('E',0,3);}
     if(s.type==='fuseBomb'&&s.fuseAt&&!s.fuseExploded){ctx.strokeStyle='#fff0cf';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,s.radius+6,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.max(0,Math.min(1,(s.fuseAt-game.elapsed)/.7)));ctx.stroke();}
     if(s.type==='gravityWell'){ctx.strokeStyle=cfg.color;ctx.setLineDash([2,5]);ctx.beginPath();ctx.arc(0,0,s.radius+9,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);}
-    if(s.secondaryTrait&&game.options.modifierVisuals){ctx.strokeStyle='#e7efee';ctx.lineWidth=1;ctx.strokeRect(-s.radius-4,-s.radius-4,9,9);ctx.fillStyle='#fff';ctx.font='8px Arial';ctx.textAlign='center';const marks={reinforced:s.armorUsed?'':'▣',volatile:'✴',reflective:'↪',hollow:'◌'};ctx.fillText(marks[s.secondaryTrait]||'',-s.radius+.5,-s.radius+3);}
+    if(s.elitePrimary){ctx.strokeStyle='#fff2b5';ctx.lineWidth=2;ctx.setLineDash([6,3]);ctx.strokeRect(-s.radius-9,-s.radius-9,2*s.radius+18,2*s.radius+18);ctx.setLineDash([]);ctx.font='8px Arial';ctx.textAlign='center';ctx.fillStyle='#fff2b5';ctx.fillText('ELITE',0,-s.radius-13);}
+    if(s.type==='portalGate'){ctx.strokeStyle=s.portalPartner?'#72cfff':'#50697b';ctx.lineWidth=2;for(const r of [.5,1]){ctx.beginPath();ctx.arc(0,0,s.radius*r,0,Math.PI*2);ctx.stroke();}}
+    if(s.type==='phaseCrystal'){ctx.strokeStyle=phaseVulnerable(game,s)?'#f3edff':'#807099';ctx.lineWidth=phaseVulnerable(game,s)?1:3;ctx.setLineDash(phaseVulnerable(game,s)?[]:[4,3]);polygon(ctx,s,.8,false);ctx.stroke();ctx.setLineDash([]);ctx.font='8px Arial';ctx.textAlign='center';ctx.fillStyle=ctx.strokeStyle;ctx.fillText(phaseVulnerable(game,s)?'OPEN':'GUARD',0,-s.radius-7);}
+    if(s.type==='shifter'&&s.nextLeapAt-game.elapsed<=.2){ctx.strokeStyle='#ffb9dc';ctx.lineWidth=1;ctx.setLineDash([2,3]);polygon(ctx,s,1.2,false);ctx.stroke();ctx.setLineDash([]);}
+    if(s.secondaryTrait&&game.options.modifierVisuals){ctx.strokeStyle='#e7efee';ctx.lineWidth=1;ctx.strokeRect(-s.radius-4,-s.radius-4,9,9);ctx.fillStyle='#fff';ctx.font='8px Arial';ctx.textAlign='center';const marks={reinforced:s.armorUsed?'':'▣',volatile:'✴',reflective:'↪',hollow:'◌',...Object.fromEntries(Object.entries(ADVANCED_TRAITS).map(([id,d])=>[id,d.symbol]))};ctx.fillText(marks[s.secondaryTrait]||'',-s.radius+.5,-s.radius+3);}
     if(s.oreGrade&&s.oreGrade!=='common'){const color={prism:'#a9faff',core:'#fff6bc',void:'#e1b2ff'}[s.oreGrade];ctx.save();ctx.translate(s.radius*.4,-s.radius*.45);ctx.fillStyle='#0c1419';ctx.beginPath();ctx.arc(0,0,7,0,Math.PI*2);ctx.fill();ctx.strokeStyle=color;ctx.lineWidth=1.2;ctx.stroke();ctx.fillStyle=color;ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.fillText(C.ore[s.oreGrade].symbol,0,4);ctx.restore();if(game.levels.salvageScanner&&game.elapsed<1){ctx.strokeStyle=color;ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,s.radius+10,0,Math.PI*2);ctx.stroke();}}
     if(s.channelUntil>=game.elapsed){ctx.strokeStyle='#d7bdff';ctx.lineWidth=2;ctx.setLineDash([4,2]);ctx.strokeRect(-s.radius-5,-s.radius-5,2*s.radius+10,2*s.radius+10);ctx.setLineDash([]);}
     if(scannerEligible(game,s)){ctx.strokeStyle='#f4e7a9';ctx.lineWidth=1.5;ctx.strokeRect(-s.radius-7,-s.radius-7,2*s.radius+14,2*s.radius+14);ctx.font='8px Arial';ctx.fillStyle='#f4e7a9';ctx.textAlign='center';ctx.fillText('C',s.radius+10,-s.radius);}
@@ -83,7 +91,7 @@ export function draw(ctx, game, fps = 60, osReducedMotion = false) {
     ctx.save(); ctx.globalAlpha = Math.max(0, 1 - fading); ctx.strokeStyle = wave.color; ctx.lineWidth = wave.sourceKind === 'star' ? 2.8 : 2;
     if (wave.sourceKind === 'impact') ctx.setLineDash([5, 3]);
     const rings = wave.sourceKind === 'star' ? [1, .82, .61] : [1];
-    for (const scale of rings) { ctx.beginPath(); ctx.arc(wave.x, wave.y, wave.radius * scale, 0, Math.PI * 2); ctx.stroke(); }
+    for (const scale of rings) { ctx.beginPath(); ctx.arc(wave.x, wave.y, wave.radius * scale, wave.sector?wave.sector.angle-wave.sector.halfAngle:0, wave.sector?wave.sector.angle+wave.sector.halfAngle:Math.PI * 2); ctx.stroke(); }
     if (wave.sourceKind === 'square') { ctx.lineWidth = .8; for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4 + wave.id; ctx.beginPath(); ctx.moveTo(wave.x + Math.cos(a) * wave.radius, wave.y + Math.sin(a) * wave.radius); ctx.lineTo(wave.x + Math.cos(a + .03) * Math.max(0, wave.radius - 4), wave.y + Math.sin(a + .03) * Math.max(0, wave.radius - 4)); ctx.stroke(); } }
     ctx.restore();
   }

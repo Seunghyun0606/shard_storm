@@ -1,3 +1,6 @@
+import {initAdvanced,advancedType,advancedSpawn,advancedDirectGate,advancedDefense,advancedContact,advancedDamaged,advancedDeath,portalContact,lensMainContact,polarTick,safePortalPair,advancedSkipped} from './advanced-shapes.js';
+import {tryElite} from './elites.js';
+import {codexSnapshot} from './codex.js';
 import { CONFIG as C } from './config.js';
 import {initExpansion,level as skillLevel,form as evolutionForm,expansionBeforeDamage,expansionAfterDefense,expansionDamaged,expansionKilled,expansionNativeWave,expansionWaveStats,expansionShardCreated,expansionReflected,expansionCalibration,expansionUsed} from './expansion.js';
 import { TYPES, emptyLevels, durationFor, tierFor } from './progression.js';
@@ -21,7 +24,7 @@ import { specialType, linkWards, shieldDamage, cleanupWards, hexDeath, specialPl
 let nextRunId = 1;
 
 export class Game {
-  constructor({ seed = C.seed, levels = emptyLevels(), options = C.options, duration, experiment = 'baseline', inputPolicy = 'human', sandbox = false, ruleset = 'v09', tierPreset = 'v09_short', runId, discoveryRank = 0, welcomeFlags = {}, contentMode = 'M5_M6_ON', oreEnabled = true,relicLoadout=[],relicEnabled=true,activeContracts=[],anomalyId=null,metaEnabled=true,ecologyEnabled=false,introSeen={},skillExpansionEnabled=false,signatureLoadout=[],evolutionActive=[],evolutionOwned={} } = {}) {
+  constructor({ seed = C.seed, levels = emptyLevels(), options = C.options, duration, experiment = 'baseline', inputPolicy = 'human', sandbox = false, ruleset = 'v09', tierPreset = 'v09_short', runId, discoveryRank = 0, welcomeFlags = {}, contentMode = 'M5_M6_ON', oreEnabled = true,relicLoadout=[],relicEnabled=true,activeContracts=[],anomalyId=null,metaEnabled=true,ecologyEnabled=false,introSeen={},advancedEnabled=false,advancedIntroFlags={},insightUnlocked=[],eliteHistory={},codexPinnedIds=[],shapeCodex={},skillExpansionEnabled=false,signatureLoadout=[],evolutionActive=[],evolutionOwned={} } = {}) {
     this.relicLoadout=Object.freeze(relicEnabled?normalizeLoadout(relicLoadout):[]);this.metaEnabled=metaEnabled;this.metaCounters=emptyCounters();this.causalLog=[];this.nextCausalEvent=0;this.relicActivations={};this.siphonCharges=[];this.siphonConsumed=0;this.anomalyId=metaEnabled&&C.anomalies[anomalyId]?.rank<=discoveryRank?anomalyId:null;this.contractSnapshot=Object.freeze(structuredClone(activeContracts).slice(0,3).filter(r=>C.contracts[r.id]?.rank<=discoveryRank).map(Object.freeze));this.metaResult=null;
     this.discoveryRank = discoveryRank; this.contentMode = ruleset === 'legacy_v08' ? 'V09_ONLY' : contentMode; this.oreEnabled = oreEnabled && options.oreEnabled!==false && this.contentMode !== 'V09_ONLY'; this.welcomeFlags = {...welcomeFlags}; this.welcomeConsumed = [];
     this.specialRng=seededRNG(seed^0x47bfee);this.patternRng=seededRNG(seed^0x841ac);this.specialSpawns={};this.tetherPairs=0;this.tetherAttempts=0;this.stageEvents=[];
@@ -56,7 +59,7 @@ export class Game {
     this.typeStats = Object.fromEntries(Object.keys(C.shapes).map(k => [k, { spawnCount: 0, directHitCount: 0, directKillCount: 0, cascadeKillCount: 0 }]));
     this.chargedContribution = { damage: 0, kills: 0, photons: 0 };
     initExpansion(this,skillExpansionEnabled,signatureLoadout,evolutionActive,evolutionOwned);Object.freeze(this.levels);
-    initEcology(this,ecologyEnabled&&ruleset!=='legacy_v08',introSeen);this.initializing = true; this.initialLayout(); this.initializing = false;
+    initEcology(this,ecologyEnabled&&ruleset!=='legacy_v08',introSeen);initAdvanced(this,advancedEnabled,advancedIntroFlags,insightUnlocked,eliteHistory);this.codexPinnedIds=[...codexPinnedIds].slice(0,2);this.codexAtStart=structuredClone(shapeCodex);this.initializing = true; this.initialLayout(); this.initializing = false;
   }
   get alive() { return this.shapes.filter(s => !s.destroyed); }
   get target() { const base=this.tiers[tierFor(this.totalDestroyed, this.tiers)].target,a=C.anomalies[this.anomalyId];return a?.density?Math.min(a.aliveCap,Math.ceil(base*a.density)):base; }
@@ -89,7 +92,8 @@ export class Game {
       }
     }
   }
-  waveGap(wave, target, time) { const p = this.positionAt(target, time); return Math.hypot(p.x - wave.x, p.y - wave.y) - target.radius - Math.min(wave.maxRadius, Math.max(0, wave.speed * (time - wave.bornAt))); }
+  waveSectorContains(wave,target,time){if(!wave.sector)return true;const p=this.positionAt(target,time),a=Math.atan2(p.y-wave.y,p.x-wave.x),delta=Math.atan2(Math.sin(a-wave.sector.angle),Math.cos(a-wave.sector.angle));return Math.abs(delta)<=wave.sector.halfAngle+Math.asin(Math.min(1,target.radius/Math.max(target.radius,Math.hypot(p.x-wave.x,p.y-wave.y))))+1e-9;}
+  waveGap(wave,target,time){const p=this.positionAt(target,time),r=Math.min(wave.maxRadius,Math.max(0,wave.speed*(time-wave.bornAt)));if(!wave.sector)return Math.hypot(p.x-wave.x,p.y-wave.y)-target.radius-r;const angle=Math.atan2(p.y-wave.y,p.x-wave.x),delta=Math.atan2(Math.sin(angle-wave.sector.angle),Math.cos(angle-wave.sector.angle)),at=wave.sector.angle+Math.max(-wave.sector.halfAngle,Math.min(wave.sector.halfAngle,delta));return Math.hypot(p.x-wave.x-Math.cos(at)*r,p.y-wave.y-Math.sin(at)*r)-target.radius;}
   dynamicWaveContacts(start, end) {
     const hits = [];
     for (const wave of this.waves.filter(w => w.dynamic)) {
@@ -100,8 +104,8 @@ export class Game {
         const initial = this.waveGap(wave, target, start);
         // A newly spawned/toggled target behind an already passed front cannot hit.
         if (initial < -C.motion.contactTolerance && start > wave.bornAt + 1e-9) { wave.registeredIds.add(target.id); continue; }
-        const time = firstContact(t => this.waveGap(wave, target, t), start, last, wave.speed + C.motion.maxSpeed);
-        if (time !== null) hits.push({ wave, target, time });
+        const time = firstContact(t => this.waveGap(wave, target, t), start, Math.min(last,this.advancedEnabled&&target.type==='shifter'?(target.nextLeapAt??Infinity)-1e-9:Infinity), wave.speed + C.motion.maxSpeed);
+        if (time !== null&&this.waveSectorContains(wave,target,time)) hits.push({ wave, target, time });
       }
     }
     return hits.sort((a,b) => a.time - b.time || a.wave.id - b.wave.id || a.target.id - b.target.id);
@@ -137,17 +141,24 @@ export class Game {
     this.binMetric('typeStats', type, 'spawnCount'); this.binMetric('modifierStats', s.modifier, 'spawnCount');
     const bin = this.binAt(); bin.hpDistribution[s.hp] = (bin.hpDistribution[s.hp] || 0) + 1; bin.enhancedSpawns += Number(s.enhanced); const b5 = this.binAt5(); b5.hpDistribution[s.hp] = (b5.hpDistribution[s.hp] || 0) + 1; b5.enhancedSpawns += Number(s.enhanced);
     for (const wave of this.waves) this.registerWaveTarget(wave, s);
-    ecologySpawn(this,s);if(this.contentMode==='M5_M6_ON')linkWards(this);
+    ecologySpawn(this,s);s.fixture=Boolean(flags.fixture||flags.debug);advancedSpawn(this,s);if(this.contentMode==='M5_M6_ON')linkWards(this);
     return s;
   }
   spawn(forced = null, grace = C.spawnGrace, avoid = []) {
     if (this.state !== 'PLAYING' || this.remaining <= 0) return null;
     this.spawnAttempts++; this.binAt().spawnAttempts++; this.binAt5().spawnAttempts++;
     const tier = this.tiers[tierFor(this.totalDestroyed, this.tiers)]; let type = forced;
-    if(C.shapes[type]?.ecology&&this.alive.filter(s=>C.shapes[s.type].ecology).length>=7)type=null;
+    if(C.shapes[type]?.ecology&&!C.shapes[type].advanced&&this.alive.filter(s=>C.shapes[s.type].ecology&&!C.shapes[s.type].advanced).length>=7)type=null;
     if(C.shapes[type]?.special&&(this.alive.filter(s=>s.type===type).length>=C.shapes[type].cap||(this.specialSpawns[type]||0)>=(C.shapes[type].runCap||Infinity)))type=null;
+    if(!type&&!this.initializing&&this.contentMode==='M5_M6_ON'&&this.advancedEnabled){
+      const encounter=tryElite(this);if(encounter){this.spawnSuccesses+=encounter.length;this.binAt().spawnSuccesses+=encounter.length;this.binAt5().spawnSuccesses+=encounter.length;return encounter[0];}
+    }
     if(!type&&!this.initializing&&this.contentMode==='M5_M6_ON')type=specialType(this);
     if(!type&&!this.initializing&&this.contentMode==='M5_M6_ON')type=ecologyType(this);
+    if(!type&&!this.initializing&&this.contentMode==='M5_M6_ON')type=advancedType(this);
+    if(type==='portalGate'){
+      const pair=safePortalPair(this);if(pair){this.spawnSuccesses+=2;this.binAt().spawnSuccesses+=2;this.binAt5().spawnSuccesses+=2;return pair[0];}type=null;
+    }
     if (!type) { let p = this.rng(); type = TYPES[TYPES.length - 1]; for (let i = 0; i < TYPES.length; i++) { p -= tier.weights[i]; if (p < 0) { type = TYPES[i]; break; } } }
     // Reserve identical motion-safe anchors in both v0.9 A/B modes. Only the
     // legacy ruleset retains v0.8 placement, avoiding a spacing confound.
@@ -269,7 +280,7 @@ export class Game {
   }
   scheduleEffect(action, cause, delay = C.propagation.delay) {
     if (cause.depth > C.caps.depth) { this.cap('depth', cause); return; }
-    const extra=cause.triggeredBySkill||cause.relicId||['reactor','ancient','ward-release','splitter','fuse','conductor','volatile'].includes(cause.source),chain=this.chains.get(cause.chainId);
+    const extra=cause.triggeredBySkill||cause.relicId||['reactor','ancient','ward-release','splitter','fuse','conductor','volatile','parasiteCopied','chainBeacon','prismRefraction','traitResonant','traitFragmented'].includes(cause.source),chain=this.chains.get(cause.chainId);
     if(extra&&chain?.events>=C.caps.events){this.cap('chainEvents',cause);return false;}
     const scheduled=this.scheduleEvent({ kind: 'effect', action, chainId: cause.chainId, sourceKind: cause.source, triggeredBySkill:cause.triggeredBySkill,chargedOrigin: cause.chargedOrigin, generation: cause.depth, scheduledTime: this.simulationTime + delay, priority: 1 });
     if(extra&&scheduled&&chain)chain.events++;return scheduled;
@@ -289,31 +300,32 @@ export class Game {
   flush() {
     // One stable, game-time queue for damage, delayed native effects and splits.
     while (this.queue.length && this.queue[0].scheduledTime <= this.elapsed + 1e-9 && this.state === 'PLAYING') {
-      const event = this.queue.shift(); this.processingTime = event.scheduledTime;
+      const event = this.queue.shift(); this.processingTime = event.scheduledTime;this.processingEventId=event.eventId;
       if (event.kind === 'effect') { event.action(); continue; }
       const { target: s, cause, wave } = event;let damage=event.damage;
       if (wave) { if (wave.hitIds.has(s.id)) { this.physicsChecks.duplicateWaveRejected++; continue; } wave.hitIds.add(s.id); }
       if (s.destroyed || event.scheduledTime + 1e-9 < (s.vulnerableAt || 0) || this.remaining <= 0) continue;
       if(cause.source==='direct'&&cause.consumeSiphon){const bonus=siphonDamage(this);damage+=bonus;if(bonus)cause.relicId='hexSiphon';}
       if (wave?.dynamic) { const gap = this.waveGap(wave, s, this.simulationTime); this.physicsChecks.waveContactsChecked++; this.physicsChecks.maxWaveContactError = Math.max(this.physicsChecks.maxWaveContactError, Math.max(0, gap)); if (this.simulationTime > wave.bornAt + 1e-9 && gap < -.002) this.physicsChecks.lateWaveContacts++; }
+      if(wave?.sector&&!this.waveSectorContains(wave,s,this.simulationTime))continue;
       if (wave) this.knockback(s, wave);
       if(cause.wardRelease){if(s.wardSourceId===cause.wardRelease)releaseWard(this,s,cause.wardOrigin,'wave');continue;}
       if(this.contentMode==='M5_M6_ON'&&wave)skillWaveContact(this,s,cause,wave);
-      damage=expansionBeforeDamage(this,s,damage,cause,wave);
+      advancedContact(this,s,cause,wave);damage=advancedDirectGate(this,s,expansionBeforeDamage(this,s,damage,cause,wave),cause);
        const previous=s.hp,shielded=this.contentMode==='M5_M6_ON'?shieldDamage(this,s,damage,cause):damage;
-      const actual=Math.min(s.hp,Math.max(0,expansionAfterDefense(this,traitDamage(this,s,shielded,cause),cause))),paid=s.echo?0:actual,chain = this.chains.get(cause.chainId);
+      const actual=Math.min(s.hp,Math.max(0,advancedDefense(this,s,expansionAfterDefense(this,traitDamage(this,s,shielded,cause),cause),cause))),paid=s.echo?0:actual,chain = this.chains.get(cause.chainId);
       s.hp -= actual; this.runEarned += paid; this.rawBase += paid; this.rawHP += paid; chain.photons += paid; s.flash = C.visual.flash; s.flashUntil = this.simulationTime + C.visual.flash;
       this.binAt().earnedPhoton += paid; this.binAt5().earnedPhoton += paid;
-      ecologyDamage(this,s,actual,cause);expansionDamaged(this,s,actual,cause,wave);
+      advancedDamaged(this,s,actual,cause,wave);ecologyDamage(this,s,actual,cause);expansionDamaged(this,s,actual,cause,wave);
       if (cause.chargedOrigin) { this.chargedContribution.damage += actual; this.chargedContribution.photons += paid; }
       if (this.options.damageVFX && cause.source !== 'direct') this.debris(s, 3);
       if(this.contentMode==='M5_M6_ON')healthStages(this,s,previous,cause);
       if (s.hp > 0) continue;
-      if(s.echo){s.destroyed=true;expansionKilled(this,s,cause,wave);this.echoKills++;chain.kills++;chain.lastKillAt=this.simulationTime;this.bestChain=Math.max(this.bestChain,chain.kills);this.trackCombo(cause.chainId,s);ecologyLog(this,'echoDeath',s,cause,{parentId:s.parentSplitter,parentChain:s.parentChain});this.visual({kind:'death',x:s.x,y:s.y,shape:{...s},color:C.shapes.triangle.color,life:.15});if(!this.alive.length&&this.totalDestroyed)this.presentation.emit({kind:'fieldClear',at:this.simulationTime,x:s.x,y:s.y,color:'#91ded7'},this.options);continue;}
+      if(s.echo){s.destroyed=true;advancedDeath(this,s,cause,wave);expansionKilled(this,s,cause,wave);this.echoKills++;chain.kills++;chain.lastKillAt=this.simulationTime;this.bestChain=Math.max(this.bestChain,chain.kills);this.trackCombo(cause.chainId,s);ecologyLog(this,'echoDeath',s,cause,{parentId:s.parentSplitter,parentChain:s.parentChain});this.visual({kind:'death',x:s.x,y:s.y,shape:{...s},color:C.shapes.triangle.color,life:.15});if(!this.alive.length&&this.totalDestroyed)this.presentation.emit({kind:'fieldClear',at:this.simulationTime,x:s.x,y:s.y,color:'#91ded7'},this.options);continue;}
       const bonus = Math.ceil(s.bonus * this.stats.bonusMultiplier * (s.modifier === 'charged' ? C.modifiers.chargedBonus : 1));
       s.destroyed = true; this.totalDestroyed++; this.runEarned += bonus; this.rawBase += bonus; this.rawNativeBonus += bonus; chain.photons += bonus; chain.kills++; chain.lastKillAt = this.simulationTime;
       const countersBefore=this.skillExpansionEnabled?{...this.metaCounters}:{};killMetrics(this,s,cause,wave);expansionKilled(this,s,cause,wave,countersBefore);relicKill(this,s,cause);
-      dropOre(this,s,cause);
+      advancedDeath(this,s,cause,wave);dropOre(this,s,cause);
       if(s.type==='hex')hexDeath(this,s,cause);delete s.wardSourceId;
       ancientDeath(this,s,cause);
       if(this.contentMode==='M5_M6_ON')skillKill(this,s,cause);
@@ -388,16 +400,16 @@ export class Game {
     const shard=this.emitShard(origin.x,origin.y,angle,source,cause.chainId,cause.depth,true,origin.id);
     if(shard){Object.assign(shard,{damage,range,life:range/C.shard.speed+C.shard.lifePadding,triggeredBySkill:cause.triggeredBySkill||null,originShapeId:cause.originShapeId,relicId:cause.relicId,noRelicProc:Boolean(cause.noRelicProc),damageSource:source,generationDepth:cause.depth});}return shard;
   }
-  area(s, radius, damage, cause, color, exclude = null) {
+  area(s, radius, damage, cause, color, exclude = null, sector = null) {
     if (this.state !== 'PLAYING' || this.remaining <= 0) return;
     if (cause.depth > C.caps.depth) { this.cap('depth', cause); return; }
     if (this.options.sequentialPropagation) {
       if (this.waves.length >= C.caps.waves) { this.cap('waves', cause); return; }
-      const wave = { id: this.nextWave++, x: s.x, y: s.y, radius: 0, maxRadius: radius, damage, speed: cause.source === 'star' ? C.propagation.starSpeed : C.propagation.squareSpeed, bornAt: this.simulationTime, age: 0, color, cause, chainId: cause.chainId, sourceKind: cause.source, generation: cause.depth, exclude, dynamic: this.options.motionEnabled, hitIds: new Set(), registeredIds: new Set() };
+      const wave = { id: this.nextWave++, x: s.x, y: s.y, radius: 0, maxRadius: radius, damage, speed: cause.source === 'star' ? C.propagation.starSpeed : C.propagation.squareSpeed, bornAt: this.simulationTime, age: 0, color, cause, chainId: cause.chainId, sourceKind: cause.source, generation: cause.depth, exclude, sector, dynamic: this.options.motionEnabled||this.advancedEnabled||Boolean(sector), hitIds: new Set(), registeredIds: new Set() };
       this.waves.push(wave); this.peakWaves = Math.max(this.peakWaves, this.waves.length); for (const target of this.alive) this.registerWaveTarget(wave, target); return wave;
     }
     this.visual({ kind: 'ring', x: s.x, y: s.y, radius, color, life: C.visual.ringLife });
-    for (const other of this.alive) if (other.id !== exclude && Math.hypot(other.x - s.x, other.y - s.y) - other.radius <= radius) {
+    for (const other of this.alive) if (other.id !== exclude && Math.hypot(other.x - s.x, other.y - s.y) - other.radius <= radius&&this.waveSectorContains({x:s.x,y:s.y,sector},other,this.simulationTime)) {
       this.enqueue(other, damage, cause);
       this.knockback(other, s);
     }
@@ -405,6 +417,7 @@ export class Game {
   }
   registerWaveTarget(wave, target) {
     if (wave.dynamic) return;
+    if(!this.waveSectorContains(wave,target,this.simulationTime))return;
     if (target.destroyed || target.id === wave.exclude || wave.registeredIds.has(target.id)) return;
     const contact = Math.max(0, Math.hypot(target.x - wave.x, target.y - wave.y) - target.radius);
     if (contact > wave.maxRadius || wave.bornAt + contact / wave.speed < this.simulationTime - 1e-9) return;
@@ -421,7 +434,9 @@ export class Game {
     s.distance += path.distance; s.age += dt;
     if(path.wallBounces&&!s.small){const old=this.processingTime;this.processingTime=this.elapsed+path.distance/C.shard.speed;expansionReflected(this,s,'wall');this.processingTime=old;}
     if (path.hit) {
-      s.hitIds ||= new Set();s.hitIds.add(path.hit.id);const reflected=reflectContact(this,s,path.hit);s.dead=!reflected;
+      const contactAt=this.elapsed+path.distance/C.shard.speed;
+      if(portalContact(this,s,path.hit,contactAt))return;
+      s.hitIds ||= new Set();s.hitIds.add(path.hit.id);const reflected=lensMainContact(this,s,path.hit)||reflectContact(this,s,path.hit);s.dead=!reflected;
        if(!reflected&&!s.small&&(s.penetrations||0)>0&&!path.hit.echo){s.penetrations--;s.dead=false;if(skillLevel(this,'piercingShard'))expansionUsed(this,'piercingShard',s,{targetId:path.hit.id});if(evolutionForm(this,'shard','piercing'))expansionUsed(this,'evolution:piercing',s,{targetId:path.hit.id});} this.projectileHits++; const hitAt = this.elapsed + path.distance / C.shard.speed;
       const pos = this.positionAt(path.hit, hitAt); this.physicsChecks.projectileContactsChecked++; this.physicsChecks.maxProjectileContactError = Math.max(this.physicsChecks.maxProjectileContactError, Math.max(0, Math.hypot(s.x - pos.x, s.y - pos.y) - path.hit.radius - C.shard.radius));
       this.enqueue(path.hit, s.damage, s, hitAt);
@@ -452,7 +467,7 @@ export class Game {
       return;
     }
     this.syncMotion();
-    if(this.ecologyEnabled){this.flush();repairTick(this);bendShards(this,dt);}
+    if(this.ecologyEnabled){this.flush();repairTick(this);bendShards(this,dt);polarTick(this);}
     const end = this.elapsed + dt;
     let iterations = 0;
     // Split a fixed tick at every scheduled event and earliest swept collision.
@@ -515,7 +530,7 @@ export class Game {
     this.updateMotion(this.elapsed);
     cleanupWards(this);
     const pending = this.queue.filter(e => e.scheduledTime > this.elapsed);
-    this.skippedEvents += this.queue.length - pending.length; this.queue = pending;
+    this.skippedEvents += this.queue.length - pending.length; this.queue = pending;advancedSkipped(this);
     for (const s of this.shards) {
       const budget = Math.max(0, Math.min(C.shard.speed * seconds, s.range - s.distance, C.shard.speed * (s.life - s.age)));
       const path = traceShard({ alive: [], options: this.options, elapsed: this.elapsed }, {...s,wallHooks:false}, budget);
@@ -563,5 +578,5 @@ export class Game {
     if (!this.options.damageVFX) return;
     for (let i = 0; i < count && this.particles.length < C.caps.particles; i++) { const a = this.vfxRng() * Math.PI * 2, speed = 40 + this.vfxRng() * 130; this.particles.push({ x, y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, angle: a, color: C.shapes[s.type].color, age: 0, life, bornAt: this.simulationTime }); }
   }
-  record() { const durations = [...this.cascadeDurations, ...Array.from(this.chains.values()).filter(c => c.cascadeKills).map(c => (c.lastKillAt - c.startedAt) * 1000)]; return { skillExpansionEnabled:this.skillExpansionEnabled,signatureLoadout:[...this.signatureLoadout],evolutionActive:this.evolutionActive.map(r=>({...r})),expansionExecuted:{...this.expansionExecuted},expansionImpact:structuredClone(this.expansionImpact),expansionEvents:[...this.expansionEvents],calibrationPhoton:this.calibrationPhoton,ecologyEnabled:this.ecologyEnabled,ecologyCounts:{...this.ecologyCounts},introConsumed:[...this.introConsumed],ecologyEvents:[...this.ecologyEvents],echoSpawned:this.echoSpawned,echoKills:this.echoKills,echoRaw:0,metaCounters:{...(this.finalMetaCounters||this.metaCounters)},metaResult:this.metaResult,anomalyId:this.anomalyId,contractSnapshot:[...this.contractSnapshot],causalLog:[...this.causalLog],relicLoadout:[...this.relicLoadout],relicActivations:{...this.relicActivations},siphonUnused:this.siphonCharges.filter(t=>t>this.elapsed).length,siphonConsumed:this.siphonConsumed,offerId:this.offerId,metaVersion:C.meta.version,rawHP:this.rawHP,rawNativeBonus:this.rawNativeBonus,oreEnabled:this.oreEnabled,specialSpawns:{...this.specialSpawns},stageEvents:[...this.stageEvents],skillActivations:{...this.skillActivations},skillEvents:[...this.skillEvents],tetherPairs:this.tetherPairs,tetherAttempts:this.tetherAttempts, discoveryRankAtStart:this.discoveryRank,contentMode:this.contentMode,oreChances:oreChances(this.discoveryRank,this.levels.salvageScanner||0),oreSpawnCounts:{...this.oreSpawnCounts},oreKills:{...this.oreKills},pendingCatalyst:this.pendingCatalyst,rawBase:this.rawBase,rawOreBonus:this.rawOreBonus,rawSkillBonus:this.rawSkillBonus,rewardsBySource:[...this.rewardLog],welcomeConsumed:[...this.welcomeConsumed], motionMeasurements: { ...this.motionMeasurements }, refinerySkipped: this.refinerySkipped ?? null, resultWaitSeconds: this.resultWaitSeconds ?? null, physicsChecks: { ...this.physicsChecks }, ruleset: this.ruleset, tierPreset: this.tierPreset, runId: this.runId, runDurationConfigured: this.duration, runDurationActual: this.elapsed, rawEarned: this.runEarned, processedPhoton: this.metaResult?.totalPhoton ?? (this.refinery?this.refinery.payout+this.calibrationPhoton:null), photonPayout: this.metaResult?.totalPhoton ?? (this.refinery?this.refinery.payout+this.calibrationPhoton:null), refinery: this.refinery, motionEnabled: this.initialOptions.motionEnabled, motionProfiles: { ...this.motionProfiles }, missedClicks: this.missedClicks, movingHitAccuracy: this.successfulClicks / Math.max(1, this.successfulClicks + this.missedClicks), projectileHitRate: this.projectileHits / Math.max(1, this.shardsEmitted), projectileHits: this.projectileHits, waveContacts: this.waveContacts, maxMotionSpeed: this.maxMotionSpeed, bins5: this.ruleset === 'legacy_v08' ? [] : this.bins5.map(b => ({ ...structuredClone(b), rawEarned: b.earnedPhoton, averageAlive: b.sampledSeconds ? b.aliveIntegral / b.sampledSeconds : 0, averageTarget: b.sampledSeconds ? b.targetIntegral / b.sampledSeconds : 0 })), inputPolicy: this.inputPolicy, sandbox: this.sandbox, experiment: { ...this.experiment }, elapsed: this.elapsed, bins: this.bins.map(b => ({ ...structuredClone(b), averageAlive: b.sampledSeconds ? b.aliveIntegral / b.sampledSeconds : 0, averageTarget: b.sampledSeconds ? b.targetIntegral / b.sampledSeconds : 0, spawnSuccessRate: b.spawnAttempts ? b.spawnSuccesses / b.spawnAttempts : null, cascadeRatio: b.totalDestroyed ? b.cascadeKills / b.totalDestroyed : 0, avgCascadeDurationMs: b.completedCascadeChains ? b.cascadeDurationTotalMs / b.completedCascadeChains : 0 })), emptyArenaDuration: this.emptyArenaDuration, emptyEpisodesOverHalfSecond: this.emptyEpisodesOverHalfSecond, maxEmptyEpisode: this.maxEmptyEpisode, spawnAttempts: this.spawnAttempts, spawnSuccesses: this.spawnSuccesses, spawnFailures: this.spawnFailures, capCounts: { ...this.capCounts }, capSources: { ...this.capSources }, chargedCaps: this.chargedCaps, peakWaves: this.peakWaves, peakScheduled: this.peakScheduled, secondShardPeaks: [...this.secondShardPeaks], hpDistribution: { ...this.hpDistribution }, enhancedSpawnCount: this.enhancedSpawnCount, frameSampleCount: this.frameSamples.length, stepSampleCount: this.stepSamples.length, averageFPS: this.frameSamples.length ? this.frameSamples.reduce((a, b) => a + b, 0) / this.frameSamples.length : null, fixedStepP95ms: this.stepSamples.length ? [...this.stepSamples].sort((a,b) => a-b)[Math.floor(this.stepSamples.length * .95)] : null, modifiersEnabled: this.initialOptions.modifiers, modifierStats: Object.fromEntries(Object.entries(this.modifierStats).map(([k, v]) => [k, { ...v, selectionRate: v.spawnCount ? v.clickedFirstCount / v.spawnCount : 0 }])), typeStats: structuredClone(this.typeStats), chargedContribution: { ...this.chargedContribution }, modifierRngPolicy: "independent mechanical stream; one draw per spawn attempt including OFF and Enhanced", comboMilestones: { ...this.comboMilestones }, comboEvents: [...this.comboEvents], timeToFirstChain5: this.timeToFirstChain5, maxChain: this.bestChain, comboFeedbackEnabled: this.initialOptions.comboFeedback, durationSeconds: this.duration, seed: this.seed, levels: { ...this.levels }, totalDestroyed: this.totalDestroyed, directKills: this.directKills, cascadeKills: this.cascadeKills, bestChain: this.bestChain, photonsEarned: this.ruleset === 'legacy_v08' ? this.runEarned : this.metaResult?.totalPhoton ?? (this.refinery?this.refinery.payout+this.calibrationPhoton:0), highestTier: this.highestTier, unlockTimes: { ...this.unlockTimes }, firstCascadeTime: this.firstCascadeTime, inheritanceEnabled: this.initialOptions.inheritance, ricochetEnabled: this.initialOptions.ricochet, sequentialPropagationEnabled: this.initialOptions.sequentialPropagation, visualVarietyEnabled: this.initialOptions.visualVariety, avgCascadeDurationMs: durations.length ? durations.reduce((a, b) => a + b, 0) / durations.length : 0, variantCounts: { ...this.variantCounts }, patternCounts: { ...this.patternCounts }, optionChanges: [...this.optionChanges], safetyCapsHit: this.safetyCapsHit, skippedSeconds: this.skippedSeconds, skippedEvents: this.skippedEvents, peakShards: this.peakShards }; }
+  record() { const durations = [...this.cascadeDurations, ...Array.from(this.chains.values()).filter(c => c.cascadeKills).map(c => (c.lastKillAt - c.startedAt) * 1000)]; return { advancedEnabled:this.advancedEnabled,codexSnapshot:codexSnapshot(this),codexDelta:structuredClone(this.codexDelta),codexEvents:[...this.codexEvents],advancedCounts:{...this.advancedCounts},advancedEvents:[...this.advancedEvents],advancedSpawned:{...this.advancedSpawned},eliteDelta:structuredClone(this.eliteDelta),skillExpansionEnabled:this.skillExpansionEnabled,signatureLoadout:[...this.signatureLoadout],evolutionActive:this.evolutionActive.map(r=>({...r})),expansionExecuted:{...this.expansionExecuted},expansionImpact:structuredClone(this.expansionImpact),expansionEvents:[...this.expansionEvents],calibrationPhoton:this.calibrationPhoton,ecologyEnabled:this.ecologyEnabled,ecologyCounts:{...this.ecologyCounts},introConsumed:[...this.introConsumed],ecologyEvents:[...this.ecologyEvents],echoSpawned:this.echoSpawned,echoKills:this.echoKills,echoRaw:0,metaCounters:{...(this.finalMetaCounters||this.metaCounters)},metaResult:this.metaResult,anomalyId:this.anomalyId,contractSnapshot:[...this.contractSnapshot],causalLog:[...this.causalLog],relicLoadout:[...this.relicLoadout],relicActivations:{...this.relicActivations},siphonUnused:this.siphonCharges.filter(t=>t>this.elapsed).length,siphonConsumed:this.siphonConsumed,offerId:this.offerId,metaVersion:C.meta.version,rawHP:this.rawHP,rawNativeBonus:this.rawNativeBonus,oreEnabled:this.oreEnabled,specialSpawns:{...this.specialSpawns},stageEvents:[...this.stageEvents],skillActivations:{...this.skillActivations},skillEvents:[...this.skillEvents],tetherPairs:this.tetherPairs,tetherAttempts:this.tetherAttempts, discoveryRankAtStart:this.discoveryRank,contentMode:this.contentMode,oreChances:oreChances(this.discoveryRank,this.levels.salvageScanner||0),oreSpawnCounts:{...this.oreSpawnCounts},oreKills:{...this.oreKills},pendingCatalyst:this.pendingCatalyst,rawBase:this.rawBase,rawOreBonus:this.rawOreBonus,rawSkillBonus:this.rawSkillBonus,rewardsBySource:[...this.rewardLog],welcomeConsumed:[...this.welcomeConsumed], motionMeasurements: { ...this.motionMeasurements }, refinerySkipped: this.refinerySkipped ?? null, resultWaitSeconds: this.resultWaitSeconds ?? null, physicsChecks: { ...this.physicsChecks }, ruleset: this.ruleset, tierPreset: this.tierPreset, runId: this.runId, runDurationConfigured: this.duration, runDurationActual: this.elapsed, rawEarned: this.runEarned, processedPhoton: this.metaResult?.totalPhoton ?? (this.refinery?this.refinery.payout+this.calibrationPhoton:null), photonPayout: this.metaResult?.totalPhoton ?? (this.refinery?this.refinery.payout+this.calibrationPhoton:null), refinery: this.refinery, motionEnabled: this.initialOptions.motionEnabled, motionProfiles: { ...this.motionProfiles }, missedClicks: this.missedClicks, movingHitAccuracy: this.successfulClicks / Math.max(1, this.successfulClicks + this.missedClicks), projectileHitRate: this.projectileHits / Math.max(1, this.shardsEmitted), projectileHits: this.projectileHits, waveContacts: this.waveContacts, maxMotionSpeed: this.maxMotionSpeed, bins5: this.ruleset === 'legacy_v08' ? [] : this.bins5.map(b => ({ ...structuredClone(b), rawEarned: b.earnedPhoton, averageAlive: b.sampledSeconds ? b.aliveIntegral / b.sampledSeconds : 0, averageTarget: b.sampledSeconds ? b.targetIntegral / b.sampledSeconds : 0 })), inputPolicy: this.inputPolicy, sandbox: this.sandbox, experiment: { ...this.experiment }, elapsed: this.elapsed, bins: this.bins.map(b => ({ ...structuredClone(b), averageAlive: b.sampledSeconds ? b.aliveIntegral / b.sampledSeconds : 0, averageTarget: b.sampledSeconds ? b.targetIntegral / b.sampledSeconds : 0, spawnSuccessRate: b.spawnAttempts ? b.spawnSuccesses / b.spawnAttempts : null, cascadeRatio: b.totalDestroyed ? b.cascadeKills / b.totalDestroyed : 0, avgCascadeDurationMs: b.completedCascadeChains ? b.cascadeDurationTotalMs / b.completedCascadeChains : 0 })), emptyArenaDuration: this.emptyArenaDuration, emptyEpisodesOverHalfSecond: this.emptyEpisodesOverHalfSecond, maxEmptyEpisode: this.maxEmptyEpisode, spawnAttempts: this.spawnAttempts, spawnSuccesses: this.spawnSuccesses, spawnFailures: this.spawnFailures, capCounts: { ...this.capCounts }, capSources: { ...this.capSources }, chargedCaps: this.chargedCaps, peakWaves: this.peakWaves, peakScheduled: this.peakScheduled, secondShardPeaks: [...this.secondShardPeaks], hpDistribution: { ...this.hpDistribution }, enhancedSpawnCount: this.enhancedSpawnCount, frameSampleCount: this.frameSamples.length, stepSampleCount: this.stepSamples.length, averageFPS: this.frameSamples.length ? this.frameSamples.reduce((a, b) => a + b, 0) / this.frameSamples.length : null, fixedStepP95ms: this.stepSamples.length ? [...this.stepSamples].sort((a,b) => a-b)[Math.floor(this.stepSamples.length * .95)] : null, modifiersEnabled: this.initialOptions.modifiers, modifierStats: Object.fromEntries(Object.entries(this.modifierStats).map(([k, v]) => [k, { ...v, selectionRate: v.spawnCount ? v.clickedFirstCount / v.spawnCount : 0 }])), typeStats: structuredClone(this.typeStats), chargedContribution: { ...this.chargedContribution }, modifierRngPolicy: "independent mechanical stream; one draw per spawn attempt including OFF and Enhanced", comboMilestones: { ...this.comboMilestones }, comboEvents: [...this.comboEvents], timeToFirstChain5: this.timeToFirstChain5, maxChain: this.bestChain, comboFeedbackEnabled: this.initialOptions.comboFeedback, durationSeconds: this.duration, seed: this.seed, levels: { ...this.levels }, totalDestroyed: this.totalDestroyed, directKills: this.directKills, cascadeKills: this.cascadeKills, bestChain: this.bestChain, photonsEarned: this.ruleset === 'legacy_v08' ? this.runEarned : this.metaResult?.totalPhoton ?? (this.refinery?this.refinery.payout+this.calibrationPhoton:0), highestTier: this.highestTier, unlockTimes: { ...this.unlockTimes }, firstCascadeTime: this.firstCascadeTime, inheritanceEnabled: this.initialOptions.inheritance, ricochetEnabled: this.initialOptions.ricochet, sequentialPropagationEnabled: this.initialOptions.sequentialPropagation, visualVarietyEnabled: this.initialOptions.visualVariety, avgCascadeDurationMs: durations.length ? durations.reduce((a, b) => a + b, 0) / durations.length : 0, variantCounts: { ...this.variantCounts }, patternCounts: { ...this.patternCounts }, optionChanges: [...this.optionChanges], safetyCapsHit: this.safetyCapsHit, skippedSeconds: this.skippedSeconds, skippedEvents: this.skippedEvents, peakShards: this.peakShards }; }
 }

@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "browser": "155.0.8059.79",
+  "stageIIBadges": 19,
+  "stageIVTitles": 19,
+  "stageIVBorders": 19,
+  "phaseGuardDirect": 0,
+  "armorPreservedOnGuard": true,
+  "vulnerableFirstDirect": 2,
+  "vulnerableNextDirect": 3,
+  "errors": [],
+  "method": "Two isolated labeled fixtures; actual pointer attacks. Mastery UI values are injected for display coverage, not naturally earned progression."
+}

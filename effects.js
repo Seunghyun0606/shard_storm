@@ -24,8 +24,8 @@ export function traceShard(run, shard, budget) {
     for (const target of run.alive) {
       if (target.id === shard.exclude || shard.hitIds?.has(target.id)) continue;
       let t;
-      if (run.options.motionEnabled && run.positionAt && (target.motion?.ampX || target.motion?.ampY)) {
-        const start = run.elapsed + travelled / C.shard.speed, end = start + distance / C.shard.speed;
+      if (run.positionAt && ((run.options.motionEnabled && (target.motion?.ampX || target.motion?.ampY))||(run.advancedEnabled&&target.type==='shifter'))) {
+        const start = run.elapsed + travelled / C.shard.speed, end = Math.min(start + distance / C.shard.speed,run.advancedEnabled&&target.type==='shifter'?(target.nextLeapAt??Infinity)-1e-9:Infinity);
         const time = firstContact(time => { const pos = run.positionAt(target, time), d = (time - start) * C.shard.speed; return Math.hypot(p.x + ux * d - pos.x, p.y + uy * d - pos.y) - target.radius - C.shard.radius; }, Math.max(start, target.vulnerableAt || 0), end, C.shard.speed + C.motion.maxSpeed);
         t = time === null ? null : distance ? (time - start) * C.shard.speed / distance : 0;
       } else t = segmentCircle(p.x, p.y, nx, ny, target.x, target.y, target.radius + C.shard.radius);
