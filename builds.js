@@ -1,4 +1,7 @@
 import {SIGNATURE_IDS,EVOLUTION_FAMILIES as F,EVOLUTION_COSTS,BUILD_PRESETS} from './expansion-defs.js';
+export function previewStats(stats,active=[]) {
+ const result={...stats};if(active.some(r=>r.family==='direct'&&r.form==='focusStrike')){result.directDamage+=2;result.attackInterval+=.04;}return result;
+}
 
 export function normalizeSignatures(ids,levels={}) {
  return [...new Set(Array.isArray(ids)?ids:[])].filter(id=>SIGNATURE_IDS.includes(id)&&levels[id]===1).slice(0,3);

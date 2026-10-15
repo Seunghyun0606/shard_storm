@@ -7,6 +7,6 @@ export function validMetaPending(p){
   const paid=plan.changes.filter(r=>r.done);if(plan.completed.length!==paid.length||paid.some(r=>!plan.completed.some(c=>c.id===r.id&&c.stage===r.stage&&c.photon===contractTerms(r.id,r.stage).photon&&c.catalyst===contractTerms(r.id,r.stage).catalyst)))return false;
   if(photon!==plan.photon||catalyst!==plan.catalyst)return false;
  }
- const b=p.payoutBreakdown;if(b){if(!Object.values(b).every(int)||b.refineryPhoton+b.contractPhoton+b.anomalyPhoton!==p.payout||b.baseCatalyst+b.contractCatalyst!==p.catalystPayout||b.contractPhoton!==(plan?.photon||0)||b.contractCatalyst!==(plan?.catalyst||0))return false;const a=C.anomalies[p.anomalyId],expected=p.anomalySucceeded&&a?Math.min(C.meta.anomalyPhotonCap,Math.floor(b.refineryPhoton*a.rate)):0;if(b.anomalyPhoton!==expected)return false;}
+ const b=p.payoutBreakdown;if(b){if(!Object.values(b).every(int)||b.refineryPhoton+(b.calibrationPhoton||0)+b.contractPhoton+b.anomalyPhoton!==p.payout||b.baseCatalyst+b.contractCatalyst!==p.catalystPayout||b.contractPhoton!==(plan?.photon||0)||b.contractCatalyst!==(plan?.catalyst||0))return false;const lv=p.record?.skillExpansionEnabled?p.record.levels?.refineryCalibration||0:0;if(!Number.isInteger(lv)||lv<0||lv>2||(b.calibrationPhoton||0)!==Math.min(40,Math.floor(b.refineryPhoton*.03*lv+1e-9)))return false;const a=C.anomalies[p.anomalyId],expected=p.anomalySucceeded&&a?Math.min(C.meta.anomalyPhotonCap,Math.floor(b.refineryPhoton*a.rate)):0;if(b.anomalyPhoton!==expected)return false;}
  return true;
 }

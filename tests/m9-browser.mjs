@@ -9,7 +9,7 @@ try{
  for(const rank of [0,1,2,3]){
   await page.goto(base);await page.evaluate(async rank=>{const{freshSave}=await import('./storage.js'),{CONFIG:C}=await import('./config.js');const s=freshSave();if(rank){s.lifetimeDestroyed=C.discovery[rank].threshold;s.discoveryRank=rank;s.bank=10000;s.catalystBalance=200;for(const[k,u]of Object.entries(C.upgrades))if(k!=='extraTime'&&(u.rank||0)<=rank)s.levels[k]=u.max;}localStorage.setItem(C.storageKey,JSON.stringify(s));},rank);await page.reload();
   if(rank)await page.locator('.edition').evaluate(el=>el.append(' · QA FIXTURE'));
-  if(rank===2)await page.locator('#focus').click();const before=await snap();assert.equal(before.saveVersion,6);
+  if(rank===2)await page.locator('#focus').click();const before=await snap();assert.equal(before.saveVersion,7);
   await page.locator('#start').click();const p=await point({x:480,y:335});await page.mouse.click(p.x,p.y);await page.mouse.down();const seen=new Set();let captured=false;
   while((await snap()).state==='PLAYING'){
    const live=await snap();for(const s of live.shapes)seen.add(s.type);const target=live.shapes.filter(s=>s.grace<=0).sort((a,b)=>Number(Boolean(b.secondaryTrait))-Number(Boolean(a.secondaryTrait))||a.hp-b.hp||a.id-b.id)[0];

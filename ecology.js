@@ -1,4 +1,5 @@
 import { CONFIG as C } from './config.js';
+import {level,form,expansionUsed,expansionReflected,expansionFuseExecuted} from './expansion.js';
 import { ECOLOGY_SHAPES, TRAITS, FORMATIONS } from './ecology-defs.js';
 import { seededRNG } from './entities.js';
 
@@ -38,7 +39,7 @@ export function ecologySpawn(g,s) {
   s.secondaryTrait=rollTrait(g,s);
   if(!g.ecologyEnabled)return;
   if(C.shapes[s.type].ecology&&!g.introConsumed.includes(s.type)&&!g.introSeen[s.type]){g.introConsumed.push(s.type);g.introFormationQueue.push(s);ecologyLog(g,'introduction',s,{}, {type:s.type});}
-  if(s.type==='conductor')s.linkIds=near(g,s,115).slice(0,2).map(t=>t.id);
+  if(s.type==='conductor')s.linkIds=near(g,s,115+(level(g,'conductiveSurge')>=2?15:0)).slice(0,2).map(t=>t.id);
   if(s.type==='repairNode')s.nextRepair=g.simulationTime+.85;
 }
 export function traitDamage(g,s,damage,cause) {
@@ -52,13 +53,13 @@ function fuse(g,s,cause,delay) {
   const version=(s.fuseVersion||0)+1;s.fuseVersion=version;s.fuseAt=g.simulationTime+delay;
   g.scheduleEffect(()=>{if(s.fuseVersion!==version||s.fuseExploded)return;s.fuseExploded=true;
     const origin=g.positionAt(s,g.simulationTime);const wave=g.area(origin,100,2,child,C.shapes.fuseBomb.color,s.id);
-    if(wave)ecologyLog(g,'fuseExploded',s,cause,{waveId:wave.id});
+    if(wave){ecologyLog(g,'fuseExploded',s,cause,{waveId:wave.id});expansionFuseExecuted(g,s,cause);}
   },child,delay);
 }
 export function ecologyDamage(g,s,actual,cause) {
   if(!g.ecologyEnabled||actual<=0)return;
   if(cause.source==='conductor')ecologyLog(g,'conductorDelivered',{id:cause.originShapeId},cause,{targetId:s.id,amount:actual});
-  if(s.type==='fuseBomb'&&!s.fuseArmed&&!s.fuseExploded){s.fuseArmed=true;fuse(g,s,cause,.7);ecologyLog(g,'fuseArmed',s,cause);}
+  if(s.type==='fuseBomb'&&!s.fuseArmed&&!s.fuseExploded){s.fuseArmed=true;const duration=Math.max(.3,.7-.1*level(g,'fuseAccelerator'));fuse(g,s,cause,duration);if(level(g,'fuseAccelerator'))expansionUsed(g,'fuseAccelerator',cause,{targetId:s.id,duration});ecologyLog(g,'fuseArmed',s,cause);}
 }
 export function safePoint(g,x,y,radius,ignore=null) {
   const A=C.arena,margin=C.motion.maxDrift;
@@ -80,8 +81,9 @@ export function ecologyDeath(g,s,cause) {
   if(s.type==='fuseBomb'&&!s.fuseExploded)fuse(g,s,cause,.08);
   if(s.type==='conductor'){
     const chain=g.chains.get(cause.chainId);if((chain.conductorCount||0)<4){chain.conductorCount=(chain.conductorCount||0)+1;
-      const targets=(s.linkIds||[]).map(id=>g.alive.find(t=>t.id===id)).filter(t=>t&&Math.hypot(t.x-s.x,t.y-s.y)<=115);
-      const tagged={...child,source:'conductor'};g.scheduleEffect(()=>{for(const t of targets){if(t.destroyed||Math.hypot(t.x-s.x,t.y-s.y)>115)continue;g.enqueue(t,2,tagged);}},tagged,.04);
+      const radius=115+(level(g,'conductiveSurge')>=2?15:0);
+      const targets=(s.linkIds||[]).map(id=>g.alive.find(t=>t.id===id)).filter(t=>t&&Math.hypot(t.x-s.x,t.y-s.y)<=radius);
+      const tagged={...child,source:'conductor'};g.scheduleEffect(()=>{for(const t of targets){if(t.destroyed||Math.hypot(t.x-s.x,t.y-s.y)>radius)continue;g.enqueue(t,2+Number(level(g,'conductiveSurge')>0),tagged);}},tagged,.04);
     }
   }
   if(s.secondaryTrait==='volatile'){
@@ -102,8 +104,9 @@ export function bendShards(g,dt) {
     // Shape IDs and projectile IDs use separate namespaces; equal numbers are unrelated.
     const well=near(g,{x:s.x,y:s.y},145,t=>t.type==='gravityWell')[0];if(!well)continue;
     const target=Math.atan2(well.y-s.y,well.x-s.x),difference=Math.atan2(Math.sin(target-s.angle),Math.cos(target-s.angle));
-    const turn=Math.min(Math.abs(difference),6*Math.PI/180*dt/C.step,Math.max(0,30*Math.PI/180-(s.gravityTurn||0)))*Math.sign(difference);
-    if(!turn)continue;s.gravityTurn=(s.gravityTurn||0)+Math.abs(turn);s.angle+=turn;s.vx=Math.cos(s.angle)*C.shard.speed;s.vy=Math.sin(s.angle)*C.shard.speed;s.gravitySource=well.id;
+    const turn=Math.min(Math.abs(difference),6*Math.PI/180*dt/C.step,Math.max(0,(form(g,'gravity','pull')?45:30)*Math.PI/180-(s.gravityTurn||0)))*Math.sign(difference);
+    let orbit=0;if(form(g,'gravity','orbit')){if(s.orbitStart===undefined)s.orbitStart=g.simulationTime;if(g.simulationTime<s.orbitStart+.08-1e-9){orbit=Math.min(6*Math.PI/180*dt/C.step,Math.max(0,30*Math.PI/180-(s.orbitTurn||0)))*(Math.sign(difference)||1);s.orbitTurn=(s.orbitTurn||0)+Math.abs(orbit);if(orbit)expansionUsed(g,'evolution:orbit',s,{wellId:well.id,angle:orbit});}}
+    if(!turn&&!orbit)continue;s.gravityTurn=(s.gravityTurn||0)+Math.abs(turn);if(turn&&form(g,'gravity','pull'))expansionUsed(g,'evolution:pull',s,{wellId:well.id,angle:turn});s.angle+=turn+orbit;s.vx=Math.cos(s.angle)*C.shard.speed;s.vy=Math.sin(s.angle)*C.shard.speed;s.gravitySource=well.id;
     ecologyLog(g,'gravityBend',well,s,{shardId:s.id,angle:turn});
   }
 }
@@ -113,12 +116,12 @@ export function reflectContact(g,shard,target) {
   if(target.type==='mirror'&&(target.reflections||0)<2){cap=70*Math.PI/180;limit=2;}
   else if(target.secondaryTrait==='reflective'&&!target.reflections){cap=15*Math.PI/180;limit=1;}
   if(!cap)return false;
-  const next=near(g,target,Infinity,t=>t.id!==target.id&&!shard.hitIds?.has(t.id))[0];if(!next)return false;
+  const candidates=near(g,target,Infinity,t=>t.id!==target.id&&!shard.hitIds?.has(t.id));if(target.type==='mirror'&&level(g,'portalCalibration'))candidates.sort((a,b)=>b.hp-a.hp||a.id-b.id);const next=candidates[0];if(!next)return false;
   const aim=Math.atan2(next.y-shard.y,next.x-shard.x),difference=Math.atan2(Math.sin(aim-shard.angle),Math.cos(aim-shard.angle));
   const turn=(target.type==='mirror'?Math.min(cap,Math.abs(difference)):cap)*(Math.sign(difference)||1);shard.angle+=turn;
   shard.vx=Math.cos(shard.angle)*C.shard.speed;shard.vy=Math.sin(shard.angle)*C.shard.speed;
   shard.reflectionKind=target.type==='mirror'?'mirror':'trait';shard.reflectionSource=target.id;target.reflections=Math.min(limit,(target.reflections||0)+1);
-  ecologyLog(g,'reflection',target,shard,{angle:turn});return true;
+  ecologyLog(g,'reflection',target,shard,{angle:turn});if(target.type==='mirror'){if(level(g,'portalCalibration'))expansionUsed(g,'portalCalibration',shard,{targetId:next.id,mirrorId:target.id});expansionReflected(g,shard,'mirror');}return true;
 }
 export function ecologyFormation(g) {
   if(!g.ecologyEnabled)return null;

@@ -14,6 +14,8 @@
     "qa:m7-m8": "node tests/m7-m8-browser.mjs",
     "qa:m9-0": "node tests/m9-0-browser.mjs",
     "benchmark:m9": "node tests/m9-balance.js",
-    "qa:m9": "node tests/m9-browser.mjs"
+    "qa:m9": "node tests/m9-browser.mjs",
+    "benchmark:m10": "node tests/m10-balance.js",
+    "qa:m10": "node tests/m10-browser.mjs"
   }
 }

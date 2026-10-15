@@ -75,7 +75,7 @@ test('v0.7 / 23: all prerequisite edges, costs and locked nodes use the same def
   for (const [parent, child] of [['shardPower', 'shardRange'], ['shardRange', 'ricochetPlus'], ['shardPower', 'shardBloom'], ['chainAmplifier', 'echoCatalyst'], ['extraTime', 'photonBoost']]) {
     while (!skillState(child, save.levels, save.bank).unlocked) assert.ok(buyUpgrade(save, parent, 'RESULT')); assert.ok(buyUpgrade(save, child, 'RESULT'));
   }
-  assert.equal(skillDefinitions.length, 19); assert.ok(skillDefinitions.every(n => n.implemented));
+  assert.equal(skillDefinitions.filter(n=>n.introduced!==10).length, 19); assert.ok(skillDefinitions.every(n => n.implemented));
 });
 test('skill graph rejects duplicate, missing, cyclic and impossible prerequisite definitions', () => {
   assert.ok(validateSkillTree());
@@ -85,7 +85,7 @@ test('skill graph rejects duplicate, missing, cyclic and impossible prerequisite
 test('v0.7 / 24: legacy bank/5 levels/best/history/options survive migration; new skills are zero', () => {
   const old = { saveVersion: 1, bank: 789, levels: { crushPower: 2, shardPower: 0, shardRange: 1, chainAmplifier: 1, extraTime: 2 }, bestStats: { totalDestroyed: 120, bestChain: 14, photonsEarned: 900 }, lastRuns: [{ photonsEarned: 900, seed: 7 }], options: { inheritance: false, ricochet: false, damageVFX: true, sound: false } };
   const storage = memoryStorage(); storage.setItem(C.storageKey, JSON.stringify(old)); const migrated = loadSave(storage);
-  assert.equal(migrated.saveVersion, 6); assert.equal(migrated.bank, old.bank); assert.deepEqual(migrated.bestStats, old.bestStats); assert.deepEqual(migrated.lastRuns, old.lastRuns);
+  assert.equal(migrated.saveVersion, C.saveVersion); assert.equal(migrated.bank, old.bank); assert.deepEqual(migrated.bestStats, old.bestStats); assert.deepEqual(migrated.lastRuns, old.lastRuns);
   for (const [k, value] of Object.entries(old.levels)) assert.equal(migrated.levels[k], value);
   for (const k of ['crushSpeed', 'impactPulse', 'ricochetPlus', 'shardBloom', 'echoCatalyst', 'photonBoost']) assert.equal(migrated.levels[k], 0);
   assert.equal(getDerivedStats(migrated.levels).shardRange, 230); // Owned legacy skill still works before its new prerequisite is met.

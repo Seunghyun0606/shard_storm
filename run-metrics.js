@@ -1,4 +1,5 @@
 import { CONFIG as C } from './config.js';
+import {expansionWardReleased} from './expansion.js';
 export const emptyCounters=()=>Object.fromEntries([...new Set([...Object.values(C.relics).map(r=>r.counter),...Object.values(C.contracts).map(r=>r.counter),'chain15','movingDirectKills','chargedOrReactorKills'])].map(k=>[k,0]));
 export function count(game,key,amount=1,event={}){if(game.state!=='PLAYING'||game.simulationTime>=game.duration)return;game.metaCounters[key]=(game.metaCounters[key]||0)+amount;if(game.causalLog.length<C.meta.eventLogCap)game.causalLog.push({eventId:++game.nextCausalEvent,runId:game.runId,simulationTime:game.simulationTime,eventType:key,amount,...event});}
 export function killMetrics(game,s,cause,wave){const direct=cause.source==='direct',primary=!wave&&cause.small===false&&['triangle','pentagon'].includes(cause.source),native=(Boolean(wave)||cause.nativeWave===true)&&['square','star'].includes(cause.source);const data={chainId:cause.chainId,sourceType:cause.source,sourceShapeId:cause.originShapeId,targetShapeId:s.id,targetType:s.type,targetModifier:s.modifier,targetOreGrade:s.oreGrade,direct,primaryShard:primary,nativeWave:native,relicId:cause.relicId,anomalyId:game.anomalyId};
@@ -9,7 +10,7 @@ export function killMetrics(game,s,cause,wave){const direct=cause.source==='dire
  for(const n of [10,15])if(chain.rewardedKills>=n&&!chain[`counted${n}`]){chain[`counted${n}`]=true;count(game,`chain${n}`,1,{chainId:cause.chainId,eventType:'chainThresholdCrossed',threshold:n});}
 }
 export function releaseWard(game,target,origin,reason){if(target.destroyed||!target.wardSourceId)return false;delete target.wardSourceId;delete target.wardExpiresAt;delete target.wardDeathOrigin;
- if(origin?.destroyed&&!target.wardReleaseCounted){target.wardReleaseCounted=true;count(game,'wardReleasesFromHexDeath',1,{sourceShapeId:origin.id,targetShapeId:target.id,reason,eventType:'wardReleased'});}
+ if(origin?.destroyed&&!target.wardReleaseCounted){target.wardReleaseCounted=true;if(origin.wardCause)expansionWardReleased(game,origin,origin.wardCause);count(game,'wardReleasesFromHexDeath',1,{sourceShapeId:origin.id,targetShapeId:target.id,reason,eventType:'wardReleased'});}
  if(reason==='wave'&&origin&&!origin.siphonBlocked&&!origin.siphonCredited&&game.relicLoadout.includes('hexSiphon')){origin.siphonCredited=true;const r=C.relics.hexSiphon;game.siphonCharges=game.siphonCharges.filter(t=>t>game.simulationTime);if(game.siphonCharges.length<r.chargeCap)game.siphonCharges.push(game.simulationTime+r.expires);}
  return true;
 }

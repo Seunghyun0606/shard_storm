@@ -14,7 +14,8 @@ function arena(levels={},extra={}) {
  const g=new Game({ecologyEnabled:true,skillExpansionEnabled:true,discoveryRank:4,sandbox:true,levels,signatureLoadout:SIGNATURE_IDS.filter(id=>levels[id]),options:{motionEnabled:false},...extra});
  g.shapes=[];g.shards=[];g.queue=[];g.spawnClock=-Infinity;return g;
 }
-const add=(g,type,x=450,y=270)=>g.addShape(type,x,y,0,false,0);
+// Isolate one ability from random spawn traits; trait combination tests set them explicitly.
+const add=(g,type,x=450,y=270)=>{const s=g.addShape(type,x,y,0,false,0);s.secondaryTrait=null;return s;};
 function hit(g,s,damage,source='direct',chainId=g.newChain(),extra={}) {g.enqueue(s,damage,{source,chainId,depth:0,...extra});g.flush();return chainId;}
 function waveHit(g,s,chain=g.newChain(),source='square') {const origin={x:s.x-65,y:s.y,id:-100};return g.area(origin,100,1,{source,chainId:chain,depth:0,nativeWave:true,originShapeId:-100},'#fff');}
 export function registerM10Cases() {
@@ -66,7 +67,7 @@ export function registerM10Cases() {
   magneticPolarity:()=>{const g=arena({magneticPolarity:1});hit(g,add(g,'gravityWell'),10);advance(g,.04);assert.ok(g.waves.some(w=>w.sourceKind==='magneticPolarity'));return g;},
   targetIntercept:()=>{const g=arena({targetIntercept:2},{options:{motionEnabled:true}}),s=add(g,'fuseBomb');s.motion.rotationRate=.3;hit(g,s,1);assert.equal(s.hp,3);return g;},
   rareHarvest:()=>{const g=arena({rareHarvest:2}),s=add(g,'triangle');s.oreGrade='prism';hit(g,s,3);assert.equal(g.expansionRareRaw,20);return g;},
-  catalystExtraction:()=>{const g=arena({catalystExtraction:2}),chain=g.newChain();for(let i=0;i<9;i++)hit(g,add(g,'triangle'),3,'direct',chain);const r=add(g,'reactor');hit(g,r,12,'direct',chain);assert.equal(g.expansionCounts.catalystExtraction,1);return g;},
+  catalystExtraction:()=>{const g=arena({catalystExtraction:2,crushPower:5}),r=add(g,'reactor');r.oreGrade='common';hit(g,r,4,'triangle');for(let i=0;i<9;i++){const a=i*Math.PI*2/9,t=add(g,'triangle',450+55*Math.cos(a),270+55*Math.sin(a));t.hp=1;t.oreGrade='common';}assert.equal(g.attack(r.x,r.y),true);assert.equal(g.pendingCatalyst,0);advance(g,.5);assert.equal(g.expansionCounts.catalystExtraction,1);return g;},
   precisionSalvage:()=>{const g=arena({precisionSalvage:2});hit(g,add(g,'fuseBomb'),6);assert.equal(g.expansionSalvageRaw,30);return g;},
   contractScanner:()=>{const id=Object.keys(C.contracts).find(id=>C.contracts[id].counter==='directKills'),g=arena({contractScanner:1},{activeContracts:[{id,stage:1,progress:0,maxCompletedStage:0}]});hit(g,add(g,'triangle'),3);hit(g,add(g,'triangle'),3);assert.equal(g.scannerPaid.size,1);assert.equal(g.rawSkillBonus,25);return g;},
   refineryCalibration:()=>{const g=arena({refineryCalibration:2},{duration:20});g.runEarned=10000;g.update(20);assert.equal(g.calibrationPhoton,Math.min(40,Math.floor(g.refinery.payout*.06+1e-9)));return g;},
@@ -107,6 +108,43 @@ export function registerM10Cases() {
   assert.equal(completeSettlement(loaded),true);assert.equal(loaded.bank,p.payout);assert.equal(completeSettlement(loaded),false);
   assert.deepEqual(g.refinery.tokens,p.record.refinery.tokens);assert.equal(g.refinery.payout,p.payoutBreakdown.refineryPhoton);
  });
+ test('M10 approved A: real direct-origin Reactor Chain qualifies later, perRun1/2 and pending once',()=>{
+  for(const lv of [1,2]) {
+   const g=arena({catalystExtraction:lv,crushPower:5});
+   for(let attempt=0;attempt<3;attempt++) {
+    const reactor=add(g,'reactor');reactor.oreGrade='common';hit(g,reactor,4,'triangle');
+    for(let i=0;i<9;i++){const a=i*Math.PI*2/9,t=add(g,'triangle',450+55*Math.cos(a),270+55*Math.sin(a));t.hp=1;t.oreGrade='common';}
+    const before=g.pendingCatalyst;assert.equal(g.attack(reactor.x,reactor.y),true);assert.equal(g.pendingCatalyst,before);
+    advance(g,.5);assert.equal(g.pendingCatalyst,Math.min(lv,attempt+1));
+   }
+   assert.equal(g.expansionExecuted.catalystExtraction,lv);
+   g.update(20);const save=freshSave();save.sandbox=true;assert.equal(stageSettlement(save,g),true);assert.equal(save.catalystBalance,0);
+   assert.equal(completeSettlement(save),true);assert.equal(save.catalystBalance,lv);assert.equal(completeSettlement(save),false);assert.equal(save.catalystBalance,lv);
+  }
+ });
+ test('M10 approved A rejects unrelated Chain10, Echo kills, non-direct root and late effects',()=>{
+  const g=arena({catalystExtraction:2,crushPower:5}),unrelated=g.newChain();
+  for(let i=0;i<10;i++){const s=add(g,'triangle',200);s.oreGrade='common';hit(g,s,3,'triangle',unrelated);}
+  const hex=add(g,'hex');hex.oreGrade='common';g.attack(hex.x,hex.y);
+  const [id,chain]=[...g.chains].find(([,c])=>c.extractionOrigin===hex.id);assert.equal(chain.rewardedKills,1);assert.equal(g.pendingCatalyst,0);
+  for(let i=0;i<20;i++)hit(g,g.addShape('triangle',700,300,0,false,0,'normal',{echo:true}),1,'triangle',id);
+  assert.equal(chain.rewardedKills,1);assert.equal(g.pendingCatalyst,0);
+  const nonDirect=add(g,'reactor',800);nonDirect.oreGrade='common';hit(g,nonDirect,99,'triangle',unrelated);assert.equal(g.pendingCatalyst,0);
+  g.skipAhead(20);assert.equal(g.pendingCatalyst,0);assert.equal(g.expansionExecuted.catalystExtraction,undefined);
+ });
+ test('M10 native effects after a skill kill retain Relic synergy; Relic-origin recursion remains blocked',()=>{
+  for(const blocked of [false,true]) {
+   const g=arena({chainStarter:1},{relicLoadout:['waveCondenser']}),target=add(g,'square',495);target.hp=1;
+   hit(g,add(g,'triangle',450),3,'direct',g.newChain(),{noRelicProc:blocked});advance(g,.15);
+   assert.equal(target.destroyed,true);
+   assert.equal(g.relicActivations.waveCondenser||0,blocked?0:1);
+  }
+ });
+ test('M10 Ancient Breaker applies each crossed threshold once, armor bonuses cannot rearm',()=>{
+  const g=arena({ancientBreaker:2,armorShatter:2}),ancient=add(g,'ancient');
+  hit(g,ancient,22);assert.equal(ancient.hp,2);assert.equal(g.expansionExecuted.ancientBreaker,3);assert.equal(ancient.breakerStages.size,3);
+  const s=add(g,'star',700);s.secondaryTrait='reinforced';hit(g,s,1);const before=s.hp;hit(g,s,1);assert.equal(s.hp,before-1);assert.equal(g.expansionExecuted.armorShatter,1);
+ });
  test('M10 schema1..7 retains old assets and pending, only malformed new selection fields normalize',()=>{
   for(let version=1;version<=7;version++){
    const save=freshSave();save.saveVersion=version;save.bank=123456;save.catalystBalance=33;save.levels.crushPower=2;save.levels.extraTime=1;save.lifetimeDestroyed=8000;save.discoveryRank=4;
@@ -127,7 +165,7 @@ export function registerM10Cases() {
   wide:()=>{const g=evolved('shockwave','wide'),s=add(g,'square',300),t=add(g,'star',300+g.stats.squareRadius+30);hit(g,s,4);advance(g,.3);assert.equal(t.hp,C.shapes.star.hp-Math.max(1,g.stats.squareDamage-1));return g;},
   focused:()=>{const g=evolved('shockwave','focused'),s=add(g,'square',300),t=add(g,'star',350);hit(g,s,4);advance(g,.2);assert.equal(t.hp,C.shapes.star.hp-g.stats.squareDamage-1);return g;},
   echo:()=>{const g=evolved('shockwave','echo'),s=add(g,'square',300),t=add(g,'triangle',350);t.hp=1;hit(g,s,4);advance(g,.25);return g;},
-  quick:()=>{const g=evolved('reactor','quick'),r=add(g,'reactor');hit(g,r,7);assert.ok(Math.abs(g.stageEvents[0].scheduledAt-Math.max(.01,C.specialEffects.reactor[0].delay-.02))<1e-9);advance(g,.2);assert.ok(g.waves.some(w=>w.sourceKind==='reactor'&&w.damage===Math.max(1,C.specialEffects.reactor[0].damage-1)));return g;},
+  quick:()=>{const g=evolved('reactor','quick'),r=add(g,'reactor');hit(g,r,7);assert.ok(Math.abs(g.stageEvents[0].scheduledAt-Math.max(.01,C.specialEffects.reactor[0].delay-.02))<1e-9);advance(g,.05);assert.ok(g.waves.some(w=>w.sourceKind==='reactor'&&w.damage===Math.max(1,C.specialEffects.reactor[0].damage-1)));return g;},
   delayed:()=>{const g=evolved('reactor','delayed'),r=add(g,'reactor');hit(g,r,7);assert.ok(Math.abs(g.stageEvents[0].scheduledAt-(C.specialEffects.reactor[0].delay+.12))<1e-9);advance(g,.3);assert.ok(g.waves.some(w=>w.sourceKind==='reactor'&&w.damage===C.specialEffects.reactor[0].damage+2));return g;},
   charge:()=>{const g=evolved('reactor','charge');hit(g,add(g,'reactor'),12);advance(g,.3);return g;},
   pull:()=>{const g=evolved('gravity','pull');add(g,'gravityWell',350,300);const p=g.emitShard(240,250,0,'triangle',g.newChain(),0);assert.equal(p.range,150);advance(g,.2);assert.ok(p.gravityTurn>0&&p.gravityTurn<=45*Math.PI/180+1e-9);return g;},

@@ -21,7 +21,7 @@ const rows = [
  ['magneticPolarity','Magnetic Polarity','Control','S',3,'gravityBreak',1,900,6,'Gravity 직접 최종타80px/피해1 · Run2 · Polar link 해제'],
  ['targetIntercept','Target Intercept','Control','P',2,'weakpointScanner',1,570,3,'움직이는 특수 최초 직접 hit +1/2 · 대상1회/Run5'],
  ['rareHarvest','Rare Harvest','Economy','P',2,'rareSeparator',1,490,3,'희귀 광석 완전 파괴 Raw+10/20 · Run400'],
- ['catalystExtraction','Catalyst Extraction','Economy','P',3,'salvageScanner',1,850,8,'정상 Chain10+ Hex/Reactor 직접 최종타 Catalyst+1 · Run1/2'],
+ ['catalystExtraction','Catalyst Extraction','Economy','P',3,'salvageScanner',1,850,8,'직접 처치한 Hex/Reactor 기원 동일 Chain이 이후 일반10킬 달성: Catalyst+1 · Run1/2'],
  ['precisionSalvage','Precision Salvage','Economy','P',2,'precisionFracture',1,420,3,'특수 직접 최종타 Raw+15/30 · Run150'],
  ['contractScanner','Contract Scanner','Economy','S',2,'photonBoost',1,760,4,'첫3s 계약 적격 강조 · 계약별 첫 실제 조건 사망 Raw25 · Run75'],
  ['refineryCalibration','Refinery Calibration','Economy','P',3,'yieldStabilizer',1,920,5,'확정 Refinery Photon +floor(3/6%) · Run40 · 재추첨 없음'],
@@ -36,6 +36,12 @@ export const EXPANSION_SKILLS=Object.fromEntries(rows.map(([id,name,branch,type,
  introduced:10,prerequisites:[{id:parent,minLevel}],position:{col:Math.floor(i/5),row:9+i%5},implemented:true
 }]));
 export const SIGNATURE_IDS=rows.filter(r=>r[3]==='S').map(r=>r[0]);
+const levelValues={weakpointScanner:['피해+1','피해+2'],armorShatter:['관통+1','관통+2'],markedTarget:['다음 일반 파동+1','다음 일반 파동+2'],executionPulse:['60px·Run2','75px·Run3'],angularSplit:['보조1개','보조2개'],mirrorReturn:['45px·Run2','60px·Run4'],portalMomentum:['거리+25px','거리+50px'],fuseAccelerator:['점화-.10초','점화-.20초'],conductiveSurge:['전도 피해+1','전도 피해+1·거리+15px'],resonanceBurst:['반경60px','반경80px'],gravityBreak:['보조1개','보조2개'],phaseDisruptor:['.8초간20%감속·Phase+.1초','.8초간35%감속·Phase+.2초'],targetIntercept:['피해+1','피해+2'],rareHarvest:['희귀 Raw+10','희귀 Raw+20'],catalystExtraction:['Catalyst1·Run1','Catalyst1·Run2'],precisionSalvage:['Raw+15','Raw+30'],refineryCalibration:['Photon+3%','Photon+6%'],splitterMastery:['Run2','Run4'],shieldInversion:['60px·Run1','70px·Run2'],ancientBreaker:['문턱 피해+1','문턱 피해+2']};
+export function expansionDescription(id,level) {
+ const d=EXPANSION_SKILLS[id];if(!d)return '';
+ if(!level)return `미보유 · ${d.subtitle}`;
+ return `${levelValues[id]?.[level-1]||'Signature · 선택 시 발동'} · ${d.subtitle}`;
+}
 export const EVOLUTION_FAMILIES={
  direct:{name:'Direct',rank:2,prerequisite:{id:'crushPower',minLevel:5},forms:{armorBypass:'최초 장갑 직접 피해+2 · Run6',markDetonator:'표식 소비65px/피해1 · Run3',focusStrike:'직접 피해+2 · 공격 간격+.04s'}},
  shard:{name:'Shard',rank:2,prerequisite:{id:'shardPower',minLevel:5},forms:{piercing:'주 파편 추가1관통 · 거리-35px',ricochet:'첫 벽 반사 남은거리+50px · 파편1회',scatter:'첫 주 파편 최종타 보조2·피해1/65px · Chain2'}},

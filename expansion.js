@@ -7,15 +7,16 @@ export function initExpansion(g,enabled,signatures=[],evolutions=[],owned={}) {
  g.signatureLoadout=Object.freeze(g.skillExpansionEnabled?normalizeSignatures(signatures,g.levels):[]);
  g.evolutionActive=Object.freeze((g.skillExpansionEnabled?normalizeEvolutionActive(evolutions,owned):[]).map(Object.freeze));
  g.expansionLevels=Object.freeze(Object.fromEntries(Object.entries(EXPANSION_SKILLS).map(([id,d])=>[id,g.skillExpansionEnabled&&(d.type!=='S'||g.signatureLoadout.includes(id))?Math.min(d.max,Math.max(0,g.levels[id]||0)):0])));
- g.expansionCounts={};g.expansionExecuted={};g.expansionEvents=[];g.expansionChainCounts=new Map();g.scannerPaid=new Set();g.fuseTimes=new Map();g.reactorExecutions=new Map();
- g.expansionRareRaw=0;g.expansionSalvageRaw=0;g.calibrationPhoton=0;
+ g.expansionCounts={};g.expansionExecuted={};g.expansionEvents=[];g.nextExpansionEvent=0;g.expansionChainCounts=new Map();g.scannerPaid=new Set();g.fuseTimes=new Map();g.reactorExecutions=new Map();
+ g.expansionRareRaw=0;g.expansionSalvageRaw=0;g.calibrationPhoton=0;g.expansionImpact={};
  if(form(g,'direct','focusStrike')){g.stats.directDamage+=2;g.stats.attackInterval+=.04;}
 }
 export const level=(g,id)=>g.expansionLevels?.[id]||0;
 export const form=(g,family,id)=>g.evolutionActive?.some(r=>r.family===family&&r.form===id)||false;
 function record(g,id,cause={},extra={}) {
  g.expansionExecuted[id]=(g.expansionExecuted[id]||0)+1;
- if(g.expansionEvents.length<2048)g.expansionEvents.push({id,eventId:g.expansionEvents.length+1,at:g.simulationTime,sourceShapeId:cause.originShapeId,chainId:cause.chainId,shardId:cause.small===false?cause.id:undefined,...extra});
+ const eventId=++g.nextExpansionEvent;
+ if(g.expansionEvents.length<2048)g.expansionEvents.push({id,sourceSkill:id,eventId,at:g.simulationTime,sourceShapeId:cause.originShapeId??extra.targetId,chainId:cause.chainId,shardId:cause.small===false?cause.id:undefined,...extra});
 }
 export function expansionUsed(g,id,cause={},extra={}) {if(g.skillExpansionEnabled)record(g,id,cause,extra);}
 function reserve(g,id,cause,runCap,chainCap) {
@@ -26,31 +27,31 @@ function reserve(g,id,cause,runCap,chainCap) {
 }
 function proc(g,id,origin,cause,{radius,damage=1,shards,range,delay=.03,runCap=Infinity,chainCap=Infinity}={}) {
  const commit=reserve(g,id,cause,runCap,chainCap);if(!commit)return false;
- const at={x:origin.x,y:origin.y,angle:origin.angle||0,id:origin.id},child={...cause,depth:(cause.depth||0)+1,source:id,triggeredBySkill:id,originShapeId:origin.id,noRelicProc:true,nativeWave:false};
+ const at={x:origin.x,y:origin.y,angle:origin.angle||0,id:origin.id},child={...cause,depth:(cause.depth||0)+1,source:id,triggeredBySkill:id,originShapeId:origin.id,noRelicProc:Boolean(cause.noRelicProc),nativeWave:false};
  delete child.stageIndex;
  const done=g.skillEffect(id,()=>{
-  let emitted=0;
+  let emitted=0,waveId;
   if(shards)for(let i=0;i<shards;i++)emitted+=Number(Boolean(g.emitAux(at,at.angle+i*Math.PI*2/shards,child,id,damage,range)));
-  else emitted=Number(Boolean(g.area(at,radius,damage,child,'#b5e5e0',at.id)));
-  if(emitted)record(g,id,child,{emitted});
+  else {const wave=g.area(at,radius,damage,child,'#b5e5e0',at.id);emitted=Number(Boolean(wave));waveId=wave?.id;}
+  if(emitted)record(g,id,child,{emitted,waveId});
  },child,delay);
  if(done)commit();return Boolean(done);
 }
 const moving=(g,s)=>g.options.motionEnabled&&s.motion&&Number.isFinite(s.motion.startAt)&&(s.motion.ampX||s.motion.ampY||s.motion.rotationRate);
 export function expansionBeforeDamage(g,s,damage,cause,wave) {
  if(!g.skillExpansionEnabled)return damage;
- for(const key of ['weakpointBonus','armorBonus','armorEvolution','interceptBonus','breakerStage','markConsumed'])delete cause[key];
+ for(const key of ['weakpointBonus','armorBonus','armorShatterApplied','armorEvolution','interceptBonus','breakerStages','markConsumed'])delete cause[key];
  if(damage<=0)return damage;
  if(cause.source==='direct') {
   if(level(g,'weakpointScanner')&&s.hp<=s.maxHP/2&&!s.weakpointUsed){cause.weakpointBonus=level(g,'weakpointScanner');damage+=cause.weakpointBonus;}
   if((level(g,'armorShatter')||form(g,'direct','armorBypass'))&&((s.secondaryTrait==='reinforced'&&!s.armorUsed)||(s.type==='hex'&&!s.shieldBroken))) {
-   cause.armorBonus=level(g,'armorShatter');
-   if(form(g,'direct','armorBypass')&&(g.expansionCounts['evolution:armorBypass']||0)<6){cause.armorEvolution=true;cause.armorBonus+=2;}
+   cause.armorBonus=s.armorShatterUsed?0:level(g,'armorShatter');cause.armorShatterApplied=cause.armorBonus>0;
+   if(form(g,'direct','armorBypass')&&!s.armorBypassUsed&&(g.expansionCounts['evolution:armorBypass']||0)<6){cause.armorEvolution=true;cause.armorBonus+=2;}
   }
   if(level(g,'targetIntercept')&&C.shapes[s.type].special&&moving(g,s)&&!s.interceptUsed&&(g.expansionCounts.targetIntercept||0)<5){cause.interceptBonus=level(g,'targetIntercept');damage+=cause.interceptBonus;}
   if(level(g,'ancientBreaker')&&s.type==='ancient') {
-   s.breakerStages ||= new Set();const index=C.specialEffects.ancient.thresholds.findIndex((hp,i)=>s.hp>hp&&s.hp-damage<=hp&&!s.breakerStages.has(i));
-   if(index>=0){cause.breakerStage=index;damage+=level(g,'ancientBreaker');}
+   s.breakerStages ||= new Set();cause.breakerStages=[];
+   for(const[stage,hp]of C.specialEffects.ancient.thresholds.entries())if(s.hp>hp&&s.hp-damage<=hp&&!s.breakerStages.has(stage)){cause.breakerStages.push(stage);damage+=level(g,'ancientBreaker');}
   }
  }
  if(wave&&!cause.wardRelease&&(!cause.triggeredBySkill||cause.nativeWave||(['reactor','ancient'].includes(cause.source)&&cause.stageIndex))&&s.markUntil>=g.simulationTime&&level(g,'markedTarget')){cause.markConsumed=true;damage+=level(g,'markedTarget');}
@@ -61,11 +62,12 @@ export function expansionAfterDefense(g,damage,cause) {
 }
 export function expansionDamaged(g,s,actual,cause,wave) {
  if(!g.skillExpansionEnabled||actual<=0||s.echo)return;
+ if(cause.triggeredBySkill&&cause.source===cause.triggeredBySkill){const impact=g.expansionImpact[cause.triggeredBySkill]||={hits:0,damage:0,kills:0};impact.hits++;impact.damage+=actual;impact.kills+=Number(s.hp<=0);}
  if(cause.source==='direct'&&form(g,'direct','focusStrike'))record(g,'evolution:focusStrike',cause,{targetId:s.id});
  if(cause.source==='conductor'&&level(g,'conductiveSurge'))record(g,'conductiveSurge',cause,{targetId:s.id,actual});
  for(const [field,id]of [['weakpointBonus','weakpointScanner'],['interceptBonus','targetIntercept']])if(cause[field]){s[id==='weakpointScanner'?'weakpointUsed':'interceptUsed']=true;g.expansionCounts[id]=(g.expansionCounts[id]||0)+1;record(g,id,cause,{targetId:s.id,bonus:cause[field]});}
- if(cause.armorBonus){if(level(g,'armorShatter'))record(g,'armorShatter',cause,{targetId:s.id});if(cause.armorEvolution){g.expansionCounts['evolution:armorBypass']=(g.expansionCounts['evolution:armorBypass']||0)+1;record(g,'evolution:armorBypass',cause,{targetId:s.id});}}
- if(cause.breakerStage!==undefined){s.breakerStages.add(cause.breakerStage);record(g,'ancientBreaker',cause,{targetId:s.id,stage:cause.breakerStage});}
+ if(cause.armorBonus){if(cause.armorShatterApplied){s.armorShatterUsed=true;record(g,'armorShatter',cause,{targetId:s.id});}if(cause.armorEvolution){s.armorBypassUsed=true;g.expansionCounts['evolution:armorBypass']=(g.expansionCounts['evolution:armorBypass']||0)+1;record(g,'evolution:armorBypass',cause,{targetId:s.id});}}
+ for(const stage of cause.breakerStages||[]){s.breakerStages.add(stage);record(g,'ancientBreaker',cause,{targetId:s.id,stage});}
  if(cause.markConsumed){delete s.markUntil;record(g,'markedTarget',cause,{targetId:s.id,consumed:true});if(form(g,'direct','markDetonator'))proc(g,'evolution:markDetonator',s,cause,{radius:65,runCap:3});}
  if(cause.source==='direct') {
   if(level(g,'markedTarget')){s.markUntil=g.simulationTime+1.5;record(g,'markedTarget',cause,{targetId:s.id,marked:true});}
@@ -105,8 +107,13 @@ export function expansionKilled(g,s,cause,wave,countersBefore={}) {
   const amount=Math.min(150-g.expansionSalvageRaw,15*level(g,'precisionSalvage'));
   if(amount>0){g.rewardExtra(amount,'skill',s,{...cause,triggeredBySkill:'precisionSalvage'});g.expansionSalvageRaw+=amount;record(g,'precisionSalvage',cause,{targetId:s.id,amount});}
  }
- if(dir&&kills>=10&&['hex','reactor'].includes(s.type)&&level(g,'catalystExtraction')&&(g.expansionCounts.catalystExtraction||0)<level(g,'catalystExtraction')) {
-  g.expansionCounts.catalystExtraction=(g.expansionCounts.catalystExtraction||0)+1;g.pendingCatalyst++;record(g,'catalystExtraction',cause,{targetId:s.id,amount:1});g.rewardLog.push({kind:'catalyst:extraction',amount:1,shapeId:s.id,chainId:cause.chainId,at:g.simulationTime});
+ // Human-approved option A: remember the direct root, then qualify ONLY its
+ // normal deaths. Each pointer attack still owns a separate Chain.
+ if(dir&&cause.rootAttack&&kills===1&&['hex','reactor'].includes(s.type)&&level(g,'catalystExtraction'))chain.extractionOrigin=s.id;
+ if(chain?.extractionOrigin&&kills>=10&&!chain.extractionCredited&&level(g,'catalystExtraction')&&(g.expansionCounts.catalystExtraction||0)<level(g,'catalystExtraction')) {
+  chain.extractionCredited=true;g.expansionCounts.catalystExtraction=(g.expansionCounts.catalystExtraction||0)+1;g.pendingCatalyst++;
+  record(g,'catalystExtraction',{...cause,originShapeId:chain.extractionOrigin},{targetId:s.id,normalKills:kills,amount:1});
+  g.rewardLog.push({kind:'catalyst:extraction',amount:1,shapeId:chain.extractionOrigin,chainId:cause.chainId,at:g.simulationTime});
  }
  if(level(g,'contractScanner'))for(const contract of g.contractSnapshot) {
   const counter=C.contracts[contract.id].counter;
@@ -116,6 +123,7 @@ export function expansionKilled(g,s,cause,wave,countersBefore={}) {
  }
 }
 export function expansionNativeWave(g,s,cause,wave) {
+ if(wave)for(const id of ['wide','focused'])if(form(g,'shockwave',id))record(g,`evolution:${id}`,cause,{waveId:wave.id});
  if(wave&&level(g,'delayedEcho'))proc(g,'delayedEcho',s,cause,{radius:60,delay:.12,runCap:2});
 }
 export function expansionWaveStats(g,radius,damage) {
@@ -145,6 +153,7 @@ export function expansionWardReleased(g,hex,cause) {
 }
 export function expansionShardCreated(g,s) {
  if(s.small||!g.skillExpansionEnabled)return;
+ s.wallHooks=Boolean(level(g,'portalMomentum')||level(g,'ricochetBloom')||form(g,'shard','ricochet'));
  let changed=false;
  if(level(g,'piercingShard')){s.penetrations=(s.penetrations||0)+1;s.range*=.7;changed=true;}
  if(form(g,'shard','piercing')){s.penetrations=(s.penetrations||0)+1;s.range=Math.max(1,s.range-35);changed=true;}

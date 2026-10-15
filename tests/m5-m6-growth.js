@@ -18,13 +18,13 @@ export function growthScenario({seed,strategy,profile='fresh',contentMode='M5_M6
     for(let rank=rankBefore+1;rank<=save.discoveryRank;rank++)ranksReachedAtRun[rank]=index;
     for(const [k,n] of Object.entries(r.oreKills))if(k!=='common'&&n&&!firstRareFoundAtRun[k])firstRareFoundAtRun[k]=index;
     for(const [k,v] of Object.entries(r.typeStats))if(C.shapes[k].special&&v.spawnCount)highTierShapesEncountered[k]=(highTierShapesEncountered[k]||0)+v.spawnCount;
-    const purchasedSkills=[];const upgradesAffordable=skillDefinitions.filter(n=>skillState(n.id,save.levels,save.bank,save).canBuy).map(n=>n.id);
+    const purchasedSkills=[];const upgradesAffordable=skillDefinitions.filter(n=>n.introduced!==10).filter(n=>skillState(n.id,save.levels,save.bank,save).canBuy).map(n=>n.id);
     for(let j=0;j<100;j++){
-      const keys=[...priorities[strategy],...Object.keys(C.upgrades)];
+      const keys=[...priorities[strategy],...Object.keys(C.upgrades).filter(k=>C.upgrades[k].introduced!==10)];
       const key=keys.find(k=>skillState(k,save.levels,Infinity,{...save,catalystBalance:Infinity}).canBuy);if(!key)break;
       const before=save.bank;if(!buyUpgrade(save,key,'RESULT'))break;spentPhoton+=before-save.bank;purchasedSkills.push(key);purchasedSkillIds.add(key);
     }
-    const totalLevels=Object.values(save.levels).reduce((a,b)=>a+b,0),maxLevels=Object.values(C.upgrades).reduce((a,u)=>a+u.max,0);
+    const totalLevels=Object.values(save.levels).reduce((a,b)=>a+b,0),maxLevels=Object.values(C.upgrades).filter(u=>u.introduced!==10).reduce((a,u)=>a+u.max,0);
     runs.push({index,runId:r.runId,seed,profile,inputPolicy:r.inputPolicy,ruleset:r.ruleset,contentMode,configuredDuration:r.durationSeconds,actualDuration:r.elapsed,runTier:r.highestTier,directKills:r.directKills,chainKills:r.cascadeKills,bestChain:r.bestChain,totalDestroyed:r.totalDestroyed,rawBase:r.rawBase,rawHP:r.rawHP,rawNativeBonus:r.rawNativeBonus,rawOreBonus:r.rawOreBonus,rawSkillBonus:r.rawSkillBonus,rawEarned:r.rawEarned,refineryPayout:r.photonsEarned,bankBefore,bankAfter:save.bank,catalystBalance:save.catalystBalance,catalystPayout:r.pendingCatalyst,rewardsBySource:r.rewardsBySource,skillLevels:{...save.levels},levelsBefore,purchasedSkills,upgradesAffordable,refineryMultiplier:r.refinery?.multiplier,fps:null,tickP95:r.simulationStepP95ms,capHits:r.capCounts,skippedEvents:r.skippedEvents,motionMisses:r.missedClicks,refinerySkip:null,totalRuns:save.totalRuns,lifetimeDestroyed:save.lifetimeDestroyed,discoveryRank:save.discoveryRank,knownHistoryKills:save.knownHistoryKills,spentPhoton,earnedPhoton,totalLevels,remainingLevels:maxLevels-totalLevels,oreKills:r.oreKills,typeStats:r.typeStats,skillActivations:r.skillActivations,physicsChecks:r.physicsChecks,patternCounts:r.patternCounts,stageEvents:r.stageEvents,skillEvents:r.skillEvents,welcomeConsumed:r.welcomeConsumed,oreChances:r.oreChances,oreSpawnCounts:r.oreSpawnCounts,motionMeasurements:r.motionMeasurements,secondShardPeaks:r.secondShardPeaks,peakShards:r.peakShards,peakWaves:r.peakWaves,tetherPairs:r.tetherPairs,tetherAttempts:r.tetherAttempts});
     assert.equal(r.rawBase,r.rawHP+r.rawNativeBonus);assert.equal(save.totalRuns,index);assert.ok(save.bank>=0&&save.catalystBalance>=0);assert.ok(Math.abs(r.rawBase+r.rawOreBonus+r.rawSkillBonus-r.rawEarned)<1e-9);
   }

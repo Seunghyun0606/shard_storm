@@ -16,8 +16,8 @@ export function contentBattle(args){
 const priorities={Crusher:['crushPower','crushSpeed','impactPulse','precisionFracture'],Cascade:['shardPower','shardRange','shardBloom','ricochetPlus','fragmentRelay'],Reactor:['chainAmplifier','echoCatalyst','yieldStabilizer','resonanceLayer']};
 export function contentGrowth(spec,checkpoint=null,onCheckpoint=()=>{}){
  const s=checkpoint?.save||freshSave();s.sandbox=true;const rows=checkpoint?.rows||[];
- if(!checkpoint){s.anomalySeed=`content-${spec.seed}`;if(spec.profile==='LegacyMax'){s.bank=10000;s.catalystBalance=200;s.lifetimeDestroyed=8000;s.discoveryRank=4;for(const[k,u]of Object.entries(C.upgrades))s.levels[k]=u.max;}}
- const allowed=Object.keys(C.upgrades),priority=[...priorities[spec.strategy],...allowed];
+ if(!checkpoint){s.anomalySeed=`content-${spec.seed}`;if(spec.profile==='LegacyMax'){s.bank=10000;s.catalystBalance=200;s.lifetimeDestroyed=8000;s.discoveryRank=4;for(const[k,u]of Object.entries(C.upgrades).filter(([,u])=>u.introduced!==10))s.levels[k]=u.max;}}
+ const allowed=Object.keys(C.upgrades).filter(k=>C.upgrades[k].introduced!==10),priority=[...priorities[spec.strategy],...allowed];
  for(let run=rows.length+1;run<=spec.count;run++){
   for(const id of Object.keys(C.relics))craftRelic(s,id,'RESULT');s.relicEquipped=[];
   const owned=[...s.relicOwned];if(spec.strategy==='Reactor')owned.sort((a,b)=>Number(b==='reactorGovernor')-Number(a==='reactorGovernor'));

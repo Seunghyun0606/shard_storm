@@ -1,5 +1,6 @@
 import { CONFIG as C } from './config.js';
 import { spawnAlpha } from './presentation.js';
+import {scannerEligible,level} from './expansion.js';
 const ecologyHints={splitter:'Echo2 · 콤보 전용',fuseBomb:'첫 피해 .70초 / 파괴 .08초 폭발',conductor:'파괴 시 연결2대상 전도',mirror:'주 파편 방향 전환 최대2회',gravityWell:'주 파편 휨 최대30°',repairNode:'.85초마다 일반 도형 치유'};
 function hudText(ctx,text,width){const measure=s=>ctx.measureText(s)?.width??s.length*6;while(text.length>1&&measure(text)>width)text=text.slice(0,-2)+'…';return text;}
 export function polygon(ctx, s, scale = 1, variety = true) {
@@ -32,7 +33,7 @@ export function draw(ctx, game, fps = 60, osReducedMotion = false) {
   ctx.save(); ctx.beginPath(); ctx.rect(C.arena.left, C.arena.top, C.arena.right - C.arena.left, C.arena.bottom - C.arena.top); ctx.clip();
   let links=0;
   for(const s of game.alive.filter(s=>s.linkIds))for(const id of s.linkIds){
-    const target=game.alive.find(t=>t.id===id);if(!target||links>=3||Math.hypot(target.x-s.x,target.y-s.y)>115)continue;
+    const target=game.alive.find(t=>t.id===id);if(!target||links>=3||Math.hypot(target.x-s.x,target.y-s.y)>115+(level(game,'conductiveSurge')>=2?15:0))continue;
     ctx.strokeStyle='#ede08566';ctx.lineWidth=1;ctx.setLineDash([3,5]);ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(target.x,target.y);ctx.stroke();ctx.setLineDash([]);links++;
   }
   for (const s of game.alive) {
@@ -70,6 +71,8 @@ export function draw(ctx, game, fps = 60, osReducedMotion = false) {
     if(s.secondaryTrait&&game.options.modifierVisuals){ctx.strokeStyle='#e7efee';ctx.lineWidth=1;ctx.strokeRect(-s.radius-4,-s.radius-4,9,9);ctx.fillStyle='#fff';ctx.font='8px Arial';ctx.textAlign='center';const marks={reinforced:s.armorUsed?'':'▣',volatile:'✴',reflective:'↪',hollow:'◌'};ctx.fillText(marks[s.secondaryTrait]||'',-s.radius+.5,-s.radius+3);}
     if(s.oreGrade&&s.oreGrade!=='common'){const color={prism:'#a9faff',core:'#fff6bc',void:'#e1b2ff'}[s.oreGrade];ctx.save();ctx.translate(s.radius*.4,-s.radius*.45);ctx.fillStyle='#0c1419';ctx.beginPath();ctx.arc(0,0,7,0,Math.PI*2);ctx.fill();ctx.strokeStyle=color;ctx.lineWidth=1.2;ctx.stroke();ctx.fillStyle=color;ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.fillText(C.ore[s.oreGrade].symbol,0,4);ctx.restore();if(game.levels.salvageScanner&&game.elapsed<1){ctx.strokeStyle=color;ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,s.radius+10,0,Math.PI*2);ctx.stroke();}}
     if(s.channelUntil>=game.elapsed){ctx.strokeStyle='#d7bdff';ctx.lineWidth=2;ctx.setLineDash([4,2]);ctx.strokeRect(-s.radius-5,-s.radius-5,2*s.radius+10,2*s.radius+10);ctx.setLineDash([]);}
+    if(scannerEligible(game,s)){ctx.strokeStyle='#f4e7a9';ctx.lineWidth=1.5;ctx.strokeRect(-s.radius-7,-s.radius-7,2*s.radius+14,2*s.radius+14);ctx.font='8px Arial';ctx.fillStyle='#f4e7a9';ctx.textAlign='center';ctx.fillText('C',s.radius+10,-s.radius);}
+    if(s.markUntil>=game.elapsed){ctx.strokeStyle='#c7adff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,s.radius+4,0,Math.PI*2);ctx.stroke();}
     // Small HP ticks make multi-hit breakpoints easy to read.
     ctx.fillStyle = cfg.color; for (let i = 0; i < Math.min(12,s.hp); i++) ctx.fillRect((i - (Math.min(12,s.hp) - 1) / 2) * 4 - 1, s.radius + 8, 2, 2);
     ctx.restore();

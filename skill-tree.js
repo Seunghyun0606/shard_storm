@@ -1,4 +1,5 @@
 import { CONFIG as C } from './config.js';
+import {expansionDescription} from './expansion-defs.js';
 export const skillDefinitions = C.skillDefinitions.map(node => ({ ...node, ...C.upgrades[node.id], label: C.upgrades[node.id].name, maxLevel: C.upgrades[node.id].max, effectKey: node.id, description: C.upgrades[node.id].subtitle, implemented: node.implemented !== false }));
 export function validateSkillTree(definitions = skillDefinitions) {
   const nodes = new Map(definitions.map(n => [n.id, n]));
@@ -43,6 +44,7 @@ export function getDerivedStats(levels = {}) {
   };
 }
 export function describeSkill(key, levels) {
+  if(C.upgrades[key]?.introduced===10)return expansionDescription(key,levels[key]||0);
   const s = getDerivedStats(levels);
   const descriptions = {
     crushPower: `직접 피해 ${s.directDamage}`, crushSpeed: `반복 간격 ${s.attackInterval.toFixed(2)}초`,
@@ -63,15 +65,23 @@ export function describeSkill(key, levels) {
 }
 // The same definitions drive every node, edge, prerequisite label and purchase.
 export function renderSkillTree(container, info, save, selected, onSelect, onBuy, stateFor = skillState) {
-  const width = 1120, rowHeight = 86, nodeWidth = 174, nodeHeight = 62;
-  const position = node => ({ x: 112 + node.position.col * 224, y: 126 + (node.position.row - 1) * rowHeight });
-  const height = Math.max(...skillDefinitions.map(n => position(n).y)) + 58;
+  const width = 1344, rowHeight = 86, nodeWidth = 174, nodeHeight = 62;
+  const query=(container.dataset.query||'').toLowerCase().trim(),branch=container.dataset.branch||'';
+  const legacyBranch={crushPower:'Direct',crushSpeed:'Direct',impactPulse:'Direct',precisionFracture:'Direct',shardPower:'Shard',shardRange:'Shard',shardBloom:'Shard',ricochetPlus:'Shard',fragmentRelay:'Shard',kineticReach:'Shard',chainAmplifier:'Reaction',echoCatalyst:'Reaction',resonanceLayer:'Reaction',catalystChannel:'Specialist'};
+  const visible=skillDefinitions.filter(n=>(!query||`${n.label} ${n.id}`.toLowerCase().includes(query))&&(!branch||(branch==='Legacy'?n.introduced!==10:(n.introduced===10?n.branch:legacyBranch[n.id]||'Economy')===branch)));
+  const filtered=Boolean(query||branch),visibleIds=new Set(visible.map(n=>n.id));
+  if(filtered&&visible.length&&!visibleIds.has(selected))selected=visible[0].id;
+  const position = node => {const index=visible.indexOf(node);return filtered&&index>=0?{x:112+(index%6)*224,y:40+Math.floor(index/6)*rowHeight}:{ x: 112 + node.position.col * 224, y: 126 + (node.position.row - 1) * rowHeight };};
+  const height = Math.max(filtered?40:126,...visible.map(n => position(n).y)) + 58;
   const graph = document.createElement('div'); graph.className = 'skill-graph'; graph.style.width = `${width}px`; graph.style.height = `${height}px`;
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('viewBox', `0 0 ${width} ${height}`); svg.setAttribute('aria-hidden', 'true'); svg.classList.add('skill-lines');
   const nodes = new Map(skillDefinitions.map(n => [n.id, n]));
   for (const node of skillDefinitions) {
+    if(!visibleIds.has(node.id))continue;
     const to = position(node), parents = node.prerequisites.length ? node.prerequisites : [{ id: 'root', minLevel: 0 }];
     for (const p of parents) {
+      if(filtered&&p.id==='root')continue;
+      if(p.id!=='root'&&!visibleIds.has(p.id))continue;
       const from = p.id === 'root' ? { x: width / 2, y: 34 } : position(nodes.get(p.id));
       const startY = from.y + (p.id === 'root' ? 18 : nodeHeight / 2), endY = to.y - nodeHeight / 2;
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -83,16 +93,20 @@ export function renderSkillTree(container, info, save, selected, onSelect, onBuy
     }
   }
   graph.append(svg);
-  const root = document.createElement('div'); root.className = 'skill-root'; root.textContent = '◈ CORE / ROOT'; graph.append(root);
-  ['DESTROY', 'CASCADE', 'REACTION', 'UTILITY','REFINERY / LEGACY'].forEach((text, col) => { const label = document.createElement('div'); label.className = `branch-label branch-${col}`; label.style.left = `${112 + col * 224}px`; label.textContent = text; graph.append(label); });
+  const root = document.createElement('div'); root.hidden=filtered; root.className = 'skill-root'; root.textContent = '◈ CORE / ROOT'; graph.append(root);
+  ['DIRECT', 'SHARD', 'REACTION', 'CONTROL','ECONOMY','SPECIALIST'].forEach((text, col) => { const label = document.createElement('div');label.hidden=filtered; label.className = `branch-label branch-${col}`; label.style.left = `${112 + col * 224}px`; label.textContent = text; graph.append(label); });
   for (const node of skillDefinitions) {
     const state = stateFor(node.id, save.levels, save.bank,save), p = position(node), button = document.createElement('button');
+    button.hidden=!visibleIds.has(node.id);
     button.type = 'button'; button.className = `skill-node ${state.state} ${node.id === selected ? 'selected' : ''}`; button.dataset.skill = node.id; button.dataset.state = state.state; button.setAttribute('aria-pressed', String(node.id === selected));
     button.style.left = `${p.x - nodeWidth / 2}px`; button.style.top = `${p.y - nodeHeight / 2}px`;
     button.innerHTML = `<strong>${state.state === 'locked' ? '▣ ' : ''}${node.label}</strong><span>Lv.${state.level} / ${node.maxLevel}</span><small>${state.max ? 'MAX' : state.state === 'locked' ? `LOCKED · Rank${state.requiredRank} / 선행` : state.state === 'coming' ? 'COMING LATER' : `${state.cost} ◈ + ${state.catalystCost} Catalyst`}</small>`;
+    if(node.type==='S'){const active=(save.signatureLoadout||[]).includes(node.id);button.classList.toggle('signature-active',active);button.querySelector('small').textContent=state.level?(active?'ACTIVE · SIGNATURE':'OWNED · INACTIVE'):button.querySelector('small').textContent;}
     button.onclick = () => onSelect(node.id); graph.append(button);
   }
   const scroll = { left: container.scrollLeft, top: container.scrollTop }; container.replaceChildren(graph); container.scrollLeft = scroll.left; container.scrollTop = scroll.top;
+  if(filtered){container.scrollLeft=0;container.scrollTop=0;}
+  if(!visible.length){info.textContent='검색 결과가 없습니다.';return;}
   const node = nodes.get(selected), state = stateFor(selected, save.levels, save.bank,save);
   const prerequisites = node.prerequisites.map(p => `${nodes.get(p.id).label} Lv.${p.minLevel}${(save.levels[p.id] || 0) >= p.minLevel ? ' ✓' : ''}`).join(' · ') || '없음';
   const next = state.max ? '최대 레벨' : describeSkill(selected, { ...save.levels, [selected]: state.level + 1 });

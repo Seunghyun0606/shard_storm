@@ -45,7 +45,7 @@ export function expandedGrowth(spec,checkpoint=null,onCheckpoint=()=>{}) {
   rows.push({run,rank:save.discoveryRank,seed:g.seed,kills:g.totalDestroyed,raw:g.runEarned,photon:record.processedPhoton,bank:save.bank,catalyst:save.catalystBalance,
    levels:Object.values(save.levels).reduce((a,b)=>a+b,0),remainingNodes:allowed.filter(id=>save.levels[id]<C.upgrades[id].max).length,
    signatureLoadout:signatureSnapshot,evolutionActive:evolutionSnapshot,evolutionOwned:structuredClone(save.evolutionOwned),duration:g.duration,
-   expansionExecuted:{...g.expansionExecuted},skillActivations:record.skillActivations,ecologyCounts:record.ecologyCounts,chain:g.bestChain,calibrationPhoton:g.calibrationPhoton,
+   expansionExecuted:{...g.expansionExecuted},expansionImpact:structuredClone(g.expansionImpact),skillActivations:record.skillActivations,ecologyCounts:record.ecologyCounts,chain:g.bestChain,calibrationPhoton:g.calibrationPhoton,
    blank:record.emptyArenaDuration,tickP95ms:record.fixedStepP95ms,caps:record.capCounts,physics:record.physicsChecks,peaks:{shards:record.peakShards,waves:record.peakWaves,scheduled:record.peakScheduled}});
   // Experiment checkpoints retain the actual20 recent settlement summaries but
   // omit large per-event/render/bin arrays. Aggregate causal counters above are

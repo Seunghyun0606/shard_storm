@@ -1,5 +1,6 @@
 // v0.9 P0. Legacy settings remain explicit for regression and controlled A/B.
 import { ECOLOGY_SHAPES } from './ecology-defs.js';
+import { EXPANSION_SKILLS } from './expansion-defs.js';
 export const CONFIG = {
   width: 960, height: 540,
   arena: { left: 32, right: 928, top: 78, bottom: 512 },
@@ -145,7 +146,10 @@ export const CONFIG = {
     fortified:{name:'Fortified',rank:2,rate:.12,counter:'wardReleasesFromHexDeath',target:2,hexAdd:.04,wardReduction:2,description:'Hex 확률 +4%p · Ward 피해감소2 · Hex 사망 Ward2해제'},
     unstableCore:{name:'Unstable Core',rank:3,rate:.15,counter:'reactorStageWaveExecuted',target:3,alternateCounter:'ancientKills',alternateTarget:1,reactorMultiplier:1.5,ancientMultiplier:3,description:'Reactor ×1.5/Rank4 Ancient ×3 (상한 유지) · 실제 Reactor파동3 또는 Ancient1파괴'}
   },
-  costGrowth: 1.6, saveVersion: 6, storageKey: 'shard-storm-v1', historyLimit: 20,
+  costGrowth: 1.6, saveVersion: 7, storageKey: 'shard-storm-v1', historyLimit: 20,
   dev: { grant: 1000, minDuration: 1, maxDuration: 90 },
   options: { secondaryTraitsEnabled:true,combatFXEnabled:true,screenShakeEnabled:true,reducedMotionEnabled:false,oreEnabled:true,inheritance: true, ricochet: true, sequentialPropagation: true, visualVariety: true, damageVFX: true, sound: false, comboFeedback: true, modifiers: true, modifierVisuals: true, motionEnabled: true, refineryEnabled: true }
 };
+
+Object.assign(CONFIG.upgrades, EXPANSION_SKILLS);
+CONFIG.skillDefinitions.push(...Object.values(EXPANSION_SKILLS).map(d=>({id:d.id,branch:d.branch,position:d.position,prerequisites:d.prerequisites,implemented:true})));

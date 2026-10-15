@@ -40,7 +40,7 @@ export function nextPurchase(levels, strategy = 'Crusher') {
   return keys.find(k => skillState(k, levels, Infinity).canBuy) || null;
 }
 export function nodeComparisons() {
-  return skillDefinitions.map(node => {
+  return skillDefinitions.filter(node=>node.introduced!==10).map(node => {
     const before = emptyLevels(); for (const p of node.prerequisites) before[p.id] = p.minLevel;
     // Recursively fill prerequisite ancestors (e.g. Ricochet → Range → Power).
     let changed; do { changed = false; for (const n of skillDefinitions) if (before[n.id]) for (const p of n.prerequisites) if (before[p.id] < p.minLevel) { before[p.id] = p.minLevel; changed = true; } } while (changed);

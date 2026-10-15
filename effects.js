@@ -39,6 +39,7 @@ export function traceShard(run, shard, budget) {
       if (Math.abs(wallX - wall) < 1e-7) p.vx *= -1;
       if (Math.abs(wallY - wall) < 1e-7) p.vy *= -1;
       p.angle = Math.atan2(p.vy, p.vx);
+      if(shard.wallHooks)return {...p,distance:travelled,hit:null,wallDead:false,wallBounces};
     } else break;
   }
   return { ...p, distance: travelled, hit: null, wallDead: false,wallBounces };
