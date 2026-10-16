@@ -1,6 +1,6 @@
 # M12 — Core Loop & Power Curve (policy review checkpoint)
 
-M12~M16 전체 완료 보고서가 아닙니다. M12의 물리 정확성 수정과 격리 정책 비교를 구현했습니다. **Elite 운영 정책은 결정 전이며 M13~M16은 아직 구현하지 않았습니다.**
+M12 기능/자동 QA를 완료했습니다. M12~M16 전체 완료 보고서는 아닙니다. **사용자 승인 A: 적격Run20%+pity6를 라이브에 채택하고 schema9로 연결했습니다.** 공급은 A/B 결과에 따라 fixed15를 유지하고24 후보는 격리 실험으로 남깁니다. 사람의 재미/시인성 검증은 별도입니다.
 
 개발 브랜치: `feat/m12-m16-destruction-evolution`. 시작점은 기획 브랜치 `56a75c5b00a6e4cf6245e0a90736146d45fb5f3c`이며 M11 최종 `633f8a4efab15b324f40c3284a79509c561c7222`를 포함합니다. 사용자 미커밋 변경이 없는 것을 확인한 뒤 분기했습니다. main 병합/PR/배포는 수행하지 않았습니다.
 
@@ -18,17 +18,17 @@ shards150/waves64/scheduled1024/chainEvents400/depth10 상한은 그대로입니
 
 Elite는 Run당 한 번 추첨하는3/15/20/25% 및20%+pity6 후보를 제공합니다. 소개/강제 생성은 별도이며 동일 Run100회 호출해도 재추첨하지 않습니다. 후보의 pity는 적격 자연 미등장 Run에서 최대6까지 증가하고, 다음 적격 Run의 생성 시도를 보장하며 실제 자연 생성에만0으로 돌아갑니다. 소개 Run은 pity를 소비/증가시키지 않습니다. 확률 성공 뒤 최대8회 시도하고 안전 배치 실패는 생성으로 계산하지 않습니다. 이 checkpoint에서는 pity를 실험 인자로 전달하고 다음 값을 기록할 뿐 라이브 계정에 영구 저장하지 않습니다.
 
-**운영 기본값은 아직 M11 fixed15/s 및 attempt3%입니다.** 후보 설정은 `sandbox:true`에서만 허용하고 라이브 Game 생성에서 거절합니다. 개발자 패널에서 다음 실험 Run의 공급/Elite 정책을 선택할 수 있습니다. MAX 실험 프리셋은 모든 선행조건을 만족하며 기본20초로 고정 비교하고,32초는 명시적으로 설정할 수 있습니다. 기존 가격/Refinery/사용자 자산은 변경하지 않았습니다.
+**라이브는 fixed15/s 및 Run20%+pity6입니다.** 기존 M11 정책은 비교용 Game API에서 명시적으로 유지할 수 있습니다. 다른 후보는 `sandbox:true`에서만 허용합니다. 개발자 패널에서 다음 실험 Run의 공급/Elite 정책을 선택할 수 있습니다. MAX 실험 프리셋은 모든 선행조건을 만족하며 기본20초로 비교하고32초도 명시할 수 있습니다. 기존 가격/Refinery/사용자 자산은 변경하지 않았습니다. 배치 실패는 target budget/special cap/ecology cap/geometry 이유로 구분합니다.
 
 ## Codex 피드백
 
-Pentagon의 실제 동일 origin main 최종타와 auxiliary 최종타를 분리합니다. Prism Lens의 실제 sector/서로 다른 target 접촉, Fuse의 동일 Chain 실제 폭발 시각을 보관해 RESULT Codex 카드에 최근2개 시도의 성공/실패 이유를 표시합니다. 별도 게임 이벤트를 발명하거나 목표량을 낮추지 않습니다. Echo/debug/fixture 최종타는 해당 시도에서 제외합니다. 상세 시도는 최대128개 요약이며 원래 causal 기록을 삭제하지 않습니다. main 최종타/sector 접촉 자체가0인 origin은 현재 시도 카드에 나타나지 않는 한계가 있어, 전체0회 시도 안내는 후속 보완 대상입니다.
+Pentagon의 실제 동일 origin main 최종타와 auxiliary 최종타를 분리합니다. Prism Lens의 실제 sector/서로 다른 target 접촉, Fuse의 동일 Chain 실제 폭발 시각을 보관해 RESULT Codex 카드에 최근2개 시도의 성공/실패 이유를 표시합니다. 별도 게임 이벤트를 발명하거나 목표량을 낮추지 않습니다. Echo/debug/fixture 최종타는 제외합니다. 상세 시도는 최대128개 요약이며 원래 causal 기록을 삭제하지 않습니다. 실제 Pentagon 사망 또는 Lens sector 실행이 확인되면0회 진척도 표시합니다. 접촉이 없었던 이유를 추정하여 만들지는 않습니다.
 
 ## 저장과 검증
 
-schema8/`shard-storm-v1`/LZ4/CRC32/전체20전투 기록을 유지합니다. 아직 신규 영속 필드는 없으므로 migration을 추가하지 않았습니다. 운영 pity를 채택할 경우 PRD대로 schema9의 atomic settlement 필드가 필요하며 정책 결정 후 구현합니다. 기존 schema1~8/미완료 정산은 단위 테스트와 실제 Chrome codec QA로 회귀했습니다.
+schema9/`shard-storm-v1`/LZ4/CRC32/전체20전투 기록을 유지합니다. schema1~8을 읽고 기존 자산을 보존하며 `elitePity`만0부터 추가합니다. 미완료 정산에 Run 시작/종료 pity와 실제 적격/소개/생성 여부를 동결해 저장하고, 검증한 값만 기존 completeSettlement의 RunId 중복 방지 안에서1회 적용합니다. 기존 pending에 소급 pity를 붙이지 않습니다. 실제 Chrome에서 보장 대상 fixture의20초 플레이 후 새로고침2회에도 지급과 pity가1회만 반영됨을 검증했습니다.
 
-현재 전체 단위 **320 PASS/0 FAIL/0 skip**: 기존307개+신규13개. 기존 테스트 삭제/기대 완화는 없습니다. MAX 프리셋의 Extra Time 선행조건 오류를 기존 테스트가 발견했고 프리셋을 수정했습니다.
+현재 전체 단위 **324 PASS/0 FAIL/0 skip**입니다. 기존 테스트 삭제/기대 완화는 없습니다. M11의 현행 schema 기대값만 승인된9로 갱신했고 schema8 입력/자산 보존 검사는 유지했습니다. MAX 프리셋의 Extra Time 선행조건 오류를 기존 테스트가 발견했고 프리셋을 수정했습니다.
 
 - 기준: `artifacts/m12-baseline-unit.txt`307PASS, M11 benchmark1Run smoke180전투, `qa:m11`7실제20초 pointer Run, `qa:storage`20전체기록/손상 원본/정산1회 PASS. 과거 M11의54,000Run과 구분합니다.
 - 변경 후: `npm test`, `npm run benchmark`, `npm run benchmark:balance`, `benchmark:m12`650실제전투와 별도50,000 eligibility lottery trials. 소스/시드/개별 결과는 `artifacts/m12-benchmark-results.json`.
@@ -39,6 +39,6 @@ Chrome update P95는Fresh 약.3ms, MAX 비교.9~1ms였습니다. 화면에 기�
 
 ## 남은 작업 / 결정
 
-M12 PRD §5는 운영 Elite 빈도를 확정하지 않았으며 사람의 희귀도 판단 후 채택하도록 명시합니다. Run20%+pity6(권장)과 Run3%/pity없음 등의 실제 비교는 Balance Report에 있습니다. 사용자의 Remote Control Human Gate 규칙에 따라 운영 확률/지급 기회를 바꾸기 전에 정책을 확정해야 합니다. 실험은 안전하게 끝낸 상태이며 운영 전환/영속 pity migration은 아직 적용하지 않았습니다.
+사용자가 Elite A안을 승인했습니다. 추가 승인 대기 없이 M13으로 진행합니다. 승인 후5seed×3build×300Run=4,500회 실제 구매·정산 성장 실험에서 적격 자연Run4,187회 중 자연 Elite1,031회(24.62%), 물리 폐기0을 확인했습니다. 새로운 source-hashed 체크포인트와1/5/20/50/100/200/300 결과는 `artifacts/m12-approved-growth-results.json`입니다. 실제 사람의 희귀도 선호/3~4시간 재미를 이 수치로 확정하지 않습니다.
 
-공급은 비교 결과를 보존하고 fixed15를 우선 유지합니다.24/s는 후속 사람 A/B 후보이며 자동 파괴량 상승만으로 더 재미있다고 선언하지 않습니다. 정책 결정 후 M12 최종 회귀/문서를 확정하고 M13→M14→M15→M16을 이어서 구현해야 합니다. 실제 사람 재미/3~4시간 캠페인/후속 보스는 미검증·미구현입니다.
+공급은 비교 결과를 보존하고 fixed15를 유지합니다.24/s는 후속 사람 A/B 후보이며 자동 파괴량 상승만으로 더 재미있다고 선언하지 않습니다. M13→M14→M15→M16을 이어서 구현합니다. 최신 승인 후 로그는 `m12-approved-*`, checkpoint의 과거 로그는 `m12-*`로 구분합니다.

@@ -1,6 +1,8 @@
 import{CONFIG as C}from'./config.js';import{contractTerms}from'./contracts.js';
+import {validEliteSettlement} from './spawn-director.js';
 const int=n=>Number.isSafeInteger(n)&&n>=0;
 export function validMetaPending(p){
+ if(!validEliteSettlement(p.elitePolicySnapshot,p.id))return false;
  if(p.relicAchievementDeltas&&(!Object.values(p.relicAchievementDeltas).every(int)||Object.keys(p.relicAchievementDeltas).some(k=>!Object.values(C.relics).some(r=>r.counter===k))))return false;
  const plan=p.contractPlan;if(plan){if(!Array.isArray(plan.changes)||plan.changes.length>3||!Array.isArray(plan.completed)||new Set(plan.changes.map(r=>r.id)).size!==plan.changes.length||!int(plan.photon)||!int(plan.catalyst))return false;let photon=0,catalyst=0;
   for(const r of plan.changes){if(!C.contracts[r.id]||!Number.isInteger(r.stage)||r.stage<1||r.stage>3||!int(r.progress)||!int(r.delta)||typeof r.done!=='boolean')return false;const terms=contractTerms(r.id,r.stage);if(r.maxCompletedStage!==(r.done?r.stage:r.stage-1)||r.progress>=(r.done?1:terms.target))return false;if(r.done){photon+=terms.photon;catalyst+=terms.catalyst;}}

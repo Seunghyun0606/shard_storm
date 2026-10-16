@@ -3,6 +3,7 @@
 export function initAttempts(g){g.codexAttempts={pentagon:new Map(),lens:new Map(),fuse:new Map()};}
 export function attemptDeath(g,s,cause){
  if(!g.advancedEnabled||s.echo||s.fixture)return;
+ if(s.type==='pentagon'&&!g.codexAttempts.pentagon.has(s.id))g.codexAttempts.pentagon.set(s.id,{sourceId:s.id,chainId:cause.chainId,mainKills:new Set(),auxiliaryKills:new Set()});
  if(cause.source==='pentagon'&&Number.isInteger(cause.originShapeId)){
   const key=cause.originShapeId,row=g.codexAttempts.pentagon.get(key)||{sourceId:key,chainId:cause.chainId,mainKills:new Set(),auxiliaryKills:new Set()};
   (cause.small===false?row.mainKills:row.auxiliaryKills).add(s.id);g.codexAttempts.pentagon.set(key,row);
@@ -22,7 +23,9 @@ export function attemptContact(g,s,cause,wave){
 export function attemptSummary(g){
  if(!g.advancedEnabled)return[];const result=[];
  for(const row of g.codexAttempts.pentagon.values())result.push({id:'pentagon',sourceId:row.sourceId,chainId:row.chainId,actual:row.mainKills.size,required:5,success:row.mainKills.size>=5,targetIds:[...row.mainKills],reason:`Main-shard kills ${row.mainKills.size}/5 from origin #${row.sourceId}. Auxiliary kills ${row.auxiliaryKills.size} do not count; only fatal main-shard events qualify.`});
- for(const row of g.codexAttempts.lens.values()){
+ const lenses=new Map(g.codexAttempts.lens);
+ for(const event of g.advancedEvents||[])if(event.kind==='lensSector'&&!lenses.has(event.sourceId))lenses.set(event.sourceId,{sourceId:event.sourceId,chainId:event.chainId,contacts:[]});
+ for(const row of lenses.values()){
   const sectors=new Set(row.contacts.map(e=>e.sector)),targets=new Set(row.contacts.map(e=>e.targetId)),actual=Math.min(sectors.size,targets.size),success=actual>=2;
   result.push({id:'prismLens',sourceId:row.sourceId,chainId:row.chainId,actual,required:2,success,contacts:row.contacts,reason:`Observed ${sectors.size} sectors / ${targets.size} distinct normal targets. ${success?'Two-target condition met.':sectors.size<2?'No recorded contact from the second sector.':'Both sectors contacted the same target; a second distinct target is required.'}`});
  }

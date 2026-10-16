@@ -1,0 +1,238 @@
+{
+  "passed": true,
+  "signature": "e5ec978bd458cc35d5c7f12cb06617fbec48e2be3d27b5f862bafe8ce9701123",
+  "actualRuns": 4500,
+  "paths": [
+    "artifacts/m12-approved-growth/e5ec978bd458-31415-Crusher-300.json.gz",
+    "artifacts/m12-approved-growth/e5ec978bd458-31415-Cascade-300.json.gz",
+    "artifacts/m12-approved-growth/e5ec978bd458-31415-Reactor-300.json.gz",
+    "artifacts/m12-approved-growth/e5ec978bd458-1-Crusher-300.json.gz",
+    "artifacts/m12-approved-growth/e5ec978bd458-1-Cascade-300.json.gz",
+    "artifacts/m12-approved-growth/e5ec978bd458-1-Reactor-300.json.gz",
+    "artifacts/m12-approved-growth/e5ec978bd458-7-Crusher-300.json.gz",
+    "artifacts/m12-approved-growth/e5ec978bd458-7-Cascade-300.json.gz",
+    "artifacts/m12-approved-growth/e5ec978bd458-7-Reactor-300.json.gz",
+    "artifacts/m12-approved-growth/e5ec978bd458-42-Crusher-300.json.gz",
+    "artifacts/m12-approved-growth/e5ec978bd458-42-Cascade-300.json.gz",
+    "artifacts/m12-approved-growth/e5ec978bd458-42-Reactor-300.json.gz",
+    "artifacts/m12-approved-growth/e5ec978bd458-99-Crusher-300.json.gz",
+    "artifacts/m12-approved-growth/e5ec978bd458-99-Cascade-300.json.gz",
+    "artifacts/m12-approved-growth/e5ec978bd458-99-Reactor-300.json.gz"
+  ],
+  "summary": [
+    {
+      "strategy": "Crusher",
+      "run": 1,
+      "levels": 1,
+      "bank": 54,
+      "catalyst": 0,
+      "kills": 133,
+      "chain": 10,
+      "insight": 1
+    },
+    {
+      "strategy": "Crusher",
+      "run": 5,
+      "levels": 8,
+      "bank": 58,
+      "catalyst": 0,
+      "kills": 226,
+      "chain": 13,
+      "insight": 3
+    },
+    {
+      "strategy": "Crusher",
+      "run": 20,
+      "levels": 29,
+      "bank": 18,
+      "catalyst": 75,
+      "kills": 315,
+      "chain": 11,
+      "insight": 9
+    },
+    {
+      "strategy": "Crusher",
+      "run": 50,
+      "levels": 76,
+      "bank": 311,
+      "catalyst": 468,
+      "kills": 486,
+      "chain": 15,
+      "insight": 17
+    },
+    {
+      "strategy": "Crusher",
+      "run": 100,
+      "levels": 100,
+      "bank": 2389,
+      "catalyst": 1136,
+      "kills": 482,
+      "chain": 17,
+      "insight": 18
+    },
+    {
+      "strategy": "Crusher",
+      "run": 200,
+      "levels": 100,
+      "bank": 115000,
+      "catalyst": 3603,
+      "kills": 485,
+      "chain": 16,
+      "insight": 18
+    },
+    {
+      "strategy": "Crusher",
+      "run": 300,
+      "levels": 100,
+      "bank": 230151,
+      "catalyst": 6152,
+      "kills": 480,
+      "chain": 13,
+      "insight": 18
+    },
+    {
+      "strategy": "Cascade",
+      "run": 1,
+      "levels": 1,
+      "bank": 24,
+      "catalyst": 0,
+      "kills": 133,
+      "chain": 10,
+      "insight": 1
+    },
+    {
+      "strategy": "Cascade",
+      "run": 5,
+      "levels": 8,
+      "bank": 58,
+      "catalyst": 0,
+      "kills": 246,
+      "chain": 14,
+      "insight": 3
+    },
+    {
+      "strategy": "Cascade",
+      "run": 20,
+      "levels": 32,
+      "bank": 37,
+      "catalyst": 88,
+      "kills": 424,
+      "chain": 15,
+      "insight": 12
+    },
+    {
+      "strategy": "Cascade",
+      "run": 50,
+      "levels": 80,
+      "bank": 312,
+      "catalyst": 545,
+      "kills": 486,
+      "chain": 12,
+      "insight": 16
+    },
+    {
+      "strategy": "Cascade",
+      "run": 100,
+      "levels": 100,
+      "bank": 5149,
+      "catalyst": 1181,
+      "kills": 484,
+      "chain": 11,
+      "insight": 17
+    },
+    {
+      "strategy": "Cascade",
+      "run": 200,
+      "levels": 100,
+      "bank": 121423,
+      "catalyst": 3700,
+      "kills": 486,
+      "chain": 13,
+      "insight": 18
+    },
+    {
+      "strategy": "Cascade",
+      "run": 300,
+      "levels": 100,
+      "bank": 237884,
+      "catalyst": 6269,
+      "kills": 484,
+      "chain": 13,
+      "insight": 18
+    },
+    {
+      "strategy": "Reactor",
+      "run": 1,
+      "levels": 1,
+      "bank": 33,
+      "catalyst": 0,
+      "kills": 133,
+      "chain": 10,
+      "insight": 1
+    },
+    {
+      "strategy": "Reactor",
+      "run": 5,
+      "levels": 8,
+      "bank": 66,
+      "catalyst": 0,
+      "kills": 287,
+      "chain": 17,
+      "insight": 4
+    },
+    {
+      "strategy": "Reactor",
+      "run": 20,
+      "levels": 32,
+      "bank": 87,
+      "catalyst": 79,
+      "kills": 393,
+      "chain": 16,
+      "insight": 11
+    },
+    {
+      "strategy": "Reactor",
+      "run": 50,
+      "levels": 80,
+      "bank": 280,
+      "catalyst": 534,
+      "kills": 487,
+      "chain": 14,
+      "insight": 16
+    },
+    {
+      "strategy": "Reactor",
+      "run": 100,
+      "levels": 100,
+      "bank": 4859,
+      "catalyst": 1175,
+      "kills": 487,
+      "chain": 13,
+      "insight": 17
+    },
+    {
+      "strategy": "Reactor",
+      "run": 200,
+      "levels": 100,
+      "bank": 122015,
+      "catalyst": 3719,
+      "kills": 489,
+      "chain": 11,
+      "insight": 18
+    },
+    {
+      "strategy": "Reactor",
+      "run": 300,
+      "levels": 100,
+      "bank": 238668,
+      "catalyst": 6269,
+      "kills": 485,
+      "chain": 12,
+      "insight": 18
+    }
+  ],
+  "eligibleRuns": 4187,
+  "naturalEliteSpawns": 1031,
+  "discardedPhysicalSeconds": 0,
+  "method": "5seeds x3builds Fresh actual affordable purchases; Extra Time20..32s; approved A; isolated save; auto input is not human fun."
+}

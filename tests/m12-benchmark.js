@@ -35,7 +35,7 @@ export function battle(Type,args){
 function argsFor(seed,build,rank,duration,anomalyId=null){const max=rank===4,preset=BUILD_PRESETS[build],levels=Object.fromEntries(Object.entries(C.upgrades).map(([id,u])=>[id,max?u.max:0]));
  return {seed,levels,discoveryRank:rank,duration,anomalyId,ecologyEnabled:true,advancedEnabled:true,skillExpansionEnabled:true,signatureLoadout:max?preset.signatures:[],evolutionOwned:max?owned:{},evolutionActive:max?preset.evolutions:[],insightUnlocked:max?CODEX_IDS:[],eliteHistory:history};}
 const fingerprint=r=>({kills:r.totalDestroyed,raw:r.rawEarned,photon:r.processedPhoton,catalyst:r.pendingCatalyst,stats:r.typeStats,skills:r.expansionExecuted,meta:r.metaCounters,codex:r.codexDelta,elite:r.eliteDelta,
- targets:r.causalLog.map(e=>[e.eventType,e.sourceType,e.sourceId,e.targetId,e.chainId])});
+ targets:r.causalLog.map(e=>[e.eventType,e.sourceType,e.sourceShapeId??e.sourceId,e.targetShapeId??e.targetId,e.chainId])});
 const rows=[],supplies=[],eliteRates=[],eliteCombats=[];let identical=0,corrected=0;
 const cappedPaths=[];
 for(const seed of [2,3,4,5,6])for(const duration of [20,32]){
@@ -68,5 +68,5 @@ for(const policy of ['M12_run03','M12_run15','M12_run20','M12_run25','M12_run20_
  eliteRates.push({policy,eligibleRunDecisions:10000,accepted,fraction:accepted/10000,maxGap});
 }
 const sources=readdirSync('.').filter(p=>p.endsWith('.js')).concat(['tests/m12-benchmark.js','tests/m12.test.js']).sort(),hash=createHash('sha256');for(const p of sources)hash.update(p+'\0'+readFileSync(p,'utf8').replaceAll('\r\n','\n')+'\0');
-const result={passed:true,baseline:'633f8a4efab15b324f40c3284a79509c561c7222',signature:hash.digest('hex'),sources,node:process.version,actualCombatRuns:rows.length*3+supplies.length+cappedPaths.length*2+eliteCombats.length,scheduler:{conditions:rows.length,identical,corrected,rows,cappedPaths},supplies,eliteRates,eliteCombats,productionSelection:'Pending explicit human policy choice; experimental supply/Elite settings sandbox only.',humanFun:'Not evaluated by automated input.'};
+const result={passed:true,baseline:'633f8a4efab15b324f40c3284a79509c561c7222',signature:hash.digest('hex'),sources,node:process.version,actualCombatRuns:rows.length*3+supplies.length+cappedPaths.length*2+eliteCombats.length,scheduler:{conditions:rows.length,identical,corrected,rows,cappedPaths},supplies,eliteRates,eliteCombats,productionSelection:'User approved A: live Run20% + pity6, schema9. Fixed15 supply retained; other policies sandbox only.',humanFun:'Not evaluated by automated input.'};
 writeFileSync('artifacts/m12-benchmark-results.json',JSON.stringify(result,null,2));console.log(`M12 benchmark PASS: ${result.actualCombatRuns} actual combat Runs; lottery trials separate.`);

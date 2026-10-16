@@ -72,7 +72,7 @@ test('M12 supply: consecutive unsafe placements fall back and no extra budget fr
  const g=empty({discoveryRank:4,supplyProfile:'M12_elastic30'});g.elapsed=8;g.director.high=true;g.director.failures=3;directorDamage(g,1);assert.equal(directorInterval(g,.2),.2);directorDeath(g,{echo:true});assert.equal(g.director.recentDeaths.length,0);
 });
 test('M12 unadopted supply and Elite choices cannot alter live user settings',()=>{
- assert.throws(()=>new Game({supplyProfile:'M12_elastic24'}),/sandbox/);assert.throws(()=>new Game({elitePolicy:'M12_run20_pity6'}),/sandbox/);
+ assert.throws(()=>new Game({supplyProfile:'M12_elastic24'}),/sandbox/);assert.throws(()=>new Game({elitePolicy:'M12_run25'}),/sandbox/);assert.equal(new Game({elitePolicy:'M12_run20_pity6'}).director.policy,'M12_run20_pity6');
 });
 test('M12 Elite: 100 repeated calls sample one eligible Run once; force and introduction separate',()=>{
  const g=empty({elitePolicy:'M12_run20_pity6'});let calls=0;g.directorEliteRng=()=>{calls++;return .9;};

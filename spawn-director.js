@@ -1,13 +1,14 @@
 import {seededRNG} from './entities.js';
 
-// Experimental policies are explicit Run snapshots. Live defaults stay unchanged
-// until the measured policy selection has been reviewed.
+// User-approved M12 policy A: Run20% + six eligible natural misses then a
+// guaranteed safe placement attempt. Supply experiments remain sandbox-only.
+export const LIVE_ELITE_POLICY='M12_run20_pity6';
 export const SUPPLY_PROFILES=Object.freeze(Object.fromEntries([15,18,21,24,30].map(rate=>[`M12_elastic${rate}`,Object.freeze({rate,interval:3/rate,batch:3})])));
 export const ELITE_POLICIES=Object.freeze({M11_attempt:null,M12_run03:{chance:.03,pity:false},M12_run15:{chance:.15,pity:false},M12_run20:{chance:.20,pity:false},M12_run25:{chance:.25,pity:false},M12_run20_pity6:{chance:.20,pity:true}});
 export function initDirector(g,{supplyProfile='M11_fixed',elitePolicy='M11_attempt',elitePity=0}={}){
  if(supplyProfile!=='M11_fixed'&&!SUPPLY_PROFILES[supplyProfile])throw Error('Unknown supply profile');
  if(!Object.hasOwn(ELITE_POLICIES,elitePolicy))throw Error('Unknown Elite policy');
- if(!g.sandbox&&(supplyProfile!=='M11_fixed'||elitePolicy!=='M11_attempt'))throw Error('Unadopted M12 policies require sandbox');
+ if(!g.sandbox&&(supplyProfile!=='M11_fixed'||!['M11_attempt',LIVE_ELITE_POLICY].includes(elitePolicy)))throw Error('Unadopted M12 policies require sandbox');
  g.director={profile:supplyProfile,policy:elitePolicy,high:false,readySince:null,cooldownUntil:0,recentDeaths:[],lastDamageAt:-Infinity,lastSample:-1,failures:0,transitions:[],samples:[],elite:{eligible:false,sampled:false,accepted:false,introduction:false,naturalSpawned:false,attempts:0,placementFailures:0,pityStart:Math.max(0,Math.min(6,Math.floor(elitePity)||0)),selectedId:null}};
  g.directorEliteRng=seededRNG(g.seed^0x12e117e);
 }
@@ -38,6 +39,15 @@ export function eliteChoice(g,eligible,introduction,forced){
 }
 export function directorRecord(g){
  const d=g.director,e=d.elite,p=ELITE_POLICIES[d.policy];
- const pityNext=!p||!e.eligible||e.introduction?e.pityStart:e.naturalSpawned?0:Math.min(6,e.pityStart+1);
- return {profile:d.profile,policy:d.policy,transitions:structuredClone(d.transitions),samples:structuredClone(d.samples),elite:{...e,pityNext},experimental:d.profile!=='M11_fixed'||d.policy!=='M11_attempt'};
+ const pityNext=!p?.pity||!e.eligible?e.pityStart:e.naturalSpawned?0:e.introduction?e.pityStart:Math.min(6,e.pityStart+1);
+ return {profile:d.profile,policy:d.policy,transitions:structuredClone(d.transitions),samples:structuredClone(d.samples),elite:{...e,pityNext},experimental:d.profile!=='M11_fixed'||!['M11_attempt',LIVE_ELITE_POLICY].includes(d.policy)};
+}
+export function eliteSettlement(g){
+ if(g.director?.policy!==LIVE_ELITE_POLICY)return null;const e=directorRecord(g).elite;
+ return {version:1,runId:g.runId,policy:LIVE_ELITE_POLICY,start:e.pityStart,next:e.pityNext,eligible:e.eligible,introduction:e.introduction,spawned:e.naturalSpawned};
+}
+export function validEliteSettlement(e,runId){
+ if(e==null)return true;
+ if(e.version!==1||e.policy!==LIVE_ELITE_POLICY||e.runId!==runId||!['start','next'].every(k=>Number.isInteger(e[k])&&e[k]>=0&&e[k]<=6)||!['eligible','introduction','spawned'].every(k=>typeof e[k]==='boolean'))return false;
+ return e.next===(!e.eligible?e.start:e.spawned?0:e.introduction?e.start:Math.min(6,e.start+1));
 }

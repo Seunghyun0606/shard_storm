@@ -9,13 +9,13 @@ import { normalizeContracts } from './contracts.js';
 import { validMetaPending } from './settlement-validation.js';
 import { ECOLOGY_SHAPES } from './ecology-defs.js';
 import {normalizeSignatures,normalizeEvolutionOwned,normalizeEvolutionActive} from './builds.js';
-export function freshSave() { return { shapeCodex:normalizeCodex(),codexPinnedIds:[],insightUnlocked:[],eliteHistory:{},advancedIntroFlags:{},signatureLoadout:[],evolutionOwned:normalizeEvolutionOwned({}),evolutionActive:[],shapeIntroSeen:{}, saveVersion: C.saveVersion, bank: 0, levels: emptyLevels(), bestStats: {}, lastRuns: [], options: { ...C.options }, catalystBalance: 0, discoveryRank: 0, lifetimeDestroyed: 0, knownHistoryKills: 0, totalRuns: 0, milestoneWelcomeFlags: {}, pendingSettlement: null, lastSettlementId: null, legacyExtraTimeLevel: 0, timeRespecUsed: false, relicOwned:[],relicEquipped:[],relicAchievements:emptyAchievements(),relicBlueprintUnlocked:[],contracts:{active:[],records:{}},contractMedals:[],anomalyOffer:null,anomalyOfferIndex:0,anomalySeed:null,selectedAnomaly:null,totalAnomalyWins:0 }; }
+export function freshSave() { return { elitePity:0,shapeCodex:normalizeCodex(),codexPinnedIds:[],insightUnlocked:[],eliteHistory:{},advancedIntroFlags:{},signatureLoadout:[],evolutionOwned:normalizeEvolutionOwned({}),evolutionActive:[],shapeIntroSeen:{}, saveVersion: C.saveVersion, bank: 0, levels: emptyLevels(), bestStats: {}, lastRuns: [], options: { ...C.options }, catalystBalance: 0, discoveryRank: 0, lifetimeDestroyed: 0, knownHistoryKills: 0, totalRuns: 0, milestoneWelcomeFlags: {}, pendingSettlement: null, lastSettlementId: null, legacyExtraTimeLevel: 0, timeRespecUsed: false, relicOwned:[],relicEquipped:[],relicAchievements:emptyAchievements(),relicBlueprintUnlocked:[],contracts:{active:[],records:{}},contractMedals:[],anomalyOffer:null,anomalyOfferIndex:0,anomalySeed:null,selectedAnomaly:null,totalAnomalyWins:0 }; }
 export function loadSave(storage) {
   const save = freshSave();let raw=null;const preserve=message=>{Object.defineProperty(save,'storageRecovery',{value:{raw,message},enumerable:false});return save;};
   try {
     raw=storage.getItem(C.storageKey);const data=decodeSave(raw);
     if(!data)return save;
-    if(![1,2,3,4,5,6,7,8].includes(data.saveVersion)||!Number.isSafeInteger(data.bank)||data.bank<0)return preserve('Unsupported or invalid save header');
+    if(!Number.isInteger(data.saveVersion)||data.saveVersion<1||data.saveVersion>C.saveVersion||!Number.isSafeInteger(data.bank)||data.bank<0)return preserve('Unsupported or invalid save header');
     const legacyKeys = ['crushPower', 'shardPower', 'shardRange', 'chainAmplifier', 'extraTime'];
     if (!data.levels || typeof data.levels !== 'object') return preserve('Invalid save levels');
     for (const [key, u] of Object.entries(C.upgrades)) {
@@ -24,6 +24,7 @@ export function loadSave(storage) {
       save.levels[key] = value;
     }
     save.bank = data.bank;
+    if(data.saveVersion>=9&&Number.isInteger(data.elitePity)&&data.elitePity>=0&&data.elitePity<=6)save.elitePity=data.elitePity;
     for (const key of ['totalDestroyed', 'bestChain', 'photonsEarned']) if (Number.isSafeInteger(data.bestStats?.[key]) && data.bestStats[key] >= 0) save.bestStats[key] = data.bestStats[key];
     save.lastRuns = Array.isArray(data.lastRuns) ? data.lastRuns.filter(r => r && Number.isFinite(r.photonsEarned)).slice(-C.historyLimit) : [];
     if (data.saveVersion < 3) { save.knownHistoryKills = save.lastRuns.reduce((n,r) => n + (Number.isSafeInteger(r.totalDestroyed) && r.totalDestroyed > 0 ? r.totalDestroyed : 0), 0); save.legacyExtraTimeLevel = save.levels.extraTime; }
