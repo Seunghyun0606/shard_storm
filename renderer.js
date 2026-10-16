@@ -103,6 +103,9 @@ export function draw(ctx, game, fps = 60, osReducedMotion = false) {
     ctx.restore();
   }
   for (const p of game.particles) { ctx.save(); ctx.globalAlpha = 1 - p.age / p.life; const emphasis=!reduced&&fx.some(e=>['combo','special'].includes(e.kind));ctx.translate(p.x-(emphasis?p.vx*p.age*.25:0), p.y-(emphasis?p.vy*p.age*.25:0)); ctx.rotate(p.angle); ctx.fillStyle = p.color; ctx.beginPath(); ctx.moveTo(-2, -2); ctx.lineTo(3, 0); ctx.lineTo(-1, 3); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  if(game.destructionEnabled&&game.options.combatFXEnabled)for(const event of game.response.events.filter(e=>e.kind==='activated'&&game.elapsed-e.at<.25)){
+    const origin=event.origin;if(!Number.isFinite(origin?.x))continue;ctx.save();ctx.strokeStyle='#75e1d2';ctx.globalAlpha=reduced ? .2 : .45*(1-(game.elapsed-event.at)/.25);ctx.setLineDash([3,6]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(origin.x,origin.y);for(const point of event.points)ctx.lineTo(point.x,point.y);ctx.stroke();ctx.restore();
+  }
   for (const ring of game.clickVFX.items) { const t = ring.age / ring.life; ctx.save(); ctx.globalAlpha = (1 - t) * (ring.hit ? .9 : .25); ctx.strokeStyle = '#f5fdff'; ctx.lineWidth = ring.hit ? 1.6 : .8; ctx.beginPath(); ctx.arc(ring.x, ring.y, ring.hit ? C.visual.clickStart + (C.visual.clickEnd - C.visual.clickStart) * t : 3 + (C.visual.missEnd - 3) * t, 0, Math.PI * 2); ctx.stroke(); ctx.restore(); }
   if (game.elapsed < C.visual.guideLife && game.alive.some(s => s.id === 1)) {
     const t = C.tutorial; ctx.strokeStyle = '#42efcf88'; ctx.setLineDash([3, 5]); ctx.beginPath(); ctx.arc(t.x, t.y, 37 + (reduced?0:Math.sin(game.elapsed * 5) * 3), 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);

@@ -8,7 +8,8 @@ export const ELITE_POLICIES=Object.freeze({M11_attempt:null,M12_run03:{chance:.0
 export function initDirector(g,{supplyProfile='M11_fixed',elitePolicy='M11_attempt',elitePity=0}={}){
  if(supplyProfile!=='M11_fixed'&&!SUPPLY_PROFILES[supplyProfile])throw Error('Unknown supply profile');
  if(!Object.hasOwn(ELITE_POLICIES,elitePolicy))throw Error('Unknown Elite policy');
- if(!g.sandbox&&(supplyProfile!=='M11_fixed'||!['M11_attempt',LIVE_ELITE_POLICY].includes(elitePolicy)))throw Error('Unadopted M12 policies require sandbox');
+ const stormSupply=g.destructionEnabled&&g.destructionStage.index===4&&supplyProfile==='M12_elastic24';
+ if(!g.sandbox&&((supplyProfile!=='M11_fixed'&&!stormSupply)||!['M11_attempt',LIVE_ELITE_POLICY].includes(elitePolicy)))throw Error('Unadopted M12 policies require sandbox');
  g.director={profile:supplyProfile,policy:elitePolicy,high:false,readySince:null,cooldownUntil:0,recentDeaths:[],lastDamageAt:-Infinity,lastSample:-1,failures:0,transitions:[],samples:[],elite:{eligible:false,sampled:false,accepted:false,introduction:false,naturalSpawned:false,attempts:0,placementFailures:0,pityStart:Math.max(0,Math.min(6,Math.floor(elitePity)||0)),selectedId:null}};
  g.directorEliteRng=seededRNG(g.seed^0x12e117e);
 }
