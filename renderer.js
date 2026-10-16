@@ -1,3 +1,4 @@
+import {outlinePoints,drawReveal} from './shape-outline.js';
 import {conductorRadius} from './mode-combat.js';
 import {WORLDS} from './campaign/worlds.js';
 import {ADVANCED_TRAITS} from './advanced-defs.js';
@@ -7,19 +8,8 @@ import { spawnAlpha } from './presentation.js';
 import {scannerEligible,level} from './expansion.js';
 const ecologyHints={splitter:'Echo2 · 콤보 전용',fuseBomb:'첫 피해 .70초 / 파괴 .08초 폭발',conductor:'파괴 시 연결2대상 전도',mirror:'주 파편 방향 전환 최대2회',gravityWell:'주 파편 휨 최대30°',repairNode:'.85초마다 일반 도형 치유'};
 function hudText(ctx,text,width){const measure=s=>ctx.measureText(s)?.width??s.length*6;while(text.length>1&&measure(text)>width)text=text.slice(0,-2)+'…';return text;}
-export function polygon(ctx, s, scale = 1, variety = true) {
-  const cfg = C.shapes[s.type], damageStage = s.hp === s.maxHP ? 0 : Math.min(3, Math.ceil((1 - s.hp / s.maxHP) * 3));
-  ctx.beginPath();
-  const vertices = variety && s.appearance ? s.appearance.localVertices : Array.from({ length: cfg.sides }, (_, i) => { const a = i * Math.PI * 2 / cfg.sides, r = (s.appearance?.baseRadius || s.radius) * (s.type === 'star' && i % 2 ? cfg.innerRatio : 1); return { x: Math.cos(a) * r, y: Math.sin(a) * r }; });
-  const cos = Math.cos(s.angle), sin = Math.sin(s.angle), line = v => ctx.lineTo((v.x * cos - v.y * sin) * scale, (v.x * sin + v.y * cos) * scale);
-  for (let i = 0; i < vertices.length; i++) {
-    const v = vertices[i];
-    if (damageStage && (s.appearance?.clippedCorners.slice(0, damageStage) || [0, 1, 2].slice(0, damageStage)).includes(i)) {
-      for (const neighbour of [vertices[(i - 1 + vertices.length) % vertices.length], vertices[(i + 1) % vertices.length]]) line({ x: v.x * .84 + neighbour.x * .16, y: v.y * .84 + neighbour.y * .16 });
-    } else line(v);
-  }
-  ctx.closePath();
-}
+export function polygon(ctx,s,scale=1,variety=true){ctx.beginPath();for(const p of outlinePoints(s,variety))ctx.lineTo(p.x*scale,p.y*scale);ctx.closePath();}
+
 export function draw(ctx, game, fps = 60, osReducedMotion = false) {
   ctx.setTransform(ctx.canvas.width / C.width, 0, 0, ctx.canvas.height / C.height, 0, 0);
   ctx.clearRect(0, 0, C.width, C.height); ctx.fillStyle = '#0c1419'; ctx.fillRect(0, 0, C.width, C.height);
@@ -48,7 +38,7 @@ export function draw(ctx, game, fps = 60, osReducedMotion = false) {
     const knock = s.knockTime / C.visual.knockbackLife;
     ctx.save(); ctx.translate(s.x + s.knockX * Math.sin(knock * Math.PI), s.y + s.knockY * Math.sin(knock * Math.PI));
     ctx.globalAlpha = spawnAlpha(s.grace);
-    polygon(ctx, s, scale, game.options.visualVariety); ctx.fillStyle = s.flash > 0 ? '#ffffffdd' : game.options.visualVariety ? s.appearance.fill : `${cfg.color}24`; ctx.fill(); ctx.strokeStyle = s.flash > 0 ? '#ffffff' : cfg.color; ctx.lineWidth = s.enhanced ? 3 : 1.8; ctx.stroke();
+    polygon(ctx, s, scale, game.options.visualVariety); ctx.fillStyle = s.flash > 0 ? '#ffffffdd' : game.options.visualVariety ? s.appearance.fill : `${cfg.color}24`; ctx.fill(); ctx.strokeStyle = s.flash > 0 ? '#ffffff' : cfg.color; ctx.lineWidth = s.enhanced ? 3 : 1.8;if(s.grace>0&&!reduced&&game.options.combatFXEnabled)drawReveal(ctx,s,1-s.grace/C.spawnGrace,scale,game.options.visualVariety);else ctx.stroke();
     if (game.options.visualVariety && s.appearance.pattern !== 'none') {
       ctx.save(); polygon(ctx, s, scale, true); ctx.clip(); ctx.globalAlpha = .5; ctx.strokeStyle = cfg.color; ctx.lineWidth = .7;
       if (s.appearance.pattern === 'inset') { polygon(ctx, s, scale * .66, true); ctx.stroke(); }
@@ -121,6 +111,8 @@ export function draw(ctx, game, fps = 60, osReducedMotion = false) {
     const shake=!reduced&&game.options.screenShakeEnabled?e.shake:0;
     const cssScale=C.width/(ctx.canvas.clientWidth||C.width);
     ctx.translate(Math.sin(t*35)*shake*cssScale,Math.cos(t*29)*shake*cssScale);
+    if(['bossPhase','bossClear','stormResponse'].includes(e.kind)){ctx.beginPath();ctx.arc(e.x,e.y,18+(e.kind==='bossClear'?120:65)*t,0,Math.PI*2);ctx.stroke();if(e.kind==='bossClear'){for(let i=0;i<8;i++){const a=i*Math.PI/4;ctx.beginPath();ctx.moveTo(e.x+Math.cos(a)*25*t,e.y+Math.sin(a)*25*t);ctx.lineTo(e.x+Math.cos(a)*100*t,e.y+Math.sin(a)*100*t);ctx.stroke();}}}
+    if(e.kind==='guard'){ctx.setLineDash([2,3]);ctx.beginPath();ctx.arc(e.x,e.y,14,0,Math.PI*2);ctx.stroke();}
     if(['special','combo'].includes(e.kind)){if(e.kind==='special'||e.threshold>=10)ctx.strokeRect(C.arena.left+2,C.arena.top+2,C.arena.right-C.arena.left-4,C.arena.bottom-C.arena.top-4);}
     if(e.kind==='fieldClear'){ctx.beginPath();ctx.arc(e.x,e.y,20+110*t,0,Math.PI*2);ctx.stroke();}
     if(e.kind==='hit'){for(const r of [5+15*t,17-7*t]){ctx.beginPath();ctx.arc(e.x,e.y,r,0,Math.PI*2);ctx.stroke();}ctx.fillStyle='#ffffff';ctx.fillRect(e.x-2,e.y-2,4,4);}

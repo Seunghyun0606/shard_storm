@@ -43,7 +43,7 @@ function openBoss(g){const b=g.world?.boss;if(!b||b.open||!b.placed)return;const
  let open=false;switch(b.id){case'fractureWarden':open=allRoles('shield');break;case'relayCitadel':open=v.ward&&v.transmit;break;case'riftEngine':open=v.route;break;case'singularityCore':open=v.reactor&&v.phase;break;case'stormHeart':open=allRoles('anchor')&&v.linked;break;}
  if(g.world.depth===3&&open){b.nativeReady=true;open=v.depthAnchor&&v.depthBridge;if(!open)b.hint='DEPTH3: hit the outer Anchor and carry Chain5 across2 pockets';}
  b.phase=b.id==='stormHeart'?(allRoles('anchor')?1:0)+(open?1:0):open?1:0;
- if(open){for(const p of b.parts)p.shape.bossPart.phaseId=1;b.open=true;b.hint='Core OPEN · destroy the Star core';b.events.push({kind:'coreOpened',at:g.simulationTime});g.onEvent?.('bossPhase');}
+ if(open){for(const p of b.parts)p.shape.bossPart.phaseId=1;b.open=true;b.hint='Core OPEN · destroy the Star core';b.events.push({kind:'coreOpened',at:g.simulationTime});const core=b.parts.find(p=>p.role==='core').shape;g.presentation.emit({kind:'bossPhase',at:g.simulationTime,x:core.x,y:core.y,color:'#78e7c9'},g.options);g.onEvent?.('bossPhase');}
 }
 export function bossMetric(g,kind,event={}){const b=g.world?.boss;if(!b?.placed||b.cleared)return;const source=b.parts.find(p=>p.shape.id===(event.sourceShapeId??event.sourceId));if(!source)return;const v=b.latches;
  if(kind==='wardReleasesFromHexDeath'&&source.shape.type==='hex')v.ward=true;
@@ -52,7 +52,7 @@ export function bossMetric(g,kind,event={}){const b=g.world?.boss;if(!b?.placed|
  if(kind==='reactorStageWaveExecuted'&&source.shape.type==='reactor')v.reactor=true;
  openBoss(g);
 }
-export function bossDamageBlocked(g,s){const b=g.world?.boss;if(!b)return false;openBoss(g);const relayGuard=b.id==='relayCitadel'&&s.bossPart?.structureId===b.structureId&&s.type==='conductor'&&!b.latches.ward;if(relayGuard||s.bossCore&&!b.open){b.blocked++;return true;}return false;}
+export function bossDamageBlocked(g,s){const b=g.world?.boss;if(!b)return false;openBoss(g);const relayGuard=b.id==='relayCitadel'&&s.bossPart?.structureId===b.structureId&&s.type==='conductor'&&!b.latches.ward;if(relayGuard||s.bossCore&&!b.open){b.blocked++;g.onEvent?.('guard');g.presentation.emit({kind:'guard',at:g.simulationTime,x:s.x,y:s.y,color:'#bac9b3'},g.options);return true;}return false;}
 export function bossDamaged(g,s,actual,cause){const b=g.world?.boss;if(!b?.placed||actual<=0)return;if(s.bossPart?.depthAnchor){b.latches.depthAnchor=true;openBoss(g);}
  if(b.id==='singularityCore'&&s.type==='phaseCrystal'&&s.bossPart?.structureId===b.structureId&&s.phaseWasVulnerable&&b.latches.reactor){b.latches.phase=true;b.events.push({kind:'phaseWindowHit',at:g.simulationTime,source:cause.source});openBoss(g);}
 }
@@ -60,6 +60,6 @@ export function bossDeath(g,s,cause){const b=g.world?.boss;if(!b?.placed||b.clea
  if(s.bossPart?.structureId===b.structureId){b.dead.add(s.id);b.events.push({kind:'partDeath',id:s.id,role:s.bossPart.role,at:g.simulationTime,source:cause.source});}
  if(g.world.depth===3&&[...g.response.chains.values()].some(c=>c.kills>=5&&c.clusters.size>=2))b.latches.depthBridge=true;
  if(b.id==='stormHeart'&&[...g.response.chains.values()].some(c=>c.kills>=15&&c.clusters.size>=2))b.latches.linked=true;
- openBoss(g);if(s.bossCore&&s.bossPart?.structureId===b.structureId&&b.open){for(const p of b.parts)p.shape.bossPart.phaseId=3;b.cleared=true;b.clearAt=g.simulationTime;b.phase=3;b.hint='Structure destroyed · settle this Run to clear the World';b.events.push({kind:'coreDeath',at:g.simulationTime,source:cause.source});g.onEvent?.('bossClear');}
+ openBoss(g);if(s.bossCore&&s.bossPart?.structureId===b.structureId&&b.open){for(const p of b.parts)p.shape.bossPart.phaseId=3;b.cleared=true;b.clearAt=g.simulationTime;b.phase=3;b.hint='Structure destroyed · settle this Run to clear the World';b.events.push({kind:'coreDeath',at:g.simulationTime,source:cause.source});g.presentation.emit({kind:'bossClear',at:g.simulationTime,x:s.x,y:s.y,color:'#ffd884'},g.options);g.onEvent?.('bossClear');}
 }
 export function bossRecord(g){const b=g.world?.boss;return g.world?{worldId:g.world.id,depth:g.world.depth,bossRequested:g.world.bossRequested,boss:b?{id:b.id,phase:b.phase,open:b.open,placed:b.placed,cleared:b.cleared,clearAt:b.clearAt,failure:b.failure,hint:b.hint,blocked:b.blocked,latches:{...b.latches},parts:b.parts.map(p=>({id:p.shape.id,type:p.shape.type,role:p.role,x:p.shape.x,y:p.shape.y,hp:p.shape.hp,dead:p.shape.destroyed})),events:structuredClone(b.events)}:null}:null;}

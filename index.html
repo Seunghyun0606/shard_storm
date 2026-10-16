@@ -3,9 +3,9 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Shard Storm — Playtest</title><link rel="icon" href="data:,"><link rel="stylesheet" href="style.css"></head>
 <body>
 <main>
-  <header class="masthead"><a class="brand" href="./"><span class="brand-icon">◈</span> SHARD STORM</a><div class="edition"><span class="status-dot"></span> PROTOTYPE / M15</div></header>
+  <header class="masthead"><a class="brand" href="./"><span class="brand-icon">◈</span> SHARD STORM</a><div class="edition"><span class="status-dot"></span> PROTOTYPE / M16</div></header>
   <section class="game-shell" aria-label="Shard Storm 게임">
-    <div class="toolbar"><span>BREAK. CASCADE. REPEAT.</span><div><button id="focus" class="quiet" aria-pressed="false">FOCUS</button><button id="sound" class="quiet">SOUND OFF</button><button id="pause" class="quiet" hidden>일시정지</button><button id="dev-toggle" class="quiet">DEV [D]</button></div></div>
+    <div class="toolbar"><span>BREAK. CASCADE. REPEAT.</span><div><button id="focus" class="quiet" aria-pressed="false">FOCUS</button><button id="sound" class="quiet">SOUND OFF</button><button id="pause" class="quiet" hidden>일시정지</button><button id="settings-toggle" class="quiet">OPTIONS</button><button id="dev-toggle" class="quiet">DEV [D]</button></div></div>
     <div id="codex-pins" aria-live="off"></div><div class="arena-wrap">
       <canvas id="game" width="960" height="540" aria-label="도형을 클릭하거나 누른 채 드래그해 파괴하세요"></canvas>
       <div id="title" class="overlay">
@@ -44,7 +44,8 @@
   </div><p>2차 표식: ▣ 첫 방어 / ✴ 파괴 폭발 / ↪ 주 파편 반사 / ◌ 직접 -1·주 파편 +1. 보상용 Chain10/15는 Echo를 제외한 일반 파괴 수로 계산합니다.</p></details>
   <div class="legend-special"><span>⬡ HEX · Rank2 / Run45킬 · 주변 Ward, 직접4로 장갑 파쇄</span><span>◉ REACTOR · Rank3 / Run100킬 · 절반·파괴 지연 파동</span><span>◎ ANCIENT · Rank4 / Run200킬 · 3단계 파편·파동, Catalyst +2</span><span>◇ Prism / ◈ Core / ✦ Void · 완전 파괴 시 희귀 보상</span></div>
   <div class="page-bottom"><span>AN EXPERIMENT IN SATISFYING DESTRUCTION</span><span>로컬 저장 · 영구 강화 · 반복 플레이</span></div>
-  <section id="ending" class="campaign-ending" role="dialog" aria-modal="true" aria-label="Campaign ending" hidden><div class="eyebrow">CAMPAIGN COMPLETE</div><h2>THE SHARD STORM</h2><p>Storm Heart destroyed. Your growth and every World remain available.</p><p>FREE PLAY / WORLD REPLAY / FUTURE CHALLENGES</p><button id="ending-close" class="primary">SKIP / FREE PLAY</button></section>
+  <section id="ending" class="campaign-ending" role="dialog" aria-modal="true" aria-label="Campaign ending" hidden><div class="eyebrow">CAMPAIGN COMPLETE</div><div class="ending-core" aria-hidden="true">&#10023;</div><h2 data-ending-title>THE SHARD STORM</h2><p data-ending-comparison></p><p data-ending-owned></p><p>World replay / Storm Depth / Protocol / Rogue Draft remain available.</p><button id="ending-close" data-ending-close class="primary">SKIP / FREE PLAY</button><button id="ending-replay-world">REVISIT WORLD1</button><button id="ending-challenges">CHALLENGE LAB</button></section>
+  <details id="player-options" class="access-options"><summary>OPTIONS / ACCESSIBILITY / AUDIO</summary><div id="player-controls"></div><label>Master <input id="audio-master" type="range" min="0" max="1" step=".05"></label><label>Effects <input id="audio-effects" type="range" min="0" max="1" step=".05"></label><label>Music / climax <input id="audio-music" type="range" min="0" max="1" step=".05"></label><label><input id="audio-mute" type="checkbox">Mute</label><label><input id="audio-comfort" type="checkbox">Comfort / quieter high notes and repetition</label><small>WebAudio synthesis. Sound starts after your input. Tab hidden mutes audio. No external samples.</small></details>
   <div id="notice" role="status"></div>
 </main>
 <aside id="dev" hidden>

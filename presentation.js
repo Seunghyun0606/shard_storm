@@ -12,8 +12,8 @@ export class CombatPresentation {
       if (at - this.lastClear < 3 - 1e-9) return;
       this.lastClear = at; this.clearCount++;
     }
-    const life = kind === 'fieldClear' ? .22 : kind === 'special' ? (event.type === 'ancient' ? .18 : .15) : kind === 'combo' ? ({5:.10,10:.12,20:.15}[event.threshold]) : kind === 'death' ? .15 : kind === 'hit' ? .10 : .07;
-    let shake = kind === 'special' ? (event.type === 'ancient' ? 2 : 1.5) : kind === 'combo' ? (event.threshold === 20 ? 2 : event.threshold === 10 ? 1.5 : 0) : event.heavy ? 1 : 0;
+    const life = kind==='bossClear'?.9:kind==='bossPhase'?.24:kind==='stormResponse'?.22:kind==='guard'?.10:kind === 'fieldClear' ? .22 : kind === 'special' ? (event.type === 'ancient' ? .18 : .15) : kind === 'combo' ? ({5:.10,10:.12,20:.15}[event.threshold]) : kind === 'death' ? .15 : kind === 'hit' ? .10 : .07;
+    let shake = kind==='bossClear'?2:kind==='bossPhase'?1:kind==='stormResponse'?1.5:kind === 'special' ? (event.type === 'ancient' ? 2 : 1.5) : kind === 'combo' ? (event.threshold === 20 ? 2 : event.threshold === 10 ? 1.5 : 0) : event.heavy ? 1 : 0;
     if (options.screenShakeEnabled === false || options.reducedMotionEnabled || at - this.lastShake < .25 - 1e-9) shake = 0;
     if (shake) this.lastShake = at;
     this.events.push({ ...event, life, shake });

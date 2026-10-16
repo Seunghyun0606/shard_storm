@@ -1,0 +1,2 @@
+import {spawn} from 'node:child_process';
+await Promise.all(['tests/m16-world-browser.mjs','tests/m16-optional-browser.mjs'].map(file=>new Promise((resolve,reject)=>{const p=spawn(process.execPath,[file],{stdio:'inherit',env:process.env});p.on('error',reject);p.on('exit',code=>code===0?resolve():reject(Error(file+' exit '+code)));})));console.log('M16 Chrome release PASS:14 actual20s Runs, Worlds/Bosses and full Draft/optional modes');

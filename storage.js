@@ -1,3 +1,4 @@
+import {AUDIO_DEFAULTS,normalizeAudio} from './audio-bus.js';
 import {freshModes,normalizeModes} from './modes.js';
 import {freshCampaign,normalizeCampaign} from './campaign/worlds.js';
 import {encodeSave,decodeSave} from './save-codec.js';
@@ -11,7 +12,7 @@ import { normalizeContracts } from './contracts.js';
 import { validMetaPending } from './settlement-validation.js';
 import { ECOLOGY_SHAPES } from './ecology-defs.js';
 import {normalizeSignatures,normalizeEvolutionOwned,normalizeEvolutionActive} from './builds.js';
-export function freshSave() { return { ...freshModes(),...freshCampaign(),elitePity:0,shapeCodex:normalizeCodex(),codexPinnedIds:[],insightUnlocked:[],eliteHistory:{},advancedIntroFlags:{},signatureLoadout:[],evolutionOwned:normalizeEvolutionOwned({}),evolutionActive:[],shapeIntroSeen:{}, saveVersion: C.saveVersion, bank: 0, levels: emptyLevels(), bestStats: {}, lastRuns: [], options: { ...C.options }, catalystBalance: 0, discoveryRank: 0, lifetimeDestroyed: 0, knownHistoryKills: 0, totalRuns: 0, milestoneWelcomeFlags: {}, pendingSettlement: null, lastSettlementId: null, legacyExtraTimeLevel: 0, timeRespecUsed: false, relicOwned:[],relicEquipped:[],relicAchievements:emptyAchievements(),relicBlueprintUnlocked:[],contracts:{active:[],records:{}},contractMedals:[],anomalyOffer:null,anomalyOfferIndex:0,anomalySeed:null,selectedAnomaly:null,totalAnomalyWins:0 }; }
+export function freshSave() { return { audioOptions:{...AUDIO_DEFAULTS},...freshModes(),...freshCampaign(),elitePity:0,shapeCodex:normalizeCodex(),codexPinnedIds:[],insightUnlocked:[],eliteHistory:{},advancedIntroFlags:{},signatureLoadout:[],evolutionOwned:normalizeEvolutionOwned({}),evolutionActive:[],shapeIntroSeen:{}, saveVersion: C.saveVersion, bank: 0, levels: emptyLevels(), bestStats: {}, lastRuns: [], options: { ...C.options }, catalystBalance: 0, discoveryRank: 0, lifetimeDestroyed: 0, knownHistoryKills: 0, totalRuns: 0, milestoneWelcomeFlags: {}, pendingSettlement: null, lastSettlementId: null, legacyExtraTimeLevel: 0, timeRespecUsed: false, relicOwned:[],relicEquipped:[],relicAchievements:emptyAchievements(),relicBlueprintUnlocked:[],contracts:{active:[],records:{}},contractMedals:[],anomalyOffer:null,anomalyOfferIndex:0,anomalySeed:null,selectedAnomaly:null,totalAnomalyWins:0 }; }
 export function loadSave(storage) {
   const save = freshSave();let raw=null;const preserve=message=>{Object.defineProperty(save,'storageRecovery',{value:{raw,message},enumerable:false});return save;};
   try {
@@ -25,7 +26,7 @@ export function loadSave(storage) {
       if (!Number.isInteger(value) || value < 0 || value > u.max) continue;
       save.levels[key] = value;
     }
-    save.bank = data.bank;
+    save.bank = data.bank;save.audioOptions=normalizeAudio(data.audioOptions);
     if(data.saveVersion>=9&&Number.isInteger(data.elitePity)&&data.elitePity>=0&&data.elitePity<=6)save.elitePity=data.elitePity;
     for (const key of ['totalDestroyed', 'bestChain', 'photonsEarned']) if (Number.isSafeInteger(data.bestStats?.[key]) && data.bestStats[key] >= 0) save.bestStats[key] = data.bestStats[key];
     save.lastRuns = Array.isArray(data.lastRuns) ? data.lastRuns.filter(r => r && Number.isFinite(r.photonsEarned)).slice(-C.historyLimit) : [];

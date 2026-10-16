@@ -274,7 +274,7 @@ export class Game {
     for (const s of this.alive) { const d = Math.hypot(x - s.x, y - s.y); if (s.grace <= 1e-9 && d <= s.radius && d < nearest) { target = s; nearest = d; } }
     this.presentation.emit({kind:target?'hit':'miss',at:this.elapsed,x,y},this.options);
     if (!target || this.elapsed - (this.lastClickRing ?? -Infinity) >= .12 - 1e-9) { this.clickVFX.add(x, y, Boolean(target), this.elapsed); if(target)this.lastClickRing=this.elapsed; }
-    if (!target) { this.missedClicks++; return false; }
+    if (!target) { this.onEvent?.('miss');this.missedClicks++; return false; }
     this.successfulClicks++;
     if (target.id === 1 && !Number.isFinite(target.motion.startAt)) for (const guide of this.alive.filter(s => s.id <= 4)) guide.motion.startAt = this.elapsed + C.motion.tutorialHold;
     const m = this.modifierStats[target.modifier]; m.directHitCount++; this.typeStats[target.type].directHitCount++;
@@ -285,7 +285,7 @@ export class Game {
     const cause = { chainId, source: 'direct', depth: 0, angle: 0, rootAttack:true };
     cause.consumeSiphon=true;this.enqueue(target, this.stats.directDamage, cause); this.flush();
     if (this.stats.impactEnabled) { this.area(target, this.stats.impactRadius, this.stats.impactDamage, { ...cause, source: 'impact', depth: 1 }, '#ffffff', target.id); this.flush(); }
-    this.onEvent?.('click'); return true;
+    return true;
   }
   scheduleEvent(event) {
     if (this.state !== 'PLAYING' || this.remaining <= 0) return false;
@@ -333,6 +333,7 @@ export class Game {
       advancedContact(this,s,cause,wave);damage=modeWaveDamage(this,s,damage,cause,wave);damage=advancedDirectGate(this,s,expansionBeforeDamage(this,s,damage,cause,wave),cause);
        const previous=s.hp,shielded=this.contentMode==='M5_M6_ON'?shieldDamage(this,s,damage,cause):damage;
       const actual=Math.min(s.hp,Math.max(0,advancedDefense(this,s,expansionAfterDefense(this,traitDamage(this,s,shielded,cause),cause),cause))),paid=s.echo?0:actual,chain = this.chains.get(cause.chainId);
+       if(cause.source==='direct'){this.onEvent?.(actual>0?'hit':'guard');if(actual===0)this.presentation.emit({kind:'guard',at:this.simulationTime,x:s.x,y:s.y,color:'#a5bac0'},this.options);}
        s.hp -= actual;directorDamage(this,actual); this.runEarned += paid; this.rawBase += paid; this.rawHP += paid; chain.photons += paid; s.flash = C.visual.flash; s.flashUntil = this.simulationTime + C.visual.flash;
       this.binAt().earnedPhoton += paid; this.binAt5().earnedPhoton += paid;
       advancedDamaged(this,s,actual,cause,wave);ecologyDamage(this,s,actual,cause);expansionDamaged(this,s,actual,cause,wave);
@@ -417,7 +418,7 @@ export class Game {
     const shard=this.emitShard(s.x,s.y,angle,s.type,cause.chainId,cause.depth,false,null,origin,true);
     if(shard){shard.originShapeId=s.id;shard.noRelicProc=Boolean(cause.noRelicProc);if(cause.noRelicProc&&this.relicLoadout.includes('ricochetCoil'))shard.bounces=Math.max(0,shard.bounces-C.relics.ricochetCoil.bounces);}
     if(shard&&this.contentMode==='M5_M6_ON'&&this.levels.kineticReach&&this.options.motionEnabled&&s.motion?.rotationRate&&Number.isFinite(s.motion.startAt)&&s.motion.startAt<=this.simulationTime){shard.range+=30*this.levels.kineticReach;shard.life=shard.range/C.shard.speed+C.shard.lifePadding;this.skillActivations.kineticReach=(this.skillActivations.kineticReach||0)+1;}
-    if(shard&&!cause.noRelicProc&&this.relicLoadout.includes('ricochetCoil')){const r=C.relics.ricochetCoil;shard.range=Math.max(r.minRange,shard.range-r.rangePenalty);shard.life=shard.range/C.shard.speed+C.shard.lifePadding;shard.relicId='ricochetCoil';this.relicActivations.ricochetCoil=(this.relicActivations.ricochetCoil||0)+1;}if(shard){expansionShardCreated(this,shard);modeShard(this,shard);}return shard;
+    if(shard&&!cause.noRelicProc&&this.relicLoadout.includes('ricochetCoil')){const r=C.relics.ricochetCoil;shard.range=Math.max(r.minRange,shard.range-r.rangePenalty);shard.life=shard.range/C.shard.speed+C.shard.lifePadding;shard.relicId='ricochetCoil';this.relicActivations.ricochetCoil=(this.relicActivations.ricochetCoil||0)+1;}if(shard){expansionShardCreated(this,shard);modeShard(this,shard);this.onEvent?.('shard');}return shard;
   }
   emitAux(origin,angle,cause,source,damage,range){
     const shard=this.emitShard(origin.x,origin.y,angle,source,cause.chainId,cause.depth,true,origin.id);
@@ -430,7 +431,7 @@ export class Game {
     if (this.options.sequentialPropagation) {
       if (this.waves.length >= C.caps.waves) { this.cap('waves', cause); return; }
       const wave = { id: this.nextWave++, x: s.x, y: s.y, radius: 0, maxRadius: radius, damage, speed: cause.source === 'star' ? C.propagation.starSpeed : C.propagation.squareSpeed, bornAt: this.simulationTime, age: 0, color, cause, chainId: cause.chainId, sourceKind: cause.source, generation: cause.depth, exclude, sector, dynamic: this.options.motionEnabled||this.advancedEnabled||Boolean(sector), hitIds: new Set(), registeredIds: new Set() };
-      this.waves.push(wave); this.peakWaves = Math.max(this.peakWaves, this.waves.length); for (const target of this.alive) this.registerWaveTarget(wave, target); return wave;
+      this.waves.push(wave);this.onEvent?.('wave'); this.peakWaves = Math.max(this.peakWaves, this.waves.length); for (const target of this.alive) this.registerWaveTarget(wave, target); return wave;
     }
     this.visual({ kind: 'ring', x: s.x, y: s.y, radius, color, life: C.visual.ringLife });
     for (const other of this.alive) if (other.id !== exclude && Math.hypot(other.x - s.x, other.y - s.y) - other.radius <= radius&&this.waveSectorContains({x:s.x,y:s.y,sector},other,this.simulationTime)) {

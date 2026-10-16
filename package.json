@@ -28,6 +28,13 @@
     "benchmark:m14": "node tests/m14-benchmark.mjs",
     "qa:m14": "node tests/m14-browser.mjs",
     "qa:m15": "node tests/m15-browser.mjs",
-    "benchmark:m15": "node tests/m15-benchmark.mjs"
+    "benchmark:m15": "node tests/m15-benchmark.mjs",
+    "qa:m16": "node tests/m16-browser.mjs",
+    "benchmark:m16": "node tests/m16-benchmark.mjs",
+    "smoke:release": "node tests/release-smoke.mjs",
+    "release:manifest": "node tests/release-manifest.mjs",
+    "qa:m16:storage": "node tests/m16-storage.mjs",
+    "qa:m16:recovery": "node tests/m16-recovery-browser.mjs",
+    "qa:m16:extra-time": "node tests/m16-extra-browser.mjs"
   }
 }

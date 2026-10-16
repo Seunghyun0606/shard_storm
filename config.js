@@ -150,7 +150,7 @@ export const CONFIG = {
   },
   costGrowth: 1.6, saveVersion: 11, storageKey: 'shard-storm-v1', historyLimit: 20,
   dev: { grant: 1000, minDuration: 1, maxDuration: 90 },
-  options: { secondaryTraitsEnabled:true,combatFXEnabled:true,screenShakeEnabled:true,reducedMotionEnabled:false,oreEnabled:true,inheritance: true, ricochet: true, sequentialPropagation: true, visualVariety: true, damageVFX: true, sound: false, comboFeedback: true, modifiers: true, modifierVisuals: true, motionEnabled: true, refineryEnabled: true }
+  options: { focusMode:false, secondaryTraitsEnabled:true,combatFXEnabled:true,screenShakeEnabled:true,reducedMotionEnabled:false,oreEnabled:true,inheritance: true, ricochet: true, sequentialPropagation: true, visualVariety: true, damageVFX: true, sound: false, comboFeedback: true, modifiers: true, modifierVisuals: true, motionEnabled: true, refineryEnabled: true }
 };
 
 Object.assign(CONFIG.upgrades, EXPANSION_SKILLS);

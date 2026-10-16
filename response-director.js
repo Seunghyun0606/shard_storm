@@ -42,7 +42,7 @@ export function responseSpawnSlot(g){
   for(const s of shapes.filter(s=>s.type==='conductor'))s.linkIds=shapes.filter(t=>t.id!==s.id&&Math.hypot(t.x-s.x,t.y-s.y)<=115).slice(0,2).map(t=>t.id);
   r.active={...q,ids:shapes.map(s=>s.id)};r.spawned+=shapes.length;r.credits-=q.count;r.queue.shift();g.spawnAttempts+=shapes.length;g.spawnSuccesses+=shapes.length;
   for(const bin of [g.binAt(),g.binAt5()]){bin.spawnAttempts+=shapes.length;bin.spawnSuccesses+=shapes.length;}
-  g.patternCounts[q.kind]=(g.patternCounts[q.kind]||0)+shapes.length;log(g,'activated',{id:q.id,kind:q.kind,chainId:q.chainId,origin:q.origin,targetIds:shapes.map(s=>s.id),points:points.map(p=>({x:p.x,y:p.y,cluster:p.cluster}))});g.onEvent?.('stormResponse');return true;
+  g.patternCounts[q.kind]=(g.patternCounts[q.kind]||0)+shapes.length;log(g,'activated',{id:q.id,kind:q.kind,chainId:q.chainId,origin:q.origin,targetIds:shapes.map(s=>s.id),points:points.map(p=>({x:p.x,y:p.y,cluster:p.cluster}))});if(q.origin)g.presentation.emit({kind:'stormResponse',at:g.simulationTime,x:q.origin.x,y:q.origin.y,color:'#75e1d2'},g.options);g.onEvent?.('stormResponse');return true;
  }
  // Failed geometry spends only the already reserved ordinary tokens. Normal
  // placement performs its own safety/trajectory checks; no hidden extra budget.
