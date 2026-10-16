@@ -68,7 +68,7 @@ Codex 실행 핸드오프: [M12~M16 Codex Handoff](Shard_Storm_M12_M16_Codex_Han
 
 ## 6. 전투·성장·정산 공통 불변 조건
 
-1. Run 기본20초; ExtraTime 기존20~32초. Skill, hit/drag/hold, enemy motion, original29? → **19 shapes**, 49 nodes/100 Lv, 8 new secondary/3 primary modifiers, 6 Relics/10Contracts/6Anomalies 모두 보존.
+1. Run 기본20초; ExtraTime 기존20~32초. Skill, hit/drag/hold, enemy motion, 19 shape types, 49 nodes/100 Lv, 8 new secondary/3 primary modifiers, 6 Relics/10Contracts/6Anomalies 모두 보존.
 2. M9.0 Canvas logical960×540 and arena32..928/78..512 보존. CSS width up to1440, DPR, focus, HUD top region. 실제 world 크기 확대는 명시 별도 QA 후.
 3. 20초 고정 simulation elapsed와 visual-only time dilation은 분리, 신규 M16 optional physical slow motion은 P0 안정성 관문 통과하지 못하면 deferred.
 4. gameplay RNG streams independent of cosmetics, source event cause/chain depth/target unique, no duplicate damage/payout, spawn safety. 신규 M13 gameplay ON의 차이는 명시한 formation/supply만.
