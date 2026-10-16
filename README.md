@@ -1,6 +1,8 @@
 # Shard Storm — M12~M16 개발 중
 
-현재 `feat/m12-m16-destruction-evolution`에서 **M12 구현·자동 QA를 완료**했습니다. 사용자 승인 A인 Run20%+pity6와 schema9를 적용했습니다. M11 완성 코드와 전체 M12~M16 PRD에서 시작했으며 M13~M16을 순서대로 이어서 개발합니다.
+현재 `feat/m12-m16-destruction-evolution`에서 **M12·M13 구현과 자동 QA를 완료**했습니다. M13은 Shatter/Cascade/Overload/Storm4단계, 실제 Chain10/20에 따른 Link Pocket/Bridge Corridor/Storm Crown, 인과 거리·군집 계측을 추가했습니다. StageIV의24/s 탄력 공급은 실제 처리 능력에 반응하며 나머지 단계는15/s입니다. 정규 생성 예산을 재배치하므로 무료 추가 몹/재화는 없습니다. M14~M16을 순서대로 이어서 개발합니다.
+
+M13 단위332 PASS, M12 원본/OFF/ON/FX480전투 및 Control20전투,3,000회 실제 구매 성장, Chrome20초6Run/오류0, 완전한 최근20×32초 기록의 저장·두 차례 복구를 검증했습니다. [M13 구현](docs/Shard_Storm_M13_Implementation_Report.md) · [밸런스](docs/Shard_Storm_M13_Balance_Report.md). `npm run benchmark:m13`, `npm run qa:m13`, `node tests/m13-growth.mjs`로 재현합니다. 자동 입력은 사람의 체감/재도전 동기 검증과 구분합니다.
 
 M12:512회 처리 예산 소진 시 잔여 물리를 보존하고 표면 접촉 반복을 복구했습니다. RESULT Codex에는 실제 Pentagon/Fuse/Prism 시도의 진척0을 포함한 원인과 실패 이유가 표시됩니다. **라이브 공급15/s·Elite 적격Run20%+6회 미등장 후 안전 생성 시도 보장**입니다. 최초 소개는 별도이며 pity는 정산1회로만 확정합니다. 공급15/18/21/24/30/s와 다른 Elite 후보는 DEV의 격리 비교에 남깁니다.
 

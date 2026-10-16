@@ -31,7 +31,7 @@ export function draw(ctx, game, fps = 60, osReducedMotion = false) {
   if (!game) return; ctx.fillStyle='#b8d9d4';ctx.font='10px Arial';const narrow=(ctx.canvas.clientWidth||960)<620;ctx.fillText(narrow?`R${game.discoveryRank} · CAT +${game.pendingCatalyst}`:`RANK ${game.discoveryRank} · PENDING CATALYST +${game.pendingCatalyst}`,C.width-250,72);
   const active=game.contractSnapshot[0],intro=game.ecologyEvents?.findLast(e=>e.kind==='introduction'&&game.elapsed-e.at<1.5);
   const metaLine=intro?`${narrow?'NEW':'FIRST ENCOUNTER'} · ${C.shapes[intro.type].name} · ${ecologyHints[intro.type]}`:`${C.anomalies[game.anomalyId]?.name||'NORMAL'}${active?` · ${C.contracts[active.id].name}: ${active.progress+(game.metaCounters[C.contracts[active.id].counter]||0)} / ${C.contracts[active.id].target*C.meta.contractTargets[active.stage-1]}`:''}`;
-  ctx.fillText(hudText(ctx,metaLine,630),42,72);
+  ctx.fillText(hudText(ctx,(game.destructionEnabled?game.destructionStage.name+' · ':'')+metaLine,630),42,72);
   ctx.save(); ctx.beginPath(); ctx.rect(C.arena.left, C.arena.top, C.arena.right - C.arena.left, C.arena.bottom - C.arena.top); ctx.clip();
   let links=0;
   for(const s of game.alive.filter(s=>s.linkIds))for(const id of s.linkIds){

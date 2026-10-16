@@ -1,4 +1,4 @@
-import {stageText} from './destruction-stage.js';
+import {stageText,destructionStage} from './destruction-stage.js';
 import {LIVE_ELITE_POLICY} from './spawn-director.js';
 import {renderCodex,toggleCodexPin,pinnedText} from './codex-ui.js';
 import { CONFIG as C } from './config.js';
@@ -104,7 +104,7 @@ function renderUpgrades() {
   $('time-note').textContent = save.legacyExtraTimeLevel && !save.timeRespecUsed ? `60~90초 → 20~32초. Extra Time은 Lv당 +2초이며 보유 Lv.${save.levels.extraTime}은 유지됩니다.` : `확인 가능한 과거 기록 ${save.knownHistoryKills || 0}킬 · 새 누적 파괴와 별도 보존`;
   $('time-refund').hidden = !save.legacyExtraTimeLevel || save.timeRespecUsed; $('time-refund').disabled = !game?.settled;
 }
-function renderMeta(){const state=game?.state||'TITLE';for(const suffix of ['start','result']){
+function renderMeta(){const currentStage=destructionStage(save.levels),previousStage=save.lastRuns.at(-1)?.destruction?.stage?.index||1;$('stage-start').textContent=`${currentStage.index>previousStage?'NEW STAGE · ':''}${stageText(save.levels)}`;const state=game?.state||'TITLE';for(const suffix of ['start','result']){
  renderCodex($(`codex-${suffix}`),save,{state,pin:id=>{if(toggleCodexPin(save,id,state)){persist();renderMeta();}}});
  renderBuilds($(`build-${suffix}`),save,{state,signature:id=>{if(toggleSignature(save,id,state)){persist();renderUpgrades();}},craft:(family,form)=>{if(game?.settled&&craftEvolution(save,family,form,state)){persist();renderUpgrades();}},activate:(family,form)=>{if(activateEvolution(save,family,form,state)){persist();renderUpgrades();}},preset:id=>{if(applyBuildPreset(save,id,state)){persist();renderUpgrades();}}});
  renderRelics($(`relic-${suffix}`),save,{state,craft:key=>{if(game?.settled&&craftRelic(save,key,state)){persist();renderUpgrades();}},equip:(key,slot)=>{if(equipRelic(save,key,slot,state)){persist();renderUpgrades();}}});

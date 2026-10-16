@@ -10,7 +10,7 @@
 
 기존 M9 패턴과 별도로 성장 단계별 정상 생성 계획에도3종의 기하 배치를 섞습니다. StageIV는 M12 A/B에서 검증한 elastic24 프로파일을 사용합니다. 초기3초/무입력/낮은 실제 처리량은15/s이며 Rank0을 강제로 가속하지 않습니다. StageI~III와 기능OFF는 M12의 fixed15 기본을 유지합니다. 이 차이는 PRD의 Storm 환경에 한정한 공급 채택이며 가격/HP/보상 배율 인상이 아닙니다.
 
-실제 chainId의 첫 정상 사망→가장 먼 정상 사망 거리, 마지막 사망 위치, 실제 배치 clusterId, 발동 source, 예약/활성/실패/만료/생성/처치 수를 기록합니다. 반응 cue는 실제 예약 원점과 실제 생성 좌표를 잇는 짧은 점선이며 FX OFF에서 제거해도 전투는 같습니다. 결과에는 단계·거리·군집·반응 수가 표시됩니다. 시작 화면 단계 안내의 최종 UI 검증은 뒤의 UI 커밋과 최신 Chrome 로그를 기준으로 확인합니다.
+실제 chainId의 첫 정상 사망→가장 먼 정상 사망 거리, 마지막 사망 위치, 실제 배치 clusterId, 발동 source, 예약/활성/실패/만료/생성/처치 수를 기록합니다. 반응 cue는 실제 예약 원점과 실제 생성 좌표를 잇는 짧은 점선이며 FX OFF에서 제거해도 전투는 같습니다. 결과에는 단계·거리·군집·반응 수가 표시됩니다. 시작 화면에 현재 단계·다음 레벨 목표, 전투 HUD에 동결 단계를 표시합니다. 새 단계는 이전 실제 Run 단계와 비교한 비차단 안내라 별도 영구 필드나 튜토리얼 정지가 없습니다.
 
 ## 검증
 
@@ -20,6 +20,8 @@
 - 승인 후 성장:5seed×3build×200=3,000 실제 Run/15경로, 실제 구매와 정산1회를 유지했습니다. 현재 source prefix `32e1b474e6f9`가 최종이며 `f594012013a2`는 로그 수정 전 중간 자료입니다.
 - 실제 Chrome155 pointer20초6Run(Fresh2+성장fixture4),620/1280/1920·DPR1/2·Focus/Reduced Motion·클릭/홀드/드래그,console/page 오류0.4개 성장fixture 모두 실제 linkPocket 생성4개를 확인했습니다. Browser에서 Bridge/Crown을 자연 발동했다고 주장하지 않습니다. 이들은 위 Node 실전에서 실제 발동했습니다.
 - 현재 M13 MAX32초20개 전체 기록은12,787,513→3,559,092문자로 압축되어 같은 키의 private Chrome 저장/reload2/전체 SHA-256/은행/레벨 보존 PASS입니다. 기록을 자르지 않았습니다.
+
+전투/성장 소스와 자료는 core 커밋 `58ca72b`에 보존했습니다. 이후 변경은 app/renderer/HTML의 단계 안내이며, 최신 UI에서 전체332단위와 실제 Chrome6Run을 다시 통과했습니다(`m13-ui-unit.txt`, `m13-ui-browser.txt`, 최신 `m13-browser-results.json`). 해당 UI 변경은 Node 전투 모듈을 수정하지 않았습니다.
 
 증거: `artifacts/m13-unit.txt`, `m13-benchmark-results.json`, `m13-control-results.json`, `m13-approved-growth-results.json`, `m13-browser-results.json`, `m13-storage-current32-results.json`. 모든 샤드/파동/예약 상한과 물리 폐기0을 검증했습니다. 자동 조준은 사람의 재미 검증이 아닙니다.
 
