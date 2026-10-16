@@ -1,3 +1,4 @@
+import {worldSettlement,applyWorldSettlement} from './campaign/worlds.js';
 import {codexSnapshot,validCodexSnapshot,applyCodex} from './codex.js';
 import {eliteSettlement} from './spawn-director.js';
 import { CONFIG as C } from './config.js';
@@ -41,7 +42,7 @@ export function stageSettlement(save, run) {
   const record=run.record(),deltas=Object.fromEntries(Object.keys(emptyAchievements()).map(k=>[k,run.metaEnabled===false?0:record.metaCounters?.[k]||0]));
   const meta=run.metaResult||record.metaResult,contractPlan=meta?.contracts||{changes:[],completed:[],photon:0,catalyst:0},anomaly=meta?.anomaly||{id:null,succeeded:false,photon:0},baseCatalyst=run.pendingCatalyst||record.pendingCatalyst||0,calibrationPhoton=run.calibrationPhoton||0,payout=plan.payout+calibrationPhoton+contractPlan.photon+anomaly.photon,catalystPayout=baseCatalyst+contractPlan.catalyst;
   if(![payout,catalystPayout,...Object.values(deltas)].every(n=>Number.isSafeInteger(n)&&n>=0))return false;
-  save.pendingSettlement ||= { id: plan.id, runId: plan.id, saveSchema: C.saveVersion,elitePolicySnapshot:eliteSettlement(run),codexSnapshot:codexSnapshot(run),relicAchievementDeltas:deltas,contractPlan,contractsCompleted:contractPlan.completed,contractPhoton:contractPlan.photon,contractCatalyst:contractPlan.catalyst,anomalyId:anomaly.id,anomalySucceeded:anomaly.succeeded,anomalyPhoton:anomaly.photon,payoutBreakdown:{refineryPhoton:plan.payout,calibrationPhoton,contractPhoton:contractPlan.photon,anomalyPhoton:anomaly.photon,baseCatalyst,contractCatalyst:contractPlan.catalyst},payout,catalystPayout, rawBase:run.rawBase||0,rawOreBonus:run.rawOreBonus||0,skillRawBonus:run.rawSkillBonus||0,totalDestroyed:run.totalDestroyed||record.totalDestroyed,oreKills:run.oreKills||{}, milestoneProgress:run.discoveryRank||0,shapeUnlockEvents:run.welcomeConsumed||[],record: { ...record, photonsEarned:payout,processedPhoton:payout,photonPayout:payout,refineryPayout:plan.payout,payoutBreakdown:{refineryPhoton:plan.payout,calibrationPhoton,contractPhoton:contractPlan.photon,anomalyPhoton:anomaly.photon,baseCatalyst,contractCatalyst:contractPlan.catalyst},bankBefore:save.bank,bankAfter:save.bank+payout } };
+  save.pendingSettlement ||= { id: plan.id, runId: plan.id, saveSchema: C.saveVersion,elitePolicySnapshot:eliteSettlement(run),worldSnapshot:worldSettlement(run),codexSnapshot:codexSnapshot(run),relicAchievementDeltas:deltas,contractPlan,contractsCompleted:contractPlan.completed,contractPhoton:contractPlan.photon,contractCatalyst:contractPlan.catalyst,anomalyId:anomaly.id,anomalySucceeded:anomaly.succeeded,anomalyPhoton:anomaly.photon,payoutBreakdown:{refineryPhoton:plan.payout,calibrationPhoton,contractPhoton:contractPlan.photon,anomalyPhoton:anomaly.photon,baseCatalyst,contractCatalyst:contractPlan.catalyst},payout,catalystPayout, rawBase:run.rawBase||0,rawOreBonus:run.rawOreBonus||0,skillRawBonus:run.rawSkillBonus||0,totalDestroyed:run.totalDestroyed||record.totalDestroyed,oreKills:run.oreKills||{}, milestoneProgress:run.discoveryRank||0,shapeUnlockEvents:run.welcomeConsumed||[],record: { ...record, photonsEarned:payout,processedPhoton:payout,photonPayout:payout,refineryPayout:plan.payout,payoutBreakdown:{refineryPhoton:plan.payout,calibrationPhoton,contractPhoton:contractPlan.photon,anomalyPhoton:anomaly.photon,baseCatalyst,contractCatalyst:contractPlan.catalyst},bankBefore:save.bank,bankAfter:save.bank+payout } };
   return true;
 }
 export function completeSettlement(save) {
@@ -56,7 +57,7 @@ export function completeSettlement(save) {
   save.relicAchievements ||= emptyAchievements();for(const key of Object.keys(save.relicAchievements)){const delta=pending.relicAchievementDeltas?.[key]||0;if(Number.isSafeInteger(delta)&&delta>=0&&Number.isSafeInteger(save.relicAchievements[key]+delta))save.relicAchievements[key]+=delta;}
   save.relicBlueprintUnlocked=blueprints(save);
   if(validCodexSnapshot(pending.codexSnapshot,pending.id))applyCodex(save,pending.codexSnapshot);
-  if(pending.elitePolicySnapshot)save.elitePity=pending.elitePolicySnapshot.next;
+  if(pending.elitePolicySnapshot)save.elitePity=pending.elitePolicySnapshot.next;applyWorldSettlement(save,pending.worldSnapshot);
   if(pending.contractPlan)applyContracts(save,pending.contractPlan);
   if(pending.anomalySucceeded)save.totalAnomalyWins=(save.totalAnomalyWins||0)+1;
   save.shapeIntroSeen ||= {};for(const id of pending.record.introConsumed||[])if(Object.hasOwn(ECOLOGY_SHAPES,id))save.shapeIntroSeen[id]=true;

@@ -20,7 +20,7 @@ export function responseLayout(g,request){
   const anchor=g.alive.filter(s=>['mirror','gravityWell','conductor'].includes(s.type))[0];
   const center=attempt===0&&anchor?{x:anchor.x+110,y:anchor.y}:{x:200+g.responseRng()*560,y:190+g.responseRng()*200};
   const points=pattern.offsets.map(([dx,dy,cluster],i)=>({x:center.x+dx*Math.cos(angle)-dy*Math.sin(angle),y:center.y+dx*Math.sin(angle)+dy*Math.cos(angle),cluster,type:types[i],radius:C.shapes[types[i]].radius}));
-  if(points.every((p,i)=>safePoint(g,p.x,p.y,p.radius)&&points.every((q,j)=>i===j||Math.hypot(p.x-q.x,p.y-q.y)>=p.radius+q.radius+C.spawnGap+2*C.motion.maxDrift)))return points;
+  if(points.every((p,i)=>safePoint(g,p.x,p.y,p.radius)&&(!g.spawnPointAllowed||g.spawnPointAllowed(p.x,p.y,p.radius))&&points.every((q,j)=>i===j||Math.hypot(p.x-q.x,p.y-q.y)>=p.radius+q.radius+C.spawnGap+2*C.motion.maxDrift)))return points;
  }
  return null;
 }

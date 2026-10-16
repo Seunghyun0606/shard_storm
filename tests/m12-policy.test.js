@@ -12,7 +12,7 @@ const memory=()=>{let raw=null;return {getItem:()=>raw,setItem:(k,v)=>{assert.eq
 test('M12 approved A: schema9 preserves schema1..8 assets, records and initializes pity without retrocredit',()=>{
  for(let version=1;version<=8;version++){
   const s=freshSave();s.saveVersion=version;s.bank=123;s.catalystBalance=45;s.elitePity=6;s.levels.extraTime=3;s.lastRuns=Array.from({length:20},(_,i)=>({runId:'old-'+i,photonsEarned:i,detail:{unchanged:['all','events',i]}}));
-  const mem=memory();mem.setItem(C.storageKey,JSON.stringify(s));const a=loadSave(mem);assert.equal(a.saveVersion,9);assert.equal(a.elitePity,0);assert.equal(a.bank,123);assert.equal(a.levels.extraTime,3);assert.deepEqual(a.lastRuns,s.lastRuns);if(version>=3)assert.equal(a.catalystBalance,45);
+  const mem=memory();mem.setItem(C.storageKey,JSON.stringify(s));const a=loadSave(mem);assert.equal(a.saveVersion,C.saveVersion);assert.equal(a.elitePity,0);assert.equal(a.bank,123);assert.equal(a.levels.extraTime,3);assert.deepEqual(a.lastRuns,s.lastRuns);if(version>=3)assert.equal(a.catalystBalance,45);
   assert.equal(writeSave(mem,a),true);const b=loadSave(mem);assert.equal(b.elitePity,0);assert.deepEqual(b.lastRuns,a.lastRuns);
  }
 });

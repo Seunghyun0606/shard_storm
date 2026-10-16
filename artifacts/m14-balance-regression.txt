@@ -1,0 +1,881 @@
+
+> benchmark:balance
+> node tests/v09-balance-benchmark.js
+
+20s mechanics and Utility comparisons complete.
+{
+  "comparisons": [
+    {
+      "scenario": "v08_20",
+      "build": "Baseline",
+      "runs": 5,
+      "killsMedian": 208,
+      "killsRange": [
+        172,
+        234
+      ],
+      "rawMedian": 3287,
+      "photonMedian": 3287,
+      "chainMedian": 18,
+      "cascadeRatioMedian": 0.6634615384615384,
+      "capsMedian": 0,
+      "p95MedianMs": 0.18870000000003984,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.25870646766169153
+    },
+    {
+      "scenario": "v08_20",
+      "build": "Upgraded",
+      "runs": 5,
+      "killsMedian": 252,
+      "killsRange": [
+        236,
+        277
+      ],
+      "rawMedian": 4116,
+      "photonMedian": 4116,
+      "chainMedian": 20,
+      "cascadeRatioMedian": 0.6825396825396826,
+      "capsMedian": 0,
+      "p95MedianMs": 0.1752000000001317,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.2348008385744235
+    },
+    {
+      "scenario": "v08_20",
+      "build": "Crusher",
+      "runs": 5,
+      "killsMedian": 285,
+      "killsRange": [
+        271,
+        297
+      ],
+      "rawMedian": 4940,
+      "photonMedian": 4940,
+      "chainMedian": 15,
+      "cascadeRatioMedian": 0.6,
+      "capsMedian": 0,
+      "p95MedianMs": 0.10469999999986612,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.20607375271149675
+    },
+    {
+      "scenario": "v08_20",
+      "build": "Cascade",
+      "runs": 5,
+      "killsMedian": 291,
+      "killsRange": [
+        268,
+        299
+      ],
+      "rawMedian": 5196,
+      "photonMedian": 5196,
+      "chainMedian": 19,
+      "cascadeRatioMedian": 0.7835051546391752,
+      "capsMedian": 0,
+      "p95MedianMs": 0.14609999999993306,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.23333333333333334
+    },
+    {
+      "scenario": "v08_20",
+      "build": "Reactor",
+      "runs": 5,
+      "killsMedian": 277,
+      "killsRange": [
+        275,
+        293
+      ],
+      "rawMedian": 4713,
+      "photonMedian": 4713,
+      "chainMedian": 22,
+      "cascadeRatioMedian": 0.76,
+      "capsMedian": 0,
+      "p95MedianMs": 0.11169999999992797,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.191699604743083
+    },
+    {
+      "scenario": "v09_static",
+      "build": "Baseline",
+      "runs": 5,
+      "killsMedian": 162,
+      "killsRange": [
+        123,
+        170
+      ],
+      "rawMedian": 2260,
+      "photonMedian": 140,
+      "chainMedian": 10,
+      "cascadeRatioMedian": 0.5276073619631901,
+      "capsMedian": 0,
+      "p95MedianMs": 0.06739999999990687,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.20481927710843373
+    },
+    {
+      "scenario": "v09_static",
+      "build": "Upgraded",
+      "runs": 5,
+      "killsMedian": 204,
+      "killsRange": [
+        166,
+        225
+      ],
+      "rawMedian": 3108,
+      "photonMedian": 197,
+      "chainMedian": 11,
+      "cascadeRatioMedian": 0.5625,
+      "capsMedian": 0,
+      "p95MedianMs": 0.06810000000041327,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.20489977728285078
+    },
+    {
+      "scenario": "v09_static",
+      "build": "Crusher",
+      "runs": 5,
+      "killsMedian": 253,
+      "killsRange": [
+        235,
+        268
+      ],
+      "rawMedian": 4022,
+      "photonMedian": 265,
+      "chainMedian": 12,
+      "cascadeRatioMedian": 0.5454545454545454,
+      "capsMedian": 0,
+      "p95MedianMs": 0.08399999999983265,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.19789473684210526
+    },
+    {
+      "scenario": "v09_static",
+      "build": "Cascade",
+      "runs": 5,
+      "killsMedian": 246,
+      "killsRange": [
+        239,
+        270
+      ],
+      "rawMedian": 3796,
+      "photonMedian": 266,
+      "chainMedian": 20,
+      "cascadeRatioMedian": 0.7317073170731707,
+      "capsMedian": 0,
+      "p95MedianMs": 0.10280000000057044,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.20180722891566266
+    },
+    {
+      "scenario": "v09_static",
+      "build": "Reactor",
+      "runs": 5,
+      "killsMedian": 255,
+      "killsRange": [
+        237,
+        263
+      ],
+      "rawMedian": 3734,
+      "photonMedian": 249,
+      "chainMedian": 17,
+      "cascadeRatioMedian": 0.7166666666666667,
+      "capsMedian": 0,
+      "p95MedianMs": 0.07050000000072032,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.1815856777493606
+    },
+    {
+      "scenario": "v09_motion",
+      "build": "Baseline",
+      "runs": 5,
+      "killsMedian": 149,
+      "killsRange": [
+        113,
+        164
+      ],
+      "rawMedian": 1942,
+      "photonMedian": 122,
+      "chainMedian": 10,
+      "cascadeRatioMedian": 0.4900662251655629,
+      "capsMedian": 0,
+      "p95MedianMs": 0.12160000000039872,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.20670391061452514
+    },
+    {
+      "scenario": "v09_motion",
+      "build": "Upgraded",
+      "runs": 5,
+      "killsMedian": 203,
+      "killsRange": [
+        177,
+        219
+      ],
+      "rawMedian": 2957,
+      "photonMedian": 192,
+      "chainMedian": 12,
+      "cascadeRatioMedian": 0.5679611650485437,
+      "capsMedian": 0,
+      "p95MedianMs": 0.15680000000065775,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.2103825136612022
+    },
+    {
+      "scenario": "v09_motion",
+      "build": "Crusher",
+      "runs": 5,
+      "killsMedian": 235,
+      "killsRange": [
+        226,
+        269
+      ],
+      "rawMedian": 3566,
+      "photonMedian": 233,
+      "chainMedian": 13,
+      "cascadeRatioMedian": 0.5106382978723404,
+      "capsMedian": 0,
+      "p95MedianMs": 0.14539999999942665,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.19058823529411764
+    },
+    {
+      "scenario": "v09_motion",
+      "build": "Cascade",
+      "runs": 5,
+      "killsMedian": 259,
+      "killsRange": [
+        214,
+        268
+      ],
+      "rawMedian": 4108,
+      "photonMedian": 270,
+      "chainMedian": 17,
+      "cascadeRatioMedian": 0.72265625,
+      "capsMedian": 0,
+      "p95MedianMs": 0.1651000000001659,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.22424242424242424
+    },
+    {
+      "scenario": "v09_motion",
+      "build": "Reactor",
+      "runs": 5,
+      "killsMedian": 236,
+      "killsRange": [
+        210,
+        260
+      ],
+      "rawMedian": 3520,
+      "photonMedian": 242,
+      "chainMedian": 17,
+      "cascadeRatioMedian": 0.7041666666666667,
+      "capsMedian": 0,
+      "p95MedianMs": 0.13439999999991414,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.15566037735849056
+    },
+    {
+      "scenario": "v09_no_refinery",
+      "build": "Baseline",
+      "runs": 5,
+      "killsMedian": 149,
+      "killsRange": [
+        113,
+        164
+      ],
+      "rawMedian": 1942,
+      "photonMedian": 116,
+      "chainMedian": 10,
+      "cascadeRatioMedian": 0.4900662251655629,
+      "capsMedian": 0,
+      "p95MedianMs": 0.07669999999961874,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.20670391061452514
+    },
+    {
+      "scenario": "v09_no_refinery",
+      "build": "Upgraded",
+      "runs": 5,
+      "killsMedian": 203,
+      "killsRange": [
+        177,
+        219
+      ],
+      "rawMedian": 2957,
+      "photonMedian": 177,
+      "chainMedian": 12,
+      "cascadeRatioMedian": 0.5679611650485437,
+      "capsMedian": 0,
+      "p95MedianMs": 0.10670000000027358,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.2103825136612022
+    },
+    {
+      "scenario": "v09_no_refinery",
+      "build": "Crusher",
+      "runs": 5,
+      "killsMedian": 235,
+      "killsRange": [
+        226,
+        269
+      ],
+      "rawMedian": 3566,
+      "photonMedian": 213,
+      "chainMedian": 13,
+      "cascadeRatioMedian": 0.5106382978723404,
+      "capsMedian": 0,
+      "p95MedianMs": 0.12510000000020227,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.19058823529411764
+    },
+    {
+      "scenario": "v09_no_refinery",
+      "build": "Cascade",
+      "runs": 5,
+      "killsMedian": 259,
+      "killsRange": [
+        214,
+        268
+      ],
+      "rawMedian": 4108,
+      "photonMedian": 246,
+      "chainMedian": 17,
+      "cascadeRatioMedian": 0.72265625,
+      "capsMedian": 0,
+      "p95MedianMs": 0.1620999999995547,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.22424242424242424
+    },
+    {
+      "scenario": "v09_no_refinery",
+      "build": "Reactor",
+      "runs": 5,
+      "killsMedian": 236,
+      "killsRange": [
+        210,
+        260
+      ],
+      "rawMedian": 3520,
+      "photonMedian": 211,
+      "chainMedian": 17,
+      "cascadeRatioMedian": 0.7041666666666667,
+      "capsMedian": 0,
+      "p95MedianMs": 0.11830000000009022,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.15566037735849056
+    },
+    {
+      "scenario": "v09_no_modifiers",
+      "build": "Baseline",
+      "runs": 5,
+      "killsMedian": 144,
+      "killsRange": [
+        122,
+        151
+      ],
+      "rawMedian": 1809,
+      "photonMedian": 113,
+      "chainMedian": 8,
+      "cascadeRatioMedian": 0.4603174603174603,
+      "capsMedian": 0,
+      "p95MedianMs": 0.07569999999941501,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.22560975609756098
+    },
+    {
+      "scenario": "v09_no_modifiers",
+      "build": "Upgraded",
+      "runs": 5,
+      "killsMedian": 184,
+      "killsRange": [
+        143,
+        234
+      ],
+      "rawMedian": 2817,
+      "photonMedian": 172,
+      "chainMedian": 10,
+      "cascadeRatioMedian": 0.5652173913043478,
+      "capsMedian": 0,
+      "p95MedianMs": 0.09950000000026193,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.20053475935828877
+    },
+    {
+      "scenario": "v09_no_modifiers",
+      "build": "Crusher",
+      "runs": 5,
+      "killsMedian": 229,
+      "killsRange": [
+        224,
+        245
+      ],
+      "rawMedian": 3674,
+      "photonMedian": 251,
+      "chainMedian": 10,
+      "cascadeRatioMedian": 0.5152838427947598,
+      "capsMedian": 0,
+      "p95MedianMs": 0.14140000000043074,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.1909307875894988
+    },
+    {
+      "scenario": "v09_no_modifiers",
+      "build": "Cascade",
+      "runs": 5,
+      "killsMedian": 233,
+      "killsRange": [
+        204,
+        241
+      ],
+      "rawMedian": 3315,
+      "photonMedian": 198,
+      "chainMedian": 11,
+      "cascadeRatioMedian": 0.721030042918455,
+      "capsMedian": 0,
+      "p95MedianMs": 0.1635999999998603,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.20689655172413793
+    },
+    {
+      "scenario": "v09_no_modifiers",
+      "build": "Reactor",
+      "runs": 5,
+      "killsMedian": 245,
+      "killsRange": [
+        204,
+        266
+      ],
+      "rawMedian": 3723,
+      "photonMedian": 234,
+      "chainMedian": 21,
+      "cascadeRatioMedian": 0.7211155378486056,
+      "capsMedian": 0,
+      "p95MedianMs": 0.12800000000061118,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.18206521739130435
+    },
+    {
+      "scenario": "v09_legacy_tiers",
+      "build": "Baseline",
+      "runs": 5,
+      "killsMedian": 183,
+      "killsRange": [
+        180,
+        234
+      ],
+      "rawMedian": 3162,
+      "photonMedian": 206,
+      "chainMedian": 17,
+      "cascadeRatioMedian": 0.6284153005464481,
+      "capsMedian": 0,
+      "p95MedianMs": 0.06539999999949941,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.25252525252525254
+    },
+    {
+      "scenario": "v09_legacy_tiers",
+      "build": "Upgraded",
+      "runs": 5,
+      "killsMedian": 236,
+      "killsRange": [
+        225,
+        255
+      ],
+      "rawMedian": 4052,
+      "photonMedian": 262,
+      "chainMedian": 16,
+      "cascadeRatioMedian": 0.673728813559322,
+      "capsMedian": 0,
+      "p95MedianMs": 0.06620000000111759,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.2215568862275449
+    },
+    {
+      "scenario": "v09_legacy_tiers",
+      "build": "Crusher",
+      "runs": 5,
+      "killsMedian": 269,
+      "killsRange": [
+        260,
+        270
+      ],
+      "rawMedian": 4731,
+      "photonMedian": 304,
+      "chainMedian": 13,
+      "cascadeRatioMedian": 0.5846153846153846,
+      "capsMedian": 0,
+      "p95MedianMs": 0.06769999999960419,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.21581196581196582
+    },
+    {
+      "scenario": "v09_legacy_tiers",
+      "build": "Cascade",
+      "runs": 5,
+      "killsMedian": 273,
+      "killsRange": [
+        259,
+        285
+      ],
+      "rawMedian": 4984,
+      "photonMedian": 315,
+      "chainMedian": 21,
+      "cascadeRatioMedian": 0.7614035087719299,
+      "capsMedian": 0,
+      "p95MedianMs": 0.0838000000003376,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.22331460674157302
+    },
+    {
+      "scenario": "v09_legacy_tiers",
+      "build": "Reactor",
+      "runs": 5,
+      "killsMedian": 278,
+      "killsRange": [
+        264,
+        283
+      ],
+      "rawMedian": 4723,
+      "photonMedian": 311,
+      "chainMedian": 24,
+      "cascadeRatioMedian": 0.7661870503597122,
+      "capsMedian": 0,
+      "p95MedianMs": 0.07340000000112923,
+      "maxEmpty": 0,
+      "projectileHitRateMedian": 0.182
+    }
+  ],
+  "utilities": [
+    {
+      "build": "Baseline",
+      "duration": 20,
+      "fixed20": {
+        "runs": 5,
+        "killsMedian": 149,
+        "killsRange": [
+          113,
+          164
+        ],
+        "rawMedian": 1942,
+        "photonMedian": 122,
+        "chainMedian": 10,
+        "cascadeRatioMedian": 0.4900662251655629,
+        "capsMedian": 0,
+        "p95MedianMs": 0.0816000000013446,
+        "maxEmpty": 0,
+        "projectileHitRateMedian": 0.20670391061452514
+      },
+      "actual": {
+        "runs": 5,
+        "killsMedian": 149,
+        "killsRange": [
+          113,
+          164
+        ],
+        "rawMedian": 1942,
+        "photonMedian": 122,
+        "chainMedian": 10,
+        "cascadeRatioMedian": 0.4900662251655629,
+        "capsMedian": 0,
+        "p95MedianMs": 0.0816000000013446,
+        "maxEmpty": 0,
+        "projectileHitRateMedian": 0.20670391061452514
+      },
+      "normalizedPhoton20": 122
+    },
+    {
+      "build": "ExtraTime",
+      "duration": 22,
+      "fixed20": {
+        "runs": 5,
+        "killsMedian": 149,
+        "killsRange": [
+          113,
+          164
+        ],
+        "rawMedian": 1942,
+        "photonMedian": 122,
+        "chainMedian": 10,
+        "cascadeRatioMedian": 0.4900662251655629,
+        "capsMedian": 0,
+        "p95MedianMs": 0.09050000000024738,
+        "maxEmpty": 0,
+        "projectileHitRateMedian": 0.20670391061452514
+      },
+      "actual": {
+        "runs": 5,
+        "killsMedian": 172,
+        "killsRange": [
+          125,
+          195
+        ],
+        "rawMedian": 2456,
+        "photonMedian": 159,
+        "chainMedian": 11,
+        "cascadeRatioMedian": 0.5174418604651163,
+        "capsMedian": 0,
+        "p95MedianMs": 0.08750000000145519,
+        "maxEmpty": 0,
+        "projectileHitRateMedian": 0.211340206185567
+      },
+      "normalizedPhoton20": 144.54545454545453
+    },
+    {
+      "build": "PhotonBoost",
+      "duration": 22,
+      "fixed20": {
+        "runs": 5,
+        "killsMedian": 149,
+        "killsRange": [
+          113,
+          164
+        ],
+        "rawMedian": 2137,
+        "photonMedian": 134,
+        "chainMedian": 10,
+        "cascadeRatioMedian": 0.4900662251655629,
+        "capsMedian": 0,
+        "p95MedianMs": 0.07309999999961292,
+        "maxEmpty": 0,
+        "projectileHitRateMedian": 0.20670391061452514
+      },
+      "actual": {
+        "runs": 5,
+        "killsMedian": 172,
+        "killsRange": [
+          125,
+          195
+        ],
+        "rawMedian": 2702,
+        "photonMedian": 175,
+        "chainMedian": 11,
+        "cascadeRatioMedian": 0.5174418604651163,
+        "capsMedian": 0,
+        "p95MedianMs": 0.08599999999933061,
+        "maxEmpty": 0,
+        "projectileHitRateMedian": 0.211340206185567
+      },
+      "normalizedPhoton20": 159.0909090909091
+    },
+    {
+      "build": "UtilityMax",
+      "duration": 32,
+      "fixed20": {
+        "runs": 5,
+        "killsMedian": 149,
+        "killsRange": [
+          113,
+          164
+        ],
+        "rawMedian": 2417,
+        "photonMedian": 152,
+        "chainMedian": 10,
+        "cascadeRatioMedian": 0.4900662251655629,
+        "capsMedian": 0,
+        "p95MedianMs": 0.07099999999991269,
+        "maxEmpty": 0,
+        "projectileHitRateMedian": 0.20670391061452514
+      },
+      "actual": {
+        "runs": 5,
+        "killsMedian": 251,
+        "killsRange": [
+          224,
+          292
+        ],
+        "rawMedian": 4478,
+        "photonMedian": 308,
+        "chainMedian": 12,
+        "cascadeRatioMedian": 0.5298804780876494,
+        "capsMedian": 0,
+        "p95MedianMs": 0.1113999999997759,
+        "maxEmpty": 0,
+        "projectileHitRateMedian": 0.21568627450980393
+      },
+      "normalizedPhoton20": 192.5
+    }
+  ],
+  "growthSummary": [
+    {
+      "profile": "fresh",
+      "strategy": "Crusher",
+      "milestones": [
+        {
+          "run": 1,
+          "purchasesMedian": 1,
+          "remainingMedian": 34,
+          "bankMedian": 60
+        },
+        {
+          "run": 3,
+          "purchasesMedian": 3,
+          "remainingMedian": 32,
+          "bankMedian": 210
+        },
+        {
+          "run": 5,
+          "purchasesMedian": 4,
+          "remainingMedian": 31,
+          "bankMedian": 265
+        },
+        {
+          "run": 10,
+          "purchasesMedian": 8,
+          "remainingMedian": 27,
+          "bankMedian": 114
+        }
+      ]
+    },
+    {
+      "profile": "fresh",
+      "strategy": "Cascade",
+      "milestones": [
+        {
+          "run": 1,
+          "purchasesMedian": 1,
+          "remainingMedian": 34,
+          "bankMedian": 32
+        },
+        {
+          "run": 3,
+          "purchasesMedian": 2,
+          "remainingMedian": 33,
+          "bankMedian": 194
+        },
+        {
+          "run": 5,
+          "purchasesMedian": 3,
+          "remainingMedian": 32,
+          "bankMedian": 303
+        },
+        {
+          "run": 10,
+          "purchasesMedian": 7,
+          "remainingMedian": 28,
+          "bankMedian": 115
+        }
+      ]
+    },
+    {
+      "profile": "fresh",
+      "strategy": "Reactor",
+      "milestones": [
+        {
+          "run": 1,
+          "purchasesMedian": 0,
+          "remainingMedian": 35,
+          "bankMedian": 94
+        },
+        {
+          "run": 3,
+          "purchasesMedian": 2,
+          "remainingMedian": 33,
+          "bankMedian": 87
+        },
+        {
+          "run": 5,
+          "purchasesMedian": 4,
+          "remainingMedian": 31,
+          "bankMedian": 92
+        },
+        {
+          "run": 10,
+          "purchasesMedian": 12,
+          "remainingMedian": 23,
+          "bankMedian": 67
+        }
+      ]
+    },
+    {
+      "profile": "legacy_max",
+      "strategy": "Crusher",
+      "milestones": [
+        {
+          "run": 1,
+          "purchasesMedian": 0,
+          "remainingMedian": 0,
+          "bankMedian": 10633
+        },
+        {
+          "run": 3,
+          "purchasesMedian": 0,
+          "remainingMedian": 0,
+          "bankMedian": 11899
+        },
+        {
+          "run": 5,
+          "purchasesMedian": 0,
+          "remainingMedian": 0,
+          "bankMedian": 13165
+        },
+        {
+          "run": 10,
+          "purchasesMedian": 0,
+          "remainingMedian": 0,
+          "bankMedian": 16330
+        }
+      ]
+    },
+    {
+      "profile": "legacy_max",
+      "strategy": "Cascade",
+      "milestones": [
+        {
+          "run": 1,
+          "purchasesMedian": 0,
+          "remainingMedian": 0,
+          "bankMedian": 10633
+        },
+        {
+          "run": 3,
+          "purchasesMedian": 0,
+          "remainingMedian": 0,
+          "bankMedian": 11899
+        },
+        {
+          "run": 5,
+          "purchasesMedian": 0,
+          "remainingMedian": 0,
+          "bankMedian": 13165
+        },
+        {
+          "run": 10,
+          "purchasesMedian": 0,
+          "remainingMedian": 0,
+          "bankMedian": 16330
+        }
+      ]
+    },
+    {
+      "profile": "legacy_max",
+      "strategy": "Reactor",
+      "milestones": [
+        {
+          "run": 1,
+          "purchasesMedian": 0,
+          "remainingMedian": 0,
+          "bankMedian": 10633
+        },
+        {
+          "run": 3,
+          "purchasesMedian": 0,
+          "remainingMedian": 0,
+          "bankMedian": 11899
+        },
+        {
+          "run": 5,
+          "purchasesMedian": 0,
+          "remainingMedian": 0,
+          "bankMedian": 13165
+        },
+        {
+          "run": 10,
+          "purchasesMedian": 0,
+          "remainingMedian": 0,
+          "bankMedian": 16330
+        }
+      ]
+    }
+  ]
+}

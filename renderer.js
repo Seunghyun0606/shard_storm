@@ -1,3 +1,4 @@
+import {WORLDS} from './campaign/worlds.js';
 import {ADVANCED_TRAITS} from './advanced-defs.js';
 import {phaseVulnerable} from './advanced-shapes.js';
 import { CONFIG as C } from './config.js';
@@ -31,8 +32,9 @@ export function draw(ctx, game, fps = 60, osReducedMotion = false) {
   if (!game) return; ctx.fillStyle='#b8d9d4';ctx.font='10px Arial';const narrow=(ctx.canvas.clientWidth||960)<620;ctx.fillText(narrow?`R${game.discoveryRank} · CAT +${game.pendingCatalyst}`:`RANK ${game.discoveryRank} · PENDING CATALYST +${game.pendingCatalyst}`,C.width-250,72);
   const active=game.contractSnapshot[0],intro=game.ecologyEvents?.findLast(e=>e.kind==='introduction'&&game.elapsed-e.at<1.5);
   const metaLine=intro?`${narrow?'NEW':'FIRST ENCOUNTER'} · ${C.shapes[intro.type].name} · ${ecologyHints[intro.type]}`:`${C.anomalies[game.anomalyId]?.name||'NORMAL'}${active?` · ${C.contracts[active.id].name}: ${active.progress+(game.metaCounters[C.contracts[active.id].counter]||0)} / ${C.contracts[active.id].target*C.meta.contractTargets[active.stage-1]}`:''}`;
-  ctx.fillText(hudText(ctx,(game.destructionEnabled?game.destructionStage.name+' · ':'')+metaLine,630),42,72);
+  ctx.fillText(hudText(ctx,(game.world?WORLDS[game.world.id].name+' / T'+game.highestTier+' / ':'')+(game.destructionEnabled?game.destructionStage.name+' / ':'')+(game.world?.boss?game.world.boss.hint:metaLine),630),42,72);
   ctx.save(); ctx.beginPath(); ctx.rect(C.arena.left, C.arena.top, C.arena.right - C.arena.left, C.arena.bottom - C.arena.top); ctx.clip();
+  const boss=game.world?.boss;if(boss?.placed&&!boss.cleared){const core=boss.parts.find(p=>p.role==='core')?.shape;if(core){ctx.save();ctx.strokeStyle=boss.open?'#74edc9':'#e8b76b';ctx.setLineDash([5,5]);for(const p of boss.parts.filter(p=>p.role!=='core'&&!p.shape.destroyed)){ctx.beginPath();ctx.moveTo(p.shape.x,p.shape.y);ctx.lineTo(core.x,core.y);ctx.stroke();}ctx.setLineDash([]);ctx.font='bold 10px Arial';ctx.fillStyle=ctx.strokeStyle;ctx.textAlign='center';ctx.fillText(boss.open?'CORE OPEN':'CORE LOCKED',core.x,core.y-core.radius-18);ctx.restore();}}
   let links=0;
   for(const s of game.alive.filter(s=>s.linkIds))for(const id of s.linkIds){
     const target=game.alive.find(t=>t.id===id);if(!target||links>=3||Math.hypot(target.x-s.x,target.y-s.y)>115+(level(game,'conductiveSurge')>=2?15:0))continue;
@@ -107,7 +109,7 @@ export function draw(ctx, game, fps = 60, osReducedMotion = false) {
     const origin=event.origin;if(!Number.isFinite(origin?.x))continue;ctx.save();ctx.strokeStyle='#75e1d2';ctx.globalAlpha=reduced ? .2 : .45*(1-(game.elapsed-event.at)/.25);ctx.setLineDash([3,6]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(origin.x,origin.y);for(const point of event.points)ctx.lineTo(point.x,point.y);ctx.stroke();ctx.restore();
   }
   for (const ring of game.clickVFX.items) { const t = ring.age / ring.life; ctx.save(); ctx.globalAlpha = (1 - t) * (ring.hit ? .9 : .25); ctx.strokeStyle = '#f5fdff'; ctx.lineWidth = ring.hit ? 1.6 : .8; ctx.beginPath(); ctx.arc(ring.x, ring.y, ring.hit ? C.visual.clickStart + (C.visual.clickEnd - C.visual.clickStart) * t : 3 + (C.visual.missEnd - 3) * t, 0, Math.PI * 2); ctx.stroke(); ctx.restore(); }
-  if (game.elapsed < C.visual.guideLife && game.alive.some(s => s.id === 1)) {
+  if (!game.world?.bossRequested && game.elapsed < C.visual.guideLife && game.alive.some(s => s.id === 1)) {
     const t = C.tutorial; ctx.strokeStyle = '#42efcf88'; ctx.setLineDash([3, 5]); ctx.beginPath(); ctx.arc(t.x, t.y, 37 + (reduced?0:Math.sin(game.elapsed * 5) * 3), 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);
   }
   ctx.restore();

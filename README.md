@@ -1,3 +1,9 @@
+# Shard Storm M14
+
+World5 / tactical Boss5 / settled Survey / schema10. Normal PLAY remains20s. World2 Normal Rank1; Boss Rank2. WORLDS opens in Title/Result. Storm Heart actual clear unlocks a skippable ending and replay.
+
+`npm run benchmark:m14` / `npm run qa:m14`. Reports: [Implementation](docs/Shard_Storm_M14_Implementation_Report.md), [Balance](docs/Shard_Storm_M14_Balance_Report.md). Chrome6 actual20s Runs,345 unit tests; automatic tactics are not a human enjoyment assessment.
+
 # Shard Storm — M12~M16 개발 중
 
 현재 `feat/m12-m16-destruction-evolution`에서 **M12·M13 구현과 자동 QA를 완료**했습니다. M13은 Shatter/Cascade/Overload/Storm4단계, 실제 Chain10/20에 따른 Link Pocket/Bridge Corridor/Storm Crown, 인과 거리·군집 계측을 추가했습니다. StageIV의24/s 탄력 공급은 실제 처리 능력에 반응하며 나머지 단계는15/s입니다. 정규 생성 예산을 재배치하므로 무료 추가 몹/재화는 없습니다. M14~M16을 순서대로 이어서 개발합니다.

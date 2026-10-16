@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "actualRuns": 30,
+  "baseline": "6888ef0",
+  "offParity": true,
+  "worldBossFXNeutral": true
+}

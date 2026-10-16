@@ -7,7 +7,7 @@ import {initCodex,codexFeat,codexEvent,codexContact,codexDeath} from './codex.js
 export function initAdvanced(g,enabled,intro={},insights=[],eliteHistory={}){
  initCodex(g,Boolean(enabled)&&g.ecologyEnabled);g.advancedRng=seededRNG(g.seed^0x17eab2);g.advancedIntroFlags={...intro};g.advancedIntroConsumed=[];g.advancedCounts={};g.advancedEvents=[];g.portalSequence=1;g.advancedInsight=new Set(insights).size;g.eliteHistory=structuredClone(eliteHistory);g.eliteDelta={};g.eliteSpawned=false;g.eliteAttempted=new Set();g.advancedSpawned={};
 }
-export function advancedLog(g,kind,s,cause={},extra={}){g.advancedCounts[kind]=(g.advancedCounts[kind]||0)+1;if(g.advancedEvents.length<2048)g.advancedEvents.push({kind,sourceId:s.id,chainId:cause.chainId,attackEventId:cause.attackEventId,at:g.simulationTime,...extra});}
+export function advancedLog(g,kind,s,cause={},extra={}){g.combatObserver?.(kind,{sourceShapeId:s.id,small:cause.small,chainId:cause.chainId,...extra});g.advancedCounts[kind]=(g.advancedCounts[kind]||0)+1;if(g.advancedEvents.length<2048)g.advancedEvents.push({kind,sourceId:s.id,chainId:cause.chainId,attackEventId:cause.attackEventId,at:g.simulationTime,...extra});}
 export function advancedType(g){
  if(!g.advancedEnabled)return null;
  const rolls=Object.keys(ADVANCED_SHAPES).map(()=>g.advancedRng());
@@ -18,7 +18,7 @@ export function advancedType(g){
 export function advancedSpawn(g,s){
  if(!g.advancedEnabled)return;
  s.spawnAt=g.simulationTime;s.phaseOffset=seededRNG(g.seed^Math.imul(s.id,0x78a4e))()*1.4;
- if(ADVANCED_SHAPES[s.type]){g.advancedSpawned[s.type]=(g.advancedSpawned[s.type]||0)+1;if(!g.advancedIntroFlags[s.type]&&!g.advancedIntroConsumed.includes(s.type)){g.advancedIntroConsumed.push(s.type);advancedLog(g,'introduction',s,{}, {type:s.type});}}
+ if(ADVANCED_SHAPES[s.type]){g.advancedSpawned[s.type]=(g.advancedSpawned[s.type]||0)+1;if(!s.bossPart&&!g.advancedIntroFlags[s.type]&&!g.advancedIntroConsumed.includes(s.type)){g.advancedIntroConsumed.push(s.type);advancedLog(g,'introduction',s,{}, {type:s.type});}}
  if(s.type==='parasiteLink')s.parasiteIds=near(g,s,100).slice(0,2).map(t=>t.id);
  if(s.type==='shifter'){s.motion.ampX=s.motion.ampY=0;planLeap(g,s,g.simulationTime+1.3);}
 }

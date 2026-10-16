@@ -11,6 +11,7 @@ export function initEcology(g, enabled, introSeen = {}) {
   g.ecologyEvents=[];g.ecologyCounts={};g.nextEcologyEvent=1;g.introFormationQueue=[];g.echoSpawned=0;g.echoKills=0;g.repairTotals=new Map();
 }
 export function ecologyLog(g,kind,s,cause={},extra={}) {
+  g.combatObserver?.(kind,{sourceShapeId:s.id,small:cause.small,chainId:cause.chainId,...extra});
   g.ecologyCounts[kind]=(g.ecologyCounts[kind]||0)+1;
   codexEvent(g,kind,s,cause,extra);const eventId=g.nextEcologyEvent++;if(g.ecologyEvents.length<2048)g.ecologyEvents.push({eventId,kind,sourceId:s.id,chainId:cause.chainId,at:g.simulationTime,...extra});
 }
@@ -40,7 +41,7 @@ export function rollTrait(g,s) {
 export function ecologySpawn(g,s) {
   s.secondaryTrait=rollTrait(g,s);
   if(!g.ecologyEnabled)return;
-  if(C.shapes[s.type].ecology&&!C.shapes[s.type].advanced&&!g.introConsumed.includes(s.type)&&!g.introSeen[s.type]){g.introConsumed.push(s.type);g.introFormationQueue.push(s);ecologyLog(g,'introduction',s,{}, {type:s.type});}
+  if(!s.bossPart&&C.shapes[s.type].ecology&&!C.shapes[s.type].advanced&&!g.introConsumed.includes(s.type)&&!g.introSeen[s.type]){g.introConsumed.push(s.type);g.introFormationQueue.push(s);ecologyLog(g,'introduction',s,{}, {type:s.type});}
   if(s.type==='conductor')s.linkIds=near(g,s,115+(level(g,'conductiveSurge')>=2?15:0)).slice(0,2).map(t=>t.id);
   if(s.type==='repairNode')s.nextRepair=g.simulationTime+.85;
 }

@@ -16,7 +16,7 @@ function hit(g,s,n,source='direct',chain=g.newChain(),extra={}){g.enqueue(s,n,{s
 function main(g,x,y,angle=0,extra={}){const p=g.emitShard(x,y,angle,'triangle',g.newChain(),0);p.range=450;p.life=1;Object.assign(p,extra);return p;}
 function wave(g,s,source='square',chain=g.newChain(),extra={}){return g.area({x:s.x-60,y:s.y,id:-1},150,1,{source,nativeWave:true,chainId:chain,depth:0,originShapeId:-1,...extra},'#fff');}
 test('M11 exact19 shapes/8 secondary traits/schema8; all rank AND tier and alive caps',()=>{
- assert.equal(Object.keys(C.shapes).length,19);assert.equal(Object.keys(ADVANCED_SHAPES).length,6);assert.equal(Object.keys(ADVANCED_TRAITS).length,4);assert.equal(C.saveVersion,9);
+ assert.equal(Object.keys(C.shapes).length,19);assert.equal(Object.keys(ADVANCED_SHAPES).length,6);assert.equal(Object.keys(ADVANCED_TRAITS).length,4);assert.equal(C.saveVersion,10);
  for(const[id,d]of Object.entries(ADVANCED_SHAPES)){const g=arena({discoveryRank:d.rank});g.advancedIntroFlags=Object.fromEntries(Object.keys(ADVANCED_SHAPES).filter(k=>k!==id).map(k=>[k,true]));g.highestTier=d.tier-1;assert.notEqual(advancedType(g),id);g.highestTier=d.tier;assert.equal(advancedType(g),id);for(let i=0;i<d.cap;i++)add(g,id,100+i*90,200);assert.notEqual(advancedType(g),id);g.discoveryRank=d.rank-1;g.shapes=[];assert.notEqual(advancedType(g),id);}
 });
 test('M11 Portal atomic pair, >=180 spacing, one rare lottery, actual trace keeps path/life and one passage',()=>{

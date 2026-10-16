@@ -1,0 +1,42 @@
+import {CONFIG as C} from '../config.js';
+export const WORLDS=Object.freeze({
+ w1:{name:'Fragment Belt',rank:0,bossRank:0,boss:'fractureWarden',theme:[],survey:['Normal bodies20','Chain5']},
+ w2:{name:'Circuit Nest',rank:1,bossRank:2,boss:'relayCitadel',theme:['conductor','fuseBomb','hex','repairNode'],survey:['Conductor/Fuse/Hex kills4 across2 qualifying Runs','Chain5 · Boss requires Rank2']},
+ w3:{name:'Gravity Rift',rank:2,bossRank:2,boss:'riftEngine',theme:['mirror','gravityWell','portalGate'],survey:['Reflected/bent main-shard kill1','Complete2 World Runs']},
+ w4:{name:'Singularity Field',rank:3,bossRank:3,boss:'singularityCore',theme:['reactor','phaseCrystal','prismLens','ancient'],survey:['Actual Reactor stage waves2','Vulnerable direct Phase kill1']},
+ w5:{name:'The Shard Storm',rank:4,bossRank:4,boss:'stormHeart',theme:['mirror','conductor','reactor','phaseCrystal','chainBeacon','prismLens'],survey:['Chain15 across2 actual clusters','Complete2 World Runs']}
+});
+const IDS=Object.keys(WORLDS),FIELDS=['runs','normalKills','chain5','circuitKills','circuitRuns','routeKills','reactorWaves','phaseKills','linkedChain15'];
+const number=n=>Number.isSafeInteger(n)&&n>=0?Math.min(n,1e9):0;
+export function freshCampaign(){return {worldSelected:'w1',worldUnlocked:{w1:true,w2:false,w3:false,w4:false,w5:false},worldSurveyProgress:Object.fromEntries(IDS.map(id=>[id,Object.fromEntries(FIELDS.map(k=>[k,0]))])),worldBossHistory:Object.fromEntries(IDS.map(id=>[id,{attempts:0,failures:0,clears:0,firstClearedAt:null,bestRunId:null,challengeSourceId:null,bestClearTime:null,lastFailure:null}])),campaignComplete:false,campaignFirstClear:null,campaignEndingSeen:false};}
+export function normalizeCampaign(data={}){
+ const out=freshCampaign();
+ for(const id of IDS){for(const k of FIELDS)out.worldSurveyProgress[id][k]=number(data.worldSurveyProgress?.[id]?.[k]);const a=data.worldBossHistory?.[id],b=out.worldBossHistory[id];if(a){for(const k of ['attempts','failures','clears'])b[k]=number(a[k]);for(const k of ['firstClearedAt','bestRunId','lastFailure','challengeSourceId'])if(typeof a[k]==='string')b[k]=a[k];if(Number.isFinite(a.bestClearTime)&&a.bestClearTime>=0&&a.bestClearTime<=32)b.bestClearTime=a.bestClearTime;}}
+ for(let i=1;i<IDS.length;i++)out.worldUnlocked[IDS[i]]=out.worldBossHistory[IDS[i-1]].clears>0&&(data.discoveryRank||0)>=WORLDS[IDS[i]].rank;
+ out.worldSelected=out.worldUnlocked[data.worldSelected]?data.worldSelected:'w1';out.campaignComplete=out.worldBossHistory.w5.clears>0;out.campaignFirstClear=out.campaignComplete&&typeof data.campaignFirstClear?.runId==='string'?structuredClone(data.campaignFirstClear):null;out.campaignEndingSeen=out.campaignComplete&&data.campaignEndingSeen===true;return out;
+}
+export function surveyReady(save,id){const p=save.worldSurveyProgress?.[id]||{};switch(id){case'w1':return p.normalKills>=20&&p.chain5>=1;case'w2':return p.circuitKills>=4&&p.circuitRuns>=2&&p.chain5>=1;case'w3':return p.routeKills>=1&&p.runs>=2;case'w4':return p.reactorWaves>=2&&p.phaseKills>=1;case'w5':return p.linkedChain15>=1&&p.runs>=2;default:return false;}}
+export function canWorld(save,id){return Boolean(WORLDS[id]&&save.worldUnlocked?.[id]&&save.discoveryRank>=WORLDS[id].rank);}
+export function canBoss(save,id){return canWorld(save,id)&&save.discoveryRank>=WORLDS[id].bossRank&&surveyReady(save,id);}
+export function selectWorld(save,id,state){if(!['TITLE','RESULT'].includes(state)||save.pendingSettlement||!canWorld(save,id))return false;save.worldSelected=id;return true;}
+export function surveyDelta(g){const killed=id=>(g.typeStats[id]?.directKillCount||0)+(g.typeStats[id]?.cascadeKillCount||0),normalKills=['triangle','square','pentagon','star'].reduce((n,id)=>n+killed(id),0),circuitKills=['conductor','fuseBomb','hex'].reduce((n,id)=>n+killed(id),0);
+ return {runs:1,normalKills,chain5:g.bestChain>=5?1:0,circuitKills,circuitRuns:circuitKills>0?1:0,routeKills:(g.codexDelta.mirror?.techniques||0)+(g.codexDelta.gravityWell?.techniques||0),reactorWaves:g.metaCounters.reactorStageWaveExecuted||0,phaseKills:g.codexDelta.phaseCrystal?.techniques||0,linkedChain15:[...g.response.chains.values()].some(c=>c.kills>=15&&c.clusters.size>=2)?1:0};
+}
+export function worldSettlement(g){if(!g.world?.enabled)return null;const b=g.world.boss;return {version:1,runId:g.runId,worldId:g.world.id,rank:g.discoveryRank,delta:surveyDelta(g),boss:b?{id:b.id,attempted:true,cleared:b.cleared&&b.open,clearTime:b.clearAt??null,phase:b.phase,conditions:{...b.latches},lastFailure:b.cleared?null:b.failure||b.hint,parts:b.parts.map(p=>({id:p.shape.id,role:p.role,type:p.shape.type,dead:p.shape.destroyed}))}:null};}
+export function validWorldSettlement(v,runId){
+ if(v==null)return true;if(v.version!==1||v.runId!==runId||!WORLDS[v.worldId]||!Number.isInteger(v.rank)||v.rank<WORLDS[v.worldId].rank||v.rank>4||!v.delta||!FIELDS.every(k=>Number.isSafeInteger(v.delta[k])&&v.delta[k]>=0&&v.delta[k]<=100000)||v.delta.runs!==1)return false;
+ const b=v.boss;if(!b)return true;if(b.id!==WORLDS[v.worldId].boss||v.rank<WORLDS[v.worldId].bossRank||b.attempted!==true||typeof b.cleared!=='boolean'||!Array.isArray(b.parts)||b.parts.length>24)return false;
+ if(!b.cleared)return true;if(!Number.isFinite(b.clearTime)||b.clearTime<0||b.clearTime>32||b.phase!==3||b.parts.filter(p=>p.role==='core'&&p.dead===true).length!==1||new Set(b.parts.map(p=>p.id)).size!==b.parts.length)return false;
+ const c=b.conditions||{};switch(b.id){case'fractureWarden':return b.parts.filter(p=>p.role==='shield'&&p.dead).length===2;case'relayCitadel':return c.ward===true&&c.transmit===true;case'riftEngine':return c.route===true;case'singularityCore':return c.reactor===true&&c.phase===true;case'stormHeart':return c.linked===true&&v.delta.linkedChain15>=1&&b.parts.filter(p=>p.role==='anchor'&&p.dead).length>=3;default:return false;}
+}
+export function applyWorldSettlement(save,v){if(!v)return;Object.assign(save,normalizeCampaign(save));const p=save.worldSurveyProgress[v.worldId];for(const k of FIELDS)p[k]+=v.delta[k];
+ if(v.boss){const b=save.worldBossHistory[v.worldId];b.attempts++;b.challengeSourceId=v.runId;if(v.boss.cleared){b.clears++;b.firstClearedAt??=new Date().toISOString();if(b.bestClearTime===null||v.boss.clearTime<b.bestClearTime){b.bestClearTime=v.boss.clearTime;b.bestRunId=v.runId;}if(v.worldId==='w5'){save.campaignComplete=true;save.campaignFirstClear??={runId:v.runId,clearTime:v.boss.clearTime};}}else{b.failures++;b.lastFailure=v.boss.lastFailure||'Core not destroyed before the Run ended';}}
+ const selected=save.worldSelected;Object.assign(save,normalizeCampaign(save));if(canWorld(save,selected))save.worldSelected=selected;
+}
+export function surveyText(save,id){const p=save.worldSurveyProgress?.[id]||{},value=(k,target)=>`${p[k]||0}/${target}`;switch(id){case'w1':return `Normal ${value('normalKills',20)} · Chain5 ${value('chain5',1)}`;case'w2':return `Circuit kills ${value('circuitKills',4)} / Runs ${value('circuitRuns',2)} · Chain5 ${value('chain5',1)}`;case'w3':return `Route kill ${value('routeKills',1)} · Runs ${value('runs',2)}`;case'w4':return `Reactor waves ${value('reactorWaves',2)} · Phase kill ${value('phaseKills',1)}`;case'w5':return `Linked Chain15 ${value('linkedChain15',1)} · Runs ${value('runs',2)}`;default:return '';}}
+export function worldSpawnType(g){
+ if(!g.world?.enabled||g.initializing)return null;const d=WORLDS[g.world.id],eligible=d.theme.filter(id=>{const s=C.shapes[id];return g.discoveryRank>=s.rank&&g.highestTier>=s.tier&&g.alive.filter(x=>x.type===id).length<s.cap&&(g.specialSpawns[id]||0)<(s.runCap||Infinity)&&(!s.ecology||g.ecologyEnabled&&g.alive.filter(x=>C.shapes[x.type].ecology).length<7)&&(!s.advanced||g.advancedEnabled);});
+ if(g.world.id==='w1'&&g.worldRng()<.10){const tier=g.tiers[g.highestTier],types=['triangle','square','pentagon','star'];let draw=g.worldRng();for(let i=0;i<types.length;i++){draw-=tier.weights[i];if(draw<0)return types[i];}return 'triangle';}
+ if(g.world.id==='w4'&&!g.world.phaseOffered&&g.world.survey.phaseKills<1&&eligible.includes('phaseCrystal')){g.world.phaseOffered=true;return 'phaseCrystal';}
+ return eligible.length&&g.worldRng()<.10?eligible[Math.floor(g.worldRng()*eligible.length)]:null;
+}
