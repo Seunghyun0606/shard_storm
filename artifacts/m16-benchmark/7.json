@@ -1,0 +1,2164 @@
+{
+  "rows": [
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w1",
+      "depth": 1,
+      "duration": 20,
+      "kills": 318,
+      "photon": 775,
+      "chain": 16,
+      "distance": 545.0552617726751,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.8201999999999998,
+        "on": 0.8642999999999574,
+        "off": 0.5724999999999909
+      },
+      "peaks": {
+        "shards": 42,
+        "waves": 9,
+        "scheduled": 11
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w1",
+      "depth": 1,
+      "duration": 32,
+      "kills": 512,
+      "photon": 1265,
+      "chain": 16,
+      "distance": 545.0552617726751,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5748000000000957,
+        "on": 0.5343000000000302,
+        "off": 0.5161000000002787
+      },
+      "peaks": {
+        "shards": 57,
+        "waves": 9,
+        "scheduled": 11
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w1",
+      "depth": 2,
+      "duration": 20,
+      "kills": 295,
+      "photon": 727,
+      "chain": 19,
+      "distance": 589.4111657219272,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5225000000000364,
+        "on": 0.44030000000020664,
+        "off": 0.3659000000002379
+      },
+      "peaks": {
+        "shards": 47,
+        "waves": 8,
+        "scheduled": 13
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w1",
+      "depth": 2,
+      "duration": 32,
+      "kills": 489,
+      "photon": 1204,
+      "chain": 19,
+      "distance": 658.4578514393089,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5578999999997905,
+        "on": 0.553899999999885,
+        "off": 0.5932999999999993
+      },
+      "peaks": {
+        "shards": 50,
+        "waves": 9,
+        "scheduled": 13
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w1",
+      "depth": 3,
+      "duration": 20,
+      "kills": 297,
+      "photon": 760,
+      "chain": 17,
+      "distance": 414.10137175793864,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.6109999999998763,
+        "on": 0.6158999999997832,
+        "off": 0.5533999999997832
+      },
+      "peaks": {
+        "shards": 54,
+        "waves": 11,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w1",
+      "depth": 3,
+      "duration": 32,
+      "kills": 531,
+      "photon": 1488,
+      "chain": 23,
+      "distance": 664.4411774733979,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.7114999999994325,
+        "on": 0.6985999999997148,
+        "off": 0.6129000000000815
+      },
+      "peaks": {
+        "shards": 60,
+        "waves": 11,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w2",
+      "depth": 1,
+      "duration": 20,
+      "kills": 292,
+      "photon": 772,
+      "chain": 15,
+      "distance": 456.6791593765917,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.6597000000001572,
+        "on": 0.6637000000000626,
+        "off": 0.6594999999997526
+      },
+      "peaks": {
+        "shards": 51,
+        "waves": 10,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w2",
+      "depth": 1,
+      "duration": 32,
+      "kills": 482,
+      "photon": 1359,
+      "chain": 15,
+      "distance": 594.2347840792228,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5892999999996391,
+        "on": 0.5630000000001019,
+        "off": 0.5234000000000378
+      },
+      "peaks": {
+        "shards": 51,
+        "waves": 10,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w2",
+      "depth": 2,
+      "duration": 20,
+      "kills": 276,
+      "photon": 777,
+      "chain": 20,
+      "distance": 412.26760375850375,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5045000000009168,
+        "on": 0.5120000000006257,
+        "off": 0.4580000000005384
+      },
+      "peaks": {
+        "shards": 51,
+        "waves": 9,
+        "scheduled": 13
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w2",
+      "depth": 2,
+      "duration": 32,
+      "kills": 470,
+      "photon": 1238,
+      "chain": 20,
+      "distance": 615.2884689064448,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5112000000008265,
+        "on": 0.5347000000001572,
+        "off": 0.4988999999986845
+      },
+      "peaks": {
+        "shards": 51,
+        "waves": 9,
+        "scheduled": 13
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w2",
+      "depth": 3,
+      "duration": 20,
+      "kills": 283,
+      "photon": 699,
+      "chain": 14,
+      "distance": 411.865498261063,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.49719999999979336,
+        "on": 0.46789999999964493,
+        "off": 0.45060000000012224
+      },
+      "peaks": {
+        "shards": 49,
+        "waves": 9,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w2",
+      "depth": 3,
+      "duration": 32,
+      "kills": 485,
+      "photon": 1214,
+      "chain": 14,
+      "distance": 437.0449643652942,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5432999999993626,
+        "on": 0.4820999999992637,
+        "off": 0.49030000000129803
+      },
+      "peaks": {
+        "shards": 49,
+        "waves": 9,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w3",
+      "depth": 1,
+      "duration": 20,
+      "kills": 310,
+      "photon": 759,
+      "chain": 17,
+      "distance": 365.1680091297018,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.6045000000012806,
+        "on": 0.620600000000195,
+        "off": 0.5657000000010157
+      },
+      "peaks": {
+        "shards": 52,
+        "waves": 11,
+        "scheduled": 10
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w3",
+      "depth": 1,
+      "duration": 32,
+      "kills": 498,
+      "photon": 1289,
+      "chain": 17,
+      "distance": 578.5389221413374,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5424999999995634,
+        "on": 0.45720000000073924,
+        "off": 0.5581999999994878
+      },
+      "peaks": {
+        "shards": 52,
+        "waves": 11,
+        "scheduled": 11
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w3",
+      "depth": 2,
+      "duration": 20,
+      "kills": 296,
+      "photon": 812,
+      "chain": 22,
+      "distance": 493.5132210102373,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.4820999999992637,
+        "on": 0.43809999999939464,
+        "off": 0.48220000000037544
+      },
+      "peaks": {
+        "shards": 52,
+        "waves": 9,
+        "scheduled": 10
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w3",
+      "depth": 2,
+      "duration": 32,
+      "kills": 483,
+      "photon": 1234,
+      "chain": 22,
+      "distance": 493.5132210102373,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.47950000000128057,
+        "on": 0.48250000000007276,
+        "off": 0.47000000000116415
+      },
+      "peaks": {
+        "shards": 52,
+        "waves": 9,
+        "scheduled": 11
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w3",
+      "depth": 3,
+      "duration": 20,
+      "kills": 301,
+      "photon": 773,
+      "chain": 16,
+      "distance": 554.4645935106495,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.6135000000012951,
+        "on": 0.5650999999998021,
+        "off": 0.6503000000011525
+      },
+      "peaks": {
+        "shards": 61,
+        "waves": 7,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w3",
+      "depth": 3,
+      "duration": 32,
+      "kills": 492,
+      "photon": 1366,
+      "chain": 19,
+      "distance": 598.3268230331895,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5401999999994587,
+        "on": 0.53610000000117,
+        "off": 0.5002999999996973
+      },
+      "peaks": {
+        "shards": 61,
+        "waves": 9,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w4",
+      "depth": 1,
+      "duration": 20,
+      "kills": 303,
+      "photon": 832,
+      "chain": 26,
+      "distance": 629.562045112975,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5529999999998836,
+        "on": 0.46340000000054715,
+        "off": 0.5053999999981897
+      },
+      "peaks": {
+        "shards": 51,
+        "waves": 11,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w4",
+      "depth": 1,
+      "duration": 32,
+      "kills": 513,
+      "photon": 1381,
+      "chain": 26,
+      "distance": 629.562045112975,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.6353999999992084,
+        "on": 0.5616999999983818,
+        "off": 0.5789000000004307
+      },
+      "peaks": {
+        "shards": 51,
+        "waves": 11,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w4",
+      "depth": 2,
+      "duration": 20,
+      "kills": 277,
+      "photon": 762,
+      "chain": 15,
+      "distance": 681.7542705645859,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.6620000000002619,
+        "on": 0.5506999999997788,
+        "off": 0.604299999999057
+      },
+      "peaks": {
+        "shards": 42,
+        "waves": 9,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w4",
+      "depth": 2,
+      "duration": 32,
+      "kills": 466,
+      "photon": 1197,
+      "chain": 15,
+      "distance": 681.7542705645859,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5856000000021595,
+        "on": 0.5532000000021071,
+        "off": 0.5429000000003725
+      },
+      "peaks": {
+        "shards": 49,
+        "waves": 9,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w4",
+      "depth": 3,
+      "duration": 20,
+      "kills": 289,
+      "photon": 778,
+      "chain": 24,
+      "distance": 436.6228725431414,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.48540000000139116,
+        "on": 0.42870000000039,
+        "off": 0.4213000000017928
+      },
+      "peaks": {
+        "shards": 50,
+        "waves": 8,
+        "scheduled": 16
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w4",
+      "depth": 3,
+      "duration": 32,
+      "kills": 490,
+      "photon": 1352,
+      "chain": 24,
+      "distance": 604.3369569264091,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5851000000002387,
+        "on": 0.5741000000016356,
+        "off": 0.5563999999976659
+      },
+      "peaks": {
+        "shards": 50,
+        "waves": 10,
+        "scheduled": 16
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w5",
+      "depth": 1,
+      "duration": 20,
+      "kills": 322,
+      "photon": 834,
+      "chain": 40,
+      "distance": 579.2049120099242,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5227999999988242,
+        "on": 0.4775000000008731,
+        "off": 0.5171999999984109
+      },
+      "peaks": {
+        "shards": 53,
+        "waves": 14,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w5",
+      "depth": 1,
+      "duration": 32,
+      "kills": 505,
+      "photon": 1414,
+      "chain": 40,
+      "distance": 579.2049120099242,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5123999999996158,
+        "on": 0.4805999999989581,
+        "off": 0.5106999999989057
+      },
+      "peaks": {
+        "shards": 53,
+        "waves": 14,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w5",
+      "depth": 2,
+      "duration": 20,
+      "kills": 320,
+      "photon": 816,
+      "chain": 41,
+      "distance": 666.4317110389561,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.4970000000030268,
+        "on": 0.5625,
+        "off": 0.5164000000004307
+      },
+      "peaks": {
+        "shards": 53,
+        "waves": 14,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w5",
+      "depth": 2,
+      "duration": 32,
+      "kills": 501,
+      "photon": 1383,
+      "chain": 41,
+      "distance": 666.4317110389561,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5540999999975611,
+        "on": 0.5149999999994179,
+        "off": 0.5375999999996566
+      },
+      "peaks": {
+        "shards": 53,
+        "waves": 14,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w5",
+      "depth": 3,
+      "duration": 20,
+      "kills": 303,
+      "photon": 816,
+      "chain": 34,
+      "distance": 759.2653345201104,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.45080000000234577,
+        "on": 0.4370000000017171,
+        "off": 0.39879999999902793
+      },
+      "peaks": {
+        "shards": 39,
+        "waves": 11,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "world": "w5",
+      "depth": 3,
+      "duration": 32,
+      "kills": 495,
+      "photon": 1331,
+      "chain": 34,
+      "distance": 759.2653345201104,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.4459999999999127,
+        "on": 0.4860999999982596,
+        "off": 0.4864999999990687
+      },
+      "peaks": {
+        "shards": 39,
+        "waves": 11,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w1",
+      "depth": 1,
+      "duration": 20,
+      "kills": 307,
+      "photon": 797,
+      "chain": 22,
+      "distance": 424.2685072331292,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.4871999999995751,
+        "on": 0.49910000000090804,
+        "off": 0.4756000000015774
+      },
+      "peaks": {
+        "shards": 46,
+        "waves": 11,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w1",
+      "depth": 1,
+      "duration": 32,
+      "kills": 496,
+      "photon": 1332,
+      "chain": 22,
+      "distance": 575.6694951820581,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.4754000000029919,
+        "on": 0.4765999999981432,
+        "off": 0.46789999999964493
+      },
+      "peaks": {
+        "shards": 49,
+        "waves": 11,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w1",
+      "depth": 2,
+      "duration": 20,
+      "kills": 310,
+      "photon": 753,
+      "chain": 19,
+      "distance": 563.235700976409,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.606500000001688,
+        "on": 0.5302999999985332,
+        "off": 0.5482999999985623
+      },
+      "peaks": {
+        "shards": 54,
+        "waves": 10,
+        "scheduled": 15
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w1",
+      "depth": 2,
+      "duration": 32,
+      "kills": 510,
+      "photon": 1349,
+      "chain": 19,
+      "distance": 590.5998453643002,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5240000000012515,
+        "on": 0.5028999999994994,
+        "off": 0.4607999999971071
+      },
+      "peaks": {
+        "shards": 59,
+        "waves": 10,
+        "scheduled": 15
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w1",
+      "depth": 3,
+      "duration": 20,
+      "kills": 309,
+      "photon": 854,
+      "chain": 11,
+      "distance": 396.7814065627519,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5551000000014028,
+        "on": 0.5653999999994994,
+        "off": 0.4989999999997963
+      },
+      "peaks": {
+        "shards": 48,
+        "waves": 10,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w1",
+      "depth": 3,
+      "duration": 32,
+      "kills": 514,
+      "photon": 1430,
+      "chain": 12,
+      "distance": 396.7814065627519,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.519800000001851,
+        "on": 0.5360000000000582,
+        "off": 0.5054999999993015
+      },
+      "peaks": {
+        "shards": 53,
+        "waves": 10,
+        "scheduled": 13
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w2",
+      "depth": 1,
+      "duration": 20,
+      "kills": 300,
+      "photon": 708,
+      "chain": 15,
+      "distance": 408.04895299255435,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.486799999998766,
+        "on": 0.4624000000039814,
+        "off": 0.5246999999944819
+      },
+      "peaks": {
+        "shards": 58,
+        "waves": 8,
+        "scheduled": 10
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w2",
+      "depth": 1,
+      "duration": 32,
+      "kills": 493,
+      "photon": 1251,
+      "chain": 16,
+      "distance": 577.6881531916891,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5102999999944586,
+        "on": 0.511899999997695,
+        "off": 0.5106000000014319
+      },
+      "peaks": {
+        "shards": 58,
+        "waves": 10,
+        "scheduled": 10
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w2",
+      "depth": 2,
+      "duration": 20,
+      "kills": 292,
+      "photon": 734,
+      "chain": 17,
+      "distance": 364.5810539180321,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.555900000006659,
+        "on": 0.5221999999994296,
+        "off": 0.5495000000009895
+      },
+      "peaks": {
+        "shards": 58,
+        "waves": 10,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w2",
+      "depth": 2,
+      "duration": 32,
+      "kills": 501,
+      "photon": 1327,
+      "chain": 17,
+      "distance": 420.1451168011073,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.682200000002922,
+        "on": 0.6372000000046683,
+        "off": 0.6062000000019907
+      },
+      "peaks": {
+        "shards": 58,
+        "waves": 10,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w2",
+      "depth": 3,
+      "duration": 20,
+      "kills": 286,
+      "photon": 760,
+      "chain": 13,
+      "distance": 405.4734759755537,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5167999999976018,
+        "on": 0.522899999996298,
+        "off": 0.5312999999950989
+      },
+      "peaks": {
+        "shards": 49,
+        "waves": 8,
+        "scheduled": 11
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w2",
+      "depth": 3,
+      "duration": 32,
+      "kills": 471,
+      "photon": 1209,
+      "chain": 23,
+      "distance": 440.5137692933747,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5276000000012573,
+        "on": 0.5499000000054366,
+        "off": 0.5576000000000931
+      },
+      "peaks": {
+        "shards": 59,
+        "waves": 8,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w3",
+      "depth": 1,
+      "duration": 20,
+      "kills": 313,
+      "photon": 796,
+      "chain": 16,
+      "distance": 428.87427928798826,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5856999999959953,
+        "on": 0.48540000000502914,
+        "off": 0.5663999999960652
+      },
+      "peaks": {
+        "shards": 46,
+        "waves": 8,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w3",
+      "depth": 1,
+      "duration": 32,
+      "kills": 519,
+      "photon": 1453,
+      "chain": 16,
+      "distance": 538.0278738418034,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.500899999999092,
+        "on": 0.5599999999976717,
+        "off": 0.5192999999999302
+      },
+      "peaks": {
+        "shards": 46,
+        "waves": 8,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w3",
+      "depth": 2,
+      "duration": 20,
+      "kills": 302,
+      "photon": 800,
+      "chain": 27,
+      "distance": 455.6682870192001,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5357000000003609,
+        "on": 0.5458999999973457,
+        "off": 0.5155999999988126
+      },
+      "peaks": {
+        "shards": 47,
+        "waves": 9,
+        "scheduled": 15
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w3",
+      "depth": 2,
+      "duration": 32,
+      "kills": 491,
+      "photon": 1292,
+      "chain": 29,
+      "distance": 482.72396219731735,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5592000000033295,
+        "on": 0.5090999999956694,
+        "off": 0.49879999999393476
+      },
+      "peaks": {
+        "shards": 47,
+        "waves": 9,
+        "scheduled": 15
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w3",
+      "depth": 3,
+      "duration": 20,
+      "kills": 292,
+      "photon": 759,
+      "chain": 10,
+      "distance": 619.7079326864606,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.4934999999968568,
+        "on": 0.5051000000021304,
+        "off": 0.4694999999992433
+      },
+      "peaks": {
+        "shards": 51,
+        "waves": 8,
+        "scheduled": 13
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w3",
+      "depth": 3,
+      "duration": 32,
+      "kills": 506,
+      "photon": 1379,
+      "chain": 19,
+      "distance": 619.7079326864606,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.522900000003574,
+        "on": 0.5548999999955413,
+        "off": 0.4919999999983702
+      },
+      "peaks": {
+        "shards": 51,
+        "waves": 9,
+        "scheduled": 13
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w4",
+      "depth": 1,
+      "duration": 20,
+      "kills": 302,
+      "photon": 829,
+      "chain": 15,
+      "distance": 444.8260141548669,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.48840000000200234,
+        "on": 0.49890000000596046,
+        "off": 0.4787999999971362
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 10,
+        "scheduled": 15
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w4",
+      "depth": 1,
+      "duration": 32,
+      "kills": 481,
+      "photon": 1307,
+      "chain": 15,
+      "distance": 444.8260141548669,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.4598000000041793,
+        "on": 0.45569999999861466,
+        "off": 0.46379999999771826
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 10,
+        "scheduled": 15
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w4",
+      "depth": 2,
+      "duration": 20,
+      "kills": 281,
+      "photon": 784,
+      "chain": 16,
+      "distance": 550.1036372904568,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5328000000008615,
+        "on": 0.5227999999988242,
+        "off": 0.5354000000006636
+      },
+      "peaks": {
+        "shards": 49,
+        "waves": 10,
+        "scheduled": 11
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w4",
+      "depth": 2,
+      "duration": 32,
+      "kills": 481,
+      "photon": 1309,
+      "chain": 16,
+      "distance": 550.1036372904568,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.6011999999973341,
+        "on": 0.5322000000014668,
+        "off": 0.5104000000064843
+      },
+      "peaks": {
+        "shards": 49,
+        "waves": 10,
+        "scheduled": 11
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w4",
+      "depth": 3,
+      "duration": 20,
+      "kills": 281,
+      "photon": 801,
+      "chain": 11,
+      "distance": 414.1092207516832,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.4688000000023749,
+        "on": 0.49059999999735737,
+        "off": 0.47890000000188593
+      },
+      "peaks": {
+        "shards": 56,
+        "waves": 11,
+        "scheduled": 10
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w4",
+      "depth": 3,
+      "duration": 32,
+      "kills": 474,
+      "photon": 1302,
+      "chain": 17,
+      "distance": 414.1092207516832,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5737999999983003,
+        "on": 0.5175000000017462,
+        "off": 0.5071000000025379
+      },
+      "peaks": {
+        "shards": 56,
+        "waves": 11,
+        "scheduled": 11
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w5",
+      "depth": 1,
+      "duration": 20,
+      "kills": 307,
+      "photon": 835,
+      "chain": 34,
+      "distance": 635.0438739221487,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.4959999999991851,
+        "on": 0.481500000001688,
+        "off": 0.4442999999955646
+      },
+      "peaks": {
+        "shards": 47,
+        "waves": 13,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w5",
+      "depth": 1,
+      "duration": 32,
+      "kills": 490,
+      "photon": 1405,
+      "chain": 34,
+      "distance": 635.0438739221487,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.504399999997986,
+        "on": 0.44619999999849824,
+        "off": 0.48800000000483124
+      },
+      "peaks": {
+        "shards": 51,
+        "waves": 13,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w5",
+      "depth": 2,
+      "duration": 20,
+      "kills": 306,
+      "photon": 811,
+      "chain": 34,
+      "distance": 635.0438739221487,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5562999999965541,
+        "on": 0.4717000000018743,
+        "off": 0.4976999999998952
+      },
+      "peaks": {
+        "shards": 36,
+        "waves": 13,
+        "scheduled": 10
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w5",
+      "depth": 2,
+      "duration": 32,
+      "kills": 494,
+      "photon": 1353,
+      "chain": 34,
+      "distance": 635.0438739221487,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.48509999999805586,
+        "on": 0.5380999999979394,
+        "off": 0.5164000000004307
+      },
+      "peaks": {
+        "shards": 49,
+        "waves": 13,
+        "scheduled": 19
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w5",
+      "depth": 3,
+      "duration": 20,
+      "kills": 319,
+      "photon": 934,
+      "chain": 34,
+      "distance": 759.2744480856124,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5479000000050291,
+        "on": 0.5278000000034808,
+        "off": 0.5098999999972875
+      },
+      "peaks": {
+        "shards": 49,
+        "waves": 15,
+        "scheduled": 15
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "world": "w5",
+      "depth": 3,
+      "duration": 32,
+      "kills": 496,
+      "photon": 1365,
+      "chain": 34,
+      "distance": 759.2744480856124,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.44100000000617,
+        "on": 0.49910000000090804,
+        "off": 0.5098999999972875
+      },
+      "peaks": {
+        "shards": 49,
+        "waves": 15,
+        "scheduled": 15
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w1",
+      "depth": 1,
+      "duration": 20,
+      "kills": 319,
+      "photon": 880,
+      "chain": 10,
+      "distance": 426.228136148204,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5699000000022352,
+        "on": 0.5751999999993131,
+        "off": 0.6084000000046217
+      },
+      "peaks": {
+        "shards": 59,
+        "waves": 9,
+        "scheduled": 13
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w1",
+      "depth": 1,
+      "duration": 32,
+      "kills": 504,
+      "photon": 1320,
+      "chain": 11,
+      "distance": 426.228136148204,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5648000000001048,
+        "on": 0.46539999999367865,
+        "off": 0.5599000000001979
+      },
+      "peaks": {
+        "shards": 59,
+        "waves": 9,
+        "scheduled": 13
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w1",
+      "depth": 2,
+      "duration": 20,
+      "kills": 298,
+      "photon": 764,
+      "chain": 12,
+      "distance": 548.4233653622449,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5218999999997322,
+        "on": 0.4870999999984633,
+        "off": 0.5078000000066822
+      },
+      "peaks": {
+        "shards": 58,
+        "waves": 10,
+        "scheduled": 13
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w1",
+      "depth": 2,
+      "duration": 32,
+      "kills": 518,
+      "photon": 1255,
+      "chain": 25,
+      "distance": 548.4233653622449,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.540500000002794,
+        "on": 0.5454000000027008,
+        "off": 0.5051000000021304
+      },
+      "peaks": {
+        "shards": 58,
+        "waves": 10,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w1",
+      "depth": 3,
+      "duration": 20,
+      "kills": 299,
+      "photon": 800,
+      "chain": 14,
+      "distance": 407.72042380673486,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.47559999999793945,
+        "on": 0.45689999999740394,
+        "off": 0.44460000000253785
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 9,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w1",
+      "depth": 3,
+      "duration": 32,
+      "kills": 527,
+      "photon": 1285,
+      "chain": 18,
+      "distance": 452.9595257469113,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5241000000023632,
+        "on": 0.5937000000049011,
+        "off": 0.5625
+      },
+      "peaks": {
+        "shards": 48,
+        "waves": 10,
+        "scheduled": 13
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w2",
+      "depth": 1,
+      "duration": 20,
+      "kills": 302,
+      "photon": 796,
+      "chain": 14,
+      "distance": 425.59669952307587,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5538000000015018,
+        "on": 0.44610000000102445,
+        "off": 0.5648999999975786
+      },
+      "peaks": {
+        "shards": 62,
+        "waves": 10,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w2",
+      "depth": 1,
+      "duration": 32,
+      "kills": 521,
+      "photon": 1307,
+      "chain": 28,
+      "distance": 499.7753172053777,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.54490000000078,
+        "on": 0.5357999999978347,
+        "off": 0.5121999999973923
+      },
+      "peaks": {
+        "shards": 62,
+        "waves": 10,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w2",
+      "depth": 2,
+      "duration": 20,
+      "kills": 301,
+      "photon": 849,
+      "chain": 13,
+      "distance": 553.9136437740697,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.4894999999960419,
+        "on": 0.5705000000016298,
+        "off": 0.47459999999409774
+      },
+      "peaks": {
+        "shards": 62,
+        "waves": 9,
+        "scheduled": 13
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w2",
+      "depth": 2,
+      "duration": 32,
+      "kills": 491,
+      "photon": 1353,
+      "chain": 14,
+      "distance": 553.9136437740697,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5014000000010128,
+        "on": 0.5106999999989057,
+        "off": 0.5204999999987194
+      },
+      "peaks": {
+        "shards": 62,
+        "waves": 9,
+        "scheduled": 13
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w2",
+      "depth": 3,
+      "duration": 20,
+      "kills": 296,
+      "photon": 783,
+      "chain": 12,
+      "distance": 449.3622840222435,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.49659999999857973,
+        "on": 0.4337000000014086,
+        "off": 0.46749999999883585
+      },
+      "peaks": {
+        "shards": 52,
+        "waves": 9,
+        "scheduled": 18
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w2",
+      "depth": 3,
+      "duration": 32,
+      "kills": 498,
+      "photon": 1291,
+      "chain": 16,
+      "distance": 732.2054666545976,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5017999999981839,
+        "on": 0.5161000000007334,
+        "off": 0.48440000000118744
+      },
+      "peaks": {
+        "shards": 52,
+        "waves": 9,
+        "scheduled": 18
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w3",
+      "depth": 1,
+      "duration": 20,
+      "kills": 318,
+      "photon": 798,
+      "chain": 23,
+      "distance": 497.4815095673555,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5086000000010245,
+        "on": 0.5072999999974854,
+        "off": 0.5285000000003492
+      },
+      "peaks": {
+        "shards": 58,
+        "waves": 9,
+        "scheduled": 15
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w3",
+      "depth": 1,
+      "duration": 32,
+      "kills": 516,
+      "photon": 1369,
+      "chain": 23,
+      "distance": 497.4815095673555,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.48640000000887085,
+        "on": 0.5148999999946682,
+        "off": 0.5044999999954598
+      },
+      "peaks": {
+        "shards": 58,
+        "waves": 9,
+        "scheduled": 15
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w3",
+      "depth": 2,
+      "duration": 20,
+      "kills": 309,
+      "photon": 853,
+      "chain": 14,
+      "distance": 688.34270052024,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.4962000000086846,
+        "on": 0.44159999999101274,
+        "off": 0.4962000000086846
+      },
+      "peaks": {
+        "shards": 58,
+        "waves": 9,
+        "scheduled": 11
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w3",
+      "depth": 2,
+      "duration": 32,
+      "kills": 500,
+      "photon": 1239,
+      "chain": 14,
+      "distance": 688.34270052024,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5290999999997439,
+        "on": 0.4835000000020955,
+        "off": 0.47770000000309665
+      },
+      "peaks": {
+        "shards": 58,
+        "waves": 9,
+        "scheduled": 11
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w3",
+      "depth": 3,
+      "duration": 20,
+      "kills": 291,
+      "photon": 769,
+      "chain": 16,
+      "distance": 465.1441403611911,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.44779999999445863,
+        "on": 0.4848000000056345,
+        "off": 0.4627000000036787
+      },
+      "peaks": {
+        "shards": 51,
+        "waves": 9,
+        "scheduled": 11
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w3",
+      "depth": 3,
+      "duration": 32,
+      "kills": 489,
+      "photon": 1288,
+      "chain": 17,
+      "distance": 675.6656272672141,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.4299999999930151,
+        "on": 0.49790000000211876,
+        "off": 0.43660000000090804
+      },
+      "peaks": {
+        "shards": 51,
+        "waves": 9,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w4",
+      "depth": 1,
+      "duration": 20,
+      "kills": 297,
+      "photon": 830,
+      "chain": 13,
+      "distance": 679.5581246897636,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.6027000000030966,
+        "on": 0.5516000000061467,
+        "off": 0.569999999992433
+      },
+      "peaks": {
+        "shards": 48,
+        "waves": 18,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w4",
+      "depth": 1,
+      "duration": 32,
+      "kills": 479,
+      "photon": 1359,
+      "chain": 13,
+      "distance": 679.5581246897636,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5445000000036089,
+        "on": 0.49040000000968575,
+        "off": 0.4711000000097556
+      },
+      "peaks": {
+        "shards": 48,
+        "waves": 18,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w4",
+      "depth": 2,
+      "duration": 20,
+      "kills": 292,
+      "photon": 798,
+      "chain": 12,
+      "distance": 444.63769482666584,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5290000000095461,
+        "on": 0.5040999999910127,
+        "off": 0.4787999999971362
+      },
+      "peaks": {
+        "shards": 47,
+        "waves": 18,
+        "scheduled": 11
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w4",
+      "depth": 2,
+      "duration": 32,
+      "kills": 476,
+      "photon": 1266,
+      "chain": 17,
+      "distance": 734.9675671439506,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5534999999945285,
+        "on": 0.5415000000066357,
+        "off": 0.5038999999960652
+      },
+      "peaks": {
+        "shards": 47,
+        "waves": 18,
+        "scheduled": 11
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w4",
+      "depth": 3,
+      "duration": 20,
+      "kills": 293,
+      "photon": 800,
+      "chain": 16,
+      "distance": 596.6193864622401,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5628999999898952,
+        "on": 0.5443999999988591,
+        "off": 0.5263000000122702
+      },
+      "peaks": {
+        "shards": 69,
+        "waves": 10,
+        "scheduled": 12
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w4",
+      "depth": 3,
+      "duration": 32,
+      "kills": 482,
+      "photon": 1353,
+      "chain": 16,
+      "distance": 596.6193864622401,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5610000000015134,
+        "on": 0.49039999999513384,
+        "off": 0.5100999999995111
+      },
+      "peaks": {
+        "shards": 69,
+        "waves": 14,
+        "scheduled": 15
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w5",
+      "depth": 1,
+      "duration": 20,
+      "kills": 320,
+      "photon": 826,
+      "chain": 34,
+      "distance": 635.0438739221487,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.7468000000080792,
+        "on": 0.6741999999940163,
+        "off": 0.6726999999955297
+      },
+      "peaks": {
+        "shards": 46,
+        "waves": 14,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w5",
+      "depth": 1,
+      "duration": 32,
+      "kills": 506,
+      "photon": 1370,
+      "chain": 34,
+      "distance": 635.0438739221487,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.6516000000119675,
+        "on": 0.6741999999940163,
+        "off": 0.6172000000078697
+      },
+      "peaks": {
+        "shards": 46,
+        "waves": 14,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w5",
+      "depth": 2,
+      "duration": 20,
+      "kills": 312,
+      "photon": 823,
+      "chain": 34,
+      "distance": 678.1452576493099,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.549299999998766,
+        "on": 0.5305999999982305,
+        "off": 0.513200000001234
+      },
+      "peaks": {
+        "shards": 36,
+        "waves": 14,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w5",
+      "depth": 2,
+      "duration": 32,
+      "kills": 528,
+      "photon": 1450,
+      "chain": 34,
+      "distance": 743.396091301581,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.5985000000073342,
+        "on": 0.6463000000076136,
+        "off": 0.5920999999943888
+      },
+      "peaks": {
+        "shards": 44,
+        "waves": 14,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w5",
+      "depth": 3,
+      "duration": 20,
+      "kills": 307,
+      "photon": 842,
+      "chain": 43,
+      "distance": 701.4027560621138,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.43890000000828877,
+        "on": 0.44100000000617,
+        "off": 0.5115000000077998
+      },
+      "peaks": {
+        "shards": 46,
+        "waves": 14,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "world": "w5",
+      "depth": 3,
+      "duration": 32,
+      "kills": 498,
+      "photon": 1404,
+      "chain": 43,
+      "distance": 701.4027560621138,
+      "cleared": true,
+      "stepP95": {
+        "old": 0.4827999999979511,
+        "on": 0.5199999999895226,
+        "off": 0.43110000000160653
+      },
+      "peaks": {
+        "shards": 46,
+        "waves": 14,
+        "scheduled": 14
+      },
+      "oldParity": true,
+      "fxParity": true
+    }
+  ]
+}

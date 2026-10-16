@@ -1,0 +1,1 @@
+CORRUPT original UTF8 공백 / never reset

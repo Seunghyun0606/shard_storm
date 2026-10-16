@@ -1,0 +1,7 @@
+
+> qa:m16
+> node tests/m16-browser.mjs
+
+M16 optional Chrome PASS:8 actual20s Runs including5-Run Draft
+M16 Chrome pointer PASS:6 actual20s Runs
+M16 Chrome release PASS:14 actual20s Runs, Worlds/Bosses and full Draft/optional modes

@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "endingRevealSeconds": 6,
+  "focusTrap": true,
+  "skipReloadNoReplay": true,
+  "bankExact": true,
+  "optionsReloadAndSandboxRestore": true,
+  "errors": []
+}

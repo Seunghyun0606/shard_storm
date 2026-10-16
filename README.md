@@ -1,35 +1,43 @@
-# Shard Storm M15
+# Shard Storm — M16.0 prototype
 
-Optional CHALLENGE LAB: Protocol3x3 / Storm Depth1-3 / Rogue Draft5x20s / Research6. Normal PLAY and all permanent assets stay available. Draft explicitly pays0 permanent Photon/Catalyst. Research shares existing Signature3/Evolution2 slots.
+20초 Arena에서 한 번의 공격을 연쇄 파괴로 키우는 HTML5 Canvas 게임입니다. M12~M16 구현·자동 QA를 완료했습니다. **[전체 결과·커밋](docs/Shard_Storm_M12_M16_Final_Report.md)** · [M16 구현](docs/Shard_Storm_M16_Implementation_Report.md) · [밸런스](docs/Shard_Storm_M16_Balance_Report.md) · [출시 QA](docs/Shard_Storm_M16_Release_QA_Report.md) · [사람 검증 상태](docs/Shard_Storm_M16_Human_Playtest_Summary.md).
 
-`npm run benchmark:m15` / `npm run qa:m15`. [Implementation](docs/Shard_Storm_M15_Implementation_Report.md) / [Balance](docs/Shard_Storm_M15_Balance_Report.md). Latest371 unit tests PASS, Chrome9 actual20s Runs including full5-Run Draft,705 benchmark Runs including targeted rechecks.
+- 기존19종 도형·49스킬/100레벨·Signature3/Evolution2/Relic2, Contract/Anomaly/Codex/Elite를 유지합니다.
+- Shatter/Cascade/Overload/Storm4단계, 실제 Chain10/20에 반응하는3개 군집과 연쇄 거리·군집 계측. StageIV는 최대24/s의 반응형 공급, 그 외15/s입니다. 무료 생성 예산을 추가하지 않습니다.
+- World5개·복합 Boss5개. WORLDS의 Survey를 달성해 Boss에 도전하며, World2 Normal은 Rank1·Boss는 Rank2입니다. Storm Heart 실제 파괴·정산 후 스킵 가능한 엔딩을 제공합니다.
+- CHALLENGE LAB의 Protocol3×3·Storm Depth3·Rogue Draft5 Run·Research6. Draft는 독립 가상 빌드이며 영구 Photon/Catalyst0입니다. Research는 기존 장착 슬롯을 공유합니다. 기본 PLAY는 Normal입니다.
+- 실제 전투 이벤트에 맞춘19종 윤곽선 생성·연쇄·보스 연출과 합성 오디오. OPTIONS에서 Reduced Motion/Shake/FX/음량/Comfort/Focus를 조절합니다.
 
-# Shard Storm M14
-
-World5 / tactical Boss5 / settled Survey / schema10. Normal PLAY remains20s. World2 Normal Rank1; Boss Rank2. WORLDS opens in Title/Result. Storm Heart actual clear unlocks a skippable ending and replay.
-
-`npm run benchmark:m14` / `npm run qa:m14`. Reports: [Implementation](docs/Shard_Storm_M14_Implementation_Report.md), [Balance](docs/Shard_Storm_M14_Balance_Report.md). Chrome6 actual20s Runs,345 unit tests; automatic tactics are not a human enjoyment assessment.
-
-# Shard Storm — M12~M16 개발 중
-
-현재 `feat/m12-m16-destruction-evolution`에서 **M12·M13 구현과 자동 QA를 완료**했습니다. M13은 Shatter/Cascade/Overload/Storm4단계, 실제 Chain10/20에 따른 Link Pocket/Bridge Corridor/Storm Crown, 인과 거리·군집 계측을 추가했습니다. StageIV의24/s 탄력 공급은 실제 처리 능력에 반응하며 나머지 단계는15/s입니다. 정규 생성 예산을 재배치하므로 무료 추가 몹/재화는 없습니다. M14~M16을 순서대로 이어서 개발합니다.
-
-M13 단위332 PASS, M12 원본/OFF/ON/FX480전투 및 Control20전투,3,000회 실제 구매 성장, Chrome20초6Run/오류0, 완전한 최근20×32초 기록의 저장·두 차례 복구를 검증했습니다. [M13 구현](docs/Shard_Storm_M13_Implementation_Report.md) · [밸런스](docs/Shard_Storm_M13_Balance_Report.md). `npm run benchmark:m13`, `npm run qa:m13`, `node tests/m13-growth.mjs`로 재현합니다. 자동 입력은 사람의 체감/재도전 동기 검증과 구분합니다.
-
-M12:512회 처리 예산 소진 시 잔여 물리를 보존하고 표면 접촉 반복을 복구했습니다. RESULT Codex에는 실제 Pentagon/Fuse/Prism 시도의 진척0을 포함한 원인과 실패 이유가 표시됩니다. **라이브 공급15/s·Elite 적격Run20%+6회 미등장 후 안전 생성 시도 보장**입니다. 최초 소개는 별도이며 pity는 정산1회로만 확정합니다. 공급15/18/21/24/30/s와 다른 Elite 후보는 DEV의 격리 비교에 남깁니다.
-
-단위324 PASS/0 FAIL(기존307 유지),650 실제 전투 A/B, 별도50,000 추첨 비교, 승인 후4,500 성장Run(5seed×3build×300), 실제 Chrome20초 포인터6Run/콘솔 오류0을 검증했습니다. schema1~8 자산과 최근20개 완전한32초 전투 기록의 같은 키 압축 저장·새로고침2회·전체 해시 보존도 PASS입니다. 자동 입력 결과와 사람의 재미 검증은 구분합니다.
+Node.js24에서 `npm start` 후 `http://127.0.0.1:4173`을 엽니다. 번들러·외부 에셋·게임 서버 계정이 필요하지 않습니다. 클릭·홀드·드래그로 공격하고, RESULT의 Refinery를 기다리거나 SKIP하여 같은 확정 보상을 받습니다.
 
 ```powershell
 npm test
+npm run benchmark
+npm run benchmark:balance
 npm run benchmark:m12
-# npm start: 기본4173, QA_BASE_URL로 실제 주소 지정
-$env:PLAYWRIGHT_MODULE = Join-Path $env:TEMP 'shard-storm-qa/node_modules/playwright'
+npm run benchmark:m13
+npm run benchmark:m14
+npm run benchmark:m15
+npm run benchmark:m16
+npm run release:manifest
+# 별도 터미널에서 npm start를 실행하세요.
 $env:QA_BASE_URL = 'http://127.0.0.1:4173'
-npm run qa:m12
+$env:PLAYWRIGHT_MODULE = Join-Path $env:TEMP 'shard-storm-qa/node_modules/playwright'
+# Playwright 설치 위치가 다르면 위 경로를 지정하세요. Chrome은 시스템 설치를 사용합니다.
+npm run qa:m16
+npm run qa:m16:extra-time
+npm run qa:m16:storage
+npm run qa:m16:recovery
+npm run smoke:release
 ```
 
-[M12 구현·한계](docs/Shard_Storm_M12_Implementation_Report.md) · [정책별 수치·결정 근거](docs/Shard_Storm_M12_Balance_Report.md) · [재개 작업 기록](docs/Shard_Storm_M12_M16_Work_Log.md) · [전투 화면](artifacts/m12-pointer-1920-2-4.png) · [Codex 시도](artifacts/m12-codex-attempts-620-2.png).
+`qa:m12`~`qa:m15`도 유지합니다. 브라우저 QA에는 Playwright와 Chrome이 별도로 필요하며 `PLAYWRIGHT_MODULE`·`CHROME_PATH`로 위치를 지정할 수 있습니다. 실제 게임과 `npm test`에는 외부 npm 패키지가 필요하지 않습니다. `node tests/m16-growth.mjs`는 고정20초300 Run 코호트, `node tests/m16-growth-extra-time.mjs`는 Extra Time50 Run 코호트이며 체크포인트에서 재개합니다. 경로와 데이터 계측의 차이는 밸런스 보고서에 명시합니다.
+
+최신 결과: **377 PASS / FAIL0**, M16 비교1,350 actual Run, Chrome 실제20초14 Run+32초1 Run, 정상 표본 시간 스킵0·콘솔 오류0. 고정20초4,500 Run과 Extra Time750 Run을 별도로 측정했습니다. 자동 입력은 사람의 재미·3~4시간 플레이 목표를 검증하지 않습니다. 런타임 해시와 파일별 목록은 [version.json](version.json)에 있습니다.
+
+저장은 같은 `shard-storm-v1` 키의 schema11이며 구버전1~10, 전체 최근20개 전투 기록, 자산과 미완료 정산을 보존합니다. LZ4/CRC32로 무손실 압축합니다. 클라우드 동기화는 없습니다. 브라우저 데이터 삭제·다른 프로필·저장 용량 제한에 대비해 DEV의 **실제 세이브 JSON 내보내기**를 사용하세요. 손상 원본은 덮어쓰지 않으며 내보낼 수 있습니다. Reset은 사용자가 명시적으로 선택하는 삭제 작업입니다. 개발·QA 중 사용자 세이브를 삭제하지 않았습니다.
+
+샌드박스와 실제 계정은 분리됩니다. 현재 Elite 정책은 적격 Run20%+6회 미등장 후 안전 생성 시도 보장이며 pity는 정산1회로 확정합니다. 진짜 물리 슬로모션·WebGL·논리 Arena 확대·고급 개별 VFX는 [Deferred TODO](docs/Shard_Storm_Deferred_VFX_TODO.md)로 남습니다. 외부 서비스 배포는 수행하지 않았습니다.
 
 ## M11 완료 기준과 과거 기록
 

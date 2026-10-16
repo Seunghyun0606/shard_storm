@@ -1,5 +1,9 @@
 # Shard Storm — Deferred VFX / Presentation TODO (M9.0~M11)
 
+## M16 상태 추가 — 2026-10-16
+
+M16은 VFX-02의 공통19종 polygon edge reveal과 VFX-06/11의 기본 합성 Audio Bus·음량·발음 제한·World5 climax를 구현했다. 실제 Canvas 렌더 및 전투 ON/OFF 중립성은 M16 보고서를 참조한다. 전용 샘플·정식 적응형 음악은 완료 범위가 아니다. VFX-01 실제 time dilation, VFX-03 WebGL/bloom, VFX-04 고급 카메라 변형, VFX-05 개별 고급 분해, VFX-07 논리 Arena 확대, 모바일 전용 기능과 사람의 민감성 코호트 검증은 계속 보류한다. 아래 표는 당시의 원래 계획·선행조건을 보존한 기록이다.
+
 - 2026-10-15 업데이트.
 - **이 파일은 구현 완료가 아니라 보류 백로그**. M9.0은 기본 저비용 피드백 구현, M9/M10/M11은 새 콘텐츠 게임성 검증에 집중.
 - 검증 근거: M8 canvas 960×540, 기존 click rings/shape-scale spawn, Combo banner y=107/arena top=78, fixed-step physics·20초 경제.

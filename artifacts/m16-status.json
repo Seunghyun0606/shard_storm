@@ -1,0 +1,25 @@
+{
+  "milestone": "M16",
+  "status": "complete",
+  "branch": "feat/m12-m16-destruction-evolution",
+  "runtimeCommit": "5285fad258d859cdb12c250791bc758e808f3525",
+  "buildHash": "6a4887cb09ad399665571fd9acd584a3853929b0042971d273c2f1e55186de4e",
+  "unitTests": 377,
+  "unitFailures": 0,
+  "benchmarkActualRuns": 1350,
+  "chromeActual20sRuns": 14,
+  "chromeActual32sRuns": 1,
+  "chromeConsoleErrors": 0,
+  "fixed20GrowthRuns": 4500,
+  "extraTimeGrowthRuns": 750,
+  "full32sRecordsStorage": 20,
+  "externalDeployment": false,
+  "humanFunAssessed": false,
+  "allMilestones": [
+    "M12",
+    "M13",
+    "M14",
+    "M15",
+    "M16"
+  ]
+}

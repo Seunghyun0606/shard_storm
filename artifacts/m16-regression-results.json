@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "command": "benchmark",
+      "exitCode": 0
+    },
+    {
+      "command": "benchmark:balance",
+      "exitCode": 0
+    },
+    {
+      "command": "benchmark:m12",
+      "exitCode": 0
+    },
+    {
+      "command": "benchmark:m13",
+      "exitCode": 0
+    },
+    {
+      "command": "benchmark:m14",
+      "exitCode": 0
+    },
+    {
+      "command": "benchmark:m15",
+      "exitCode": 0
+    }
+  ]
+}

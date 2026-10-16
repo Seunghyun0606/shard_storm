@@ -1,0 +1,5 @@
+
+> smoke:release
+> node tests/release-smoke.mjs
+
+M16 release manifest / syntax / local HTTP smoke PASS 6a4887cb09ad399665571fd9acd584a3853929b0042971d273c2f1e55186de4e

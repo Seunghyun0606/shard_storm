@@ -1,0 +1,1356 @@
+{
+  "passed": true,
+  "baseline": "2f71f4c",
+  "signature": "a624176ca76dbce741d5f0093595c8fa9cd44649bc94890e744671d04a81d244",
+  "actualRuns": 750,
+  "effectiveDurations": [
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32
+  ],
+  "summary": [
+    {
+      "strategy": "Crusher",
+      "run": 1,
+      "levels": 1,
+      "bank": 55,
+      "catalyst": 0,
+      "kills": 125,
+      "chain": 8,
+      "insight": 1,
+      "worlds": [
+        "w1",
+        "w1",
+        "w1",
+        "w1",
+        "w1"
+      ],
+      "complete": 0
+    },
+    {
+      "strategy": "Crusher",
+      "run": 5,
+      "levels": 8,
+      "bank": 17,
+      "catalyst": 0,
+      "kills": 233,
+      "chain": 11,
+      "insight": 4,
+      "worlds": [
+        "w2",
+        "w2",
+        "w2",
+        "w2",
+        "w2"
+      ],
+      "complete": 0
+    },
+    {
+      "strategy": "Crusher",
+      "run": 20,
+      "levels": 31,
+      "bank": 81,
+      "catalyst": 77,
+      "kills": 324,
+      "chain": 15,
+      "insight": 12,
+      "worlds": [
+        "w4",
+        "w4",
+        "w4",
+        "w4",
+        "w4"
+      ],
+      "complete": 0
+    },
+    {
+      "strategy": "Crusher",
+      "run": 50,
+      "levels": 79,
+      "bank": 213,
+      "catalyst": 479,
+      "kills": 515,
+      "chain": 16,
+      "insight": 17,
+      "worlds": [
+        "w5",
+        "w5",
+        "w5",
+        "w5",
+        "w5"
+      ],
+      "complete": 5
+    },
+    {
+      "strategy": "Cascade",
+      "run": 1,
+      "levels": 1,
+      "bank": 27,
+      "catalyst": 0,
+      "kills": 125,
+      "chain": 8,
+      "insight": 1,
+      "worlds": [
+        "w1",
+        "w1",
+        "w1",
+        "w1",
+        "w1"
+      ],
+      "complete": 0
+    },
+    {
+      "strategy": "Cascade",
+      "run": 5,
+      "levels": 8,
+      "bank": 44,
+      "catalyst": 0,
+      "kills": 225,
+      "chain": 13,
+      "insight": 3,
+      "worlds": [
+        "w2",
+        "w2",
+        "w2",
+        "w2",
+        "w2"
+      ],
+      "complete": 0
+    },
+    {
+      "strategy": "Cascade",
+      "run": 20,
+      "levels": 32,
+      "bank": 25,
+      "catalyst": 82,
+      "kills": 385,
+      "chain": 17,
+      "insight": 13,
+      "worlds": [
+        "w4",
+        "w4",
+        "w4",
+        "w4",
+        "w4"
+      ],
+      "complete": 0
+    },
+    {
+      "strategy": "Cascade",
+      "run": 50,
+      "levels": 82,
+      "bank": 66,
+      "catalyst": 516,
+      "kills": 519,
+      "chain": 14,
+      "insight": 18,
+      "worlds": [
+        "w5",
+        "w5",
+        "w5",
+        "w5",
+        "w5"
+      ],
+      "complete": 5
+    },
+    {
+      "strategy": "Reactor",
+      "run": 1,
+      "levels": 1,
+      "bank": 36,
+      "catalyst": 0,
+      "kills": 125,
+      "chain": 8,
+      "insight": 1,
+      "worlds": [
+        "w1",
+        "w1",
+        "w1",
+        "w1",
+        "w1"
+      ],
+      "complete": 0
+    },
+    {
+      "strategy": "Reactor",
+      "run": 5,
+      "levels": 9,
+      "bank": 63,
+      "catalyst": 0,
+      "kills": 283,
+      "chain": 16,
+      "insight": 5,
+      "worlds": [
+        "w2",
+        "w2",
+        "w2",
+        "w2",
+        "w2"
+      ],
+      "complete": 0
+    },
+    {
+      "strategy": "Reactor",
+      "run": 20,
+      "levels": 33,
+      "bank": 103,
+      "catalyst": 81,
+      "kills": 413,
+      "chain": 19,
+      "insight": 12,
+      "worlds": [
+        "w4",
+        "w4",
+        "w4",
+        "w4",
+        "w4"
+      ],
+      "complete": 0
+    },
+    {
+      "strategy": "Reactor",
+      "run": 50,
+      "levels": 84,
+      "bank": 150,
+      "catalyst": 534,
+      "kills": 508,
+      "chain": 16,
+      "insight": 16,
+      "worlds": [
+        "w5",
+        "w5",
+        "w5",
+        "w5",
+        "w5"
+      ],
+      "complete": 5
+    }
+  ],
+  "firstClears": [
+    {
+      "seed": 31415,
+      "build": "Crusher",
+      "firstCampaignRun": 30,
+      "lastCampaign": {
+        "world": "w5",
+        "complete": true,
+        "clears": {
+          "w1": 1,
+          "w2": 1,
+          "w3": 1,
+          "w4": 1,
+          "w5": 1
+        },
+        "survey": {
+          "w1": {
+            "runs": 3,
+            "normalKills": 449,
+            "chain5": 3,
+            "circuitKills": 10,
+            "circuitRuns": 3,
+            "routeKills": 0,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w2": {
+            "runs": 4,
+            "normalKills": 834,
+            "chain5": 4,
+            "circuitKills": 126,
+            "circuitRuns": 4,
+            "routeKills": 7,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 1
+          },
+          "w3": {
+            "runs": 7,
+            "normalKills": 1662,
+            "chain5": 7,
+            "circuitKills": 156,
+            "circuitRuns": 7,
+            "routeKills": 75,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w4": {
+            "runs": 13,
+            "normalKills": 3400,
+            "chain5": 13,
+            "circuitKills": 418,
+            "circuitRuns": 13,
+            "routeKills": 59,
+            "reactorWaves": 360,
+            "phaseKills": 54,
+            "linkedChain15": 4
+          },
+          "w5": {
+            "runs": 23,
+            "normalKills": 7785,
+            "chain5": 23,
+            "circuitKills": 1167,
+            "circuitRuns": 23,
+            "routeKills": 230,
+            "reactorWaves": 707,
+            "phaseKills": 77,
+            "linkedChain15": 12
+          }
+        },
+        "attempt": null
+      }
+    },
+    {
+      "seed": 31415,
+      "build": "Cascade",
+      "firstCampaignRun": 31,
+      "lastCampaign": {
+        "world": "w5",
+        "complete": true,
+        "clears": {
+          "w1": 1,
+          "w2": 1,
+          "w3": 1,
+          "w4": 1,
+          "w5": 1
+        },
+        "survey": {
+          "w1": {
+            "runs": 3,
+            "normalKills": 441,
+            "chain5": 3,
+            "circuitKills": 12,
+            "circuitRuns": 3,
+            "routeKills": 0,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w2": {
+            "runs": 5,
+            "normalKills": 1025,
+            "chain5": 5,
+            "circuitKills": 164,
+            "circuitRuns": 5,
+            "routeKills": 2,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 1
+          },
+          "w3": {
+            "runs": 6,
+            "normalKills": 1466,
+            "chain5": 6,
+            "circuitKills": 142,
+            "circuitRuns": 6,
+            "routeKills": 139,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 6
+          },
+          "w4": {
+            "runs": 12,
+            "normalKills": 3472,
+            "chain5": 12,
+            "circuitKills": 420,
+            "circuitRuns": 12,
+            "routeKills": 66,
+            "reactorWaves": 402,
+            "phaseKills": 54,
+            "linkedChain15": 11
+          },
+          "w5": {
+            "runs": 24,
+            "normalKills": 8153,
+            "chain5": 24,
+            "circuitKills": 1242,
+            "circuitRuns": 24,
+            "routeKills": 210,
+            "reactorWaves": 737,
+            "phaseKills": 90,
+            "linkedChain15": 8
+          }
+        },
+        "attempt": null
+      }
+    },
+    {
+      "seed": 31415,
+      "build": "Reactor",
+      "firstCampaignRun": 33,
+      "lastCampaign": {
+        "world": "w5",
+        "complete": true,
+        "clears": {
+          "w1": 1,
+          "w2": 1,
+          "w3": 1,
+          "w4": 1,
+          "w5": 1
+        },
+        "survey": {
+          "w1": {
+            "runs": 3,
+            "normalKills": 445,
+            "chain5": 3,
+            "circuitKills": 10,
+            "circuitRuns": 3,
+            "routeKills": 0,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w2": {
+            "runs": 4,
+            "normalKills": 845,
+            "chain5": 4,
+            "circuitKills": 122,
+            "circuitRuns": 4,
+            "routeKills": 3,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 1
+          },
+          "w3": {
+            "runs": 7,
+            "normalKills": 1661,
+            "chain5": 7,
+            "circuitKills": 162,
+            "circuitRuns": 7,
+            "routeKills": 44,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 4
+          },
+          "w4": {
+            "runs": 12,
+            "normalKills": 3432,
+            "chain5": 12,
+            "circuitKills": 417,
+            "circuitRuns": 12,
+            "routeKills": 57,
+            "reactorWaves": 416,
+            "phaseKills": 63,
+            "linkedChain15": 6
+          },
+          "w5": {
+            "runs": 24,
+            "normalKills": 8065,
+            "chain5": 24,
+            "circuitKills": 1218,
+            "circuitRuns": 24,
+            "routeKills": 236,
+            "reactorWaves": 726,
+            "phaseKills": 68,
+            "linkedChain15": 11
+          }
+        },
+        "attempt": null
+      }
+    },
+    {
+      "seed": 1,
+      "build": "Crusher",
+      "firstCampaignRun": 34,
+      "lastCampaign": {
+        "world": "w5",
+        "complete": true,
+        "clears": {
+          "w1": 1,
+          "w2": 1,
+          "w3": 1,
+          "w4": 1,
+          "w5": 1
+        },
+        "survey": {
+          "w1": {
+            "runs": 3,
+            "normalKills": 443,
+            "chain5": 3,
+            "circuitKills": 5,
+            "circuitRuns": 3,
+            "routeKills": 0,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w2": {
+            "runs": 5,
+            "normalKills": 870,
+            "chain5": 5,
+            "circuitKills": 141,
+            "circuitRuns": 5,
+            "routeKills": 9,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w3": {
+            "runs": 8,
+            "normalKills": 1621,
+            "chain5": 8,
+            "circuitKills": 160,
+            "circuitRuns": 8,
+            "routeKills": 75,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w4": {
+            "runs": 14,
+            "normalKills": 3501,
+            "chain5": 14,
+            "circuitKills": 425,
+            "circuitRuns": 14,
+            "routeKills": 67,
+            "reactorWaves": 378,
+            "phaseKills": 91,
+            "linkedChain15": 5
+          },
+          "w5": {
+            "runs": 20,
+            "normalKills": 6576,
+            "chain5": 20,
+            "circuitKills": 1037,
+            "circuitRuns": 20,
+            "routeKills": 218,
+            "reactorWaves": 608,
+            "phaseKills": 69,
+            "linkedChain15": 11
+          }
+        },
+        "attempt": null
+      }
+    },
+    {
+      "seed": 1,
+      "build": "Cascade",
+      "firstCampaignRun": 29,
+      "lastCampaign": {
+        "world": "w5",
+        "complete": true,
+        "clears": {
+          "w1": 1,
+          "w2": 1,
+          "w3": 1,
+          "w4": 1,
+          "w5": 1
+        },
+        "survey": {
+          "w1": {
+            "runs": 3,
+            "normalKills": 459,
+            "chain5": 3,
+            "circuitKills": 5,
+            "circuitRuns": 3,
+            "routeKills": 0,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 1
+          },
+          "w2": {
+            "runs": 5,
+            "normalKills": 862,
+            "chain5": 5,
+            "circuitKills": 137,
+            "circuitRuns": 5,
+            "routeKills": 13,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 2
+          },
+          "w3": {
+            "runs": 7,
+            "normalKills": 1671,
+            "chain5": 7,
+            "circuitKills": 174,
+            "circuitRuns": 7,
+            "routeKills": 177,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 6
+          },
+          "w4": {
+            "runs": 11,
+            "normalKills": 3115,
+            "chain5": 11,
+            "circuitKills": 403,
+            "circuitRuns": 11,
+            "routeKills": 87,
+            "reactorWaves": 424,
+            "phaseKills": 63,
+            "linkedChain15": 6
+          },
+          "w5": {
+            "runs": 24,
+            "normalKills": 7961,
+            "chain5": 24,
+            "circuitKills": 1258,
+            "circuitRuns": 24,
+            "routeKills": 243,
+            "reactorWaves": 705,
+            "phaseKills": 121,
+            "linkedChain15": 11
+          }
+        },
+        "attempt": null
+      }
+    },
+    {
+      "seed": 1,
+      "build": "Reactor",
+      "firstCampaignRun": 28,
+      "lastCampaign": {
+        "world": "w5",
+        "complete": true,
+        "clears": {
+          "w1": 1,
+          "w2": 1,
+          "w3": 1,
+          "w4": 1,
+          "w5": 1
+        },
+        "survey": {
+          "w1": {
+            "runs": 3,
+            "normalKills": 471,
+            "chain5": 3,
+            "circuitKills": 5,
+            "circuitRuns": 3,
+            "routeKills": 0,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w2": {
+            "runs": 4,
+            "normalKills": 878,
+            "chain5": 4,
+            "circuitKills": 154,
+            "circuitRuns": 4,
+            "routeKills": 3,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 3
+          },
+          "w3": {
+            "runs": 7,
+            "normalKills": 1585,
+            "chain5": 7,
+            "circuitKills": 158,
+            "circuitRuns": 7,
+            "routeKills": 82,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 4
+          },
+          "w4": {
+            "runs": 11,
+            "normalKills": 3229,
+            "chain5": 11,
+            "circuitKills": 427,
+            "circuitRuns": 11,
+            "routeKills": 61,
+            "reactorWaves": 412,
+            "phaseKills": 67,
+            "linkedChain15": 9
+          },
+          "w5": {
+            "runs": 25,
+            "normalKills": 8322,
+            "chain5": 25,
+            "circuitKills": 1330,
+            "circuitRuns": 25,
+            "routeKills": 293,
+            "reactorWaves": 740,
+            "phaseKills": 94,
+            "linkedChain15": 12
+          }
+        },
+        "attempt": null
+      }
+    },
+    {
+      "seed": 7,
+      "build": "Crusher",
+      "firstCampaignRun": 34,
+      "lastCampaign": {
+        "world": "w5",
+        "complete": true,
+        "clears": {
+          "w1": 1,
+          "w2": 1,
+          "w3": 1,
+          "w4": 1,
+          "w5": 1
+        },
+        "survey": {
+          "w1": {
+            "runs": 3,
+            "normalKills": 403,
+            "chain5": 3,
+            "circuitKills": 18,
+            "circuitRuns": 3,
+            "routeKills": 0,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w2": {
+            "runs": 5,
+            "normalKills": 943,
+            "chain5": 5,
+            "circuitKills": 155,
+            "circuitRuns": 5,
+            "routeKills": 2,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 1
+          },
+          "w3": {
+            "runs": 7,
+            "normalKills": 1644,
+            "chain5": 7,
+            "circuitKills": 164,
+            "circuitRuns": 7,
+            "routeKills": 107,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w4": {
+            "runs": 13,
+            "normalKills": 3504,
+            "chain5": 13,
+            "circuitKills": 394,
+            "circuitRuns": 13,
+            "routeKills": 76,
+            "reactorWaves": 424,
+            "phaseKills": 57,
+            "linkedChain15": 3
+          },
+          "w5": {
+            "runs": 22,
+            "normalKills": 7337,
+            "chain5": 22,
+            "circuitKills": 1176,
+            "circuitRuns": 22,
+            "routeKills": 207,
+            "reactorWaves": 677,
+            "phaseKills": 82,
+            "linkedChain15": 8
+          }
+        },
+        "attempt": null
+      }
+    },
+    {
+      "seed": 7,
+      "build": "Cascade",
+      "firstCampaignRun": 31,
+      "lastCampaign": {
+        "world": "w5",
+        "complete": true,
+        "clears": {
+          "w1": 1,
+          "w2": 1,
+          "w3": 1,
+          "w4": 1,
+          "w5": 1
+        },
+        "survey": {
+          "w1": {
+            "runs": 3,
+            "normalKills": 383,
+            "chain5": 3,
+            "circuitKills": 17,
+            "circuitRuns": 3,
+            "routeKills": 0,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w2": {
+            "runs": 5,
+            "normalKills": 949,
+            "chain5": 5,
+            "circuitKills": 151,
+            "circuitRuns": 5,
+            "routeKills": 3,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 3
+          },
+          "w3": {
+            "runs": 7,
+            "normalKills": 1617,
+            "chain5": 7,
+            "circuitKills": 164,
+            "circuitRuns": 7,
+            "routeKills": 161,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 6
+          },
+          "w4": {
+            "runs": 11,
+            "normalKills": 3271,
+            "chain5": 11,
+            "circuitKills": 406,
+            "circuitRuns": 11,
+            "routeKills": 64,
+            "reactorWaves": 451,
+            "phaseKills": 66,
+            "linkedChain15": 5
+          },
+          "w5": {
+            "runs": 24,
+            "normalKills": 8111,
+            "chain5": 24,
+            "circuitKills": 1265,
+            "circuitRuns": 24,
+            "routeKills": 236,
+            "reactorWaves": 713,
+            "phaseKills": 77,
+            "linkedChain15": 8
+          }
+        },
+        "attempt": null
+      }
+    },
+    {
+      "seed": 7,
+      "build": "Reactor",
+      "firstCampaignRun": 28,
+      "lastCampaign": {
+        "world": "w5",
+        "complete": true,
+        "clears": {
+          "w1": 1,
+          "w2": 1,
+          "w3": 1,
+          "w4": 1,
+          "w5": 1
+        },
+        "survey": {
+          "w1": {
+            "runs": 3,
+            "normalKills": 443,
+            "chain5": 3,
+            "circuitKills": 18,
+            "circuitRuns": 3,
+            "routeKills": 0,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w2": {
+            "runs": 4,
+            "normalKills": 891,
+            "chain5": 4,
+            "circuitKills": 141,
+            "circuitRuns": 4,
+            "routeKills": 6,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 2
+          },
+          "w3": {
+            "runs": 7,
+            "normalKills": 1720,
+            "chain5": 7,
+            "circuitKills": 181,
+            "circuitRuns": 7,
+            "routeKills": 68,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 4
+          },
+          "w4": {
+            "runs": 11,
+            "normalKills": 3216,
+            "chain5": 11,
+            "circuitKills": 395,
+            "circuitRuns": 11,
+            "routeKills": 45,
+            "reactorWaves": 398,
+            "phaseKills": 49,
+            "linkedChain15": 8
+          },
+          "w5": {
+            "runs": 25,
+            "normalKills": 8509,
+            "chain5": 25,
+            "circuitKills": 1320,
+            "circuitRuns": 25,
+            "routeKills": 261,
+            "reactorWaves": 789,
+            "phaseKills": 97,
+            "linkedChain15": 10
+          }
+        },
+        "attempt": null
+      }
+    },
+    {
+      "seed": 42,
+      "build": "Crusher",
+      "firstCampaignRun": 32,
+      "lastCampaign": {
+        "world": "w5",
+        "complete": true,
+        "clears": {
+          "w1": 1,
+          "w2": 1,
+          "w3": 1,
+          "w4": 1,
+          "w5": 1
+        },
+        "survey": {
+          "w1": {
+            "runs": 3,
+            "normalKills": 463,
+            "chain5": 3,
+            "circuitKills": 11,
+            "circuitRuns": 3,
+            "routeKills": 0,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w2": {
+            "runs": 4,
+            "normalKills": 784,
+            "chain5": 4,
+            "circuitKills": 129,
+            "circuitRuns": 4,
+            "routeKills": 3,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w3": {
+            "runs": 8,
+            "normalKills": 1716,
+            "chain5": 8,
+            "circuitKills": 198,
+            "circuitRuns": 8,
+            "routeKills": 104,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 1
+          },
+          "w4": {
+            "runs": 13,
+            "normalKills": 3444,
+            "chain5": 13,
+            "circuitKills": 407,
+            "circuitRuns": 13,
+            "routeKills": 48,
+            "reactorWaves": 396,
+            "phaseKills": 79,
+            "linkedChain15": 6
+          },
+          "w5": {
+            "runs": 22,
+            "normalKills": 7272,
+            "chain5": 22,
+            "circuitKills": 1155,
+            "circuitRuns": 22,
+            "routeKills": 218,
+            "reactorWaves": 616,
+            "phaseKills": 84,
+            "linkedChain15": 9
+          }
+        },
+        "attempt": null
+      }
+    },
+    {
+      "seed": 42,
+      "build": "Cascade",
+      "firstCampaignRun": 29,
+      "lastCampaign": {
+        "world": "w5",
+        "complete": true,
+        "clears": {
+          "w1": 1,
+          "w2": 1,
+          "w3": 1,
+          "w4": 1,
+          "w5": 1
+        },
+        "survey": {
+          "w1": {
+            "runs": 3,
+            "normalKills": 461,
+            "chain5": 3,
+            "circuitKills": 9,
+            "circuitRuns": 3,
+            "routeKills": 0,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w2": {
+            "runs": 5,
+            "normalKills": 950,
+            "chain5": 5,
+            "circuitKills": 159,
+            "circuitRuns": 5,
+            "routeKills": 6,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 2
+          },
+          "w3": {
+            "runs": 7,
+            "normalKills": 1605,
+            "chain5": 7,
+            "circuitKills": 189,
+            "circuitRuns": 7,
+            "routeKills": 154,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 5
+          },
+          "w4": {
+            "runs": 11,
+            "normalKills": 3148,
+            "chain5": 11,
+            "circuitKills": 377,
+            "circuitRuns": 11,
+            "routeKills": 78,
+            "reactorWaves": 390,
+            "phaseKills": 56,
+            "linkedChain15": 9
+          },
+          "w5": {
+            "runs": 24,
+            "normalKills": 8061,
+            "chain5": 24,
+            "circuitKills": 1275,
+            "circuitRuns": 24,
+            "routeKills": 227,
+            "reactorWaves": 695,
+            "phaseKills": 89,
+            "linkedChain15": 13
+          }
+        },
+        "attempt": null
+      }
+    },
+    {
+      "seed": 42,
+      "build": "Reactor",
+      "firstCampaignRun": 28,
+      "lastCampaign": {
+        "world": "w5",
+        "complete": true,
+        "clears": {
+          "w1": 1,
+          "w2": 1,
+          "w3": 1,
+          "w4": 1,
+          "w5": 1
+        },
+        "survey": {
+          "w1": {
+            "runs": 3,
+            "normalKills": 497,
+            "chain5": 3,
+            "circuitKills": 12,
+            "circuitRuns": 3,
+            "routeKills": 0,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w2": {
+            "runs": 4,
+            "normalKills": 916,
+            "chain5": 4,
+            "circuitKills": 148,
+            "circuitRuns": 4,
+            "routeKills": 7,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 1
+          },
+          "w3": {
+            "runs": 7,
+            "normalKills": 1648,
+            "chain5": 7,
+            "circuitKills": 190,
+            "circuitRuns": 7,
+            "routeKills": 60,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 6
+          },
+          "w4": {
+            "runs": 11,
+            "normalKills": 3165,
+            "chain5": 11,
+            "circuitKills": 387,
+            "circuitRuns": 11,
+            "routeKills": 54,
+            "reactorWaves": 363,
+            "phaseKills": 40,
+            "linkedChain15": 10
+          },
+          "w5": {
+            "runs": 25,
+            "normalKills": 8338,
+            "chain5": 25,
+            "circuitKills": 1331,
+            "circuitRuns": 25,
+            "routeKills": 245,
+            "reactorWaves": 717,
+            "phaseKills": 86,
+            "linkedChain15": 15
+          }
+        },
+        "attempt": null
+      }
+    },
+    {
+      "seed": 99,
+      "build": "Crusher",
+      "firstCampaignRun": 31,
+      "lastCampaign": {
+        "world": "w5",
+        "complete": true,
+        "clears": {
+          "w1": 1,
+          "w2": 1,
+          "w3": 1,
+          "w4": 1,
+          "w5": 1
+        },
+        "survey": {
+          "w1": {
+            "runs": 3,
+            "normalKills": 422,
+            "chain5": 3,
+            "circuitKills": 12,
+            "circuitRuns": 3,
+            "routeKills": 0,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w2": {
+            "runs": 5,
+            "normalKills": 942,
+            "chain5": 5,
+            "circuitKills": 153,
+            "circuitRuns": 5,
+            "routeKills": 9,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 1
+          },
+          "w3": {
+            "runs": 7,
+            "normalKills": 1538,
+            "chain5": 7,
+            "circuitKills": 168,
+            "circuitRuns": 7,
+            "routeKills": 92,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w4": {
+            "runs": 13,
+            "normalKills": 3327,
+            "chain5": 13,
+            "circuitKills": 414,
+            "circuitRuns": 13,
+            "routeKills": 64,
+            "reactorWaves": 358,
+            "phaseKills": 64,
+            "linkedChain15": 5
+          },
+          "w5": {
+            "runs": 22,
+            "normalKills": 7337,
+            "chain5": 22,
+            "circuitKills": 1132,
+            "circuitRuns": 22,
+            "routeKills": 193,
+            "reactorWaves": 602,
+            "phaseKills": 81,
+            "linkedChain15": 10
+          }
+        },
+        "attempt": null
+      }
+    },
+    {
+      "seed": 99,
+      "build": "Cascade",
+      "firstCampaignRun": 30,
+      "lastCampaign": {
+        "world": "w5",
+        "complete": true,
+        "clears": {
+          "w1": 1,
+          "w2": 1,
+          "w3": 1,
+          "w4": 1,
+          "w5": 1
+        },
+        "survey": {
+          "w1": {
+            "runs": 3,
+            "normalKills": 412,
+            "chain5": 3,
+            "circuitKills": 9,
+            "circuitRuns": 3,
+            "routeKills": 0,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w2": {
+            "runs": 5,
+            "normalKills": 960,
+            "chain5": 5,
+            "circuitKills": 151,
+            "circuitRuns": 5,
+            "routeKills": 9,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 1
+          },
+          "w3": {
+            "runs": 7,
+            "normalKills": 1528,
+            "chain5": 7,
+            "circuitKills": 164,
+            "circuitRuns": 7,
+            "routeKills": 143,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 6
+          },
+          "w4": {
+            "runs": 12,
+            "normalKills": 3484,
+            "chain5": 12,
+            "circuitKills": 454,
+            "circuitRuns": 12,
+            "routeKills": 74,
+            "reactorWaves": 427,
+            "phaseKills": 68,
+            "linkedChain15": 7
+          },
+          "w5": {
+            "runs": 23,
+            "normalKills": 7733,
+            "chain5": 23,
+            "circuitKills": 1185,
+            "circuitRuns": 23,
+            "routeKills": 241,
+            "reactorWaves": 632,
+            "phaseKills": 98,
+            "linkedChain15": 11
+          }
+        },
+        "attempt": null
+      }
+    },
+    {
+      "seed": 99,
+      "build": "Reactor",
+      "firstCampaignRun": 30,
+      "lastCampaign": {
+        "world": "w5",
+        "complete": true,
+        "clears": {
+          "w1": 1,
+          "w2": 1,
+          "w3": 1,
+          "w4": 1,
+          "w5": 1
+        },
+        "survey": {
+          "w1": {
+            "runs": 2,
+            "normalKills": 289,
+            "chain5": 2,
+            "circuitKills": 9,
+            "circuitRuns": 2,
+            "routeKills": 0,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 0
+          },
+          "w2": {
+            "runs": 5,
+            "normalKills": 1020,
+            "chain5": 5,
+            "circuitKills": 166,
+            "circuitRuns": 5,
+            "routeKills": 2,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 2
+          },
+          "w3": {
+            "runs": 7,
+            "normalKills": 1530,
+            "chain5": 7,
+            "circuitKills": 171,
+            "circuitRuns": 7,
+            "routeKills": 67,
+            "reactorWaves": 0,
+            "phaseKills": 0,
+            "linkedChain15": 7
+          },
+          "w4": {
+            "runs": 12,
+            "normalKills": 3520,
+            "chain5": 12,
+            "circuitKills": 453,
+            "circuitRuns": 12,
+            "routeKills": 62,
+            "reactorWaves": 463,
+            "phaseKills": 69,
+            "linkedChain15": 6
+          },
+          "w5": {
+            "runs": 24,
+            "normalKills": 8071,
+            "chain5": 24,
+            "circuitKills": 1251,
+            "circuitRuns": 24,
+            "routeKills": 266,
+            "reactorWaves": 646,
+            "phaseKills": 86,
+            "linkedChain15": 9
+          }
+        },
+        "attempt": null
+      }
+    }
+  ],
+  "discardedPhysicalSeconds": 0,
+  "method": "Frozen M15 gameplay source;5seeds x3 affordable Fresh strategies x300 actual20..32s ExtraTime Runs. Highest eligible World, survey from real events only, tactical Boss policy, no Research or optional modes forced. Checkpoint summaries isolated; full production records unchanged.",
+  "durationCounts": {
+    "20": 186,
+    "22": 69,
+    "24": 37,
+    "26": 32,
+    "28": 48,
+    "30": 99,
+    "32": 279
+  }
+}

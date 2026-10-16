@@ -1,0 +1,10 @@
+
+> benchmark:m16
+> node tests/m16-benchmark.mjs
+
+M16 parity seed 7
+M16 parity seed 1
+M16 parity seed 31415
+M16 parity seed 99
+M16 parity seed 42
+M16 benchmark PASS 1350 actual Runs

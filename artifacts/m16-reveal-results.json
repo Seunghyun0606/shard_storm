@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "fixtureOnly": true,
+  "rows": [
+    {
+      "shapeCount": 19,
+      "renderNeutral": true,
+      "progress": 0.25
+    },
+    {
+      "shapeCount": 19,
+      "renderNeutral": true,
+      "progress": 0.5
+    },
+    {
+      "shapeCount": 19,
+      "renderNeutral": true,
+      "progress": 1
+    }
+  ],
+  "errors": []
+}

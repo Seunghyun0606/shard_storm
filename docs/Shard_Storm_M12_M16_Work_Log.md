@@ -1,5 +1,7 @@
 # M12~M16 continuation log
 
+CURRENT: M12~M16 implementation and automated QA complete. M16 runtime5285fad, build6a4887cb09ad399665571fd9acd584a3853929b0042971d273c2f1e55186de4e.377unit PASS/0FAIL;1350M16 paired combat Runs;Chrome14actual20s+1actual32s;full20x32s storage/hash;corruption/quota/export;ending/keyboard/options/sandbox restore PASS. Fixed20growth4500 and correctly configured ExtraTimegrowth750 are separate cohorts. Human fun/cohort remains unassessed. Final reports and release smoke are in docs/Shard_Storm_M12_M16_Final_Report.md and artifacts/m16-*. No human gate pending. Notes below are chronological history, not current unfinished tasks.
+
 2026-10-16: fetch/clean inspection; verified docs branch includes M11 HEAD633f8a4; created feat/m12-m16-destruction-evolution from docs HEAD56a75c5. Read all7 PRDs/handoff, README/M11 reports/save design. No main merge, PR or external deploy.
 
 M11 baseline re-executed:307unit PASS, benchmark:m11 M11_RUNS=1 smoke180combat Runs, actual Chrome qa:m11 seven20s pointer Runs, codec/full-history/corruption/pending QA PASS. Fresh artifacts relocated under artifacts/m12-baseline; historical M11 evidence preserved.

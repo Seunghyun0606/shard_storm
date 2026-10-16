@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "version": "M16.0-prototype",
+  "buildHash": "6a4887cb09ad399665571fd9acd584a3853929b0042971d273c2f1e55186de4e",
+  "schema": 11,
+  "runtimeFiles": 56,
+  "http": [
+    {
+      "file": "index.html",
+      "status": 200
+    },
+    {
+      "file": "app.js",
+      "status": 200
+    },
+    {
+      "file": "game.js",
+      "status": 200
+    },
+    {
+      "file": "audio-bus.js",
+      "status": 200
+    },
+    {
+      "file": "ending.js",
+      "status": 200
+    },
+    {
+      "file": "shape-outline.js",
+      "status": 200
+    },
+    {
+      "file": "campaign/worlds.js",
+      "status": 200
+    },
+    {
+      "file": "version.json",
+      "status": 200
+    }
+  ],
+  "scope": "Local release smoke only; no external deployment"
+}
