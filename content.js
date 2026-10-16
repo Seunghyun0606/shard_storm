@@ -1,3 +1,4 @@
+import {modeStageDelay,modeStageWave} from './mode-combat.js';
 import {codexEvent} from './codex.js';
 import { CONFIG as C } from './config.js';
 import {form,expansionUsed,expansionStageStats,expansionStageExecuted} from './expansion.js';
@@ -62,12 +63,13 @@ export function healthStages(game,s,previous,cause) {
     s.stages.add(i);const at={...game.positionAt(s,game.simulationTime),id:s.id},child={...cause,depth:cause.depth+1,source:s.type,stageIndex:i+1,originShapeId:s.id};
     const cfg=s.type==='reactor'?C.specialEffects.reactor[i]:C.specialEffects.ancient;
     const governor=s.type==='reactor'&&!cause.noRelicProc&&game.relicLoadout.includes('reactorGovernor');let delay=cfg.delay+(governor?C.relics.reactorGovernor.delayPenalty:0),damage=cfg.damage+(governor?C.relics.reactorGovernor.damage:0);if(s.type==='reactor')({delay,damage}=expansionStageStats(game,delay,damage));
+    delay=modeStageDelay(game,delay,s.type);
     game.stageEvents.push({shapeId:s.id,type:s.type,stageIndex:i+1,at:game.simulationTime,scheduledAt:game.simulationTime+delay,chainId:cause.chainId});
     game.scheduleEffect(()=>{
       if(s.type==='ancient')for(let n=0;n<cfg.shards;n++)game.emitAux(at,at.angle+n*Math.PI,child,'ancient-fragment',cfg.shardDamage,cfg.shardRange);
       if(s.type==='ancient'&&!cause.noRelicProc&&game.relicLoadout.includes('ancientResonator')){const r=C.relics.ancientResonator;const p=game.emitAux(at,at.angle+Math.PI/2,{...child,relicId:'ancientResonator',noRelicProc:true},'relic-ancient',r.damage,r.range);if(p){p.relicId='ancientResonator';game.relicActivations.ancientResonator=(game.relicActivations.ancientResonator||0)+1;}}
       const wave=game.area(at,cfg.radius,damage,{...child,relicId:governor?'reactorGovernor':undefined},C.shapes[s.type].color,s.id);
-      if(wave)codexEvent(game,'stage',s,child,{stageIndex:i+1});
+      if(wave){codexEvent(game,'stage',s,child,{stageIndex:i+1});modeStageWave(game,s,at,child,wave);}
       if(wave&&s.type==='reactor'){for(const id of ['quick','delayed'])if(form(game,'reactor',id))expansionUsed(game,`evolution:${id}`,child,{waveId:wave.id});expansionStageExecuted(game,s,child,wave);count(game,'reactorStageWaveExecuted',1,{eventType:'stageWaveExecuted',sourceShapeId:s.id,stageIndex:i+1,chainId:cause.chainId});if(governor)game.relicActivations.reactorGovernor=(game.relicActivations.reactorGovernor||0)+1;}
     },{...child,relicId:governor?'reactorGovernor':undefined},delay);
   }

@@ -1,0 +1,14 @@
+import {canBoss} from './campaign/worlds.js';
+import {PROTOCOLS,PERKS,RESEARCH,modeUnlocked,researchUnlocked} from './modes.js';
+const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
+export function renderModes(root,s,{state,protocol,depth,draft,choose,resume,abort,buy,toggle}){
+ const open=root.querySelector('details')?.open||false,panel=el('details');panel.open=open;panel.className='meta-section challenge-lab';panel.append(el('summary','CHALLENGE LAB / optional modes'));const editable=['TITLE','RESULT'].includes(state)&&!s.pendingSettlement;
+ panel.append(el('p','Normal PLAY stays unchanged. Draft uses a virtual19-skill preset, no permanent equipment and zero permanent currency.'));
+ for(const[id,steps]of Object.entries(PROTOCOLS)){const r=s.modeLedger.protocols[id],row=el('div'),button=el('button',`${id} ${r.stage}/3 / ${r.stage===3?'REPLAY':'TRY'}`);button.dataset.protocol=id;button.disabled=!editable||(!modeUnlocked(s,'protocol')||id==='precisionBreaker'&&r.stage===2&&!canBoss(s,s.worldSelected));button.onclick=()=>protocol(id);row.append(button,el('small',steps[Math.min(2,r.stage)]));panel.append(row);}
+ const depths=el('div');for(const n of [1,2,3]){const b=el('button',`STORM DEPTH${n} / selected World Boss`);b.dataset.depth=n;b.disabled=!editable||(!modeUnlocked(s,'depth')||!canBoss(s,s.worldSelected));b.onclick=()=>depth(n);depths.append(b);}panel.append(depths);
+ const d=s.draftProgress;if(!d||d.done){for(const preset of ['Crusher','Cascade','Reactor']){const b=el('button',`NEW DRAFT / ${preset}`);b.dataset.draft=preset;b.disabled=!editable||!modeUnlocked(s,'draft');b.onclick=()=>draft(preset);panel.append(b);}}
+ if(d){panel.append(el('p',`DRAFT ${d.round}/5 / score${d.score} / ${d.chosen.join(', ')||'Choose initial perk'} / Photon0`));if(d.waiting)for(const id of d.offers){const b=el('button',`${id}: ${PERKS[id]}`);b.dataset.perk=id;b.disabled=!editable;b.onclick=()=>choose(id);panel.append(b);}else if(!d.done){const b=el('button','RESUME DRAFT / virtual loadout');b.dataset.draftResume='true';b.disabled=!editable;b.onclick=resume;panel.append(b);}const b=el('button','ABANDON DRAFT / permanent assets kept');b.disabled=!editable;b.onclick=abort;panel.append(b);}
+ panel.append(el('h3','DESTRUCTION RESEARCH / shared Signature3 & Evolution2 budget'));
+ for(const[id,r]of Object.entries(RESEARCH)){const row=el('article'),owned=s.researchOwned.includes(id),active=s.researchActive.includes(id);row.append(el('strong',id),el('small',`${r.label} / ${r.photon} Photon +${r.catalyst} Catalyst / ${r.world?'World '+r.world:'Protocol '+r.protocol}`));const b=el('button',owned?active?'UNEQUIP':'EQUIP':'RESEARCH');b.dataset.research=id;b.disabled=!editable||!owned&&(!researchUnlocked(s,id)||s.bank<r.photon||s.catalystBalance<r.catalyst);b.onclick=()=>owned?toggle(id):buy(id);row.append(b);panel.append(row);}
+ root.replaceChildren(panel);
+}

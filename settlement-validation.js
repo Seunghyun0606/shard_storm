@@ -1,8 +1,11 @@
+import {validModeSnapshot} from './modes.js';
 import {validWorldSettlement} from './campaign/worlds.js';
 import{CONFIG as C}from'./config.js';import{contractTerms}from'./contracts.js';
 import {validEliteSettlement} from './spawn-director.js';
 const int=n=>Number.isSafeInteger(n)&&n>=0;
 export function validMetaPending(p){
+ if(!validModeSnapshot(p.modeSnapshot,p.id))return false;
+ if(p.modeSnapshot?.context.kind==='draft'&&(p.payout!==0||p.catalystPayout!==0||p.codexSnapshot||p.worldSnapshot||p.elitePolicySnapshot||p.contractPlan||p.anomalySucceeded))return false;
  if(!validWorldSettlement(p.worldSnapshot,p.id))return false;
  if(!validEliteSettlement(p.elitePolicySnapshot,p.id))return false;
  if(p.relicAchievementDeltas&&(!Object.values(p.relicAchievementDeltas).every(int)||Object.keys(p.relicAchievementDeltas).some(k=>!Object.values(C.relics).some(r=>r.counter===k))))return false;

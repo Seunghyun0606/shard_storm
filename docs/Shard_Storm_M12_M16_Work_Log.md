@@ -15,3 +15,5 @@ M12 completion committed/pushed1d75822. M13 combat/data committed58ca72b:4stages
 Reproduce current commands: npm test; npm run benchmark:m12; PLAYWRIGHT_MODULE external QA installation + QA_BASE_URL=http://127.0.0.1:4180 npm run qa:m12. npm start supports PORT=4180. Output paths are artifacts/m12-*. The final policy-review commit is a checkpoint, not a release.
 
 M14 complete: World5/Boss5, schema10;345 tests PASS,300 benchmark Runs/150 Boss clears,30 parity/FX Runs,Chrome6 actual20s Runs/zero errors,full20x32s storage verified. Next M15 optional modes.
+
+M15 complete: Protocol9/Depth3/Draft5/Perk9/Research6/schema11.371 tests PASS;705 benchmark actual Runs;Chrome9 actual20s Runs (Draft5 full flow),zero errors;30 M14 parity/FX Runs. M14 duplicated regression artifacts packed losslessly. Next M16 release feedback/audio/ending/QA.

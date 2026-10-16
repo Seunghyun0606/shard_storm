@@ -1,3 +1,4 @@
+import {conductorRadius} from './mode-combat.js';
 import {WORLDS} from './campaign/worlds.js';
 import {ADVANCED_TRAITS} from './advanced-defs.js';
 import {phaseVulnerable} from './advanced-shapes.js';
@@ -32,12 +33,12 @@ export function draw(ctx, game, fps = 60, osReducedMotion = false) {
   if (!game) return; ctx.fillStyle='#b8d9d4';ctx.font='10px Arial';const narrow=(ctx.canvas.clientWidth||960)<620;ctx.fillText(narrow?`R${game.discoveryRank} · CAT +${game.pendingCatalyst}`:`RANK ${game.discoveryRank} · PENDING CATALYST +${game.pendingCatalyst}`,C.width-250,72);
   const active=game.contractSnapshot[0],intro=game.ecologyEvents?.findLast(e=>e.kind==='introduction'&&game.elapsed-e.at<1.5);
   const metaLine=intro?`${narrow?'NEW':'FIRST ENCOUNTER'} · ${C.shapes[intro.type].name} · ${ecologyHints[intro.type]}`:`${C.anomalies[game.anomalyId]?.name||'NORMAL'}${active?` · ${C.contracts[active.id].name}: ${active.progress+(game.metaCounters[C.contracts[active.id].counter]||0)} / ${C.contracts[active.id].target*C.meta.contractTargets[active.stage-1]}`:''}`;
-  ctx.fillText(hudText(ctx,(game.world?WORLDS[game.world.id].name+' / T'+game.highestTier+' / ':'')+(game.destructionEnabled?game.destructionStage.name+' / ':'')+(game.world?.boss?game.world.boss.hint:metaLine),630),42,72);
+  ctx.fillText(hudText(ctx,(game.modeContext?game.modeContext.kind.toUpperCase()+' / ':'')+(game.world?WORLDS[game.world.id].name+' / T'+game.highestTier+' / ':'')+(game.destructionEnabled?game.destructionStage.name+' / ':'')+(game.world?.boss?game.world.boss.hint:metaLine),630),42,72);
   ctx.save(); ctx.beginPath(); ctx.rect(C.arena.left, C.arena.top, C.arena.right - C.arena.left, C.arena.bottom - C.arena.top); ctx.clip();
   const boss=game.world?.boss;if(boss?.placed&&!boss.cleared){const core=boss.parts.find(p=>p.role==='core')?.shape;if(core){ctx.save();ctx.strokeStyle=boss.open?'#74edc9':'#e8b76b';ctx.setLineDash([5,5]);for(const p of boss.parts.filter(p=>p.role!=='core'&&!p.shape.destroyed)){ctx.beginPath();ctx.moveTo(p.shape.x,p.shape.y);ctx.lineTo(core.x,core.y);ctx.stroke();}ctx.setLineDash([]);ctx.font='bold 10px Arial';ctx.fillStyle=ctx.strokeStyle;ctx.textAlign='center';ctx.fillText(boss.open?'CORE OPEN':'CORE LOCKED',core.x,core.y-core.radius-18);ctx.restore();}}
   let links=0;
   for(const s of game.alive.filter(s=>s.linkIds))for(const id of s.linkIds){
-    const target=game.alive.find(t=>t.id===id);if(!target||links>=3||Math.hypot(target.x-s.x,target.y-s.y)>115+(level(game,'conductiveSurge')>=2?15:0))continue;
+    const target=game.alive.find(t=>t.id===id);if(!target||links>=3||Math.hypot(target.x-s.x,target.y-s.y)>conductorRadius(game))continue;
     ctx.strokeStyle='#ede08566';ctx.lineWidth=1;ctx.setLineDash([3,5]);ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(target.x,target.y);ctx.stroke();ctx.setLineDash([]);links++;
   }
   for(const s of game.alive){const ids=s.parasiteIds||(s.portalPartner?[s.portalPartner]:[]);for(const id of ids){const target=game.alive.find(t=>t.id===id);if(!target||links>=3||s.id>target.id&&s.portalPartner)continue;if(!s.portalPartner&&Math.hypot(target.x-s.x,target.y-s.y)>100)continue;ctx.strokeStyle=s.portalPartner?'#72cfff55':'#b4e87b55';ctx.lineWidth=1;ctx.setLineDash([3,6]);ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(target.x,target.y);ctx.stroke();ctx.setLineDash([]);links++;}}

@@ -3,7 +3,7 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Shard Storm — Playtest</title><link rel="icon" href="data:,"><link rel="stylesheet" href="style.css"></head>
 <body>
 <main>
-  <header class="masthead"><a class="brand" href="./"><span class="brand-icon">◈</span> SHARD STORM</a><div class="edition"><span class="status-dot"></span> PROTOTYPE / M14</div></header>
+  <header class="masthead"><a class="brand" href="./"><span class="brand-icon">◈</span> SHARD STORM</a><div class="edition"><span class="status-dot"></span> PROTOTYPE / M15</div></header>
   <section class="game-shell" aria-label="Shard Storm 게임">
     <div class="toolbar"><span>BREAK. CASCADE. REPEAT.</span><div><button id="focus" class="quiet" aria-pressed="false">FOCUS</button><button id="sound" class="quiet">SOUND OFF</button><button id="pause" class="quiet" hidden>일시정지</button><button id="dev-toggle" class="quiet">DEV [D]</button></div></div>
     <div id="codex-pins" aria-live="off"></div><div class="arena-wrap">
@@ -14,7 +14,7 @@
         <p>도형을 깨고, 파편을 퍼뜨리세요.<br>더 큰 연쇄를 만들고 영구 스킬을 강화하세요.</p>
         <button id="start" class="primary">START RUN <span>↗</span></button>
         <small id="stage-start" aria-live="polite"></small>
-        <small>마우스 클릭 · 누른 채 드래그 / 첫 판 20초 · Raw → Refinery → Photon</small><div class="start-meta"><div id="world-start"></div><div id="codex-start"></div><div id="build-start"></div><div id="relic-start"></div><div id="contracts-start"></div><div id="anomaly-start"></div></div>
+        <small>마우스 클릭 · 누른 채 드래그 / 첫 판 20초 · Raw → Refinery → Photon</small><div class="start-meta"><div id="mode-start"></div><div id="world-start"></div><div id="codex-start"></div><div id="build-start"></div><div id="relic-start"></div><div id="contracts-start"></div><div id="anomaly-start"></div></div>
       </div>
       <div id="paused" class="overlay pause-overlay" hidden><div class="eyebrow">TAKE A BREATH</div><h2>일시정지</h2><p>탭으로 돌아오면 이어서 플레이합니다.</p><button id="resume" class="primary">계속 플레이</button></div>
       <div id="result" class="overlay result-overlay" hidden>
@@ -26,7 +26,7 @@
         <div class="skill-filters"><label>검색 <input id="skill-search" type="search" placeholder="이름 또는 ID" autocomplete="off"></label><label>분기 <select id="skill-branch"><option value="">전체49노드</option value="Legacy">기존19노드</option> <option>Direct</option><option>Shard</option><option>Reaction</option><option>Control</option><option>Economy</option><option>Specialist</option></select></label></div>
         <div id="upgrades" class="skill-tree-scroll" aria-label="영구 스킬 그래프"></div>
         <div id="skill-info" class="skill-info" aria-live="polite"></div>
-        <div class="time-policy"><span id="time-note"></span><button id="time-refund" hidden>기존 시간 스킬 비용 반환 · 1회</button></div><div id="world-result"></div><div id="codex-result"></div><div id="build-result"></div><div id="relic-result"></div><div id="contracts-result"></div><div id="anomaly-result"></div>
+        <div class="time-policy"><span id="time-note"></span><button id="time-refund" hidden>기존 시간 스킬 비용 반환 · 1회</button></div><div id="mode-result"></div><div id="world-result"></div><div id="codex-result"></div><div id="build-result"></div><div id="relic-result"></div><div id="contracts-result"></div><div id="anomaly-result"></div>
         <div class="result-bottom"><span id="next-run"></span><button id="again" class="primary">PLAY AGAIN <span>↗</span></button></div>
       </div>
     </div>

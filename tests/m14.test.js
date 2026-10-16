@@ -8,7 +8,7 @@ import {canWorld,canBoss,normalizeCampaign,selectWorld,WORLDS} from '../campaign
 import {bossRecord} from '../campaign/bosses.js';
 import {readyWorld,worldGame,playWorld} from './m14-helpers.js';
 test('M14 World5/19shapes/49skills/schema10: legacy1..9 no invented clears or lost assets',()=>{
- assert.equal(Object.keys(WORLDS).length,5);assert.equal(Object.keys(C.shapes).length,19);assert.equal(Object.keys(C.upgrades).length,49);assert.equal(C.saveVersion,10);
+ assert.equal(Object.keys(WORLDS).length,5);assert.equal(Object.keys(C.shapes).length,19);assert.equal(Object.keys(C.upgrades).length,49);assert.equal(C.saveVersion,11);
  for(let version=1;version<=9;version++){const s=freshSave();s.saveVersion=version;s.bank=777;s.catalystBalance=88;s.levels.extraTime=3;s.lifetimeDestroyed=8000;s.elitePity=6;s.lastRuns=[{runId:'legacy',photonsEarned:100,full:{x:[1,2,3]}}];const a=loadSave({getItem:()=>JSON.stringify(s)});assert.equal(a.bank,777);assert.equal(a.levels.extraTime,3);assert.deepEqual(a.lastRuns,s.lastRuns);assert.equal(a.worldSelected,'w1');assert.equal(a.campaignComplete,false);assert.equal(a.worldBossHistory.w5.clears,0);assert.equal(a.elitePity,version>=9?6:0);}
 });
 test('M14 W2 normal Rank1 allowed but Hex Boss Rank2; selected world cannot change during play/pending',()=>{

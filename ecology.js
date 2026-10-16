@@ -1,3 +1,4 @@
+import {conductorRadius,conductorDamage,hasPerk,hasResearch,modeReflect} from './mode-combat.js';
 import {ADVANCED_TRAITS} from './advanced-defs.js';
 import {codexEvent} from './codex.js';
 import { CONFIG as C } from './config.js';
@@ -42,7 +43,7 @@ export function ecologySpawn(g,s) {
   s.secondaryTrait=rollTrait(g,s);
   if(!g.ecologyEnabled)return;
   if(!s.bossPart&&C.shapes[s.type].ecology&&!C.shapes[s.type].advanced&&!g.introConsumed.includes(s.type)&&!g.introSeen[s.type]){g.introConsumed.push(s.type);g.introFormationQueue.push(s);ecologyLog(g,'introduction',s,{}, {type:s.type});}
-  if(s.type==='conductor')s.linkIds=near(g,s,115+(level(g,'conductiveSurge')>=2?15:0)).slice(0,2).map(t=>t.id);
+  if(s.type==='conductor')s.linkIds=near(g,s,conductorRadius(g)).slice(0,2).map(t=>t.id);
   if(s.type==='repairNode')s.nextRepair=g.simulationTime+.85;
 }
 export function traitDamage(g,s,damage,cause) {
@@ -84,9 +85,9 @@ export function ecologyDeath(g,s,cause) {
   if(s.type==='fuseBomb'&&!s.fuseExploded)fuse(g,s,cause,.08);
   if(s.type==='conductor'){
     const chain=g.chains.get(cause.chainId);if((chain.conductorCount||0)<4){chain.conductorCount=(chain.conductorCount||0)+1;
-      const radius=115+(level(g,'conductiveSurge')>=2?15:0);
+      const radius=conductorRadius(g);
       const targets=(s.linkIds||[]).map(id=>g.alive.find(t=>t.id===id)).filter(t=>t&&Math.hypot(t.x-s.x,t.y-s.y)<=radius);
-      const tagged={...child,source:'conductor'};g.scheduleEffect(()=>{for(const t of targets){if(t.destroyed||Math.hypot(t.x-s.x,t.y-s.y)>radius)continue;g.enqueue(t,2+Number(level(g,'conductiveSurge')>0),tagged);}},tagged,.04);
+      const tagged={...child,source:'conductor'};g.scheduleEffect(()=>{for(const t of targets){if(t.destroyed||Math.hypot(t.x-s.x,t.y-s.y)>radius)continue;g.enqueue(t,conductorDamage(g),tagged);}},tagged,.04);
     }
   }
   if(s.secondaryTrait==='volatile'){
@@ -107,7 +108,7 @@ export function bendShards(g,dt) {
     // Shape IDs and projectile IDs use separate namespaces; equal numbers are unrelated.
     const well=near(g,{x:s.x,y:s.y},145,t=>t.type==='gravityWell')[0];if(!well)continue;
     const target=Math.atan2(well.y-s.y,well.x-s.x),difference=Math.atan2(Math.sin(target-s.angle),Math.cos(target-s.angle));
-    const turn=Math.min(Math.abs(difference),6*Math.PI/180*dt/C.step,Math.max(0,(form(g,'gravity','pull')?45:30)*Math.PI/180-(s.gravityTurn||0)))*Math.sign(difference);
+    const turn=Math.min(Math.abs(difference),6*Math.PI/180*dt/C.step,Math.max(0,((form(g,'gravity','pull')?45:30)+(hasPerk(g,'gravityDrift')||hasResearch(g,'gravitySpiral')?15:0))*Math.PI/180-(s.gravityTurn||0)))*Math.sign(difference);
     let orbit=0;if(form(g,'gravity','orbit')){if(s.orbitStart===undefined)s.orbitStart=g.simulationTime;if(g.simulationTime<s.orbitStart+.08-1e-9){orbit=Math.min(6*Math.PI/180*dt/C.step,Math.max(0,30*Math.PI/180-(s.orbitTurn||0)))*(Math.sign(difference)||1);s.orbitTurn=(s.orbitTurn||0)+Math.abs(orbit);if(orbit)expansionUsed(g,'evolution:orbit',s,{wellId:well.id,angle:orbit});}}
     if(!turn&&!orbit)continue;s.gravityTurn=(s.gravityTurn||0)+Math.abs(turn);if(turn&&form(g,'gravity','pull'))expansionUsed(g,'evolution:pull',s,{wellId:well.id,angle:turn});s.angle+=turn+orbit;s.vx=Math.cos(s.angle)*C.shard.speed;s.vy=Math.sin(s.angle)*C.shard.speed;s.gravitySource=well.id;
     ecologyLog(g,'gravityBend',well,s,{shardId:s.id,angle:turn});
@@ -124,7 +125,7 @@ export function reflectContact(g,shard,target) {
   const turn=(target.type==='mirror'?Math.min(cap,Math.abs(difference)):cap)*(Math.sign(difference)||1);shard.angle+=turn;
   shard.vx=Math.cos(shard.angle)*C.shard.speed;shard.vy=Math.sin(shard.angle)*C.shard.speed;
   shard.reflectionKind=target.type==='mirror'?'mirror':'trait';shard.reflectionSource=target.id;target.reflections=Math.min(limit,(target.reflections||0)+1);
-  ecologyLog(g,'reflection',target,shard,{angle:turn});if(target.type==='mirror'){if(level(g,'portalCalibration'))expansionUsed(g,'portalCalibration',shard,{targetId:next.id,mirrorId:target.id});expansionReflected(g,shard,'mirror');}return true;
+  ecologyLog(g,'reflection',target,shard,{angle:turn});modeReflect(g,shard,target);if(target.type==='mirror'){if(level(g,'portalCalibration'))expansionUsed(g,'portalCalibration',shard,{targetId:next.id,mirrorId:target.id});expansionReflected(g,shard,'mirror');}return true;
 }
 export function ecologyFormation(g) {
   if(!g.ecologyEnabled)return null;

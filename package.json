@@ -26,6 +26,8 @@
     "qa:storage": "node tests/save-codec-browser.mjs",
     "qa:storage:current": "node tests/storage-current-capacity.mjs",
     "benchmark:m14": "node tests/m14-benchmark.mjs",
-    "qa:m14": "node tests/m14-browser.mjs"
+    "qa:m14": "node tests/m14-browser.mjs",
+    "qa:m15": "node tests/m15-browser.mjs",
+    "benchmark:m15": "node tests/m15-benchmark.mjs"
   }
 }

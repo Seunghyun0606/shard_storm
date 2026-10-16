@@ -18,6 +18,7 @@ export function planRefinery({ raw, seed, enabled = true, id = 'simulation', yie
 export function ensureRefinery(run) {
   if (run.state !== 'RESULT') return null;
   run.refinery ||= planRefinery({ raw: run.runEarned, seed: run.seed ^ run.totalDestroyed, enabled: run.options.refineryEnabled, id: run.runId, yieldLevel: run.levels?.yieldStabilizer||0 });
+  if(run.modeContext?.kind==='draft'){run.refinery.payout=0;run.refinery.enabled=false;run.refinery.draftScoreOnly=true;}
   return run.refinery;
 }
 export function drawRefinery(canvas, plan, progress) {

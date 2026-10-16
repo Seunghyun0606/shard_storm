@@ -1,3 +1,9 @@
+# Shard Storm M15
+
+Optional CHALLENGE LAB: Protocol3x3 / Storm Depth1-3 / Rogue Draft5x20s / Research6. Normal PLAY and all permanent assets stay available. Draft explicitly pays0 permanent Photon/Catalyst. Research shares existing Signature3/Evolution2 slots.
+
+`npm run benchmark:m15` / `npm run qa:m15`. [Implementation](docs/Shard_Storm_M15_Implementation_Report.md) / [Balance](docs/Shard_Storm_M15_Balance_Report.md). Latest371 unit tests PASS, Chrome9 actual20s Runs including full5-Run Draft,705 benchmark Runs including targeted rechecks.
+
 # Shard Storm M14
 
 World5 / tactical Boss5 / settled Survey / schema10. Normal PLAY remains20s. World2 Normal Rank1; Boss Rank2. WORLDS opens in Title/Result. Storm Heart actual clear unlocks a skippable ending and replay.

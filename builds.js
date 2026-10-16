@@ -1,3 +1,4 @@
+import {RESEARCH} from './modes.js';
 import {SIGNATURE_IDS,EVOLUTION_FAMILIES as F,EVOLUTION_COSTS,BUILD_PRESETS} from './expansion-defs.js';
 export function previewStats(stats,active=[]) {
  const result={...stats};if(active.some(r=>r.family==='direct'&&r.form==='focusStrike')){result.directDamage+=2;result.attackInterval+=.04;}return result;
@@ -22,7 +23,7 @@ export function toggleSignature(save,id,state) {
  if(!editable(save,state)||!SIGNATURE_IDS.includes(id)||save.levels[id]!==1)return false;
  const ids=normalizeSignatures(save.signatureLoadout,save.levels);
  if(ids.includes(id))save.signatureLoadout=ids.filter(k=>k!==id);
- else {if(ids.length>=3)return false;save.signatureLoadout=[...ids,id];}
+ else {if(ids.length+(save.researchActive||[]).filter(id=>RESEARCH[id]?.family==='signature').length>=3)return false;save.signatureLoadout=[...ids,id];}
  return true;
 }
 export function evolutionState(save,family,form) {
@@ -43,12 +44,12 @@ export function activateEvolution(save,family,form,state) {
  if(!editable(save,state)||!Object.hasOwn(F,family))return false;
  const active=normalizeEvolutionActive(save.evolutionActive,save.evolutionOwned),other=active.filter(r=>r.family!==family);
  if(form===null){save.evolutionActive=other;return true;}
- if(!save.evolutionOwned?.[family]?.includes(form)||other.length>=2)return false;
+ if(!save.evolutionOwned?.[family]?.includes(form)||(save.researchActive||[]).some(id=>RESEARCH[id]?.family===family)||other.length+(save.researchActive||[]).filter(id=>RESEARCH[id]?.family!=='signature').length>=2)return false;
  save.evolutionActive=[...other,{family,form}];return true;
 }
 export function applyBuildPreset(save,key,state) {
  const preset=BUILD_PRESETS[key];if(!preset||!editable(save,state))return false;
- save.signatureLoadout=normalizeSignatures(preset.signatures,save.levels);
+ save.researchActive=[];save.signatureLoadout=normalizeSignatures(preset.signatures,save.levels);
  save.evolutionActive=normalizeEvolutionActive(preset.evolutions,save.evolutionOwned);
  return true;
 }

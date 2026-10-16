@@ -1,3 +1,4 @@
+import {hasPerk} from './mode-combat.js';
 import {CONFIG as C} from './config.js';
 import {ADVANCED_SHAPES} from './advanced-defs.js';
 import {seededRNG} from './entities.js';
@@ -33,7 +34,7 @@ function planLeap(g,s,at){
   planLeap(g,s,at+1.3);
  }});
 }
-export function phaseVulnerable(g,s,time=g.simulationTime){const clock=Math.max(0,time-(s.spawnAt||0))+(s.phaseOffset||0),hitClock=Math.max(0,(s.motionSlowAt??-Infinity)-(s.spawnAt||0))+(s.phaseOffset||0),extension=Math.floor(clock/1.4)===Math.floor(hitClock/1.4)?(s.phaseExtension||0):0;return clock%1.4<Math.min(1.39,.9+extension);}
+export function phaseVulnerable(g,s,time=g.simulationTime){const clock=Math.max(0,time-(s.spawnAt||0))+(s.phaseOffset||0),hitClock=Math.max(0,(s.motionSlowAt??-Infinity)-(s.spawnAt||0))+(s.phaseOffset||0),extension=Math.floor(clock/1.4)===Math.floor(hitClock/1.4)?(s.phaseExtension||0):0;return clock%1.4<Math.min(1.39,.9+extension+(hasPerk(g,'phaseHunter')?.2:0));}
 // A fully guarded direct attack has no positive hit for Reinforced to absorb.
 // Keep partial shard/wave resistance at the final defense stage as before.
 export function advancedDirectGate(g,s,damage,cause){return g.advancedEnabled&&s.type==='phaseCrystal'&&cause.source==='direct'&&!phaseVulnerable(g,s)?0:damage;}
