@@ -26,7 +26,7 @@
 
 - World table '대표 도형'은 배치/weight 우선일 뿐 나머지 19종 전부 금지X. 기존 드롭/Relic/Contracts/Anomaly는 보존.
 - Rank4 미달일 때 World4는 Reactor/Phase 중심으로 충분히 클리어 가능해야 한다. Ancient의 Rank4 잠금은 World4 '메인 캠페인 핵심 필수 조건'으로 삼지 않음.
-- W1/2는 자연 초기성장 계정에서도 충분히 볼 수 있는 데모 대상을 제공하되 Rank gate를 깰 수 없음.
+- W1/2는 자연 초기성장 계정에서도 충분히 볼 수 있는 데모 대상을 제공하되 Rank gate를 깰 수 없음. **특히 World2는 Rank1에 먼저 입장 가능하지만 Hex 방어를 필수로 사용하는 Relay Citadel Boss는 Rank2 도달 후에만 도전 가능**하다. 이 차이를 World UI에 명확히 표시하고 World2의 Normal Run은 Rank1부터 즐길 수 있게 한다.
 - World 전환은 TITLE/RESULT settled 에서만 가능하고 PLAYING 도중 세계 변경X. World1 Replay는 계정 스킬 MAX 상태여도 허용; 과거 월드의 쉬운 파괴가 power fantasy로 보인다.
 
 ## 3. Survey — Boss 접근을 위한 짧은 실전 목표
@@ -36,7 +36,7 @@
 | World | 공개된 Survey 조건(초기) | Boss 접근 |
 |---|---|---|
 | W1 | 누적 Normal shapes20 kill + 하나의 Chain5 경험 | Rank0 / 같은 World에서만 |
-| W2 | 서로 다른 적격 Run 중 Conductor/Fuse/Hex의 qualifying kill 합계4 + Chain5 1회 | Rank1 and W1 clear |
+| W2 | 서로 다른 적격 Run 중 Conductor/Fuse/Hex의 qualifying kill 합계4 + Chain5 1회 | World2 입장은 Rank1+W1 clear; Hex를 쓰는 Boss Challenge는 Rank2부터 |
 | W3 | mainShard Mirror reflection or Gravity actual bend cause kill 1회, 두 번의 world run 정산 | Rank2 and W2 clear |
 | W4 | Reactor stage wave actual triggered2회 + Phase vulnerable kill1회(필요 shape 적격이면) | Rank3 and W3 clear |
 | W5 | 서로 다른2개 군집을 통과한 Chain15 한 번 + World run 정상 완료2회 | Rank4 and W4 clear |
@@ -52,12 +52,13 @@
 
 - World Survey 완료 후 RESULT/TITLE에서 Boss Challenge 선택 가능. 기본20초 Run(원래 Extra Time skill이 활성인 경우 20~32초를 그대로 따름), world special spawn schedule와 overlay은 하이재킹하지 않음.
 - 0.3~1.5초 사이 world bounds에서 필요한 부품을 원자적으로 안전 배치. 안전 배치가 안 되면 같은 고정 seed에서 bounded tries 후 배치 실패 처리; 임의 중첩이나 Core만 단독 강제 생성 금지.
+- **Boss Challenge 전용 encounter 배치 규칙:** 원래 Run Tier는 일반 도형·일반 특수 스폰에만 그대로 적용한다. Boss의 필수 복합 부품은 월드 접근·Boss 입장 Account Rank를 충족한 전용 bossPreset에 한해 Run 시작에 미리 배치할 수 있으며, 이를 ordinary spawn으로 재분류하거나 일반 Spawn Director/Ore/intro probability를 늘리지 않는다. 이것은 입장 시 명시적으로 선택한 Boss Run에만 적용되는 예외이며 일반 Run에서는 Rank·RunTier를 100% 보존한다.
 - Boss는 19 shape type 중 관련 도형으로 이뤄진 'Encounter Structure'이며 신규 영구 shape type 증가는0. 구조물 부품은 deterministic structureId, phaseId, partRole(core|shield|relay|portal|anchor) 태깅.
 - 구조물 파괴 판정은 실제 part death/ward release/mainShard passage/wave touch 등의 명시 이벤트만으로 전이. 파괴되었다고 UI에서만 판정하는 fake HP threshold 금지.
 - 보스 부품이 주요 이벤트로 남은 동안 기존 일반 spawner가 겹치지 않도록 예약 local safe zone 제공. 외곽 일반 spawn은 살아 있어 원래 파괴 loop 유지.
 - Boss Run 한 판에 exactly1 boss, Boss core 죽음 후 나머지 일반 도형은 남을 수 있음; Run 종료 및 정산은 기존 timer policy대로. Boss clear 판정은 core 실제 파괴+구조물 phase predicate 충족+settlement once.
 - 시간이 끝날 때 Core가 파괴되지 않았다면 World progression은 무진척(단 Survey 진행/기본 Raw/Photon/Contract 보상은 정상); 실패 UI에 마지막 해결 단계·필요 attack 표시.
-- Spawn eligibility: Rank/RunTier를 충족하지 않은 특수 Shape는 사용하지 않거나 Boss 구성 안에서 'Boss 전용 object'를 명확히 구분하고 관련 메커니즘 테스트. 이 문서 권장 방식은 World unlock gate와 맞춘 eligible existing shapes만 사용.
+- Spawn eligibility: Boss Run 시작 시 형상 종류는 반드시 Account Rank를 만족하되, **Boss 전용 예약 부품만** ordinary RunTier 이전에 등장할 수 있다(위 bossPreset 예외). 이 부품의 source는 bossPart이며 normal shape intro/discovery opportunity나 ordinary rare spawn attempt로 계산하지 않는다. 핵심 도형의 실제 피해·파편·파동·Codex·Contract 조건은 일반 도형과 동일한 실제 전투 원인 규칙으로 계산한다. normal Run의 Rank/RunTier는 변하지 않는다.
 - Boss component kill은 일반 도형의 실제 HP/Raw/Ore 규칙을 따르되 기존 Elite primary/exclusive aura/Codex 수익을 중복 생성하지 않음. Boss 특정 완료 보상(별도 Badge/World unlock)은 정산 exactly once, 통화 지급은 첫 클리어 기념 최소값만(선택)하고 repeated Boss farming 금지.
 
 ### 4.1 Boss 구성 (초기 컨트랙트)
@@ -100,8 +101,8 @@ W3 Rift Engine: Run 시작 → Mirror/Gravity 조합이 Portal entrance 옆을 �
 ## 8. QA/마일스톤 수락
 
 - World5 ID/조건, survey ledger5, boss5 each phase and kill with positive + negative fixture, true 20sec real pointer play.
-- Rank0 fresh W1 natural access & W2 locked, M11 old Rank4 migration (World1 unlocked, no fake boss clears), broken/pending saves preservation.
-- Boss layout atomic·0overlap, Tier/Rank eligible parts, no premature kill, no out-of-order phase, end-of-run failure keeps base rewards.
+- Rank0 fresh W1 natural access & W2 locked; Rank1 World2 normal opened but Relay Citadel boss locked until Rank2; M11 old Rank4 migration (World1 unlocked, no fake boss clears), broken/pending saves preservation.
+- Boss layout atomic·0overlap, Account Rank eligible Boss-only preplacement before ordinary RunTier, zero exploitation of normal spawn/intro/ore odds, no premature kill, no out-of-order phase, end-of-run failure keeps base rewards.
 - 5 seeds×3builds×World1..5×Boss/normal×20/32sec, Run startup/clear/fail/replay/save/reload, same seed deterministic game outcome.
 - human test 5 World bosses feasible? timing/target readability, fastskip ending, fatigue; adjust only with evidence.
 - browser 620/1280/1920, Focus+Reduced Motion, 5 Boss pointer fixtures plus fresh demo, console errors0.
