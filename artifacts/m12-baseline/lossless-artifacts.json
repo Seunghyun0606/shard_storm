@@ -1,0 +1,9 @@
+[
+  {
+    "original": "artifacts/m12-baseline/artifacts/m11-browser-results.json",
+    "stored": "artifacts/m12-baseline/artifacts/m11-browser-results.json.gz",
+    "sha256": "fe146c69b5e63940bd5e21f6cdace8594f863711c5d55c5a26637db39792defe",
+    "rawBytes": 4112927,
+    "gzipBytes": 246483
+  }
+]

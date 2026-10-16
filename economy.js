@@ -4,6 +4,7 @@ import { emptyLevels } from './progression.js';
 
 export const economyPresets = { baseline: 1, cost_x3: 3, cost_x6: 6 };
 export const buildPresets = {
+  M12Max: Object.fromEntries(Object.entries(C.upgrades).map(([id,u])=>[id,u.max])),
   Baseline: {}, Upgraded: { crushPower: 1, shardPower: 1 },
   Crusher: { crushPower: 2, crushSpeed: 2, impactPulse: 1 },
   Cascade: { shardPower: 2, shardRange: 1, shardBloom: 1, ricochetPlus: 1 },

@@ -2,12 +2,15 @@ import {CONFIG as C} from './config.js';
 import {ELITES} from './advanced-defs.js';
 import {safePoint,near} from './ecology.js';
 import {advancedLog,safePortalPair} from './advanced-shapes.js';
+import {eliteChoice} from './spawn-director.js';
 export function eligibleElites(g){return Object.entries(ELITES).filter(([,d])=>g.discoveryRank>=d.rank&&g.advancedInsight>=d.insight&&g.highestTier>=4).map(([id])=>id);}
 export function tryElite(g,forced=null){
  if(!g.advancedEnabled||g.eliteSpawned||g.state!=='PLAYING'||g.remaining<=0)return null;
  const eligible=eligibleElites(g);if(!eligible.length||forced&&!eligible.includes(forced))return null;
  const introduction=eligible.find(id=>!(g.eliteHistory[id]?.spawned>0)&&!g.eliteAttempted.has(id));
- const id=forced&&eligible.includes(forced)?forced:introduction|| (g.advancedRng()<.03?eligible[Math.floor(g.advancedRng()*eligible.length)]:null);if(!id)return null;
+ const id=eliteChoice(g,eligible,introduction,forced);if(!id)return null;
+ const decision=g.director.elite,isNatural=!forced&&!introduction;
+ if(isNatural)decision.attempts++;
  const d=ELITES[id];g.eliteAttempted.add(id);const delta=g.eliteDelta[id]||={attempts:0,spawned:0,kills:0};delta.attempts++;
  if(g.alive.length+d.types.length>g.target)return null;
  if(d.types.some(type=>C.shapes[type].special&&g.alive.filter(s=>s.type===type).length+d.types.filter(t=>t===type).length>C.shapes[type].cap||(g.specialSpawns[type]||0)+d.types.filter(t=>t===type).length>(C.shapes[type].runCap||Infinity)))return null;
@@ -19,12 +22,12 @@ export function tryElite(g,forced=null){
   const candidate=d.types.map((type,i)=>({x:x+offsets[i][0],y:y+offsets[i][1],radius:C.shapes[type].radius,type}));
   if(candidate.every((p,i)=>safePoint(g,p.x,p.y,p.radius)&&candidate.every((q,j)=>i===j||Math.hypot(p.x-q.x,p.y-q.y)>=p.radius+q.radius+C.spawnGap+(C.shapes[p.type].drift??C.motion.maxDrift)+(C.shapes[q.type].drift??C.motion.maxDrift)))){points=candidate;break;}
  }
- if(!points){advancedLog(g,'elitePlacementFailed',{id:0},{},{eliteId:id});return null;}
+ if(!points){if(isNatural)decision.placementFailures++;advancedLog(g,'elitePlacementFailed',{id:0},{},{eliteId:id});return null;}
  const shapes=[];if(id==='portalBeacon'){const pair=safePortalPair(g,points.slice(0,2));if(!pair)return null;shapes.push(...pair);}
  for(let i=shapes.length;i<points.length;i++){const p=points[i];shapes.push(g.addShape(p.type,p.x,p.y,0,false,C.spawnGrace,'normal'));}
  if(shapes.some(s=>!s))throw Error('Atomic Elite commit precondition violated');
  const primary=shapes[0];primary.hp=primary.maxHP=Math.ceil(C.shapes[primary.type].hp*1.5);primary.bonus=C.shapes[primary.type].bonus+50;primary.elitePrimary=true;primary.eliteId=id;for(const s of shapes)s.eliteEncounter=id;
  for(const s of shapes.filter(s=>s.type==='conductor'))s.linkIds=near(g,s,115+(g.expansionLevels.conductiveSurge>=2?15:0)).slice(0,2).map(t=>t.id);
  if(id==='bombReactor')shapes[2].secondaryTrait='volatile';
- g.eliteSpawned=true;delta.spawned++;advancedLog(g,'eliteSpawned',primary,{}, {eliteId:id,targetIds:shapes.map(s=>s.id)});return shapes;
+ g.eliteSpawned=true;if(isNatural)decision.naturalSpawned=true;delta.spawned++;advancedLog(g,'eliteSpawned',primary,{}, {eliteId:id,targetIds:shapes.map(s=>s.id),origin:forced?'forced':introduction?'introduction':'natural'});return shapes;
 }

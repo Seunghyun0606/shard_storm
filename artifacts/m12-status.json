@@ -1,0 +1,28 @@
+{
+  "phase": "M12_policy_review_checkpoint",
+  "allMilestonesComplete": false,
+  "milestones": {
+    "M12": "scheduler and sandbox A/B implemented; production Elite decision pending",
+    "M13": "not_started",
+    "M14": "not_started",
+    "M15": "not_started",
+    "M16": "not_started"
+  },
+  "unitTests": 320,
+  "unitPassed": 320,
+  "actualM12CombatRuns": 650,
+  "eligibilityLotteryTrials": 50000,
+  "chrome20sRuns": 6,
+  "chromeErrors": [],
+  "baselineUnitTests": 307,
+  "baselineM11SmokeRuns": 180,
+  "baselineChrome20sRuns": 7,
+  "currentM11SmokeRuns": 180,
+  "storageCurrentFull32sRuns": 20,
+  "sourceSignature": "5b35dc52248248edc565c4aa3005b977acd8fb0f487e21905e93506d4b708960",
+  "browserSourceSignature": "93800e081e59fa6219f5b1920fa332153d337866048cfec453d76f9b84cdff50",
+  "livePolicy": "M11_fixed15 and per-attempt .03; unchanged pending human decision",
+  "recommendedElite": "Run20% + pity6; new persistent field not yet applied",
+  "humanFun": "not evaluated",
+  "branch": "feat/m12-m16-destruction-evolution"
+}

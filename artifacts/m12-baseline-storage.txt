@@ -1,0 +1,5 @@
+
+> qa:storage
+> node tests/save-codec-browser.mjs
+
+Same-key lossless storage Chrome QA PASS:20 complete records, corruption export and pending refresh once

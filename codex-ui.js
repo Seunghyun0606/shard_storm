@@ -18,6 +18,8 @@ export function renderCodex(root,save,{state,pin}){
   card.append(node('small',`I:1 death | II:${id==='ancient'?5:30} deaths | III:technique1 | IV:${id==='ancient'?20:150} deaths + technique3`));
   card.append(node('span',`${row.kills} deaths | ${row.techniques} techniques${row.stage>=3?' | INSIGHT':''}${row.stage===4?' | MASTERED':''}`));
   card.append(node('p',TECHNIQUES[id]));
+  const recent=save.pendingSettlement?.record||save.lastRuns.at(-1);
+  for(const attempt of (recent?.codexAttempts||[]).filter(a=>a.id===id).slice(-2))card.append(node('small',`${attempt.success?'SUCCESS':'ATTEMPT'}: ${attempt.reason}`,'codex-attempt'));
   if(ADVANCED_SHAPES[id]){const descriptions={portalGate:'Main shards teleport once/pair. Destroy either gate to unlink.',parasiteLink:'Actual damage copies up to1 HP to2 links after .04s; copied hits never recurse.',phaseCrystal:'1.4s cycle: .9s vulnerable/.5s guarded. Guarded direct=0, shard/wave<=1.',chainBeacon:'Death in its own Chain10+ creates130px/2damage wave after .05s.',shifter:'Safe25-35px leap every1.3s; .2s warning. Aim at its new position.',prismLens:'Native Square/Star contact emits2 narrow120px sectors at +/-35deg. Actual main contact refracts at most70deg,2/Lens.'};card.append(node('small',`Rank${d.rank} / Run${C.tiers[d.tier].threshold} | HP${d.hp} | Raw${d.bonus} | ${descriptions[id]}`));}
   const button=node('button',save.codexPinnedIds.includes(id)?'UNPIN':'PIN');button.dataset.codexPin=id;button.disabled=!['TITLE','RESULT'].includes(state)||(!save.codexPinnedIds.includes(id)&&save.codexPinnedIds.length>=2);button.onclick=()=>pin(id);card.append(button);grid.append(card);
  }

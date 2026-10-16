@@ -1,0 +1,5 @@
+
+> qa:m12
+> node tests/m12-browser.mjs
+
+M12 Chrome pointer PASS:6 actual20s Runs

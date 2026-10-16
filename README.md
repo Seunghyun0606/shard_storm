@@ -1,3 +1,24 @@
+# Shard Storm — M12~M16 개발 중
+
+현재 `feat/m12-m16-destruction-evolution`의 **M12 정책 검토 checkpoint**입니다. M11 완성 코드와 전체 M12~M16 PRD를 포함한 기획 브랜치에서 분기했습니다. M13~M16은 아직 구현하지 않았습니다.
+
+M12:512회 처리 예산 소진 시 잔여 물리를 보존하고, 실제 표면 접촉 반복을 복구했습니다. 탄력 공급15/18/21/24/30/s 및 Run 단위 Elite3/15/20/25%·20%+pity6 후보를 격리 비교할 수 있습니다. RESULT Codex에는 실제 Pentagon/Fuse/Prism 시도의 원인과 실패 이유가 표시됩니다. **라이브 공급15/s·Elite attempt3%는 정책 결정 전 유지**합니다. 후보는 DEV의 격리 실험에서만 적용됩니다.
+
+단위320 PASS/0 FAIL(기존307 유지),650 실제 전투 A/B, 별도50,000 추첨 비교, 실제 Chrome20초 포인터6Run/콘솔 오류0을 검증했습니다. 최근20개 완전한32초 전투 기록의 같은 키 압축 저장·새로고침2회·전체 해시 보존도 PASS입니다. M12 운영 채택 및 후속 장기 성장/사람 재미 검증은 남아 있습니다.
+
+```powershell
+npm test
+npm run benchmark:m12
+# npm start: 기본4173, QA_BASE_URL로 실제 주소 지정
+$env:PLAYWRIGHT_MODULE = Join-Path $env:TEMP 'shard-storm-qa/node_modules/playwright'
+$env:QA_BASE_URL = 'http://127.0.0.1:4173'
+npm run qa:m12
+```
+
+[M12 구현·한계](docs/Shard_Storm_M12_Implementation_Report.md) · [정책별 수치·결정 근거](docs/Shard_Storm_M12_Balance_Report.md) · [재개 작업 기록](docs/Shard_Storm_M12_M16_Work_Log.md) · [전투 화면](artifacts/m12-pointer-1920-2-4.png) · [Codex 시도](artifacts/m12-codex-attempts-620-2.png).
+
+## M11 완료 기준과 과거 기록
+
 # Shard Storm — M9.0~M11
 
 M9.0~M11의 기능 구현과 자동 QA를 완료했습니다. **19도형(신규12)·secondary trait8종·49스킬(신규30)/100레벨·Signature10종 중3개·Evolution15형태 중2계열·Codex19종×4단계·Elite6종·schema8**입니다. 기존20초 Run·클릭/홀드/드래그·primary Modifier3종·Relic/Contract/Anomaly·재화·구매 레벨을 보존합니다.

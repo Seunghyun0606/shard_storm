@@ -1,0 +1,6 @@
+
+> benchmark:m12
+> node tests/m12-benchmark.js
+
+Scheduler: 120 paired conditions (360 Runs), 120 exact / 0 corrected cap paths
+M12 benchmark PASS: 560 actual combat Runs; lottery trials separate.

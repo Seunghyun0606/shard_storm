@@ -1,10 +1,11 @@
 import {TECHNIQUES,ELITES,ADVANCED_SHAPES} from './advanced-defs.js';
+import {initAttempts,attemptDeath,attemptEvent,attemptContact} from './codex-attempts.js';
 export const CODEX_IDS=Object.keys(TECHNIQUES);
 const integer=n=>Number.isSafeInteger(n)&&n>=0?Math.min(n,1e9):0;
 export function codexStage(id,kills,techniques){return kills<1?0:kills<(id==='ancient'?5:30)?1:techniques<1?2:kills<(id==='ancient'?20:150)||techniques<3?3:4;}
 export function normalizeCodex(value={}){return Object.fromEntries(CODEX_IDS.map(id=>{const kills=integer(value?.[id]?.kills),techniques=integer(value?.[id]?.techniques),stage=codexStage(id,kills,techniques);return[id,{kills,techniques,stage,discovered:stage>0}];}));}
 export function codexInsights(codex){return CODEX_IDS.filter(id=>codex?.[id]?.stage>=3);}
-export function initCodex(g,enabled){g.advancedEnabled=enabled;g.codexDelta=Object.fromEntries(CODEX_IDS.map(id=>[id,{kills:0,techniques:0}]));g.codexKeys=new Set();g.codexSets=new Map();g.codexEvents=[];g.codexSequence=0;}
+export function initCodex(g,enabled){initAttempts(g);g.advancedEnabled=enabled;g.codexDelta=Object.fromEntries(CODEX_IDS.map(id=>[id,{kills:0,techniques:0}]));g.codexKeys=new Set();g.codexSets=new Map();g.codexEvents=[];g.codexSequence=0;}
 function set(g,key,item){const values=g.codexSets.get(key)||new Set();values.add(item);g.codexSets.set(key,values);return values;}
 export function codexFeat(g,id,key,cause={},extra={}){
  if(!g.advancedEnabled||g.shapes.some(s=>s.id===extra.sourceId&&s.fixture)||!g.codexDelta[id]||g.codexKeys.has(id+':'+key)||g.state!=='PLAYING'||g.remaining<=0)return false;
@@ -12,6 +13,7 @@ export function codexFeat(g,id,key,cause={},extra={}){
  if(g.codexEvents.length<2048)g.codexEvents.push({id,sourceId:extra.sourceId,chainId:cause.chainId,at:g.simulationTime,targetId:extra.targetId,eventId:++g.codexSequence,...extra});return true;
 }
 export function codexEvent(g,kind,s,cause={},extra={}){
+ attemptEvent(g,kind,s,cause,extra);
  if(!g.advancedEnabled||s.fixture)return;
  const origin=extra.sourceId??s.id,key=kind+':'+origin;
  if(kind==='stage'){const stages=set(g,key,extra.stageIndex);s.codexStages=stages;if(s.type==='reactor'&&stages.size>=2)codexFeat(g,'reactor',key,cause,{sourceId:origin});if(s.type==='ancient'&&stages.size>=3&&s.destroyed)codexFeat(g,'ancient',key,cause,{sourceId:origin});}
@@ -21,11 +23,13 @@ export function codexEvent(g,kind,s,cause={},extra={}){
  if(kind==='fuseExploded'){const key='fuse:'+cause.chainId,list=g.codexSets.get(key)||[];list.push({id:s.id,at:g.simulationTime});g.codexSets.set(key,list);if(list.some(e=>e.id!==s.id&&g.simulationTime-e.at<=1+1e-9))codexFeat(g,'fuseBomb',key+':'+s.id,cause,{sourceId:s.id});}
 }
 export function codexContact(g,s,cause,wave){
+ attemptContact(g,s,cause,wave);
  if(!g.advancedEnabled||s.echo||s.fixture)return;
  if(wave&&cause.nativeWave&&cause.source==='star'&&set(g,'starwave:'+wave.id,s.id).size>=6)codexFeat(g,'star','wave:'+wave.id,cause,{sourceId:cause.originShapeId,targetId:s.id,waveId:wave.id});
  if(wave?.cause.source==='prismRefraction'&&!s.elitePrimary){const key='lens:'+cause.originShapeId;const hits=g.codexSets.get(key)||new Map();hits.set(cause.sectorIndex,s.id);g.codexSets.set(key,hits);if(hits.size>=2&&new Set(hits.values()).size>=2)codexFeat(g,'prismLens',key,cause,{sourceId:cause.originShapeId,targetId:s.id,waveId:wave.id});}
 }
 export function codexDeath(g,s,cause,wave){
+ attemptDeath(g,s,cause);
  if(!g.advancedEnabled||s.fixture)return;
  if(s.echo){if(s.parentChain===cause.chainId&&set(g,'echo:'+s.parentSplitter+':'+cause.chainId,s.id).size>=2)codexFeat(g,'splitter','parent:'+s.parentSplitter,cause,{sourceId:s.parentSplitter,targetId:s.id});return;}
  if(!s.elitePrimary&&g.codexDelta[s.type])g.codexDelta[s.type].kills++;

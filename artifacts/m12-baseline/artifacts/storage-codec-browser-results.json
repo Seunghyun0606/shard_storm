@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "browser": "155.0.8059.79",
+  "fullRecords": 20,
+  "size": {
+    "rawCharacters": 7826727,
+    "packedCharacters": 1923207,
+    "encodeMs": 74.29999999701977,
+    "decodeMs": 65,
+    "exact": true,
+    "encoding": "ss-lz4-base64-v1"
+  },
+  "retained": [
+    "all20 complete records",
+    "bank",
+    "49 levels",
+    "Signature",
+    "Evolution",
+    "pending exactly once",
+    "Codex delta"
+  ],
+  "corruptOriginalPreserved": true,
+  "originalExportExact": true,
+  "errors": [],
+  "method": "Isolated Chrome context; no actual user storage.20 actual-battle records from saved stress fixture. CPU timings are diagnostic under background growth workers, not isolated performance."
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "original": "artifacts/m12-regression/v09-balance-results.json",
+    "stored": "artifacts/m12-regression/v09-balance-results.json.gz",
+    "sha256": "7de5735d6abf44186d3514fa9ac05e643ca11ed404bad9e81dec3495cd9202fc",
+    "rawBytes": 38494383,
+    "gzipBytes": 2236703
+  },
+  {
+    "original": "artifacts/m12-regression/v09-legacy-regression-results.json",
+    "stored": "artifacts/m12-regression/v09-legacy-regression-results.json.gz",
+    "sha256": "88d484ea992665b32ee947a4d5fce0016c7dc0a5649044bb20e805d53d5d5825",
+    "rawBytes": 5215876,
+    "gzipBytes": 348532
+  }
+]

@@ -1,0 +1,1355 @@
+{
+  "passed": true,
+  "signature": "26d1da7a0a4606be22c395534aeb2de4e93c48f768b3ad23f1f63100d8a96c0d",
+  "sources": [
+    "advanced-defs.js",
+    "advanced-shapes.js",
+    "anomalies.js",
+    "builds.js",
+    "codex-attempts.js",
+    "codex.js",
+    "combo.js",
+    "config.js",
+    "content.js",
+    "contracts.js",
+    "discovery.js",
+    "ecology-defs.js",
+    "ecology.js",
+    "economy.js",
+    "effects.js",
+    "elites.js",
+    "entities.js",
+    "expansion-defs.js",
+    "expansion.js",
+    "experiments.js",
+    "game.js",
+    "motion.js",
+    "ore.js",
+    "presentation.js",
+    "progression.js",
+    "refinery.js",
+    "relics.js",
+    "run-metrics.js",
+    "save-codec.js",
+    "settlement-validation.js",
+    "skill-tree.js",
+    "spawn-director.js",
+    "storage.js",
+    "tests/content-simulation.js",
+    "tests/m11-benchmark.js",
+    "tests/m11-simulation.js",
+    "tests/simulation.js",
+    "visuals.js"
+  ],
+  "actualRuns": 180,
+  "sourceFiles": [
+    "artifacts/m11-growth/26d1da7a0a46-31415-Crusher-Fresh-ExtraTime-Normal-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Crusher-Fresh-ExtraTime-Normal-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Crusher-Fresh-ExtraTime-Normal-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Crusher-Fresh-ExtraTime-Normal-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Crusher-Fresh-ExtraTime-Adaptive-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Crusher-Fresh-ExtraTime-Adaptive-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Crusher-Fresh-ExtraTime-Adaptive-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Crusher-Fresh-ExtraTime-Adaptive-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Crusher-Fresh-ExtraTime-Anomaly-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Crusher-Fresh-ExtraTime-Anomaly-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Crusher-Fresh-ExtraTime-Anomaly-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Crusher-Fresh-ExtraTime-Anomaly-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Cascade-Fresh-ExtraTime-Normal-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Cascade-Fresh-ExtraTime-Normal-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Cascade-Fresh-ExtraTime-Normal-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Cascade-Fresh-ExtraTime-Normal-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Cascade-Fresh-ExtraTime-Adaptive-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Cascade-Fresh-ExtraTime-Adaptive-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Cascade-Fresh-ExtraTime-Adaptive-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Cascade-Fresh-ExtraTime-Adaptive-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Cascade-Fresh-ExtraTime-Anomaly-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Cascade-Fresh-ExtraTime-Anomaly-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Cascade-Fresh-ExtraTime-Anomaly-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Cascade-Fresh-ExtraTime-Anomaly-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Reactor-Fresh-ExtraTime-Normal-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Reactor-Fresh-ExtraTime-Normal-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Reactor-Fresh-ExtraTime-Normal-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Reactor-Fresh-ExtraTime-Normal-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Reactor-Fresh-ExtraTime-Adaptive-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Reactor-Fresh-ExtraTime-Adaptive-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Reactor-Fresh-ExtraTime-Adaptive-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Reactor-Fresh-ExtraTime-Adaptive-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Reactor-Fresh-ExtraTime-Anomaly-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Reactor-Fresh-ExtraTime-Anomaly-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Reactor-Fresh-ExtraTime-Anomaly-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-31415-Reactor-Fresh-ExtraTime-Anomaly-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Crusher-Fresh-ExtraTime-Normal-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Crusher-Fresh-ExtraTime-Normal-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Crusher-Fresh-ExtraTime-Normal-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Crusher-Fresh-ExtraTime-Normal-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Crusher-Fresh-ExtraTime-Adaptive-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Crusher-Fresh-ExtraTime-Adaptive-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Crusher-Fresh-ExtraTime-Adaptive-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Crusher-Fresh-ExtraTime-Adaptive-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Crusher-Fresh-ExtraTime-Anomaly-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Crusher-Fresh-ExtraTime-Anomaly-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Crusher-Fresh-ExtraTime-Anomaly-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Crusher-Fresh-ExtraTime-Anomaly-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Cascade-Fresh-ExtraTime-Normal-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Cascade-Fresh-ExtraTime-Normal-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Cascade-Fresh-ExtraTime-Normal-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Cascade-Fresh-ExtraTime-Normal-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Cascade-Fresh-ExtraTime-Adaptive-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Cascade-Fresh-ExtraTime-Adaptive-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Cascade-Fresh-ExtraTime-Adaptive-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Cascade-Fresh-ExtraTime-Adaptive-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Cascade-Fresh-ExtraTime-Anomaly-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Cascade-Fresh-ExtraTime-Anomaly-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Cascade-Fresh-ExtraTime-Anomaly-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Cascade-Fresh-ExtraTime-Anomaly-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Reactor-Fresh-ExtraTime-Normal-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Reactor-Fresh-ExtraTime-Normal-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Reactor-Fresh-ExtraTime-Normal-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Reactor-Fresh-ExtraTime-Normal-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Reactor-Fresh-ExtraTime-Adaptive-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Reactor-Fresh-ExtraTime-Adaptive-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Reactor-Fresh-ExtraTime-Adaptive-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Reactor-Fresh-ExtraTime-Adaptive-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Reactor-Fresh-ExtraTime-Anomaly-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Reactor-Fresh-ExtraTime-Anomaly-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Reactor-Fresh-ExtraTime-Anomaly-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-1-Reactor-Fresh-ExtraTime-Anomaly-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Crusher-Fresh-ExtraTime-Normal-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Crusher-Fresh-ExtraTime-Normal-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Crusher-Fresh-ExtraTime-Normal-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Crusher-Fresh-ExtraTime-Normal-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Crusher-Fresh-ExtraTime-Adaptive-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Crusher-Fresh-ExtraTime-Adaptive-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Crusher-Fresh-ExtraTime-Adaptive-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Crusher-Fresh-ExtraTime-Adaptive-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Crusher-Fresh-ExtraTime-Anomaly-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Crusher-Fresh-ExtraTime-Anomaly-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Crusher-Fresh-ExtraTime-Anomaly-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Crusher-Fresh-ExtraTime-Anomaly-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Cascade-Fresh-ExtraTime-Normal-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Cascade-Fresh-ExtraTime-Normal-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Cascade-Fresh-ExtraTime-Normal-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Cascade-Fresh-ExtraTime-Normal-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Cascade-Fresh-ExtraTime-Adaptive-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Cascade-Fresh-ExtraTime-Adaptive-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Cascade-Fresh-ExtraTime-Adaptive-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Cascade-Fresh-ExtraTime-Adaptive-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Cascade-Fresh-ExtraTime-Anomaly-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Cascade-Fresh-ExtraTime-Anomaly-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Cascade-Fresh-ExtraTime-Anomaly-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Cascade-Fresh-ExtraTime-Anomaly-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Reactor-Fresh-ExtraTime-Normal-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Reactor-Fresh-ExtraTime-Normal-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Reactor-Fresh-ExtraTime-Normal-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Reactor-Fresh-ExtraTime-Normal-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Reactor-Fresh-ExtraTime-Adaptive-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Reactor-Fresh-ExtraTime-Adaptive-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Reactor-Fresh-ExtraTime-Adaptive-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Reactor-Fresh-ExtraTime-Adaptive-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Reactor-Fresh-ExtraTime-Anomaly-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Reactor-Fresh-ExtraTime-Anomaly-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Reactor-Fresh-ExtraTime-Anomaly-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-7-Reactor-Fresh-ExtraTime-Anomaly-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Crusher-Fresh-ExtraTime-Normal-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Crusher-Fresh-ExtraTime-Normal-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Crusher-Fresh-ExtraTime-Normal-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Crusher-Fresh-ExtraTime-Normal-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Crusher-Fresh-ExtraTime-Adaptive-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Crusher-Fresh-ExtraTime-Adaptive-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Crusher-Fresh-ExtraTime-Adaptive-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Crusher-Fresh-ExtraTime-Adaptive-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Crusher-Fresh-ExtraTime-Anomaly-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Crusher-Fresh-ExtraTime-Anomaly-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Crusher-Fresh-ExtraTime-Anomaly-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Crusher-Fresh-ExtraTime-Anomaly-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Cascade-Fresh-ExtraTime-Normal-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Cascade-Fresh-ExtraTime-Normal-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Cascade-Fresh-ExtraTime-Normal-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Cascade-Fresh-ExtraTime-Normal-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Cascade-Fresh-ExtraTime-Adaptive-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Cascade-Fresh-ExtraTime-Adaptive-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Cascade-Fresh-ExtraTime-Adaptive-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Cascade-Fresh-ExtraTime-Adaptive-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Cascade-Fresh-ExtraTime-Anomaly-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Cascade-Fresh-ExtraTime-Anomaly-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Cascade-Fresh-ExtraTime-Anomaly-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Cascade-Fresh-ExtraTime-Anomaly-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Reactor-Fresh-ExtraTime-Normal-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Reactor-Fresh-ExtraTime-Normal-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Reactor-Fresh-ExtraTime-Normal-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Reactor-Fresh-ExtraTime-Normal-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Reactor-Fresh-ExtraTime-Adaptive-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Reactor-Fresh-ExtraTime-Adaptive-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Reactor-Fresh-ExtraTime-Adaptive-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Reactor-Fresh-ExtraTime-Adaptive-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Reactor-Fresh-ExtraTime-Anomaly-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Reactor-Fresh-ExtraTime-Anomaly-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Reactor-Fresh-ExtraTime-Anomaly-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-42-Reactor-Fresh-ExtraTime-Anomaly-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Crusher-Fresh-ExtraTime-Normal-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Crusher-Fresh-ExtraTime-Normal-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Crusher-Fresh-ExtraTime-Normal-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Crusher-Fresh-ExtraTime-Normal-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Crusher-Fresh-ExtraTime-Adaptive-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Crusher-Fresh-ExtraTime-Adaptive-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Crusher-Fresh-ExtraTime-Adaptive-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Crusher-Fresh-ExtraTime-Adaptive-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Crusher-Fresh-ExtraTime-Anomaly-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Crusher-Fresh-ExtraTime-Anomaly-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Crusher-Fresh-ExtraTime-Anomaly-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Crusher-Fresh-ExtraTime-Anomaly-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Cascade-Fresh-ExtraTime-Normal-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Cascade-Fresh-ExtraTime-Normal-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Cascade-Fresh-ExtraTime-Normal-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Cascade-Fresh-ExtraTime-Normal-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Cascade-Fresh-ExtraTime-Adaptive-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Cascade-Fresh-ExtraTime-Adaptive-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Cascade-Fresh-ExtraTime-Adaptive-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Cascade-Fresh-ExtraTime-Adaptive-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Cascade-Fresh-ExtraTime-Anomaly-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Cascade-Fresh-ExtraTime-Anomaly-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Cascade-Fresh-ExtraTime-Anomaly-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Cascade-Fresh-ExtraTime-Anomaly-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Reactor-Fresh-ExtraTime-Normal-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Reactor-Fresh-ExtraTime-Normal-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Reactor-Fresh-ExtraTime-Normal-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Reactor-Fresh-ExtraTime-Normal-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Reactor-Fresh-ExtraTime-Adaptive-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Reactor-Fresh-ExtraTime-Adaptive-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Reactor-Fresh-ExtraTime-Adaptive-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Reactor-Fresh-ExtraTime-Adaptive-M11-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Reactor-Fresh-ExtraTime-Anomaly-M8-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Reactor-Fresh-ExtraTime-Anomaly-M9-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Reactor-Fresh-ExtraTime-Anomaly-M10-1.json.gz",
+    "artifacts/m11-growth/26d1da7a0a46-99-Reactor-Fresh-ExtraTime-Anomaly-M11-1.json.gz"
+  ],
+  "summary": [
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Normal",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 4,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 43,
+          "catalyst": 0,
+          "kills": 135,
+          "photon": 103,
+          "chain": 7,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Normal",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 54,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Normal",
+      "feature": "M10",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 54,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Normal",
+      "feature": "M11",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            6,
+            2,
+            1,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 54,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 1
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Adaptive",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 4,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 43,
+          "catalyst": 0,
+          "kills": 135,
+          "photon": 103,
+          "chain": 7,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Adaptive",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 54,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Adaptive",
+      "feature": "M10",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 54,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Adaptive",
+      "feature": "M11",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            6,
+            2,
+            1,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 54,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 1
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Anomaly",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 4,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 2,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 52,
+          "catalyst": 0,
+          "kills": 161,
+          "photon": 170,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Anomaly",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 42,
+          "catalyst": 0,
+          "kills": 135,
+          "photon": 116,
+          "chain": 9,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Anomaly",
+      "feature": "M10",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 42,
+          "catalyst": 0,
+          "kills": 135,
+          "photon": 116,
+          "chain": 9,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Crusher",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Anomaly",
+      "feature": "M11",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            6,
+            2,
+            1,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 42,
+          "catalyst": 0,
+          "kills": 135,
+          "photon": 116,
+          "chain": 9,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 1
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Normal",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 4,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 13,
+          "catalyst": 0,
+          "kills": 135,
+          "photon": 103,
+          "chain": 7,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Normal",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 24,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Normal",
+      "feature": "M10",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 24,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Normal",
+      "feature": "M11",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            6,
+            2,
+            1,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 24,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 1
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Adaptive",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 4,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 13,
+          "catalyst": 0,
+          "kills": 135,
+          "photon": 103,
+          "chain": 7,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Adaptive",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 24,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Adaptive",
+      "feature": "M10",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 24,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Adaptive",
+      "feature": "M11",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            6,
+            2,
+            1,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 24,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 1
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Anomaly",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 4,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 2,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 22,
+          "catalyst": 0,
+          "kills": 161,
+          "photon": 170,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Anomaly",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 12,
+          "catalyst": 0,
+          "kills": 135,
+          "photon": 116,
+          "chain": 9,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Anomaly",
+      "feature": "M10",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 12,
+          "catalyst": 0,
+          "kills": 135,
+          "photon": 116,
+          "chain": 9,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Cascade",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Anomaly",
+      "feature": "M11",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            6,
+            2,
+            1,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 12,
+          "catalyst": 0,
+          "kills": 135,
+          "photon": 116,
+          "chain": 9,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 1
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Normal",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 4,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 42,
+          "catalyst": 0,
+          "kills": 135,
+          "photon": 103,
+          "chain": 7,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Normal",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 33,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Normal",
+      "feature": "M10",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 33,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Normal",
+      "feature": "M11",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            6,
+            2,
+            1,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 33,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 1
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Adaptive",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 4,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 42,
+          "catalyst": 0,
+          "kills": 135,
+          "photon": 103,
+          "chain": 7,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Adaptive",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 33,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Adaptive",
+      "feature": "M10",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 33,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Adaptive",
+      "feature": "M11",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            6,
+            2,
+            1,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 33,
+          "catalyst": 0,
+          "kills": 133,
+          "photon": 114,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 1
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Anomaly",
+      "feature": "M8",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 4,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 40,
+          "catalyst": 0,
+          "kills": 161,
+          "photon": 170,
+          "chain": 10,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Anomaly",
+      "feature": "M9",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 19,
+          "rank": 0,
+          "bank": 40,
+          "catalyst": 0,
+          "kills": 135,
+          "photon": 116,
+          "chain": 9,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Anomaly",
+      "feature": "M10",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 40,
+          "catalyst": 0,
+          "kills": 135,
+          "photon": 116,
+          "chain": 9,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 0
+        }
+      ]
+    },
+    {
+      "strategy": "Reactor",
+      "profile": "Fresh",
+      "time": "ExtraTime",
+      "mode": "Anomaly",
+      "feature": "M11",
+      "checkpoints": [
+        {
+          "run": 1,
+          "uniqueEncounters": 6,
+          "codexStages": [
+            6,
+            2,
+            1,
+            0
+          ],
+          "eliteSpawns": 0,
+          "levels": 1,
+          "remainingNodes": 49,
+          "rank": 0,
+          "bank": 40,
+          "catalyst": 0,
+          "kills": 135,
+          "photon": 116,
+          "chain": 9,
+          "blank": 0,
+          "calibrationPhoton": 0,
+          "insight": 1
+        }
+      ]
+    }
+  ],
+  "activations": {},
+  "advancedActivations": {},
+  "eliteTotals": {},
+  "caps": {},
+  "lateContacts": 0,
+  "maxProjectileError": 9.985687015046096e-7,
+  "maxWaveError": 9.956533517652133e-7,
+  "node": "v24.18.0",
+  "workers": 4,
+  "method": "5seeds x3builds xNormal/Adaptive/Anomaly xM8/M9/M10/M11;300 actual Runs per path, same seeds+input and real affordable growth. Fresh profiles, 20-32s based on purchased Extra Time. M10/11 activate up to3 owned Signatures+2 owned Evolutions. Codex/Elite credited only to isolated sandbox save. No user storage. Auto-input is not human enjoyment."
+}

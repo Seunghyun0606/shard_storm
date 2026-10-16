@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "benchmark:m12": "node tests/m12-benchmark.js",
+    "qa:m12": "node tests/m12-browser.mjs",
     "start": "node server.js",
     "test": "node --test tests/*.test.js",
     "benchmark": "node tests/benchmark.js",
